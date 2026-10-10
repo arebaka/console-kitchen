@@ -7,12 +7,12 @@ performance:
   docked_cpu: 1785
   docked_gpu: 921
   docked_mem: 1600
-  handheld_charging_official_cpu: 1785
-  handheld_charging_official_gpu: 921
-  handheld_charging_official_mem: 1600
   handheld_cpu: 1428
   handheld_gpu: 460
   handheld_mem: 1600
+  handheld_charging_official_cpu: 1785
+  handheld_charging_official_gpu: 921
+  handheld_charging_official_mem: 1600
 
 battery:
   handheld_cpu: 816

@@ -1,8 +1,8 @@
 id	type	default	values	min	max	maxLength
 ExitToHomeScreen	toggle	off
-SavesFolder	text	sdmc:/switch/DBI/saves/				128
+SavesFolder	text	sdmc:/switch/DBI/saves				128
 LogEvents	toggle	off
-LogsFolder	text	sdmc:/switch/DBI/logs/				128
+LogsFolder	text	sdmc:/switch/DBI/logs				128
 DumpsFolder	text	sdmc:/switch/DBI/dumps				128
 AppSorting	multiselect	LastPlayed,InstallLocation,Size,Name	LastPlayed,InstallLocation,Size,Name	1
 SaveSorting	multiselect	AppLastPlayed,AppName,UserUid,Size,Time	AppLastPlayed,AppName,UserUid,Size,Time	1

@@ -6,7 +6,7 @@ import { Params } from './url';
 // A short one names things by the numbers the tables in data/**/link.tsv give them:
 //     h       the console and its system version, one number
 //     s       the software, a bit per component
-//     l, sm…  everything else by what it sets up: the launch, the firmware, a component with its overlay and the like.
+//     l, f... everything else by what it sets up: the launch, the firmware, a component with its overlay and the like.
 //             A record per param spelled in full: the number of its key and its value
 // A short link is read by spelling it in full, so both kinds are checked by the same rules.
 //
@@ -98,10 +98,10 @@ class Reader {
 
 	number(): number {
 		let value = 0;
-		for (let scale = 1; ; scale *= 8) {
+		for (let scale = 1; ; scale *= 0b1000) {
 			const group = this.take(4);
-			value += group % 8 * scale;
-			if (group < 8) return value;
+			value += group % 0b1000 * scale;
+			if (group < 0b1000) return value;
 			if (scale >= 2 ** 48) throw new RangeError('The number is too big');
 		}
 	}
@@ -216,24 +216,23 @@ function putPiece(out: Writer, piece: Piece): void {
 		case 'number':
 			out.put(0b01, 2);
 			return out.number(piece.value);
+		case 'mark':
+			out.put(0b10, 2);
+			return out.put(piece.index, 3);
 		case 'game':
-			out.put(0b100, 3);
+			out.put(0b110, 3);
 			for (let i = 0; i < 16; i++) {
 				out.put(parseInt(piece.id[i], 16), 4);
 			}
 			return;
-		case 'mark':
-			out.put(0b101, 3);
-			return out.put(piece.index, 3);
-		case 'text': {
+		case 'text':
 			const codes = spell(SPELLINGS[piece.spelling], piece.text);
-			out.put(0b110, 3);
+			out.put(0b111, 3);
 			// Both cases of hex digits are the spelling 0, the bit of the case tells them apart
 			out.put(Math.max(piece.spelling - 1, 0), 2);
 			if (piece.spelling < 2) out.put(piece.spelling, 1);
 			out.number(codes.length - 1);
 			for (const code of codes) out.put(code, SPELLINGS[piece.spelling].bits);
-		}
 	}
 }
 
@@ -246,7 +245,10 @@ function takePiece(input: Reader, words: string[]): { text: string | undefined; 
 			return { text: words[input.number()] };
 		case 0b01:
 			return { text: String(input.number()) };
-		case 0b10: {
+		case 0b10:
+			const mark = input.take(3);
+			return mark ? { text: MARKS[mark - 1], isMark: true } : undefined;
+		default:
 			switch (input.take(1)) {
 				case 0b0:
 					let id = '';
@@ -255,22 +257,12 @@ function takePiece(input: Reader, words: string[]): { text: string | undefined; 
 					}
 					return { text: id };
 				default:
-					const mark = input.take(3);
-					return mark ? { text: MARKS[mark - 1], isMark: true } : undefined;
-			}
-		}
-		default: {
-			switch (input.take(1)) {
-				case 0b0:
 					const kind = input.take(2);
 					const spelling = SPELLINGS[kind ? kind + 1 : input.take(1)];
 					const length = input.number() + 1;
 					if (length * spelling.bits > input.left) throw new RangeError('The param is cut short');
 					return { text: read(spelling, Array.from({ length }, () => input.take(spelling.bits))) };
-				default:
-					throw new RangeError('Unknown prefix');
 			}
-		}
 	}
 }
 
@@ -296,11 +288,11 @@ function putValue(out: Writer, value: string, words: Index): void {
 	if (!isSingle) putEnd(out);
 }
 
-function takeValue(input: Reader, words: string[], games: string[]): string | undefined {
+function takeValue(input: Reader, words: string[]): string | undefined {
 	const kind = input.take(2);
-	if (kind < 2) return String(kind);
-	if (kind == 3) return takeText(input, words, games);
-	const piece = takePiece(input, words, games);
+	if (kind < 0b10) return String(kind);
+	if (kind == 0b11) return takeText(input, words);
+	const piece = takePiece(input, words);
 	if (!piece || piece.isMark) throw new RangeError('Not a piece');
 	return piece.text;
 }
@@ -335,6 +327,7 @@ function unpack(text: string, keys: string[], words: string[]): Params {
 			const step = input.number();
 			if (step == 0) break;
 			const key = step == 1 ? takeText(input, words) : keys[previous += step - 2];
+			const kekek3 = input.position;
 			const value = takeValue(input, words);
 			if (key !== undefined && value !== undefined) params.push([key, value]);
 		}
@@ -388,7 +381,6 @@ export function shorten(params: Params, link: LinkCodes): Params {
 	else short.push(...params.filter(([key]) => key == 'hw' || key == link.firmwareKey));
 
 	const software = value('sw').split(',').filter(Boolean).map(id => index(link.software).codes.get(id));
-	console.log(software);
 	if (params.some(([key]) => key == 'sw') && !software.includes(undefined)) short.push(['s', closed(mask(software as number[]))]);
 	else short.push(...params.filter(([key]) => key == 'sw'));
 
@@ -398,7 +390,7 @@ export function shorten(params: Params, link: LinkCodes): Params {
 	const places = options.map(([key]) => [link.paramOf(key)].find(param => param !== undefined && Object.hasOwn(link.keys, param)));
 	for (const [param, keys] of Object.entries(link.keys)) {
 		const records = options.filter((option, at) => places[at] == param);
-		if (records.length) short.push([param, closed(pack(records, keys, link.words, link.games))]);
+		if (records.length) short.push([param, closed(pack(records, keys, link.words))]);
 	}
 	short.push(...options.filter((option, at) => places[at] === undefined));
 
@@ -425,7 +417,7 @@ export function expand(params: URLSearchParams, link: LinkCodes): URLSearchParam
 		} else if (key == 's') {
 			if (PACKED.test(value)) add('sw', unmask(value, link.software).join(','));
 		} else if (Object.hasOwn(link.keys, key)) {
-			if (PACKED.test(value)) unpack(value, link.keys[key], link.words, link.games).forEach(([name, text]) => add(name, text));
+			if (PACKED.test(value)) unpack(value, link.keys[key], link.words).forEach(([name, text]) => add(name, text));
 		} else {
 			full.push([key, value]);
 		}

@@ -35,7 +35,7 @@ status_monitor_micro	status_monitor	sm	config/status-monitor/config.ini	status_m
 status_monitor_fps_counter	status_monitor	sm	config/status-monitor/config.ini	status_monitor	status_monitor/fps-counter.tsv
 status_monitor_fps_graph	status_monitor	sm	config/status-monitor/config.ini	status_monitor	status_monitor/fps-graph.tsv
 status_monitor_game_resolutions	status_monitor	sm	config/status-monitor/config.ini	status_monitor	status_monitor/game_resolutions.tsv
-dbi_patcher	dbi	db	switch/DBI/translation.bin	dbi_patcher
+dbi_patcher	dbi	db	switch/DBI/translation.bin	dbi_patcher	dbi/patcher.tsv
 dbi_general	dbi	db	switch/DBI/dbi.config	dbi	dbi/general.tsv
 dbi_album	dbi	db	switch/DBI/dbi.config	dbi	dbi/album.tsv
 dbi_filtering	dbi	db	switch/DBI/dbi.config	dbi	dbi/filtering.tsv
