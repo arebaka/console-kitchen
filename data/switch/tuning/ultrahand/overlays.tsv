@@ -1,11 +1,11 @@
 id	type	default	values	min	max	step	maxLength
 priority	range	20		0	25	1
-star	toggle	off
-hide	toggle	off
-use_launch_args	toggle	off
+star	toggle
+hide	toggle
+use_launch_args	toggle
 launch_args	text						128
 custom_name	text						64
 custom_version	text						32
 key_combo	multiselect		L,R,ZL,ZR,DUP,DDOWN,DLEFT,DRIGHT,A,B,X,Y,LS,RS,MINUS,PLUS		4
-force_support	toggle	off
-modes	list		label,combo:|ZL+ZR+DDOWN|ZL+ZR+DRIGHT|ZL+ZR+DUP|ZL+ZR+DLEFT|L+R+DDOWN|L+R+DRIGHT|L+R+DUP|L+R+DLEFT|L+DDOWN|R+DDOWN|ZL+ZR+PLUS|L+R+PLUS|ZL+ZR+MINUS|L+R+MINUS|ZL+MINUS|ZR+MINUS|ZL+PLUS|ZR+PLUS|MINUS+PLUS|LS+RS|L+DDOWN+RS|L+R+LS|L+R+RS|ZL+ZR+LS|ZL+ZR+RS|ZL+ZR+L|ZL+ZR+R|ZL+ZR+LS+RS,args		8		64
+force_support	toggle
+modes	list		label,combo:L|R|ZL|ZR|DUP|DDOWN|DLEFT|DRIGHT|A|B|X|Y|LS|RS|MINUS|PLUS:4,args		8		64

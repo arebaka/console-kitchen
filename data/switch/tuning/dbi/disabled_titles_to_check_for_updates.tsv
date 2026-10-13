@@ -1,3 +1,3 @@
 id	type	default	values	max	maxLength
-BlockAllTitlesWithLFS	toggle	on
+BlockAllTitlesWithLFS	toggle	1
 titles	list	010072400E04A000=Pokemon Cafe Mix	TitleID,Name	64	64

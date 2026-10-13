@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import { Fix, Issue, TuningConfig, TuningGroup, TuningOption, TuningStep, TuningValue } from '@/types';
+import { Fix, Issue, ListField, TuningConfig, TuningGroup, TuningOption, TuningStep, TuningValue } from '@/types';
 import { Language, Translation } from '@i18n';
-import { isCountAllowed, isTuningOptionActive, tuningGroups } from '@/data';
+import { cellValues, isCountAllowed, isTuningOptionActive, pickedCell, tuningGroups } from '@/data';
 import { Platform } from '@/platforms';
 import { activate } from '@/utils';
 import { Issues } from '../Issues';
@@ -343,7 +343,62 @@ interface ListRowsProps {
 	t: Translation;
 }
 
-// Rows of a list: a field per value, a choice where the field has its values. A new row starts empty
+interface PicksProps {
+	field: ListField;
+	cell: string;
+	label: string;
+	isEnabled: boolean;
+	setCell: (cell: string) => void;
+	t: Translation;
+}
+
+// A field of a row that holds several of its values at once: buttons where the values are buttons, choices otherwise.
+// A value the field cannot take, as it would then hold too many of them, is locked
+function Picks({
+	field,
+	cell,
+	label,
+	isEnabled,
+	setCell,
+	t
+}: PicksProps) {
+	const values = field.values ?? [];
+	const picked = cellValues(cell);
+	const switched = (item: string) => pickedCell(field, picked.includes(item) ? picked.filter(value => value != item) : [...picked, item]);
+	const isLocked = (item: string) => switched(item) === undefined;
+	const toggle = (item: string) => setCell(switched(item) ?? cell);
+
+	if (isButtons(values)) {
+		return (
+			<Buttons
+				values={values}
+				selected={picked}
+				isEnabled={isEnabled}
+				isLocked={isLocked}
+				toggle={toggle}
+				t={t} />
+		);
+	}
+
+	return (
+		<ul className="choices" aria-label={label}>
+			{values.map(item => (
+				<li
+					key={item}
+					className={`choice ${picked.includes(item) ? 'active' : ''} ${isLocked(item) ? 'locked' : ''}`}
+					aria-disabled={isLocked(item) || undefined}
+					tabIndex={isEnabled && !isLocked(item) ? 0 : undefined}
+					onClick={() => !isLocked(item) && toggle(item)}
+					onKeyDown={activate}>
+					{item}
+				</li>
+			))}
+		</ul>
+	);
+}
+
+// Rows of a list: a field per value, a choice where the field has its values, of several of them where it takes them.
+// A new row starts empty
 function ListRows({
 	option,
 	rows,
@@ -363,7 +418,16 @@ function ListRows({
 		<div className="list">
 			{rows.map((row, at) => (
 				<div key={at} className="entry">
-					{option.fields.map((field, index) => field.values ? (
+					{option.fields.map((field, index) => field.max !== undefined ? (
+						<Picks
+							key={field.id}
+							field={field}
+							cell={row[index]}
+							label={label(field.id)}
+							isEnabled={isEnabled}
+							setCell={value => setCell(at, index, value)}
+							t={t} />
+					) : field.values ? (
 						<select
 							key={field.id}
 							className="field"
@@ -401,7 +465,7 @@ function ListRows({
 			<button
 				className="control"
 				disabled={!isEnabled || rows.length >= (option.max ?? Infinity)}
-				onClick={() => setRows([...rows, option.fields.map(field => field.values?.[0] ?? '')])}>
+				onClick={() => setRows([...rows, option.fields.map(field => field.max === undefined ? field.values?.[0] ?? '' : '')])}>
 				{t.pages.system.add}
 			</button>
 		</div>

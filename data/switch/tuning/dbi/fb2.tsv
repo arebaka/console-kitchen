@@ -1,4 +1,4 @@
 id	type	default	values
 Theme	select	Day	Day,Night,Sepia,Darkroom
-Hyphenation	toggle	on
+Hyphenation	toggle	1
 Orientation	select	0	0,90,180,270

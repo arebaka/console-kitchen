@@ -1,61 +1,64 @@
-id	step	link	file	requires	table	section
-logo	launch	l	bootloader/hekate_ipl.ini
-hekate	system	l	bootloader/hekate_ipl.ini
-nyx	system	l	bootloader/nyx.ini
-dns	security	f	atmosphere/hosts
-exosphere	security	f	exosphere.ini
-stratosphere	security	f	atmosphere/config/stratosphere.ini
-atmosphere	system	f	atmosphere/config/system_settings.ini
-hbl	system	f	atmosphere/config/override_config.ini
-sys_patch	sysmodules	f	config/sys-patch/config.ini	sys_patch
-missioncontrol	sysmodules	mc	config/MissionControl/missioncontrol.ini	missioncontrol
-sys_con	sysmodules	co	config/sys-con/config.ini	sys_con
-sys_tune	sysmodules	tu	config/sys-tune/config.ini	sys_tune
-sys_ftpd_light	sysmodules	ft	config/sys-ftpd/config.ini	sys_ftpd_light
-tesla	overlays	o	config/tesla/config.ini	ovlmenu|ultrahand
-ultrahand	overlays	o	config/ultrahand/config.ini	ultrahand	ultrahand/ultrahand.tsv
-ultrahand_status_monitor	overlays	sm	config/ultrahand/overlays.ini	ultrahand,status_monitor	ultrahand/overlays.tsv	Status-Monitor-Overlay.ovl
-ultrahand_fps_locker	overlays	fl	config/ultrahand/overlays.ini	ultrahand,fps_locker	ultrahand/overlays.tsv	FPSLocker.ovl
-ultrahand_reversenx_rt	overlays	rr	config/ultrahand/overlays.ini	ultrahand,reversenx_rt	ultrahand/overlays.tsv	ReverseNX-RT-ovl.ovl
-ultrahand_sysdvr_overlay	overlays	vr	config/ultrahand/overlays.ini	ultrahand,sysdvr_overlay	ultrahand/overlays.tsv	sysdvr-overlay.ovl
-ultrahand_edizon_overlay	overlays	ez	config/ultrahand/overlays.ini	ultrahand,edizon_overlay	ultrahand/overlays.tsv	ovlEdiZon.ovl
-ultrahand_noled	overlays	nl	config/ultrahand/overlays.ini	ultrahand,noled	ultrahand/overlays.tsv	noled.ovl
-ultrahand_master_volume	overlays	mv	config/ultrahand/overlays.ini	ultrahand,master_volume	ultrahand/overlays.tsv	MasterVolume.ovl
-ultrahand_bt_audio	overlays	ba	config/ultrahand/overlays.ini	ultrahand,bt_audio	ultrahand/overlays.tsv	BT_Audio-ovl.ovl
-ultrahand_sys_clk	overlays	c	config/ultrahand/overlays.ini	ultrahand,sys_clk	ultrahand/overlays.tsv	sys-clk-overlay.ovl
-ultrahand_nx_fan_control	overlays	fc	config/ultrahand/overlays.ini	ultrahand,nx_fan_control	ultrahand/overlays.tsv	Nx-FanControl.ovl
-ultrahand_ldn_mitm	overlays	lm	config/ultrahand/overlays.ini	ultrahand,ldn_mitm	ultrahand/overlays.tsv	ldnmitm_config.ovl
-ultrahand_sys_tune	overlays	tu	config/ultrahand/overlays.ini	ultrahand,sys_tune	ultrahand/overlays.tsv	sys-tune-overlay.ovl
-ultrahand_fizeau	overlays	fi	config/ultrahand/overlays.ini	ultrahand,fizeau	ultrahand/overlays.tsv	Fizeau.ovl
-ultrahand_emuiibo	overlays	am	config/ultrahand/overlays.ini	ultrahand,emuiibo	ultrahand/overlays.tsv	emuiibo.ovl
-status_monitor	status_monitor	sm	config/status-monitor/config.ini	status_monitor	status_monitor/status-monitor.tsv
-status_monitor_full	status_monitor	sm	config/status-monitor/config.ini	status_monitor	status_monitor/full.tsv
-status_monitor_mini	status_monitor	sm	config/status-monitor/config.ini	status_monitor	status_monitor/mini.tsv
-status_monitor_micro	status_monitor	sm	config/status-monitor/config.ini	status_monitor	status_monitor/micro.tsv
-status_monitor_fps_counter	status_monitor	sm	config/status-monitor/config.ini	status_monitor	status_monitor/fps-counter.tsv
-status_monitor_fps_graph	status_monitor	sm	config/status-monitor/config.ini	status_monitor	status_monitor/fps-graph.tsv
-status_monitor_game_resolutions	status_monitor	sm	config/status-monitor/config.ini	status_monitor	status_monitor/game_resolutions.tsv
-dbi_patcher	dbi	db	switch/DBI/translation.bin	dbi_patcher	dbi/patcher.tsv
-dbi_general	dbi	db	switch/DBI/dbi.config	dbi	dbi/general.tsv
-dbi_album	dbi	db	switch/DBI/dbi.config	dbi	dbi/album.tsv
-dbi_filtering	dbi	db	switch/DBI/dbi.config	dbi	dbi/filtering.tsv
-dbi_activity_log	dbi	db	switch/DBI/dbi.config	dbi	dbi/activity_log.tsv
-dbi_main_menu	dbi	db	switch/DBI/dbi.config	dbi	dbi/main_menu.tsv
-dbi_applications	dbi	db	switch/DBI/dbi.config	dbi	dbi/applications.tsv
-dbi_install	dbi	db	switch/DBI/dbi.config	dbi	dbi/install.tsv
-dbi_mtp	dbi	db	switch/DBI/dbi.config	dbi	dbi/mtp.tsv
-dbi_ftp	dbi	db	switch/DBI/dbi.config	dbi	dbi/ftp.tsv
-dbi_http	dbi	db	switch/DBI/dbi.config	dbi	dbi/http.tsv
-dbi_access_point	dbi	db	switch/DBI/dbi.config	dbi	dbi/access_point.tsv
-dbi_mtp_storages	dbi	db	switch/DBI/dbi.config	dbi	dbi/mtp_storages.tsv
-dbi_fb2	dbi	db	switch/DBI/dbi.config	dbi	dbi/fb2.tsv
-dbi_network_sources	dbi	db	switch/DBI/dbi.config	dbi	dbi/network_sources.tsv
-dbi_local_sources	dbi	db	switch/DBI/dbi.config	dbi	dbi/local_sources.tsv
-dbi_mtp_custom_storages	dbi	db	switch/DBI/dbi.config	dbi	dbi/mtp_custom_storages.tsv
-dbi_title_name_override	dbi	db	switch/DBI/dbi.config	dbi	dbi/title_name_override.tsv
-dbi_disabled_titles_to_check_for_updates	dbi	db	switch/DBI/dbi.config	dbi	dbi/disabled_titles_to_check_for_updates.tsv
-dbi_locations	dbi	db	switch/DBI/dbi.locations	dbi	dbi/locations.tsv
-jksv	jksv	jk	config/JKSV/JKSV.json	jksv	jksv/jksv.tsv
-jksv_webdav	jksv	jk	config/JKSV/webdav.json	jksv	jksv/webdav.tsv
-amiigo	amiibo	am	config/amiigo/settings.json	amiigo
-sys_clk	overclock	c	config/sys-clk/config.ini	sys_clk
+id	step	file	link	requires	table	section
+logo	launch	bootloader/hekate_ipl.ini	l
+hekate	system	bootloader/hekate_ipl.ini	l
+nyx	system	bootloader/nyx.ini	l
+dns	security	atmosphere/hosts	f
+exosphere	security	exosphere.ini	f
+stratosphere	security	atmosphere/config/stratosphere.ini	f
+atmosphere	system	atmosphere/config/system_settings.ini	f
+hbl	system	atmosphere/config/override_config.ini	f
+sys_patch	sysmodules	config/sys-patch/config.ini	f	sys_patch
+missioncontrol	sysmodules	config/MissionControl/missioncontrol.ini	mc	missioncontrol
+sys_con	sysmodules	config/sys-con/config.ini	co	sys_con
+sys_tune	sysmodules	config/sys-tune/config.ini	tu	sys_tune
+sys_ftpd_light	sysmodules	config/sys-ftpd/config.ini	ft	sys_ftpd_light
+tesla	overlays	config/tesla/config.ini	o	ovlmenu|ultrahand
+ultrahand	overlays	config/ultrahand/config.ini	o	ultrahand	ultrahand/ultrahand.tsv
+ultrahand_status_monitor	overlays	config/ultrahand/overlays.ini	sm	ultrahand,status_monitor	ultrahand/overlays.tsv	Status-Monitor-Overlay.ovl
+ultrahand_fps_locker	overlays	config/ultrahand/overlays.ini	fl	ultrahand,fps_locker	ultrahand/overlays.tsv	FPSLocker.ovl
+ultrahand_reversenx_rt	overlays	config/ultrahand/overlays.ini	rr	ultrahand,reversenx_rt	ultrahand/overlays.tsv	ReverseNX-RT-ovl.ovl
+ultrahand_sysdvr_overlay	overlays	config/ultrahand/overlays.ini	vr	ultrahand,sysdvr_overlay	ultrahand/overlays.tsv	sysdvr-overlay.ovl
+ultrahand_edizon_overlay	overlays	config/ultrahand/overlays.ini	ez	ultrahand,edizon_overlay	ultrahand/overlays.tsv	ovlEdiZon.ovl
+ultrahand_noled	overlays	config/ultrahand/overlays.ini	nl	ultrahand,noled	ultrahand/overlays.tsv	noled.ovl
+ultrahand_master_volume	overlays	config/ultrahand/overlays.ini	mv	ultrahand,master_volume	ultrahand/overlays.tsv	MasterVolume.ovl
+ultrahand_bt_audio	overlays	config/ultrahand/overlays.ini	ba	ultrahand,bt_audio	ultrahand/overlays.tsv	BT_Audio-ovl.ovl
+ultrahand_quickntp	overlays	config/ultrahand/overlays.ini	qn	ultrahand,quickntp	ultrahand/overlays.tsv	QuickNTP.ovl
+ultrahand_ovl_sysmodules	overlays	config/ultrahand/overlays.ini	os	ultrahand,ovl_sysmodules	ultrahand/overlays.tsv	ovlSysmodules.ovl
+ultrahand_sys_clk	overlays	config/ultrahand/overlays.ini	c	ultrahand,sys_clk	ultrahand/overlays.tsv	sys-clk-overlay.ovl
+ultrahand_horizon_oc	overlays	config/ultrahand/overlays.ini	ho	ultrahand,horizon_oc	ultrahand/overlays.tsv	horizon-oc-overlay.ovl
+ultrahand_nx_fan_control	overlays	config/ultrahand/overlays.ini	fc	ultrahand,nx_fan_control	ultrahand/overlays.tsv	Nx-FanControl.ovl
+ultrahand_ldn_mitm	overlays	config/ultrahand/overlays.ini	lm	ultrahand,ldn_mitm	ultrahand/overlays.tsv	ldnmitm_config.ovl
+ultrahand_sys_tune	overlays	config/ultrahand/overlays.ini	tu	ultrahand,sys_tune	ultrahand/overlays.tsv	sys-tune-overlay.ovl
+ultrahand_fizeau	overlays	config/ultrahand/overlays.ini	fi	ultrahand,fizeau	ultrahand/overlays.tsv	Fizeau.ovl
+ultrahand_emuiibo	overlays	config/ultrahand/overlays.ini	am	ultrahand,emuiibo	ultrahand/overlays.tsv	emuiibo.ovl
+status_monitor	status_monitor	config/status-monitor/config.ini	sm	status_monitor	status_monitor/status-monitor.tsv
+status_monitor_full	status_monitor	config/status-monitor/config.ini	sm	status_monitor	status_monitor/full.tsv
+status_monitor_mini	status_monitor	config/status-monitor/config.ini	sm	status_monitor	status_monitor/mini.tsv
+status_monitor_micro	status_monitor	config/status-monitor/config.ini	sm	status_monitor	status_monitor/micro.tsv
+status_monitor_fps_counter	status_monitor	config/status-monitor/config.ini	sm	status_monitor	status_monitor/fps-counter.tsv
+status_monitor_fps_graph	status_monitor	config/status-monitor/config.ini	sm	status_monitor	status_monitor/fps-graph.tsv
+status_monitor_game_resolutions	status_monitor	config/status-monitor/config.ini	sm	status_monitor	status_monitor/game_resolutions.tsv
+dbi_patcher	dbi	switch/DBI/translation.bin	db	dbi_patcher	dbi/patcher.tsv
+dbi_general	dbi	switch/DBI/dbi.config	db	dbi	dbi/general.tsv
+dbi_album	dbi	switch/DBI/dbi.config	db	dbi	dbi/album.tsv
+dbi_filtering	dbi	switch/DBI/dbi.config	db	dbi	dbi/filtering.tsv
+dbi_activity_log	dbi	switch/DBI/dbi.config	db	dbi	dbi/activity_log.tsv
+dbi_main_menu	dbi	switch/DBI/dbi.config	db	dbi	dbi/main_menu.tsv
+dbi_applications	dbi	switch/DBI/dbi.config	db	dbi	dbi/applications.tsv
+dbi_install	dbi	switch/DBI/dbi.config	db	dbi	dbi/install.tsv
+dbi_mtp	dbi	switch/DBI/dbi.config	db	dbi	dbi/mtp.tsv
+dbi_ftp	dbi	switch/DBI/dbi.config	db	dbi	dbi/ftp.tsv
+dbi_http	dbi	switch/DBI/dbi.config	db	dbi	dbi/http.tsv
+dbi_access_point	dbi	switch/DBI/dbi.config	db	dbi	dbi/access_point.tsv
+dbi_mtp_storages	dbi	switch/DBI/dbi.config	db	dbi	dbi/mtp_storages.tsv
+dbi_fb2	dbi	switch/DBI/dbi.config	db	dbi	dbi/fb2.tsv
+dbi_network_sources	dbi	switch/DBI/dbi.config	db	dbi	dbi/network_sources.tsv
+dbi_local_sources	dbi	switch/DBI/dbi.config	db	dbi	dbi/local_sources.tsv
+dbi_mtp_custom_storages	dbi	switch/DBI/dbi.config	db	dbi	dbi/mtp_custom_storages.tsv
+dbi_title_name_override	dbi	switch/DBI/dbi.config	db	dbi	dbi/title_name_override.tsv
+dbi_disabled_titles_to_check_for_updates	dbi	switch/DBI/dbi.config	db	dbi	dbi/disabled_titles_to_check_for_updates.tsv
+dbi_locations	dbi	switch/DBI/dbi.locations	db	dbi	dbi/locations.tsv
+jksv	jksv	config/JKSV/JKSV.json	jk	jksv	jksv/jksv.tsv
+jksv_webdav	jksv	config/JKSV/webdav.json	jk	jksv	jksv/webdav.tsv
+amiigo	amiibo	config/amiigo/settings.json	am	amiigo
+sys_clk	overclock	config/sys-clk/config.ini	c	sys_clk

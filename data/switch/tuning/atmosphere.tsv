@@ -1,20 +1,20 @@
 id	type	default	values	min	max	maxLength
-upload_enabled	toggle	off
-usb30_force_enabled	toggle	off
-dmnt_cheats_enabled_by_default	toggle	on
-dmnt_always_save_cheat_toggles	toggle	off
-enable_external_bluetooth_db	toggle	off
+upload_enabled	toggle
+usb30_force_enabled	toggle
+dmnt_cheats_enabled_by_default	toggle	1
+dmnt_always_save_cheat_toggles	toggle
+enable_external_bluetooth_db	toggle
 power_menu_reboot_function	select	payload	payload,normal,rcm
 fatal_auto_reboot_interval	select	0	0,5000,10000,30000
-disable_automatic_report_cleanup	toggle	off
-ease_nro_restriction	toggle	on
-enable_log_manager	toggle	off
-enable_sd_card_logging	toggle	on
+disable_automatic_report_cleanup	toggle
+ease_nro_restriction	toggle	1
+enable_log_manager	toggle
+enable_sd_card_logging	toggle	1
 sd_card_log_output_directory	text	atmosphere/binlogs				64
-enable_htc	toggle	off
-enable_am_debug_mode	toggle	off
-enable_hbl_bis_write	toggle	off
-enable_hbl_cal_read	toggle	off
-fsmitm_redirect_saves_to_sd	toggle	off
+enable_htc	toggle
+enable_am_debug_mode	toggle
+enable_hbl_bis_write	toggle
+enable_hbl_cal_read	toggle
+fsmitm_redirect_saves_to_sd	toggle
 applet_heap_size	number	0		0	4096
 applet_heap_reservation_size	number	134		0	4096

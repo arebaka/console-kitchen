@@ -1,6 +1,6 @@
 id	type	default	values	maxLength
-album	toggle	off
-any_app	toggle	on
+album	toggle
+any_app	toggle	1
 key	select	R	L,R,ZL,ZR,X,Y,MINUS,PLUS
 mods_key	select	L	L,R,ZL,ZR,X,Y,MINUS,PLUS
 cheat_key	select	L	L,R,ZL,ZR,X,Y,MINUS,PLUS

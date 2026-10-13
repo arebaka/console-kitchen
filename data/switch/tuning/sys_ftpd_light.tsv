@@ -1,8 +1,8 @@
 id	type	default	values	min	max	maxLength	secret
-user	text					32	on
-password	text					32	on
-anonymous	toggle	off
+user	text					32	1
+password	text					32	1
+anonymous	toggle
 port	number	5000		1	65535
-pause	toggle	on
+pause	toggle	1
 keycombo	multiselect	X,MINUS,PLUS	L,R,ZL,ZR,DUP,DDOWN,DLEFT,DRIGHT,A,B,X,Y,LSTICK,RSTICK,MINUS,PLUS
-led	toggle	on
+led	toggle	1

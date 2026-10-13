@@ -48,7 +48,8 @@ export function vocabulary(): Vocabulary {
 			...tuningWords(CATALOG.tuning),
 			...BOOT_MODES, 'menu', ...PAYLOADS,
 			...GALLERY.map(image => image.id),
-			'stock', 'custom', ...Object.keys(OVERCLOCK.templates), ...CLOCK_KEYS, ...OVERCLOCK.games.map(game => game.id),
+			// What a profile of the overclock is made of apart from its game: links say the ID of a game as it is
+			'stock', 'custom', ...Object.keys(OVERCLOCK.templates), ...CLOCK_KEYS,
 			// Keys of more emuMMCs have no numbers, so they are spelled in these words
 			'launch', 'img', 'logo', 'icon', ...ENTRY_OVERRIDES
 		]

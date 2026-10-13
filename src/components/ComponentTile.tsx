@@ -24,7 +24,7 @@ export function ComponentTile({
 	const text = t.software[platform.id][component.id];
 	const parent = platform.catalog.components.find(comp => comp.id == component.sources.bundled);
 	// What ships with a required component cannot be switched off either
-	const isRequired = component.is_required || !!parent?.is_required;
+	const isRequired = component.required || !!parent?.required;
 
 	return (
 		<li

@@ -1,5 +1,5 @@
 import { Catalog, TuningConfig, TuningGroup, TuningOption, TuningValue } from './types';
-import { isCountAllowed, isTuningOptionChanged, listRow, listRows, resolveSelection } from './data';
+import { cellValues, isCountAllowed, isTuningOptionChanged, listRow, listRows, pickedCell, resolveSelection } from './data';
 
 // Parameters of a link in their order
 export type Params = [string, string][];
@@ -16,11 +16,13 @@ function serialize(value: TuningValue): string {
 	return String(value);
 }
 
-// Params of an option: one with its value, for a list one per row, an empty one when it has no rows
+// Params of an option: one with its value, for a list one per row, an empty one when it has no rows.
+// A field of a row that holds several values spells them as every option of several values does, separated by commas
 function optionParams(key: string, option: TuningOption, value: TuningValue): Params {
 	if (option.type != 'list') return [[key, serialize(value)]];
 	const rows = listRows(value as string[][]);
-	return rows.length ? rows.map(row => [key, row.join('=')]) : [[key, '']];
+	const cells = (row: string[]) => row.map((cell, index) => option.fields[index].max === undefined ? cell : cellValues(cell).join(','));
+	return rows.length ? rows.map(row => [key, cells(row).join('=')]) : [[key, '']];
 }
 
 // A text is a single line: a line break would get out of its key in the config and out of the config in the installers
@@ -52,13 +54,16 @@ function parse(option: TuningOption, raws: string[]): TuningValue | undefined {
 		case 'text':
 			return isLine(raw, option.maxLength) ? raw : undefined;
 		case 'list': {
-			// Every row has to name itself and hold a line or one of the choices in every field
+			// Every row has to name itself and hold a line, one of the choices or some of them in every field.
+			// Several values of a field are separated by commas, or joined with `+` the way they are kept
 			const rows = raws.length == 1 && raw == '' ? [] : raws.map(item => listRow(item, option.fields.length));
-			const isValid = rows.length <= (option.max ?? Infinity) && rows.every(row => row[0].trim() != '' && row.every((cell, index) => {
-				const { values } = option.fields[index];
-				return values ? values.includes(cell) : isLine(cell, option.maxLength);
+			const cells = rows.map(row => row.map((cell, index) => {
+				const field = option.fields[index];
+				if (field.max !== undefined) return pickedCell(field, cell ? cell.split(/[+,]/) : []);
+				return (field.values ? field.values.includes(cell) : isLine(cell, option.maxLength)) ? cell : undefined;
 			}));
-			return isValid ? rows : undefined;
+			const isValid = rows.length <= (option.max ?? Infinity) && rows.every(row => row[0].trim() != '') && cells.every(row => !row.includes(undefined));
+			return isValid ? cells as string[][] : undefined;
 		}
 	}
 }

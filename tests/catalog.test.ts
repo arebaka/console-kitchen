@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { HARDWARE } from '@data';
 import { matchingPreset, presetSelection, resolveSelection, tuningGroups } from '@/data';
 import { PLATFORMS } from '@/platforms';
-import { CATALOG, GALLERY, SWITCH } from '@/platforms/switch';
+import { BOOT_ENTRIES, CATALOG, GALLERY, SWITCH } from '@/platforms/switch';
 import { I18N } from '@i18n';
 import { buttonName, isButtons } from '@/components/Buttons';
 
@@ -49,6 +49,13 @@ describe('catalog', () => {
 			// Archives unpack the payload themselves, single files are saved to the path
 			expect(paths.every(path => path == comp.payload), comp.id).toBe(true);
 		}
+	});
+
+	// Keys in a file named after nothing would go into no entry without a word
+	it('keeps the keys of the Launch menu in files named after its entries and after the components that add theirs', () => {
+		const names = readdirSync('data/switch/launch').filter(file => file.endsWith('.yaml')).map(file => file.replace(/\.yaml$/, ''));
+		const known = [...BOOT_ENTRIES.map(entry => entry.id), ...CATALOG.components.map(comp => comp.id)];
+		expect(names.filter(name => !known.includes(name))).toEqual([]);
 	});
 
 	it('has every picture in public', () => {

@@ -1,8 +1,8 @@
-id	step	link	file	requires
-ark	system	f	PSP/SAVEDATA/ARK_01234
-clock	system	f	PSP/SAVEDATA/ARK_01234/SETTINGS.TXT
-memory	system	f	PSP/SAVEDATA/ARK_01234/SETTINGS.TXT
-xmb	system	f	PSP/SAVEDATA/ARK_01234/SETTINGS.TXT
-device	system	f	PSP/SAVEDATA/ARK_01234/SETTINGS.TXT
-go	system	f	PSP/SAVEDATA/ARK_01234/SETTINGS.TXT
-aemu	plugins	p	SEPLUGINS/hotspot.txt	aemu
+id	step	file	link	requires
+ark	system	PSP/SAVEDATA/ARK_01234	f
+clock	system	PSP/SAVEDATA/ARK_01234/SETTINGS.TXT	f
+memory	system	PSP/SAVEDATA/ARK_01234/SETTINGS.TXT	f
+xmb	system	PSP/SAVEDATA/ARK_01234/SETTINGS.TXT	f
+device	system	PSP/SAVEDATA/ARK_01234/SETTINGS.TXT	f
+go	system	PSP/SAVEDATA/ARK_01234/SETTINGS.TXT	f
+aemu	plugins	SEPLUGINS/hotspot.txt	p	aemu

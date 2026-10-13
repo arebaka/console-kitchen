@@ -1,7 +1,7 @@
 id	type	default	values	min	max	step
 show	multiselect	CPU,GPU,RAM,BRD,FAN,FPS	CPU,GPU,RAM,BRD,FAN,FPS
-real_freqs	toggle	off
-replace_GB_with_RAM_load	toggle	on
+real_freqs	toggle
+replace_GB_with_RAM_load	toggle	1
 refresh_rate	range	1		1	60	1
 layer_height_align	select	top	top,bottom
 text_align	select	center	left,center,right

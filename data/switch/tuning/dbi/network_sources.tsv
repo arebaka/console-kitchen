@@ -1,2 +1,2 @@
 id	type	default	values	max	maxLength	secret
-sources	list		Name,Type:ApacheHTTP|WebDAV|URLList|FTP|SFTP|GitHub,URL	16	255	on
+sources	list		Name,Type:ApacheHTTP|WebDAV|URLList|FTP|SFTP|GitHub,URL	16	255	1

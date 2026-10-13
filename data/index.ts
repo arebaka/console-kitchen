@@ -1,5 +1,5 @@
 import type { HardwareInfo, HardwareRevision, PlatformId } from '@/types';
-import { flag, number, numbered } from './parse';
+import { flag, number, numbered } from '@/parse';
 
 import HARDWARE_ROWS from './hardware.tsv';
 import LINK_ROWS from './link.tsv';

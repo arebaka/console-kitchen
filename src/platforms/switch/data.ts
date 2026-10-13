@@ -1,7 +1,7 @@
-import { BootEntry, BootMode, Catalog, Clocks, ComponentInfo, EntryOverride, FirmwareVersion, GalleryImage, LaunchConfig, LaunchEntry, SwitchState } from '@/types';
+import { BootEntry, BootMode, Catalog, Clocks, ComponentInfo, EntryOverride, FirmwareVersion, GalleryImage, LaunchConfig, LaunchEntry, LaunchKey, SwitchState } from '@/types';
 import { compareVersions, getTuningDefaults, presetSelection } from '@/data';
 
-import { APPEARANCE, FIRMWARE, LAUNCH, OVERCLOCK, PRESETS, SOFTWARE, TUNING } from '@data/switch';
+import { APPEARANCE, FIRMWARE, LAUNCH, MODULES, OVERCLOCK, PRESETS, SOFTWARE, TUNING } from '@data/switch';
 
 export { OVERCLOCK };
 export const HOS_VERSIONS: FirmwareVersion[] = FIRMWARE;
@@ -45,28 +45,53 @@ export const ENTRY_OVERRIDES: EntryOverride[] = ['cal0blank', 'usb3force', 'memm
 // so folders are kept in upper case and `sd01` never turns into a second entry of `SD01`
 export const isEmuMMCFolder = (folder: string) => /^[A-Z0-9_-]{1,32}$/.test(folder);
 
-// Entries of the Launch menu in their order: the emuMMC ones, sysMMC and stock, then payloads of the selected components.
-// Entries booting the system carry the Exosphere keys set for them
-export function launchEntries(launch: LaunchConfig, selectedComponentIDs: string[]): LaunchEntry[] {
+// The file of More configs with the entries that boot CFW without what hekate loads for a component
+export const SPARE_INI = 'bootloader/ini/console_kitchen.ini';
+
+// The stock system boots without what hekate loads for CFW
+const bootsCFW = (entry: LaunchEntry) => !entry.keys.stock;
+
+// Components hekate has something to load for, among the given ones
+const moduleComponents = (componentIDs: string[]) => COMPONENTS.filter(comp => comp.id in MODULES && componentIDs.includes(comp.id));
+
+// Entries booting the system in their order: the emuMMC ones, sysMMC and stock. They carry the Exosphere keys set for them,
+// and the ones booting CFW the keys of what hekate loads for the given components. Those keys come after `pkg3`:
+// named before it, they would give way to what the package holds
+function systemEntries(launch: LaunchConfig, componentIDs: string[]): LaunchEntry[] {
 	const mode = (id: BootMode) => BOOT_ENTRIES.filter(entry => entry.id == id && launch.modes.includes(id));
 	const emummc = BOOT_ENTRIES.find(entry => entry.id == 'emummc')!;
+	const modules: LaunchKey = Object.assign({}, ...moduleComponents(componentIDs).map(comp => MODULES[comp.id]));
 
 	return [
-		...[
-			...mode('emummc'),
-			...launch.emummcs.map(folder => ({
-				id: `emummc-${folder}`,
-				name: `CFW (emuMMC ${folder})`,
-				caption: emummc.caption,
-				keys: { ...emummc.keys, emupath: `emuMMC/${folder}` }
-			})),
-			...mode('sysmmc'),
-			...mode('stock')
-		].map(entry => ({ ...entry, keys: { ...entry.keys, ...launch.overrides[entry.id] } })),
+		...mode('emummc'),
+		...launch.emummcs.map(folder => ({
+			id: `emummc-${folder}`,
+			name: `CFW (emuMMC ${folder})`,
+			caption: emummc.caption,
+			keys: { ...emummc.keys, emupath: `emuMMC/${folder}` }
+		})),
+		...mode('sysmmc'),
+		...mode('stock')
+	].map(entry => ({ ...entry, keys: { ...entry.keys, ...(bootsCFW(entry) ? modules : {}), ...launch.overrides[entry.id] } }));
+}
+
+// Entries of the Launch menu in their order: the ones booting the system, then payloads of the selected components
+export function launchEntries(launch: LaunchConfig, selectedComponentIDs: string[]): LaunchEntry[] {
+	return [
+		...systemEntries(launch, selectedComponentIDs),
 		...COMPONENTS
 			.filter(comp => comp.payload && selectedComponentIDs.includes(comp.id))
 			.map(comp => ({ id: comp.id, name: comp.name, caption: 'Payloads', keys: { payload: comp.payload! } }))
 	];
+}
+
+// Entries of More configs: every entry booting CFW once more for each selected component hekate loads something for,
+// without the keys of that component. They start the console when what the component loads does not let it boot,
+// as after an update of Atmosphere. Such an entry keeps the id of the one it repeats, and so its logo and its icon
+export function spareEntries(launch: LaunchConfig, selectedComponentIDs: string[]): LaunchEntry[] {
+	return moduleComponents(selectedComponentIDs).flatMap(comp => systemEntries(launch, selectedComponentIDs.filter(id => id != comp.id))
+		.filter(bootsCFW)
+		.map(entry => ({ ...entry, name: `${entry.name} without ${comp.name}` })));
 }
 
 // Name of a known game, the title ID otherwise

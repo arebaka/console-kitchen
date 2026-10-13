@@ -1,6 +1,6 @@
 id	type	default	maxLength	secret
-UseAP	toggle	off
+UseAP	toggle
 SSID	text		32
-Password	text		63	on
-Use5GHz	toggle	off
-Hidden	toggle	off
+Password	text		63	1
+Use5GHz	toggle
+Hidden	toggle

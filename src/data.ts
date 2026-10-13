@@ -1,4 +1,4 @@
-import { Catalog, Preset, Requirement, TuningConfig, TuningGroup, TuningOption, TuningStep } from '@/types';
+import { Catalog, ListField, Preset, Requirement, TuningConfig, TuningGroup, TuningOption, TuningStep } from '@/types';
 
 // Compares dotted versions part by part: -1, 0 or 1
 export function compareVersions(a: string, b: string): number {
@@ -43,6 +43,17 @@ export function listRow(text: string, fields: number): string[] {
 // Rows of a list worth writing: the first field names a row, one without it is being filled in yet
 export const listRows = (rows: string[][]): string[][] => rows.filter(row => row[0].trim() != '');
 
+// Values a field of a list holds at once, as its cell keeps them: joined with `+`, the way a combo of buttons is written
+export const cellValues = (cell: string): string[] => cell ? cell.split('+') : [];
+
+// The cell of a field that holds several of its values at once: the picked ones in the order of the field.
+// Undefined when some of them are not its values, come twice or are more than the field takes
+export function pickedCell(field: ListField, picked: string[]): string | undefined {
+	const values = field.values ?? [];
+	const isValid = picked.every(item => values.includes(item)) && new Set(picked).size == picked.length && picked.length <= (field.max ?? 1);
+	return isValid ? values.filter(value => picked.includes(value)).join('+') : undefined;
+}
+
 // A component is required by its id, alternatives by any of theirs
 export function isRequirementMet(requirement: Requirement, selectedComponentIDs: string[]): boolean {
 	return typeof requirement == 'string'
@@ -64,7 +75,7 @@ export function tuningGroups(groups: TuningGroup[], step: TuningStep, selectedCo
 // Removing a component keeps dependencies as they are, so a dependency can be dropped and reported instead
 export function resolveSelection(catalog: Catalog, ids: string[], dependencies: boolean = true): string[] {
 	const { components } = catalog;
-	const selected = new Set([...components.filter(comp => comp.is_required).map(comp => comp.id), ...ids]);
+	const selected = new Set([...components.filter(comp => comp.required).map(comp => comp.id), ...ids]);
 	for (let changed = dependencies; changed;) {
 		changed = false;
 		for (const comp of components.filter(comp => selected.has(comp.id))) {

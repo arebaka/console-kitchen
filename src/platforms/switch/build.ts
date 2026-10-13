@@ -1,9 +1,9 @@
-import { ImageTarget, SwitchState, TuningOption, TuningValue } from '@/types';
+import { ImageTarget, LaunchEntry, SwitchState, TuningOption, TuningValue } from '@/types';
 import { HARDWARE } from '@data';
 import { isTuningGroupActive, listRows } from '@/data';
 import { Asset, BuildRequest, BuildResult, ConfigSpec, installerView, installers, render, renderConfigs } from '@/build';
 import TEMPLATES, { README } from '@templates/switch';
-import { CATALOG, COMPONENTS, GALLERY, launchEntries } from './data';
+import { CATALOG, COMPONENTS, GALLERY, SPARE_INI, launchEntries, spareEntries } from './data';
 
 type Request = BuildRequest<SwitchState>;
 
@@ -108,13 +108,21 @@ function iconPath(request: Request, entry: string): string | undefined {
 	const image = request.appearance.icons[entry];
 	if (!image) return undefined;
 	const hue = GALLERY.find(item => item.target == 'icon' && item.id == image)?.hue;
-	return `bootloader/res/brewdeck_${entry}${hue ? '_hue' : ''}.bmp`;
+	return `bootloader/res/console_kitchen_${entry}${hue ? '_hue' : ''}.bmp`;
 }
 
 // Boot logo of its own for the entry, the common one otherwise
 function logoPath(request: Request, entry: string): string | undefined {
-	return request.appearance.logos[entry] ? `bootloader/res/brewdeck_${entry}_logo.bmp` : undefined;
+	return request.appearance.logos[entry] ? `bootloader/res/console_kitchen_${entry}_logo.bmp` : undefined;
 }
+
+// An entry as a section of an ini of hekate: its keys, then the logo and the icon picked for it
+const entrySection = (request: Request, entry: LaunchEntry) => ({
+	name: entry.name,
+	keys: Object.entries(entry.keys).map(([key, value]) => ({ key, value })),
+	logo: logoPath(request, entry.id),
+	icon: iconPath(request, entry.id)
+});
 
 const CONFIGS: ConfigSpec<Request>[] = [
 	{
@@ -140,14 +148,19 @@ const CONFIGS: ConfigSpec<Request>[] = [
 				bootprotect: flag(hekate.bootprotect),
 				// A caption opens every group of entries
 				entries: entries.map((entry, index) => ({
-					name: entry.name,
-					caption: index == 0 || entries[index - 1].caption != entry.caption ? entry.caption : undefined,
-					keys: Object.entries(entry.keys).map(([key, value]) => ({ key, value })),
-					logo: logoPath(request, entry.id),
-					icon: iconPath(request, entry.id)
+					...entrySection(request, entry),
+					caption: index == 0 || entries[index - 1].caption != entry.caption ? entry.caption : undefined
 				}))
 			};
 		}
+	},
+	{
+		path: SPARE_INI,
+		template: TEMPLATES.spareIni,
+		view: request => ({
+			entries: spareEntries(request.launch, request.selectedComponentIDs).map(entry => entrySection(request, entry))
+		}),
+		when: request => spareEntries(request.launch, request.selectedComponentIDs).length > 0
 	},
 	{
 		path: 'bootloader/nyx.ini',
@@ -234,19 +247,19 @@ const CONFIGS: ConfigSpec<Request>[] = [
 	},
 	{
 		path: 'atmosphere/hosts/emummc.txt',
-		template: TEMPLATES.nintendoHostsTxt,
+		template: TEMPLATES.emummcHostsTxt,
 		view: () => ({}),
 		when: request => isDNSBlocked(request, 'emummc')
 	},
 	{
 		path: 'atmosphere/hosts/sysmmc.txt',
-		template: TEMPLATES.nintendoHostsTxt,
+		template: TEMPLATES.emummcHostsTxt,
 		view: () => ({}),
 		when: request => isDNSBlocked(request, 'sysmmc')
 	},
 	{
-		path: 'atmosphere/hosts/advertising.txt',
-		template: TEMPLATES.adHostsTxt,
+		path: 'atmosphere/hosts/default.txt',
+		template: TEMPLATES.defaultHostsTxt,
 		view: () => ({})
 	},
 	{
@@ -453,6 +466,7 @@ export function build(request: Request): BuildResult {
 
 	const { dns } = request.tuning;
 	const entries = launchEntries(request.launch, request.selectedComponentIDs);
+	const spares = spareEntries(request.launch, request.selectedComponentIDs);
 	const autoboot = entries.find(entry => entry.id == request.launch.autoboot);
 	const readmeView = {
 		...view,
@@ -468,6 +482,9 @@ export function build(request: Request): BuildResult {
 		// More emuMMCs have to be created in their folders before their entries boot
 		emummcs: request.launch.emummcs.map(folder => ({ folder, name: entries.find(entry => entry.id == `emummc-${folder}`)!.name })),
 		hasEmummcs: request.launch.emummcs.length > 0,
+		// Entries of More configs that boot CFW without what hekate loads for a component
+		spares: spares.map(entry => entry.name),
+		hasSpares: spares.length > 0,
 		dnsBlock: dns.mode == 'block' && (dns.targets as string[]).length > 0,
 		dnsTargets: (dns.targets as string[]).map(target => t.tuning.switch.dns.options.targets.values?.[target]).join(', ')
 	};

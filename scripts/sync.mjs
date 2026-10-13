@@ -40,7 +40,7 @@ function ghToken() {
 }
 
 async function request(url, headers = {}) {
-	const response = await fetch(url, { headers: { 'User-Agent': 'brewdeck-sync', ...headers } });
+	const response = await fetch(url, { headers: { 'User-Agent': 'console-kitchen-sync', ...headers } });
 	if (!response.ok) {
 		throw new Error(`${response.status} ${url}`);
 	}

@@ -46,6 +46,11 @@ sys_clk:
   description: System service for CPU, GPU, and RAM overclocking and underclocking
   details: Overclocks the console to improve FPS in demanding games or underclocks in handheld mode to save battery life.
 
+horizon_oc:
+  description: CPU, GPU, and RAM overclocking past the limits of sys-clk
+  details: Clocks, voltages and memory timings are set in its own overlay. Takes the place of sys-clk and replaces the loader and the secure monitor of Atmosphere, a fork of Status Monitor comes along.
+  note: 'Overclocking the memory can corrupt the NAND and the SD card: make backups first. With an Atmosphere newer than the one it is built for, CFW boots only from the entries without it, in More configs.'
+
 nx_fan_control:
   description: Custom fan curve
   details: System module spinning the fan by a curve of up to ten SoC temperature points. The curve is set in its overlay, which also shows the temperature and the fan speed.
@@ -132,9 +137,27 @@ bt_audio:
   details: Connects already paired Bluetooth headphones and speakers from the overlay menu, without a trip to System Settings.
   note: Bluetooth audio needs HOS 13.0.0 or newer.
 
+quickntp:
+  description: Clock sync overlay
+  details: Sets the time of the console from the NTP server you pick and shows how far the clock is off. Handy when Nintendo servers are blocked and the system cannot sync its clock by itself.
+
+ovl_sysmodules:
+  description: System module control overlay
+  details: Starts and stops modules on the fly and toggles their start with the system. It lists the modules that describe themselves with a toolbox.json file, as most of them do.
+  note: 'The fork by ppkantorski kept up with current firmware: the original by WerWolv has not been updated since 2023.'
+
+alchemist:
+  description: Ultrahand package for installing and converting mods
+  details: Toggles the exeFS patches and content mods of the running game, converts pchtxt into IPS and cheats, downloads mods from its repositories.
+
+memory_kit:
+  description: Ultrahand package for the memory settings of Atmosphere and overlays
+  details: Sets the memory of overlays and the buffers of Ultrahand. Its Memory Hack replaces the kernel of Atmosphere with a build that leaves more memory to system modules.
+  note: The Memory Hack comes for certain Atmosphere versions and adds the kernel key to the entries of hekate by itself. Its stripped variant breaks the built-in browser.
+
 appstore:
   description: Homebrew App Store
-  details: Browse, install and update homebrew right on the console. Everything BrewDeck installs from the store shows up there as installed.
+  details: Browse, install and update homebrew right on the console. Everything the Console Kitchen installs from the store shows up there as installed.
 
 dbi:
   description: Advanced title installer and file manager
@@ -149,7 +172,7 @@ dbi_patcher:
 tinfoil:
   description: Alternative installer with shop support
   details: Installs content from third-party online shops, verifies file hashes, and features a tile-based UI with game covers.
-  note: 'tinfoil.io blocks automated downloads, so the installer cannot fetch it: download it manually.'
+  note: 'tinfoil.media blocks automated downloads, so the installer cannot fetch it: download it manually.'
 
 goldleaf:
   description: Multipurpose installer and content manager

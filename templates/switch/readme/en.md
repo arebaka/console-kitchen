@@ -1,4 +1,4 @@
-# BrewDeck: {{hardware}}, Horizon OS {{hos}}
+# Console Kitchen: {{hardware}}, Horizon OS {{hos}}
 
 Generated on {{date}}.
 
@@ -55,3 +55,13 @@ Create each of them the same way, Hekate names the folders itself: SD00, SD01 an
 
 Nintendo servers are blocked on {{dnsTargets}}: updates, eShop and online play don't work there.
 {{/dnsBlock}}
+{{#hasSpares}}
+
+## If CFW does not boot
+
+What Hekate loads for some components is built for one Atmosphere release and may keep the system from starting after an update. **More configs** has entries that boot CFW without it:
+
+{{#spares}}
+- **{{.}}**
+{{/spares}}
+{{/hasSpares}}

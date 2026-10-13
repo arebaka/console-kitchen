@@ -1,9 +1,9 @@
 id	type	default	values	min	max	step
 refresh_rate	range	1		1	60	1
 layer_width_align	select	left	left,right
-show_real_freqs	toggle	on
-show_deltas	toggle	on
-show_target_freqs	toggle	on
-show_fps	toggle	on
-show_res	toggle	on
-show_read_speed	toggle	on
+show_real_freqs	toggle	1
+show_deltas	toggle	1
+show_target_freqs	toggle	1
+show_fps	toggle	1
+show_res	toggle	1
+show_read_speed	toggle	1

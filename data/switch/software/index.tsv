@@ -1,83 +1,88 @@
-id	name	author	category	link	version	size	released	logo	source	payload	requires	replaces	conflicts_with	tracks	hardware	deprecated	is_required	risky
-hekate	Hekate	CTCaer	base	l	6.5.4	1116175	2026-09-28	hekate.png	github								on
-atmosphere	Atmosphere	SciresM	base	f	1.12.0	4764430	2026-09-27	atmosphere.png	github								on
-sys_patch	sys-patch	TotalJustice / impeeza	base	f	1.6.2.3	177409	2026-06-17		github					hos,atmosphere
-fusee	Fusee	SciresM	payloads		1.12.0	112064	2026-09-27		github	bootloader/payloads/fusee.bin
-lockpick_rcm	Lockpick RCM	shchmue / impeeza	payloads		2.0.1	95790	2026-09-10		github	bootloader/payloads/Lockpick_RCM.bin
-tegraexplorer	TegraExplorer	suchmememanyskill	payloads		4.2.0	124954	2024-07-07		github	bootloader/payloads/TegraExplorer.bin
-common_problem_resolver	CommonProblemResolver	Team Neptune	payloads		0.3.5	86085	2022-10-21		github	bootloader/payloads/CommonProblemResolver.bin
-hwfly_toolbox	Hwfly Toolbox	hwfly-nx	payloads		1.1.1	78348	2022-05-09		github	bootloader/payloads/hwfly_toolbox.bin					mariko,oled,lite
-picofly_toolbox	Picofly Toolbox	Ansem-SoD	payloads		0.2	70608			url	bootloader/payloads/picofly_toolbox.bin					mariko,oled,lite
-sys_clk	sys-clk	RetroNX	sysmodules	c	2.0.1-fix	3438174	2026-02-17	sys_clk.png	appstore
-missioncontrol	MissionControl	ndeadly	sysmodules	mc	0.15.2	193480	2026-06-18	missioncontrol.png	appstore				ldn_mitm
-saltynx	SaltyNX	masagrator	sysmodules	sa	2.0.0	225188	2026-09-27		appstore
-ldn_mitm	ldn_mitm	spacemeowx2	sysmodules	lm	1.25.1	343088	2026-04-08	ldn_mitm.png	github				missioncontrol
-sys_con	sys-con	cathery / o0Zz	sysmodules	co	2.0.0	280130	2026-09-26	sys_con.png	appstore
-sys_ftpd_light	sys-ftpd-light	cathery	sysmodules	ft	1.0.5	133019	2024-11-16		appstore
-fizeau	Fizeau	averne	sysmodules	fi	2.8.3	1536484	2026-08-07	fizeau.jpg	github
-sys_tune	sys-tune	HookedBehemoth	sysmodules	tu	2.1.0-beta.1	345559	2025-11-16	sys_tune.png	appstore		ovlmenu|ultrahand
-sysdvr	SysDVR	exelix11	sysmodules	vr	6.3	3296711	2026-02-11	sysdvr.png	appstore
-nx_fan_control	NX-FanControl	Zathawo / dominatorul	sysmodules	fc	1.0.5+	534207	2026-02-13		github		ovlmenu|ultrahand
-sys_hidplus	sys-hidplus	PaskaPinishkes	sysmodules	hp	1.1	51121	2021-10-04		appstore							on
-ovlmenu	Tesla Menu	WerWolv	overlays	o	1.2.3	323107	2023-06-01	ovlmenu.png	appstore				ultrahand
-ultrahand	Ultrahand	ppkantorski	overlays	o	2.5.3	955274	2026-07-31	ultrahand.png	appstore				ovlmenu
-status_monitor	Status Monitor	masagrator	overlays	sm	1.4.1	214479	2026-05-19		appstore		ovlmenu|ultrahand
-fps_locker	FPSLocker	masagrator	overlays	fl	3.4.0	710422	2026-09-27		appstore		saltynx,ovlmenu|ultrahand
-edizon_overlay	EdiZon Overlay	proferabg / WerWolv	overlays	ez	1.0.15	380679	2026-04-25	edizon_overlay.png	appstore		ovlmenu|ultrahand
-reversenx_rt	ReverseNX-RT	masagrator	overlays	rr	2.2.1	315448	2025-11-15		github		saltynx,ovlmenu|ultrahand
-sysdvr_overlay	SysDVR Overlay	Hartie95	overlays	vr	1.0.15	143062	2026-02-13	sysdvr_overlay.png	appstore		sysdvr,ovlmenu|ultrahand
-noled	noled	kemalsanli	overlays	nl	1.0.0	282680	2026-03-12		github		ovlmenu|ultrahand
-master_volume	MasterVolume	averne	overlays	mv	1.2.3	434772	2026-05-16		github		ovlmenu|ultrahand			hos
-bt_audio	BT_Audio-ovl	masagrator	overlays	ba	1.0.2	286776	2025-11-15		github		ovlmenu|ultrahand
-daybreak	Daybreak	Adubbz	tools	da	1.12.0	0		daybreak.jpg	bundled
-appstore	Homebrew App Store	4TU Team	tools	as	2.3.2	7786002	2025-01-10	appstore.png	appstore
-aio_updater	AIO Switch Updater	HamletDuFromage	tools	au	2.23.3	3538231	2025-11-18	aio_updater.jpg	github			switch_cheats_updater
-linkalho	Linkalho	rdmrocha / impeeza	tools	li	2.0.2	3156396	2025-11-17	linkalho.jpg	github
-nx_activity_log	NX Activity Log	tallbl0nde / zdm65477730	tools	al	1.5.9	10927289	2026-08-24	nx_activity_log.jpg	github
-nx_shell	NX-Shell	Joel16	tools	sh	4.01	3614714	2022-08-08	nx_shell.png	appstore
-sphaira	sphaira	ITotalJustice	tools	sp	1.0.7	2259983	2026-09-17	sphaira.png	appstore
-jc_color_swapper	JC Color Swapper	HamletDuFromage	tools	cs	1.2	538430	2020-05-12	jc_color_swapper.png	appstore							on
-dbi	DBI	duckbill	installers	db	912ru	16657965	2026-09-18	dbi.jpg	github			tinfoil,goldleaf
-dbi_patcher	DBIPatcher	rashevskyv	installers	db	905	16918333	2026-09-10	dbi_patcher.jpg	github		dbi							on
-nxdumptool	nxdumptool	DarkMatterCore	installers	dt	2026.04.24	1308155	2026-05-14	nxdumptool.png	appstore
-goldleaf	Goldleaf	XorTroll	installers	gl	1.2.1	5249300	2026-09-23	goldleaf.png	appstore			tinfoil
-tinfoil	Tinfoil	blawar	installers	ti	20.0	8704000			manual			goldleaf
-jksv	JKSV	J-D-K	saves	jk	12/02/2025	4472291	2025-12-03	jksv.png	appstore			checkpoint,neumann
-checkpoint	Checkpoint	FlagBrew	saves	cp	5.2.0	2436384	2026-08-27	checkpoint.png	appstore			neumann
-neumann	Neumann	turtle-insect	saves	nm	0.0.32	1170040	2026-04-17	neumann.png	appstore			checkpoint
-edizon	EdiZon SE	tomvita	mods	ez	3.8.37a	10880820	2026-05-19	edizon.png	github
-breeze	Breeze	tomvita	mods	br	beta108.4c	9631043	2026-07-30	breeze.jpg	github			edizon
-switch_cheats_updater	switch-cheats-updater	HamletDuFromage	mods	cu	1.2.1	916880	2020-05-12	switch_cheats_updater.png	appstore							on
-simple_mod_manager	SimpleModManager	nadrino	mods	mm	2.1.4	4151256	2026-02-24	simple_mod_manager.png	appstore
-simple_mod_downloader	SimpleModDownloader	PoloNX	mods	mm	2.3.0	4608694	2025-12-08	simple_mod_downloader.png	appstore		simple_mod_manager
-emuiibo	emuiibo	XorTroll	amiibo	am	1.1.3	629696	2026-03-14	emuiibo.png	github
-amiigo	Amiigo	CompSciOrBust	amiibo	am	2.4.1	3823895	2026-01-20	amiigo.png	appstore		emuiibo
-amiibo_generator	AmiiboGenerator	Slluxx	amiibo	am	2.1.1	666142	2023-11-05	amiibo_generator.png	appstore		emuiibo					on
-nxthemes_installer	NXThemes Installer	exelix11	themes	th	nxt-3.0.2	5452743	2026-09-23	nxthemes_installer.png	appstore
-themezer	Themezer	suchmememanyskill	themes	th	3.3.0	4352234	2026-09-24	themezer.png	appstore		nxthemes_installer
-ulaunch	uLaunch	XorTroll	themes	ul	1.2.5	11198821	2026-07-31	ulaunch.png	appstore
-nxmp	NXMP	proconsule	media	mp	0.9.3	45564568	2025-12-17	nxmp.png	appstore
-pplay	pPlay	Cpasjuste	media	pp	3.8	15128532	2022-02-21	pplay.png	appstore							on
-switchfin	Switchfin	dragonflylee	media	sf	0.9.4	41773615	2026-09-04	switchfin.png	appstore
-browsenx	BrowseNX	crc-32	media	bn	0.4.1	175374	2021-04-25	browsenx.png	appstore							on
-lennytube	lennytube	noirscape	media	lt	1.0.2	142733	2019-09-16	lennytube.png	appstore							on
-comicnx	ComicNX	HookedBehemoth	media	cn	1.2.0	4595248	2019-10-17	comicnx.png	appstore							on
-moonlight	Moonlight	XITRIX	streaming	ml	1.5.0	8836707	2026-05-25	moonlight.png	appstore			skynx,switch_remote_play
-akira	Akira (chiaki-ng)	xlanor	streaming	ak	0.6.3	13330593	2026-09-09	akira.jpg	github
-skynx	SkyNX	DevL0rd	streaming	sk	1.5	9492260	2022-03-21	skynx.png	appstore			switch_remote_play				on
-switch_remote_play	switch-remote-play	Moehammered	streaming	rp	1.0.0	9388140	2021-11-29	switch_remote_play.png	appstore			skynx				on
-retroarch	RetroArch	libretro	emulators	ra	1.22.1	62478624	2025-11-15	retroarch.png	appstore			flycast,ppsspp,melonds,mgba,psnes,pnes,pfbneo
-ppsspp	PPSSPP	hrydgard / m4xw	emulators	ps	1.17.x (Sept 9, 2024)	20226510	2025-04-29	ppsspp.png	appstore
-mgba	mGBA	endrift	emulators	gb	0.10.5	2990112	2025-03-23	mgba.png	appstore
-melonds	melonDS	Arisotura / ArcDelta	emulators	md	7.2.1	1389241	2026-04-25	melonds.png	appstore			noods,desmume
-noods	NooDS	Hydr8gon	emulators	nd	release	2714438	2026-08-09	noods.png	github			desmume
-desmume	DeSmuME-NX	Laproxi / MasterFeizz	emulators	ds	0.0.3	1693444	2018-07-21	desmume.png	appstore			noods				on
-scummvm	ScummVM	ScummVM Team	emulators	sv	2026.3.0	121852316	2026-06-21	scummvm.png	appstore
-flycast	Flycast	libretro	emulators	ra	nightly	8166607			url		retroarch
-psnes	pSNES	Cpasjuste	emulators	sn	7.2	14858460	2026-08-19	psnes.png	appstore
-pnes	pNES	Cpasjuste	emulators	ne	7.2	14989033	2026-08-19	pnes.png	appstore
-pfbneo	pFBNeo	Cpasjuste	emulators	fb	7.2	22456946	2026-08-19	pfbneo.png	appstore
-sys_botbase	sys-botbase	olliz0r	development	sb	2.5	74086	2026-06-02		github				usb_botbase
-usb_botbase	USB-Botbase	fishguy6564	development	ub	1.1	49247	2020-08-26		appstore				sys_botbase			on
-sys_gdbstub	sys-gdbstub	mossvr	development	sg	0.1.6	108452	2021-10-15		github							on
-twili	Twili	misson20000	development	tw	1.4.0	3446654	2021-06-13		github							on
+id	name	author	category	version	size	released	source	link	logo	payload	requires	replaces	conflicts_with	tracks	hardware	deprecated	required	risky
+hekate	Hekate	CTCaer	base	6.5.4	1116175	2026-09-28	github	l	hekate.png								1
+atmosphere	Atmosphere	SciresM	base	1.12.0	4764430	2026-09-27	github	f	atmosphere.png								1
+sys_patch	sys-patch	TotalJustice / impeeza	base	1.6.2.3	177409	2026-06-17	github	f						hos,atmosphere
+fusee	Fusee	SciresM	payloads	1.12.0	112064	2026-09-27	github			bootloader/payloads/fusee.bin
+lockpick_rcm	Lockpick RCM	shchmue / impeeza	payloads	2.0.1	95790	2026-09-10	github			bootloader/payloads/Lockpick_RCM.bin
+tegraexplorer	TegraExplorer	suchmememanyskill	payloads	4.2.0	124954	2024-07-07	github			bootloader/payloads/TegraExplorer.bin
+common_problem_resolver	CommonProblemResolver	Team Neptune	payloads	0.3.5	86085	2022-10-21	github			bootloader/payloads/CommonProblemResolver.bin
+hwfly_toolbox	Hwfly Toolbox	hwfly-nx	payloads	1.1.1	78348	2022-05-09	github			bootloader/payloads/hwfly_toolbox.bin					mariko,oled,lite
+picofly_toolbox	Picofly Toolbox	Ansem-SoD	payloads	0.2	70608		url			bootloader/payloads/picofly_toolbox.bin					mariko,oled,lite
+sys_clk	sys-clk	RetroNX	sysmodules	2.0.1-fix	3438174	2026-02-17	appstore	c	sys_clk.png				horizon_oc
+horizon_oc	Horizon OC	Souldbminer / Lightos	sysmodules	2.5.1	1780565	2026-07-26	github	ho			ultrahand		sys_clk	atmosphere				1
+missioncontrol	MissionControl	ndeadly	sysmodules	0.16.0	204223	2026-10-03	appstore	mc	missioncontrol.png				ldn_mitm
+saltynx	SaltyNX	masagrator	sysmodules	2.1.2	261373	2026-10-06	appstore	sa
+ldn_mitm	ldn_mitm	spacemeowx2	sysmodules	1.25.1	343088	2026-04-08	github	lm	ldn_mitm.png				missioncontrol
+sys_con	sys-con	cathery / o0Zz	sysmodules	2.0.0	280130	2026-09-26	appstore	co	sys_con.png
+sys_ftpd_light	sys-ftpd-light	cathery	sysmodules	1.0.5	133019	2024-11-16	appstore	ft
+fizeau	Fizeau	averne	sysmodules	2.8.3	1536484	2026-08-07	github	fi	fizeau.jpg
+sys_tune	sys-tune	HookedBehemoth	sysmodules	2.1.0-beta.1	345559	2025-11-16	appstore	tu	sys_tune.png		ovlmenu|ultrahand
+sysdvr	SysDVR	exelix11	sysmodules	6.3	3296711	2026-02-11	appstore	vr	sysdvr.png
+nx_fan_control	NX-FanControl	Zathawo / dominatorul	sysmodules	1.0.5+	534207	2026-02-13	github	fc			ovlmenu|ultrahand
+sys_hidplus	sys-hidplus	PaskaPinishkes	sysmodules	1.1	51121	2021-10-04	appstore	hp								1
+ovlmenu	Tesla Menu	WerWolv	overlays	1.2.3	323107	2023-06-01	appstore	o	ovlmenu.png				ultrahand
+ultrahand	Ultrahand	ppkantorski	overlays	2.5.3	955274	2026-07-31	appstore	o	ultrahand.png				ovlmenu
+status_monitor	Status Monitor	masagrator	overlays	1.4.1	214479	2026-05-19	appstore	sm			ovlmenu|ultrahand
+fps_locker	FPSLocker	masagrator	overlays	3.5.0	710486	2026-10-04	appstore	fl			saltynx,ovlmenu|ultrahand
+edizon_overlay	EdiZon Overlay	proferabg / WerWolv	overlays	1.0.15	380679	2026-04-25	appstore	ez	edizon_overlay.png		ovlmenu|ultrahand
+reversenx_rt	ReverseNX-RT	masagrator	overlays	2.2.1	315448	2025-11-15	github	rr			saltynx,ovlmenu|ultrahand
+sysdvr_overlay	SysDVR Overlay	Hartie95	overlays	1.0.15	143062	2026-02-13	appstore	vr	sysdvr_overlay.png		sysdvr,ovlmenu|ultrahand
+noled	noled	kemalsanli	overlays	1.0.0	282680	2026-03-12	github	nl			ovlmenu|ultrahand
+master_volume	MasterVolume	averne	overlays	1.2.3	434772	2026-05-16	github	mv			ovlmenu|ultrahand			hos
+bt_audio	BT_Audio-ovl	masagrator	overlays	1.0.2	286776	2025-11-15	github	ba			ovlmenu|ultrahand
+quickntp	QuickNTP	nedex	overlays	1.6.0	153413	2025-12-04	github	qn			ovlmenu|ultrahand
+ovl_sysmodules	ovl-sysmodules	WerWolv / ppkantorski	overlays	1.5.3	639036	2026-06-25	github	os			ovlmenu|ultrahand
+alchemist	Alchemist	ppkantorski	overlays	1.0.6	13467	2026-04-23	github	ac			ultrahand
+memory_kit	Memory Kit	ppkantorski	overlays	1.0.2	1566609	2026-05-20	github	mk			ultrahand			atmosphere
+daybreak	Daybreak	Adubbz	tools	1.12.0	0		bundled	da	daybreak.jpg
+appstore	Homebrew App Store	4TU Team	tools	2.3.2	7786002	2025-01-10	appstore	as	appstore.png
+aio_updater	AIO Switch Updater	HamletDuFromage	tools	2.23.3	3538231	2025-11-18	github	au	aio_updater.jpg			switch_cheats_updater
+linkalho	Linkalho	rdmrocha / impeeza	tools	2.0.2	3156396	2025-11-17	github	li	linkalho.jpg
+nx_activity_log	NX Activity Log	tallbl0nde / zdm65477730	tools	1.5.9	10927289	2026-08-24	github	al	nx_activity_log.jpg
+nx_shell	NX-Shell	Joel16	tools	4.01	3614714	2022-08-08	appstore	sh	nx_shell.png
+sphaira	sphaira	ITotalJustice	tools	1.0.8	2381016	2026-10-07	appstore	sp	sphaira.png
+jc_color_swapper	JC Color Swapper	HamletDuFromage	tools	1.2	538430	2020-05-12	appstore	cs	jc_color_swapper.png							1
+dbi	DBI	duckbill	installers	912ru	16657965	2026-09-18	github	db	dbi.jpg			tinfoil,goldleaf
+dbi_patcher	DBIPatcher	rashevskyv	installers	905	16158253	2026-09-10	github	db	dbi_patcher.jpg		dbi							1
+nxdumptool	nxdumptool	DarkMatterCore	installers	2026.04.24	1308155	2026-05-14	appstore	dt	nxdumptool.png
+goldleaf	Goldleaf	XorTroll	installers	1.2.1	5249300	2026-09-23	appstore	gl	goldleaf.png			tinfoil
+tinfoil	Tinfoil	blawar	installers	20.0	8704000		manual	ti				goldleaf
+jksv	JKSV	J-D-K	saves	12/02/2025	4472291	2025-12-03	appstore	jk	jksv.png			checkpoint,neumann
+checkpoint	Checkpoint	FlagBrew	saves	5.2.0	2436384	2026-08-27	appstore	cp	checkpoint.png			neumann
+neumann	Neumann	turtle-insect	saves	0.0.32	1170040	2026-04-17	appstore	nm	neumann.png			checkpoint
+edizon	EdiZon SE	tomvita	mods	3.8.37a	10880820	2026-05-19	github	ez	edizon.png
+breeze	Breeze	tomvita	mods	beta108.4c	9631043	2026-07-30	github	br	breeze.jpg			edizon
+switch_cheats_updater	switch-cheats-updater	HamletDuFromage	mods	1.2.1	916880	2020-05-12	appstore	cu	switch_cheats_updater.png							1
+simple_mod_manager	SimpleModManager	nadrino	mods	2.1.4	4151256	2026-02-24	appstore	mm	simple_mod_manager.png
+simple_mod_downloader	SimpleModDownloader	PoloNX	mods	2.3.0	4608694	2025-12-08	appstore	mm	simple_mod_downloader.png		simple_mod_manager
+emuiibo	emuiibo	XorTroll	amiibo	1.1.3	629696	2026-03-14	github	am	emuiibo.png
+amiigo	Amiigo	CompSciOrBust	amiibo	2.4.1	3823895	2026-01-20	appstore	am	amiigo.png		emuiibo
+amiibo_generator	AmiiboGenerator	Slluxx	amiibo	2.1.1	666142	2023-11-05	appstore	am	amiibo_generator.png		emuiibo					1
+nxthemes_installer	NXThemes Installer	exelix11	themes	nxt-3.0.2	5452743	2026-09-23	appstore	th	nxthemes_installer.png
+themezer	Themezer	suchmememanyskill	themes	3.3.1	4352211	2026-10-05	appstore	th	themezer.png		nxthemes_installer
+ulaunch	uLaunch	XorTroll	themes	1.2.5	11198821	2026-07-31	appstore	ul	ulaunch.png
+nxmp	NXMP	proconsule	media	0.9.3	45564568	2025-12-17	appstore	mp	nxmp.png
+pplay	pPlay	Cpasjuste	media	3.8	15128532	2022-02-21	appstore	pp	pplay.png							1
+switchfin	Switchfin	dragonflylee	media	0.9.4	41773615	2026-09-04	appstore	sf	switchfin.png
+browsenx	BrowseNX	crc-32	media	0.4.1	175374	2021-04-25	appstore	bn	browsenx.png							1
+lennytube	lennytube	noirscape	media	1.0.2	142733	2019-09-16	appstore	lt	lennytube.png							1
+comicnx	ComicNX	HookedBehemoth	media	1.2.0	4595248	2019-10-17	appstore	cn	comicnx.png							1
+moonlight	Moonlight	XITRIX	streaming	1.5.0	8836707	2026-05-25	appstore	ml	moonlight.png			skynx,switch_remote_play
+akira	Akira (chiaki-ng)	xlanor	streaming	0.6.5	8255345	2026-10-05	github	ak	akira.jpg
+skynx	SkyNX	DevL0rd	streaming	1.5	9492260	2022-03-21	appstore	sk	skynx.png			switch_remote_play				1
+switch_remote_play	switch-remote-play	Moehammered	streaming	1.0.0	9388140	2021-11-29	appstore	rp	switch_remote_play.png			skynx				1
+retroarch	RetroArch	libretro	emulators	1.22.1	62478624	2025-11-15	appstore	ra	retroarch.png			flycast,ppsspp,melonds,mgba,psnes,pnes,pfbneo
+ppsspp	PPSSPP	hrydgard / m4xw	emulators	1.17.x (Sept 9, 2024)	20226510	2025-04-29	appstore	ps	ppsspp.png
+mgba	mGBA	endrift	emulators	0.10.5	2990112	2025-03-23	appstore	gb	mgba.png
+melonds	melonDS	Arisotura / ArcDelta	emulators	7.2.1	1389241	2026-04-25	appstore	md	melonds.png			noods,desmume
+noods	NooDS	Hydr8gon	emulators	release	2714438	2026-08-09	github	nd	noods.png			desmume
+desmume	DeSmuME-NX	Laproxi / MasterFeizz	emulators	0.0.3	1693444	2018-07-21	appstore	ds	desmume.png			noods				1
+scummvm	ScummVM	ScummVM Team	emulators	2026.3.0	121852316	2026-06-21	appstore	sv	scummvm.png
+flycast	Flycast	libretro	emulators	nightly	8393379		url	ra			retroarch
+psnes	pSNES	Cpasjuste	emulators	7.2	14858460	2026-08-19	appstore	sn	psnes.png
+pnes	pNES	Cpasjuste	emulators	7.2	14989033	2026-08-19	appstore	ne	pnes.png
+pfbneo	pFBNeo	Cpasjuste	emulators	7.2	22456946	2026-08-19	appstore	fb	pfbneo.png
+sys_botbase	sys-botbase	olliz0r	development	2.5	74086	2026-06-02	github	sb					usb_botbase
+usb_botbase	USB-Botbase	fishguy6564	development	1.1	49247	2020-08-26	appstore	ub					sys_botbase			1
+sys_gdbstub	sys-gdbstub	mossvr	development	0.1.6	108452	2021-10-15	github	sg								1
+twili	Twili	misson20000	development	1.4.0	3446654	2021-06-13	github	tw								1

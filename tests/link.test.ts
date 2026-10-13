@@ -20,20 +20,20 @@ const VOCABULARIES: {[platform: string]: Vocabulary} = { switch: switchVocabular
 const GIVEN_OUT = [
 	[
 		'h=JP&s=__H',
-		'hw=oled&hos=23.0.0&sw=atmosphere,hekate,sys_patch,fusee,lockpick_rcm,tegraexplorer,sys_clk,saltynx,ultrahand,status_monitor,daybreak,appstore,dbi,aio_updater,jksv'
+		'hw=oled&hos=23.0.0&sw=hekate,atmosphere,daybreak,sys_patch,fusee,lockpick_rcm,tegraexplorer,common_problem_resolver,hwfly_toolbox,picofly_toolbox,dbi,jksv,appstore,aio_updater,ovlmenu'
 	],
 	[
-		'h=JP&s=PNBAAAAAAAAC&l=LMYyBgdppB6anmNPTSD01hopzTPMSZ9WImeOAnwcjGnppB6ayMk4I&f=w_TlogsvzT4wCbJnRYA&o=LDCNGA&sm=sfUMicrooYVJz2xmicroOverlayhx9cGIj8A'
-			+ '&c=ksjykfhY8QEjRWeJq83vkbhSJ0ps_Zw&db=jR9ceiZ5ut7CmnY7M5a-rZhFa5DAv30JzQvtC00YumnY7M5a_LBOwhgCHA&a=KJgg',
-		'hw=oled&hos=23.0.0&sw=atmosphere,hekate,sys_patch,fusee,sys_clk,ultrahand,status_monitor,dbi,retroarch&boot=emummc,stock&emummc=SD01&autoboot=emummc-SD01'
+		'h=JP&s=fQ4AAAE&l=LNgT4GB3TSD01PNgZ9NIPTWGinNM8xJn1YiZ44CdZSNgZ9NIPTWReFB&f=w87xv5p8YBNkzosA&o=LDCJGA&sm=sfqGROV0UBAJGk59sZonK6Dr3q5WsocfXgxEfg'
+			+ '&c=kvAIB5YAitsABIySwCRorPE1eb3yOkpHyU2fs4A&db=jR-uPRM83W9hQxrXNaBf30JzQvtC00YuhjWv5YJ2EMAQ4A&a=KPwg',
+		'hw=oled&hos=23.0.0&sw=hekate,atmosphere,daybreak,sys_patch,fusee,dbi,ultrahand,sys_clk,status_monitor,retroarch&boot=emummc,stock&emummc=SD01&autoboot=emummc-SD01'
 			+ '&logo.noticker=1&hekate.backlight=50&nyx.themecolor=200&nyx.themebg=%23123456&launch.emummc-SD01.usb3force=1'
 			+ '&atmosphere.sd_card_log_output_directory=logs%2Fof%20mine&tesla.key_combo=ZL,ZR,DDOWN'
-			+ '&ultrahand_status_monitor.modes=Micro%3DL%2BR%2BDDOWN%3D--microOverlay&status_monitor_mini.background_color=%23111F'
+			+ '&ultrahand_status_monitor.modes=Micro%3DL,R,DDOWN%3D--microOverlay&status_monitor_mini.background_color=%23111F'
 			+ '&oc=0100F2C0115B6000.performance,0123456789ABCDEF.custom.docked_cpu-1785'
 			+ '&dbi_local_sources.sources=Homebrew%3Dsdmc:%2Fswitch&dbi_local_sources.sources=%D0%9C%D0%BE%D0%B4%D1%8B%3Dsdmc:%2Fa%3Db,%20c&img.bootlogo=hekate-a'
 	],
 	[
-		'h=cv&s=n&f=OdlcGLI&p=L0x6JnuoQFOvFi1AEifNiwPNI4oJw',
+		'h=cv&s=n&f=OdlcGLI&p=L6Y9Ez3qEBTrxYtQBInzYsDzSOKCcA',
 		'hw=pspgo&fw=5.70&sw=ark,gclite,cmfilemanager,aemu&clock.game=333&xmb.region=jp&aemu.hotspot=Home,%20sweet%20home&plugin.gclite=vsh,game&plugin.aemu='
 	]
 ];
@@ -69,7 +69,7 @@ describe('short links', () => {
 		const short = encodeState(customState());
 		expect(short).toMatch(SHORT);
 		// The launch, the firmware, sys-ftpd-light, MissionControl, Tesla, the overclock and the pictures of the custom build
-		expect(params(short).map(([key]) => key)).toEqual(['h', 's', 'l', 'f', 'mc', 'ft', 'o', 'c', 'a']);
+		expect(params(short).map(([key]) => key)).toEqual(['h', 's', 'l', 'f', 'o', 'mc', 'ft', 'c', 'a']);
 		expect(spellOut(short).length / short.length).toBeGreaterThan(3);
 	});
 
@@ -96,7 +96,7 @@ describe('short links', () => {
 		expect(full(short)).toBe(`hw=erista&hos=21.0.0&sw=${first}`);
 		expect(full([['s', '_']])).toBe(`sw=${first}`);
 		// Records that end with a text may end with a mark too. A character of zeros follows it and reads as the end of the records
-		const records = SWITCH_KEYS.slice(0, 40).flatMap(key => ['_', 'x_', 'xy-', 'name_', '--'].map(text => shorten([[key, text]], SWITCH_LINK)[0]));
+		const records = SWITCH_KEYS.slice(0, 40).flatMap(key => ['_', 'x_', 'xy-', 'name_', '--', 'FF', 'ff', '+_', 'a ^'].map(text => shorten([[key, text]], SWITCH_LINK)[0]));
 		const marked = records.filter(([, value]) => /[-_]A$/.test(value));
 		expect(records.filter(([, value]) => /[-_]$/.test(value))).toEqual([]);
 		expect(marked.length).toBeGreaterThan(0);
@@ -114,7 +114,7 @@ describe('short links', () => {
 		expect(isShort(short)).toBe(true);
 		expect(spelled(short).map(([, value]) => value)).toEqual(texts);
 		// As a key that has no number, of what the launch sets up
-		const keyed = shorten(texts.map(text => [`launch.${text}`, 'on']), SWITCH_LINK);
+		const keyed = shorten(texts.map(text => [`launch.${text}`, '1']), SWITCH_LINK);
 		expect(keyed.map(([key]) => key)).toEqual(['l']);
 		expect(spelled(keyed).map(([key]) => key)).toEqual(texts.map(text => `launch.${text}`));
 	});
@@ -136,7 +136,7 @@ describe('short links', () => {
 	});
 
 	it('spell what has no number yet', () => {
-		const said = params('hw=oled&hos=23.0.0&sw=atmosphere,hekate,dbi&nyx.themecolor=200&nyx.new=ZL,new&tesla.key_combo=ZL,ZR');
+		const said = params('hw=oled&hos=23.0.0&sw=hekate,atmosphere,dbi&nyx.themecolor=200&nyx.new=ZL,new&tesla.key_combo=ZL,ZR');
 		// A key and a word without numbers stay inside the record
 		const short = shorten(said, SWITCH_LINK);
 		expect(short.map(([key]) => key)).toEqual(['h', 's', 'l', 'o']);
@@ -149,7 +149,7 @@ describe('short links', () => {
 		expect(full(mixed, old)).toBe(`${query(said)}&new.option=1`);
 		// What was numbered later is not there for the page that does not know it yet, the rest is
 		const keys = Object.fromEntries(Object.entries(SWITCH_LINK.keys).map(([param, list]) => [param, list.slice(0, 20)]));
-		expect(full(short, { ...SWITCH_LINK, keys, words: [] })).toBe('hw=oled&hos=23.0.0&sw=atmosphere,hekate,dbi&nyx.themecolor=200');
+		expect(full(short, { ...SWITCH_LINK, keys, words: [] })).toBe('hw=oled&hos=23.0.0&sw=hekate,atmosphere,dbi&nyx.themecolor=200');
 	});
 
 	it('give way to what a link spells in full', () => {
@@ -261,7 +261,7 @@ describe('numbers of links', () => {
 		const { components, tuning } = PLATFORMS[platform].catalog;
 		for (const group of tuning) {
 			// A group that needs no component sets up one of those every build has
-			const owners = group.requires ? components.filter(comp => group.requires!.flat().includes(comp.id)) : components.filter(comp => comp.is_required);
+			const owners = group.requires ? components.filter(comp => group.requires!.flat().includes(comp.id)) : components.filter(comp => comp.required);
 			expect(owners.map(comp => comp.link), group.id).toContain(group.link);
 		}
 		// The sections of the overlays in the list of Ultrahand go with the overlays, not with Ultrahand

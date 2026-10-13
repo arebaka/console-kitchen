@@ -1,4 +1,4 @@
-// Clicks through every step of BrewDeck in headless Chrome and checks what the user sees.
+// Clicks through every step of the Console Kitchen in headless Chrome and checks what the user sees.
 // Usage: bun run test:ui, set CHROME when the browser is not on the PATH
 
 import { spawn, spawnSync } from 'node:child_process';
@@ -104,7 +104,7 @@ function launchBrowser(profile: string) {
 
 // Embedded images of an installer as bitmap headers
 function embeddedImages(script: string) {
-	return [...script.matchAll(/write_image '([^']+)' << 'BREWDECK_EOF'\n([\s\S]*?)\nBREWDECK_EOF/g)].map(([, path, data]) => {
+	return [...script.matchAll(/write_image '([^']+)' << 'CONSOLE_KITCHEN_EOF'\n([\s\S]*?)\nCONSOLE_KITCHEN_EOF/g)].map(([, path, data]) => {
 		const bitmap = gunzipSync(Buffer.from(data, 'base64'));
 		const alpha = new Set(Array.from({ length: (bitmap.length - 54) / 4 }, (_, i) => bitmap[54 + i * 4 + 3]));
 		return {
@@ -187,6 +187,36 @@ async function run(page: Page, url: string, downloads: string, spellOut: (link: 
 	await check('a removed dependency leaves a fix', `$$('.notice .fix').some(button => button.textContent == 'Add SaltyNX')`);
 	await page.act(`$$('.notice .fix').find(button => button.textContent == 'Add SaltyNX').click()`);
 	await check('the fix brings it back', `byText('.component .name', 'SaltyNX').closest('.component').classList.contains('active')`);
+	// What hekate loads for a component is named in the entries booting CFW, More configs keeps entries without it
+	const entryKeys = (name: string) => `byText('.row .name', '${name}').closest('.row').querySelector('.keys').textContent`;
+	await page.act(`byText('.component .name', 'Horizon OC').closest('.component').click()`);
+	await check('a component in the place of another one conflicts with it', `$$('.notice').some(notice => notice.textContent.startsWith('sys-clk conflicts with Horizon OC'))`);
+	await page.act(`step('Launch')`);
+	await check('what hekate loads for a component goes into the entries booting CFW, not into the stock one', `['kip1=atmosphere/kips/hoc.kip', 'secmon=atmosphere/exosphere.bin']
+		.every(key => ${entryKeys('CFW (emuMMC)')}.includes(key) && ${entryKeys('CFW (sysMMC)')}.includes(key)) && !/kip1|secmon/.test(${entryKeys('Stock')})`);
+	await check('More configs boots CFW without it', `${entryKeys('CFW (emuMMC) without Horizon OC')}.includes('pkg3=atmosphere/package3')
+		&& !/kip1|secmon/.test(${entryKeys('CFW (emuMMC) without Horizon OC')})`);
+	await page.act(`step('Software')`);
+	await page.act(`byText('.component .name', 'Horizon OC').closest('.component').click()`);
+	await page.act(`step('Launch')`);
+	await check('and both go away with the component', `!/kip1|secmon/.test(${entryKeys('CFW (emuMMC)')}) && byText('.row .name', 'CFW (emuMMC) without Horizon OC') == null`);
+	// A mode of an overlay in the list of Ultrahand opens by a combo of its own, up to four buttons as the overlay itself
+	await page.act(`step('Overlays')`);
+	const modes = `byText('.tuning > .header .title', 'Ultrahand, Status Monitor').closest('.tuning')`;
+	const modeControl = (name: string) => `[...${modes}.querySelectorAll('.list .control')].find(node => node.textContent.trim() == '${name}')`;
+	const modeButton = (name: string) => `${modes}.querySelector('.list .entry .button[aria-label="${name}"]')`;
+	await page.act(`${modeControl('Add')}.click()`);
+	await page.act(`setField(${modes}.querySelector('.list .entry .field'), 'Micro')`);
+	for (const name of ['Down', 'L', 'R', 'ZL']) {
+		await page.act(`${modeButton(name)}.click()`);
+	}
+	await check('a field of a list holds several buttons, as many as it takes', `link.includes('ultrahand_status_monitor.modes=Micro%3DL,R,ZL,DDOWN%3D')
+		&& ${modeButton('ZR')}.classList.contains('locked') && !${modeButton('ZL')}.classList.contains('locked')`);
+	await page.act(`${modeButton('ZR')}.click()`);
+	await check('and takes no more of them', `link.includes('ultrahand_status_monitor.modes=Micro%3DL,R,ZL,DDOWN%3D')`);
+	await page.act(`${modeControl('Remove')}.click()`);
+	await check('a list left as it was says nothing in the link', `!link.includes('ultrahand_status_monitor')`);
+	await page.act(`step('Software')`);
 	await page.act(`byText('.component .name', 'Tesla Menu').closest('.component').click()`);
 	await check('a conflict offers to remove either side', `['Remove Tesla Menu', 'Remove Ultrahand'].every(text => $$('.notice .fix').some(button => button.textContent == text))`);
 	// The list of the step may be scrolled away, so the issue a click brings pops up
@@ -393,7 +423,7 @@ async function run(page: Page, url: string, downloads: string, spellOut: (link: 
 	// Build
 	await page.act(`step('Build')`);
 	await sleep(1500);
-	await check('the readme is rendered', `document.querySelector('.readme h1')?.textContent.startsWith('BrewDeck') && $$('.readme li').length > 5`);
+	await check('the readme is rendered', `document.querySelector('.readme h1')?.textContent.startsWith('Console Kitchen') && $$('.readme li').length > 5`);
 	await check('generated files are highlighted', `document.querySelector('.generated .code .hljs-keyword') != null`);
 	await check('the installers are ready', `$$('.files .row.interactive').length == 3`);
 	await page.act(`byText('.generated .choice', 'bootloader/hekate_ipl.ini').click()`);
@@ -401,7 +431,7 @@ async function run(page: Page, url: string, downloads: string, spellOut: (link: 
 		const ini = document.querySelector('.generated .code').textContent;
 		return ini.includes('[Lockpick RCM]') && !ini.includes('[CFW (sysMMC)]') && /autoboot=\\d/.test(ini)
 			&& ini.includes('[CFW (emuMMC SD01)]') && ini.includes('emupath=emuMMC/SD01') && ini.includes('usb3force=1')
-			&& ini.includes('logopath=bootloader/res/brewdeck_emummc-SD01_logo.bmp') && ini.includes('icon=bootloader/res/brewdeck_lockpick_rcm_hue.bmp')
+			&& ini.includes('logopath=bootloader/res/console_kitchen_emummc-SD01_logo.bmp') && ini.includes('icon=bootloader/res/console_kitchen_lockpick_rcm_hue.bmp')
 			&& !ini.includes('RAW1');
 	})()`);
 	await page.act(`byText('.generated .choice', 'config/sys-clk/config.ini').click()`);
@@ -443,10 +473,10 @@ async function run(page: Page, url: string, downloads: string, spellOut: (link: 
 	expect('the installer embeds the boot screen rotated and opaque', images.some(image =>
 		image.path == 'bootloader/bootlogo.bmp' && image.magic == 'BM' && image.bpp == 32 && image.width == 50 && image.height == 204 && image.isOpaque), images);
 	expect('the installer embeds the icon with its transparency', images.some(image =>
-		image.path == 'bootloader/res/brewdeck_emummc_hue.bmp' && image.width == 192 && image.height == 192 && !image.isOpaque), images);
+		image.path == 'bootloader/res/console_kitchen_emummc_hue.bmp' && image.width == 192 && image.height == 192 && !image.isOpaque), images);
 	expect('the installer embeds the boot screen of an entry', images.some(image =>
-		image.path == 'bootloader/res/brewdeck_emummc-SD01_logo.bmp' && image.magic == 'BM' && image.bpp == 32 && image.isOpaque), images);
-	expect('the installer embeds the icon of a payload', images.some(image => image.path == 'bootloader/res/brewdeck_lockpick_rcm_hue.bmp'), images);
+		image.path == 'bootloader/res/console_kitchen_emummc-SD01_logo.bmp' && image.magic == 'BM' && image.bpp == 32 && image.isOpaque), images);
+	expect('the installer embeds the icon of a payload', images.some(image => image.path == 'bootloader/res/console_kitchen_lockpick_rcm_hue.bmp'), images);
 	expect('install.ps1 starts with a byte order mark', readFileSync(join(downloads, 'install.ps1')).subarray(0, 3).equals(Buffer.from([0xef, 0xbb, 0xbf])));
 
 	await page.act(`byText('.lang-switch button', 'ru').click()`);
@@ -497,7 +527,7 @@ async function run(page: Page, url: string, downloads: string, spellOut: (link: 
 }
 
 async function main() {
-	const temporary = mkdtempSync(join(tmpdir(), 'brewdeck-ui-'));
+	const temporary = mkdtempSync(join(tmpdir(), 'console-kitchen-ui-'));
 	const downloads = join(temporary, 'downloads');
 	const server = await createServer({ logLevel: 'error', server: { host: '127.0.0.1', port: 0, open: false } });
 	const { browser, port } = launchBrowser(join(temporary, 'profile'));

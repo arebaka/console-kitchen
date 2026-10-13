@@ -4,13 +4,14 @@ import ru from './readme/ru.md?raw';
 import uk from './readme/uk.md?raw';
 import bootIni from './sd/BOOT.INI?raw';
 import hekateIplIni from './sd/bootloader/hekate_ipl.ini?raw';
+import spareIni from './sd/bootloader/ini/console_kitchen.ini?raw';
 import nyxIni from './sd/bootloader/nyx.ini?raw';
 import exosphereIni from './sd/exosphere.ini?raw';
 import systemSettingsIni from './sd/atmosphere/config/system_settings.ini?raw';
 import stratosphereIni from './sd/atmosphere/config/stratosphere.ini?raw';
 import overrideConfigIni from './sd/atmosphere/config/override_config.ini?raw';
-import nintendoHostsTxt from './sd/atmosphere/hosts/nintendo.txt?raw';
-import adHostsTxt from './sd/atmosphere/hosts/advertising.txt?raw';
+import emummcHostsTxt from './sd/atmosphere/hosts/emummc.txt?raw';
+import defaultHostsTxt from './sd/atmosphere/hosts/default.txt?raw';
 import teslaConfigIni from './sd/config/tesla/config.ini?raw';
 import ultrahandConfigIni from './sd/config/ultrahand/config.ini?raw';
 import ultrahandOverlaysIni from './sd/config/ultrahand/overlays.ini?raw';
@@ -32,13 +33,14 @@ export const README: {[code in Language]: string} = { en, ru, uk };
 export default {
 	bootIni,
 	hekateIplIni,
+	spareIni,
 	nyxIni,
 	exosphereIni,
 	systemSettingsIni,
 	stratosphereIni,
 	overrideConfigIni,
-	nintendoHostsTxt,
-	adHostsTxt,
+	emummcHostsTxt,
+	defaultHostsTxt,
 	teslaConfigIni,
 	ultrahandConfigIni,
 	ultrahandOverlaysIni,

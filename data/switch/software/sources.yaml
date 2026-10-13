@@ -68,6 +68,12 @@ sys_clk:
     repo: retronx-team/sys-clk
     asset: ^sys-clk-.*\.zip$
 
+# Only dist.zip: dist_ext.zip carries a build of hekate too, which would replace the one of the catalog
+horizon_oc:
+  github:
+    repo: Horizon-OC/Horizon-OC
+    asset: ^dist\.zip$
+
 nx_fan_control:
   github:
     repo: dominatorul/NX-FanControl
@@ -166,6 +172,29 @@ bt_audio:
     asset: ^BT_Audio-ovl\.ovl$
     path: switch/.overlays/BT_Audio-ovl.ovl
 
+quickntp:
+  appstore: QuickNTP
+  github:
+    repo: nedex/QuickNTP
+    asset: ^quickntp-[0-9.]+\.zip$
+
+# The fork of ppkantorski: the App Store keeps the last release of WerWolv, the one of 2023
+ovl_sysmodules:
+  github:
+    repo: ppkantorski/ovl-sysmodules
+    asset: ^ovlSysmodules\.ovl$
+    path: switch/.overlays/ovlSysmodules.ovl
+
+alchemist:
+  github:
+    repo: ppkantorski/Alchemist
+    asset: ^Alchemist\.zip$
+
+memory_kit:
+  github:
+    repo: ppkantorski/Memory-Kit
+    asset: ^Memory\.Kit\.zip$
+
 daybreak:
   bundled: atmosphere
 
@@ -191,7 +220,7 @@ dbi_patcher:
       path: switch/DBI/translation.bin
 
 tinfoil:
-  manual: https://tinfoil.io/Download
+  manual: https://tinfoil.media/Download
 
 goldleaf:
   appstore: Goldleaf

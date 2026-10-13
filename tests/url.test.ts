@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { AppState, decodeState, defaultState, encodeState, spellOut } from '@/state';
 import { resolveSelection } from '@/data';
-import { CATALOG } from '@/platforms/switch';
+import { CATALOG, SWITCH } from '@/platforms/switch';
 import { customState } from './fixtures';
 
 // What the link of a build says, spelled in full
@@ -39,7 +39,10 @@ describe('links', () => {
 
 	it('always pin the revision, the HOS version and the whole software selection', () => {
 		const defaults = defaultState().builds.switch;
-		expect(spell(defaultState())).toBe(`hw=${defaults.hardware}&hos=${defaults.firmware}&sw=${defaults.selectedComponentIDs.join(',')}`);
+		// A short link spelled in full lists the software in the order of its numbers
+		const software = SWITCH.link.software.filter(id => defaults.selectedComponentIDs.includes(id));
+		expect(software.length).toBe(defaults.selectedComponentIDs.length);
+		expect(spell(defaultState())).toBe(`hw=${defaults.hardware}&hos=${defaults.firmware}&sw=${software.join(',')}`);
 	});
 
 	it('take the platform of the revision', () => {
@@ -77,7 +80,7 @@ describe('links', () => {
 	it('take a text only as a single line', () => {
 		const path = (raw: string) => decodeState(`?atmosphere.sd_card_log_output_directory=${encodeURIComponent(raw)}`).builds.switch.tuning.atmosphere.sd_card_log_output_directory;
 		expect(path('logs/of mine')).toBe('logs/of mine');
-		for (const breaking of ['x\nBREWDECK_EOF\necho pwned', 'x\r\'@\rpwned', `x${String.fromCharCode(0x2028)}y`, 'x\ty', `x${String.fromCharCode(0)}`]) {
+		for (const breaking of ['x\nCONSOLE_KITCHEN_EOF\necho pwned', 'x\r\'@\rpwned', `x${String.fromCharCode(0x2028)}y`, 'x\ty', `x${String.fromCharCode(0)}`]) {
 			expect(path(breaking), JSON.stringify(breaking)).toBe('atmosphere/binlogs');
 		}
 	});
@@ -107,9 +110,24 @@ describe('links', () => {
 		const shipped = [['DBILogs', 'sdmc:/switch/DBI/logs']];
 		expect(sources('Homebrew=sdmc:/switch', 'Empty')).toEqual([['Homebrew', 'sdmc:/switch'], ['Empty', '']]);
 		expect(sources('Homebrew=sdmc:/switch', '=sdmc:/nameless')).toEqual(shipped);
-		expect(sources('Homebrew=sdmc:/switch\nBREWDECK_EOF\necho pwned')).toEqual(shipped);
+		expect(sources('Homebrew=sdmc:/switch\nCONSOLE_KITCHEN_EOF\necho pwned')).toEqual(shipped);
 		expect(sources(`Homebrew=${'x'.repeat(129)}`)).toEqual(shipped);
 		expect(sources(...Array.from({ length: 17 }, (_, index) => `Folder ${index}=sdmc:/`))).toEqual(shipped);
+	});
+
+	it('take several values in a field of a list that holds them, as many as it takes at most', () => {
+		const modes = (...rows: string[]) => decodeState(`?${rows.map(row => `ultrahand_status_monitor.modes=${encodeURIComponent(row)}`).join('&')}`)
+			.builds.switch.tuning.ultrahand_status_monitor.modes;
+		// Separated by commas as links spell them or joined with `+` as they are kept, in any order
+		expect(modes('Micro=L,R,DDOWN=--microOverlay')).toEqual([['Micro', 'L+R+DDOWN', '--microOverlay']]);
+		expect(modes('Micro=ZL+ZR+L=--microOverlay', 'Plain')).toEqual([['Micro', 'L+ZL+ZR', '--microOverlay'], ['Plain', '', '']]);
+		for (const combo of ['L,L', 'L,R,ZL,ZR,A', 'HOME', 'l,r', 'L,', 'L R']) {
+			expect(modes(`Micro=${combo}=--microOverlay`), combo).toEqual([]);
+		}
+		const state = defaultState();
+		state.builds.switch.tuning.ultrahand_status_monitor.modes = [['Micro', 'L+R+DDOWN', '--microOverlay']];
+		expect(spell(state)).toContain('&ultrahand_status_monitor.modes=Micro%3DL,R,DDOWN%3D--microOverlay');
+		expect(decodeState(encodeState(state))).toEqual(state);
 	});
 
 	// Their addresses may hold a login and a password

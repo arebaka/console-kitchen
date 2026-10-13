@@ -58,7 +58,7 @@ export function issueCodes(build: SwitchState): string[] {
 // Arbitrary bytes stand for the bitmaps: the installers only decode what the page encoded
 export const BITMAPS: Record<string, Buffer> = {
 	'bootloader/bootlogo.bmp': Buffer.from(Array.from({ length: 70000 }, (_, i) => (i * 7919) % 256)),
-	'bootloader/res/brewdeck_emummc_hue.bmp': Buffer.from(Array.from({ length: 147510 }, (_, i) => (i >> 5) % 256)),
+	'bootloader/res/console_kitchen_emummc_hue.bmp': Buffer.from(Array.from({ length: 147510 }, (_, i) => (i >> 5) % 256)),
 	'bootloader/res/background.bmp': Buffer.alloc(3686454, 0x2d)
 };
 

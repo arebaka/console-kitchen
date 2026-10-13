@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { BootMode, EntryOverride, Fix, Issue, LaunchConfig, TuningConfig, TuningValue } from '@/types';
 import { Language, Translation, format } from '@i18n';
 import { tuningGroups } from '@/data';
-import { BOOT_ENTRIES, CATALOG, COMPONENTS, ENTRY_OVERRIDES, SWITCH, isEmuMMCFolder, launchEntries } from '@/platforms/switch';
+import { BOOT_ENTRIES, CATALOG, COMPONENTS, ENTRY_OVERRIDES, SPARE_INI, SWITCH, isEmuMMCFolder, launchEntries, spareEntries } from '@/platforms/switch';
 import { activate } from '@/utils';
 import { Issues } from '../Issues';
 import { ComponentTile } from '../ComponentTile';
@@ -40,6 +40,7 @@ export function Launch({
 	t
 }: LaunchProps) {
 	const entries = launchEntries(launch, selectedComponentIDs);
+	const spares = spareEntries(launch, selectedComponentIDs);
 	// An entry that left the menu takes autoboot with it, until it comes back
 	const autoboot = entries.some(entry => entry.id == launch.autoboot) ? launch.autoboot : 'menu';
 	const [folder, setFolder] = useState('');
@@ -194,6 +195,36 @@ export function Launch({
 				{t.pages.launch.emummcs}
 			</p>
 		</section>
+
+		{spares.length > 0 && (
+			<section className="tuning">
+				<header className="header">
+					<h3 className="title">
+						{t.pages.launch.spares}
+					</h3>
+					<p className="file">
+						{SPARE_INI}
+					</p>
+				</header>
+				<p className="description">
+					{t.pages.launch.sparesDescription}
+				</p>
+				<ul className="rows">
+					{spares.map(entry => (
+						<li key={entry.name} className="row entry">
+							<header className="line">
+								<h4 className="name">
+									{entry.name}
+								</h4>
+							</header>
+							<p className="keys">
+								{Object.entries(entry.keys).map(([key, value]) => `${key}=${value}`).join('  ')}
+							</p>
+						</li>
+					))}
+				</ul>
+			</section>
+		)}
 
 		<section className="components">
 			<h3 className="title">

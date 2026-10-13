@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# BrewDeck installer: {{title}}
+# Console Kitchen installer: {{title}}
 #
 # Usage: put the script into the root of the {{card}} and run it there:
 #   bash install.sh
@@ -14,7 +14,7 @@ set -euo pipefail
 APPSTORE='https://switch.cdn.fortheusers.org'
 {{/hasAppstore}}
 SD_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-WORK_DIR="$SD_ROOT/.brewdeck"
+WORK_DIR="$SD_ROOT/.console-kitchen"
 FAILED=()
 
 if [ -t 1 ]; then
@@ -68,7 +68,8 @@ cleanup() {
 		"$SD_ROOT/README.txt" \
 		"$SD_ROOT/README.md" \
 		"$SD_ROOT/screen1.png" \
-		"$SD_ROOT/screen2.png"
+		"$SD_ROOT/screen2.png" \
+		"$SD_ROOT/switch/breeze/.Breeze.nro.star"
 }
 
 mkdir -p "$WORK_DIR"
@@ -158,9 +159,9 @@ info "Writing configuration"
 {{#configs}}
 
 step '{{path}}'
-write_config '{{path}}' << 'BREWDECK_EOF'
+write_config '{{path}}' << 'CONSOLE_KITCHEN_EOF'
 {{content}}
-BREWDECK_EOF
+CONSOLE_KITCHEN_EOF
 ok '{{path}}'
 {{/configs}}
 {{#hasImages}}
@@ -169,9 +170,9 @@ info "Deploying appearance & assets"
 {{#images}}
 
 step '{{path}}'
-write_image '{{path}}' << 'BREWDECK_EOF'
+write_image '{{path}}' << 'CONSOLE_KITCHEN_EOF'
 {{data}}
-BREWDECK_EOF
+CONSOLE_KITCHEN_EOF
 ok '{{path}}'
 {{/images}}
 {{/hasImages}}

@@ -1,4 +1,4 @@
 id	type	default	values
 categoryMode	select	0	0,1,2,3
-useRandomisedUUID	toggle	off
-saveAmiiboImages	toggle	off
+useRandomisedUUID	toggle
+saveAmiiboImages	toggle

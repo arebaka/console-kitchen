@@ -1,5 +1,5 @@
 id	type	default	values
 mode	select	block	block,default,off
 targets	multiselect	emummc	emummc,sysmmc
-add_defaults	toggle	on
-debug_log	toggle	off
+add_defaults	toggle	1
+debug_log	toggle

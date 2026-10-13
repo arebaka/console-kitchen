@@ -1,5 +1,5 @@
 id	type	default	maxLength	secret
 origin	text		128
 basepath	text		128
-username	text		64	on
-password	text		64	on
+username	text		64	1
+password	text		64	1

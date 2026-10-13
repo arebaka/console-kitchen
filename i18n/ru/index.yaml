@@ -1,5 +1,5 @@
 language: ru
-title: BrewDeck
+title: Console Kitchen
 platforms:
   switch:
     name: Nintendo Switch
@@ -186,6 +186,8 @@ pages:
       memmode: Режим памяти из boot config
     asConfigured: как в настройках
     overridesDescription: 'Переключатели под пунктом задают ключи Exosphère только для него: они перекрывают exosphere.ini с шага "Безопасность" и system_settings.ini с шага "CFW". Вариант "как в настройках" ключ не пишет.'
+    spares: Запуск без модулей
+    sparesDescription: 'Пункты в More configs, которые загружают CFW без того, что hekate подгружает для компонента: его KIP и secure monitor. Выручат, когда с ними система не стартует, например после обновления Atmosphere.'
     payloads: Пэйлоады
     payloadsDescription: Инструменты, которые запускаются вместо системы. Каждый выбранный пэйлоад получает свой пункт в меню.
     autoboot: Автозагрузка

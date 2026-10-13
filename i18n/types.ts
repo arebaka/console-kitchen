@@ -94,6 +94,8 @@ export interface Translation {
 			overrides: {[key in EntryOverride]: string};
 			asConfigured: string;
 			overridesDescription: string;
+			spares: string;
+			sparesDescription: string;
 			payloads: string;
 			payloadsDescription: string;
 			autoboot: string;

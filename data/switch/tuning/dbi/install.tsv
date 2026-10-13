@@ -1,10 +1,10 @@
 id	type	default
-CheckHash	toggle	on
-EnableNSZ	toggle	on
-CreateLFS	toggle	off
-PatchUAC	toggle	off
-PatchScreenshot	toggle	off
-PatchVideoRec	toggle	off
-PatchMasterKeyGeneration	toggle	off
-Patch21Names	toggle	off
-PatchVersionInMeta	toggle	off
+CheckHash	toggle	1
+EnableNSZ	toggle	1
+CreateLFS	toggle
+PatchUAC	toggle
+PatchScreenshot	toggle
+PatchVideoRec	toggle
+PatchMasterKeyGeneration	toggle
+Patch21Names	toggle
+PatchVersionInMeta	toggle

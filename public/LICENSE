@@ -1,6 +1,6 @@
-BrewDeck public assets
+Console Kitchen public assets
 
-The code of BrewDeck is licensed under the MIT license, see LICENSE at the
+The code of the Console Kitchen is licensed under the MIT license, see LICENSE at the
 root of the repository. The files of this directory belong to their owners
 and are used under the terms listed below.
 
@@ -24,22 +24,22 @@ appearance/
                                 the repository fitted into the 192×192 icon of
                                 Nyx, the white lockpick recolored from the colored
                                 one; the fitted SVG files are in art/icons of the
-                                repository of BrewDeck
+                                repository of the Console Kitchen
                                 https://github.com/NicholeMattera/Hekate-Icons
-    icon/brewdeck-*.png         BrewDeck, MIT, drawn for the project, the SVG
+    icon/console-kitchen-*.png  Console Kitchen, MIT, drawn for the project, the SVG
                                 sources are in art/icons of the repository
-                                https://github.com/arebaka/brewdeck
+                                https://github.com/arebaka/console-kitchen
 
 assets/
     Product photos of the Nintendo Switch consoles from the Nintendo online
     store (nintendo.com). Nintendo Switch, its logos and the photos are
     trademarks and copyrighted works of Nintendo. They only illustrate the
-    console revisions, BrewDeck is not affiliated with Nintendo.
+    console revisions, the Console Kitchen is not affiliated with Nintendo.
 
     Photos of the PSP models from Wikimedia Commons, trimmed to the console
     and scaled down, the adaptations are under the licenses of the originals.
     PlayStation Portable, PSP and their logos are trademarks of Sony
-    Interactive Entertainment, BrewDeck is not affiliated with Sony.
+    Interactive Entertainment, the Console Kitchen is not affiliated with Sony.
 
     psp-1000.avif               Evan-Amos, public domain
                                 https://commons.wikimedia.org/wiki/File:Sony-PSP-1000-Body.png

@@ -33,10 +33,10 @@ export function number(cell: string | undefined): number {
 	return value;
 }
 
-// `on` sets a flag, an empty cell or `off` leaves it unset
+// `1` sets a flag, an empty cell or `0` leaves it unset
 export function flag(cell: string | undefined): boolean {
-	if (cell == 'on') return true;
-	if (!cell || cell == 'off') return false;
+	if (cell == '1') return true;
+	if (!cell || cell == '0') return false;
 	throw new Error(`Not a flag: "${cell}"`);
 }
 
@@ -85,7 +85,7 @@ export const components = (rows: Row[], sources: Record<string, SourcesEntry>): 
 		tracks: list(row.tracks) as ComponentInfo['tracks'],
 		hardware: list(row.hardware) as HardwareRevision[] | undefined,
 		deprecated: flag(row.deprecated) || undefined,
-		is_required: flag(row.is_required),
+		required: flag(row.required),
 		risky: flag(row.risky) || undefined,
 		plugin: row.plugin_path ? { path: row.plugin_path, scope: list(row.plugin_scope) ?? [] } : undefined
 	});
@@ -155,11 +155,12 @@ function option(row: Row): TuningOption {
 			if (!/^#[0-9A-F]{4}$/.test(row.default)) throw new Error(`Not a color of the option ${id}: "${row.default}"`);
 			return { id, type: 'rgba4444', default: row.default };
 		case 'list': {
-			// The fields of a row are named in the cell of values, one with alternatives is a choice among them.
-			// The default spells its rows the way links do: fields of a row are separated by `=`
+			// The fields of a row are named in the cell of values, one with alternatives is a choice among them: of one,
+			// or of as many at once as the number after them tells. The default spells its rows the way links do:
+			// fields of a row are separated by `=`
 			const fields = (list(row.values) ?? []).map(field => {
-				const [name, values] = field.split(':');
-				return compact<ListField>({ id: name, values: values?.split('|') });
+				const [name, values, max] = field.split(':');
+				return compact<ListField>({ id: name, values: values?.split('|'), max: max ? number(max) : undefined });
 			});
 			const rows = (list(row.default) ?? []).map(item => listRow(item, fields.length));
 			return { id, type: 'list', fields, maxLength: number(row.maxLength), max: row.max ? number(row.max) : undefined, default: rows };

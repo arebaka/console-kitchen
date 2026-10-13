@@ -1,11 +1,11 @@
-id	name	author	category	link	version	size	released	logo	source	is_required	plugin_path	plugin_scope	requires
-ark	ARK-5	PSP-Arkfive	base	f	5.1.0	13827816	2026-08-18	ark.png	github	on
-update661	System Update 6.61	Sony	base		6.61	32580549	2015-01-15		url	off
-gclite	Game Categories Lite	Bubbletune / Codestation	plugins	p	1.6	97933	2022-08-25		github	off	gclite/category_lite.prx	vsh
-missyhud	missyhud	pebeto	plugins	p	0.7	17846	2026-08-27		github	off	missyhud.prx	game,pops
-aemu	æmu	Coldbird / Kethen	plugins	p	2026-09-12	2961611	2026-09-12		github	off	atpro.prx	game
-remotejoylite	RemoteJoyLite	Kethen	plugins	p	2026-01-06	9504812	2026-01-06		github	off	RemoteJoyLite/RemoteJoyLite.prx	always
-cmfilemanager	CMFileManager	joel16	tools		4.12	2648443	2025-04-24	cmfilemanager.png	github	off
-daedalusx64	DaedalusX64	DaedalusX64 Team	emulators		1.1.8	35895692	2019-10-23	daedalusx64.png	github	off
-tempgba	TempGBA4PSP-mod	andymcca	emulators		20260921	5621612	2026-09-21	tempgba.png	github	off			gba_bios
-gba_bios	Cult-of-GBA BIOS	Cult-of-GBA	emulators		master	16384			url	off
+id	name	author	category	version	size	released	source	link	logo	plugin_path	plugin_scope	requires	required
+ark	ARK-5	PSP-Arkfive	base	5.1.0	13827816	2026-08-18	github	f	ark.png				1
+update661	System Update 6.61	Sony	base	6.61	32580549	2015-01-15	url
+gclite	Game Categories Lite	Bubbletune / Codestation	plugins	1.6	97933	2022-08-25	github	p		gclite/category_lite.prx	vsh
+missyhud	missyhud	pebeto	plugins	0.7	17846	2026-08-27	github	p		missyhud.prx	game,pops
+aemu	æmu	Coldbird / Kethen	plugins	2026-09-12	2961611	2026-09-12	github	p		atpro.prx	game
+remotejoylite	RemoteJoyLite	Kethen	plugins	2026-01-06	9504812	2026-01-06	github	p		RemoteJoyLite/RemoteJoyLite.prx	always
+cmfilemanager	CMFileManager	joel16	tools	4.12	2648443	2025-04-24	github		cmfilemanager.png
+daedalusx64	DaedalusX64	DaedalusX64 Team	emulators	1.1.8	35895692	2019-10-23	github		daedalusx64.png
+tempgba	TempGBA4PSP-mod	andymcca	emulators	20261009	5696254	2026-10-09	github		tempgba.png			gba_bios
+gba_bios	Cult-of-GBA BIOS	Cult-of-GBA	emulators	master	16384		url

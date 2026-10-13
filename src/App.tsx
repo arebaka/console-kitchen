@@ -125,7 +125,7 @@ export default function App() {
 	// Issues the click brings pop up as toasts
 	const toggleComponent = (id: string) => {
 		const comp = components.find(c => c.id === id);
-		if (!comp || comp.is_required || comp.sources.bundled) return; // Ignore mandatory and bundled entries
+		if (!comp || comp.required || comp.sources.bundled) return; // Ignore mandatory and bundled entries
 
 		const selection = selectedComponentIDs.includes(id)
 			? resolveSelection(platform.catalog, selectedComponentIDs.filter(item => item !== id), false)

@@ -1,4 +1,4 @@
-import { type Conditions, type Row, components, firmware, link, presets, tuning } from '../parse';
+import { type Conditions, type Row, components, firmware, link, presets, tuning } from '@/parse';
 
 import LINK_ROWS from './link.tsv';
 import FIRMWARE_ROWS from './firmware.tsv';

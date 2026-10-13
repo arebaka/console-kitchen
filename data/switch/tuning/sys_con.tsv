@@ -2,9 +2,9 @@ id	type	default	values	min	max	maxLength
 mode	select	hiddbg	hiddbg,mitm,disabled
 discovery_mode	select	0	0,1,2
 discovery_vidpid	text	054c-*,0f0d-0088				64
-auto_add_controller	toggle	on
+auto_add_controller	toggle	1
 polling_timeout_ms	number	10		1	1000
 polling_thread_priority	number	41		24	63
-network_controller	toggle	off
+network_controller	toggle
 network_controller_port	number	56789		1	65535
 log_level	select	3	0,1,2,3,4,5

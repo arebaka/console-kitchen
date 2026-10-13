@@ -1,7 +1,7 @@
 id	type	default	values
-launcher	toggle	off
+launcher	toggle
 skiplogos	select	off	off,all,gameboot,coldboot
 hidepics	select	off	off,all,pic0,pic1
-hidedlc	toggle	on
+hidedlc	toggle	1
 region	select	off	off,us,eu,jp
-qaflags	toggle	on
+qaflags	toggle	1

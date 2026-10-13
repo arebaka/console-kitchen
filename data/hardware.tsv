@@ -1,8 +1,8 @@
 id	platform	name	codename	is_modchip_required	image	width	height	screen
 erista	switch	Erista (V1)	Icosa		110477-nintendo-switch-gray-gray-front-screen-on-1200x675.avif	239	102	6.2
-mariko	switch	Mariko (V2)	Iowa	on	110477-nintendo-switch-gray-gray-front-screen-on-1200x675.avif	239	102	6.2
-oled	switch	OLED	Aula	on	115464-switch-oled-red-blue-console-front-1200x675.avif	242	102	7
-lite	switch	Lite	Hoag	on	110663-nintendo-switch-lite-turquoise-front-screen-on-1200x675.avif	208	91.1	5.5
+mariko	switch	Mariko (V2)	Iowa	1	110477-nintendo-switch-gray-gray-front-screen-on-1200x675.avif	239	102	6.2
+oled	switch	OLED	Aula	1	115464-switch-oled-red-blue-console-front-1200x675.avif	242	102	7
+lite	switch	Lite	Hoag	1	110663-nintendo-switch-lite-turquoise-front-screen-on-1200x675.avif	208	91.1	5.5
 psp1000	psp	PSP-1000	Fat		psp-1000.avif	170	74	4.3
 psp2000	psp	PSP-2000	Slim & Lite		psp-2000.avif	169.4	71.4	4.3
 psp3000	psp	PSP-3000	Brite		psp-3000.avif	169.4	71.4	4.3

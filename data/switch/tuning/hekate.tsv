@@ -1,6 +1,6 @@
 id	type	default	values	min	max	step
 backlight	range	100		0	255	5
 autohosoff	select	2	0,1,2
-autonogc	toggle	on
-updater2p	toggle	on
-bootprotect	toggle	off
+autonogc	toggle	1
+updater2p	toggle	1
+bootprotect	toggle

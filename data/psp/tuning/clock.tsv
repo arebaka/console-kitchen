@@ -1,4 +1,4 @@
 id	type	default	values
 game	select	333	0,133,222,333,383,403,423,443
 vsh	select	333	0,133,222,333,383,403,423,443
-usbcharge	toggle	on
+usbcharge	toggle	1

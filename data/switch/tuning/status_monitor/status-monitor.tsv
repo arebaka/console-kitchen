@@ -1,12 +1,12 @@
 id	type	default	values	min	max
 key_combo	multiselect	L,DDOWN,RSTICK	L,R,ZL,ZR,DUP,DDOWN,DLEFT,DRIGHT,A,B,X,Y,LSTICK,RSTICK,MINUS,PLUS	1	4
-touch_screen	toggle	on
-motion_control	toggle	on
+touch_screen	toggle	1
+motion_control	toggle	1
 left_joycon_motion_key_combo	multiselect	L,ZL,LSTICK	L,R,ZL,ZR,DUP,DDOWN,DLEFT,DRIGHT,A,B,X,Y,LSTICK,RSTICK,MINUS,PLUS	1	4
 right_joycon_motion_key_combo	multiselect	R,ZR,RSTICK	L,R,ZL,ZR,DUP,DDOWN,DLEFT,DRIGHT,A,B,X,Y,LSTICK,RSTICK,MINUS,PLUS	1	4
 pro_controller_motion_key_combo	multiselect	R,ZR,RSTICK	L,R,ZL,ZR,DUP,DDOWN,DLEFT,DRIGHT,A,B,X,Y,LSTICK,RSTICK,MINUS,PLUS	1	4
-average_gpu_load	toggle	off
-battery_avg_iir_filter	toggle	off
+average_gpu_load	toggle
+battery_avg_iir_filter	toggle
 battery_time_left_refreshrate	number	60		1	60
-use_old_fps_average	toggle	off
-font_cache	toggle	on
+use_old_fps_average	toggle
+font_cache	toggle	1

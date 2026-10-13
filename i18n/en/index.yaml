@@ -1,5 +1,5 @@
 language: en
-title: BrewDeck
+title: Console Kitchen
 platforms:
   switch:
     name: Nintendo Switch
@@ -186,6 +186,8 @@ pages:
       memmode: Boot config memory mode
     asConfigured: as configured
     overridesDescription: The switches under an entry set Exosphère keys for it alone, over exosphere.ini from the Security step and system_settings.ini from the CFW step; "as configured" leaves the key out.
+    spares: Booting without modules
+    sparesDescription: 'Entries of More configs that boot CFW without what hekate loads for a component: its KIP and its secure monitor. They start the console when those keep the system from booting, as after an update of Atmosphere.'
     payloads: Payloads
     payloadsDescription: Tools started instead of the system. Every selected payload gets its own entry in the menu.
     autoboot: Autoboot

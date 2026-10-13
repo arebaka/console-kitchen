@@ -1,13 +1,13 @@
 id	type	default	values	min	max	step	maxLength
-enable_rumble	toggle	on
-enable_motion	toggle	on
+enable_rumble	toggle	1
+enable_motion	toggle	1
 analog_trigger_activation_threshold	range	50		0	100	5
 dualsense_lightbar_brightness	range	5		0	9	1
-dualsense_enable_player_leds	toggle	on
+dualsense_enable_player_leds	toggle	1
 dualsense_vibration_intensity	range	4		1	8	1
 dualsense_adaptive_trigger_travel	range	0		0	100	5
 dualshock4_lightbar_brightness	range	5		0	9	1
-dualshock3_enable_usb_pairing	toggle	on
+dualshock3_enable_usb_pairing	toggle	1
 dualshock3_led_mode	select	0	0,1,2
 dualshock4_polling_rate	range	8		0	16	1
 host_name	text						32

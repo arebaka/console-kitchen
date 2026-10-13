@@ -60,7 +60,10 @@ ultrahand_edizon_overlay: *ultrahand_overlay
 ultrahand_noled: *ultrahand_overlay
 ultrahand_master_volume: *ultrahand_overlay
 ultrahand_bt_audio: *ultrahand_overlay
+ultrahand_quickntp: *ultrahand_overlay
+ultrahand_ovl_sysmodules: *ultrahand_overlay
 ultrahand_sys_clk: *ultrahand_overlay
+ultrahand_horizon_oc: *ultrahand_overlay
 ultrahand_nx_fan_control: *ultrahand_overlay
 ultrahand_ldn_mitm: *ultrahand_overlay
 ultrahand_sys_tune: *ultrahand_overlay

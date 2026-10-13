@@ -5,7 +5,7 @@ import { Params } from '@/url';
 import { SWITCH } from './switch';
 import { PSP } from './psp';
 
-// A console BrewDeck builds for: its software, system versions and steps, its links and what a build turns into
+// A Console Kitchen builds for: its software, system versions and steps, its links and what a build turns into
 export interface Platform<S extends BuildState = BuildState> {
 	id: PlatformId;
 	catalog: Catalog;

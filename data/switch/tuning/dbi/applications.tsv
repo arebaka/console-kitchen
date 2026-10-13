@@ -1,2 +1,2 @@
 id	type	default
-CalculateLFSSize	toggle	on
+CalculateLFSSize	toggle	1

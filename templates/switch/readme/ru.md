@@ -1,4 +1,4 @@
-# BrewDeck: {{hardware}}, Horizon OS {{hos}}
+# Console Kitchen: {{hardware}}, Horizon OS {{hos}}
 
 Сгенерировано {{date}}.
 
@@ -55,3 +55,13 @@
 
 Серверы Nintendo заблокированы в {{dnsTargets}}: обновления, eShop и онлайн-игра там не работают.
 {{/dnsBlock}}
+{{#hasSpares}}
+
+## Если CFW не загружается
+
+То, что Hekate подгружает для некоторых компонентов, собрано под один релиз Atmosphere и после обновления может не дать системе стартовать. В **More configs** лежат пункты, которые загружают CFW без этого:
+
+{{#spares}}
+- **{{.}}**
+{{/spares}}
+{{/hasSpares}}

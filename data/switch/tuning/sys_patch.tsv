@@ -1,5 +1,5 @@
 id	type	default
-patch_sysmmc	toggle	on
-patch_emummc	toggle	on
-version_skip	toggle	on
-enable_logging	toggle	on
+patch_sysmmc	toggle	1
+patch_emummc	toggle	1
+version_skip	toggle	1
+enable_logging	toggle	1

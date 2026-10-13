@@ -1,26 +1,26 @@
 id	type	default	values	min	max	step	maxLength
 WorkingDirectory	text	sdmc:/JKSV					64
-IncludeDeviceSaves	toggle	off
-AutoBackupOnRestore	toggle	on
-AutoNameBackups	toggle	off
-AutoUploadToRemote	toggle	off
-KeepLocalBackups	toggle	off
-AlwaysUseTitleID	toggle	off
-EnglishSafeTitles	toggle	off
-HoldForDeletion	toggle	on
-HoldForRestoration	toggle	on
-HoldForOverWrite	toggle	on
-OnlyListMountable	toggle	on
-ListAccountSystemSaves	toggle	off
-AllowSystemSaveWriting	toggle	off
-ExportToZip	toggle	on
+IncludeDeviceSaves	toggle
+AutoBackupOnRestore	toggle	1
+AutoNameBackups	toggle
+AutoUploadToRemote	toggle
+KeepLocalBackups	toggle
+AlwaysUseTitleID	toggle
+EnglishSafeTitles	toggle
+HoldForDeletion	toggle	1
+HoldForRestoration	toggle	1
+HoldForOverWrite	toggle	1
+OnlyListMountable	toggle	1
+ListAccountSystemSaves	toggle
+AllowSystemSaveWriting	toggle
+ExportToZip	toggle	1
 ZipCompressionLevel	range	6		0	9	1
 TitleSortType	select	0	0,1,2
-JKSMTextMode	toggle	off
-ForceEnglish	toggle	off
-ShowDevice	toggle	on
-ShowBCAT	toggle	off
-ShowCache	toggle	off
-ShowSystem	toggle	off
-EnableTrash	toggle	off
+JKSMTextMode	toggle
+ForceEnglish	toggle
+ShowDevice	toggle	1
+ShowBCAT	toggle
+ShowCache	toggle
+ShowSystem	toggle
+EnableTrash	toggle
 UIAnimationScaling	range	2.5		1	4	0.25

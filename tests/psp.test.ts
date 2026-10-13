@@ -143,7 +143,7 @@ describe('PSP build', () => {
 
 	it('tells to update the firmware first in the readme', () => {
 		const readme = result.files.find(file => file.path == 'README.md')!.content;
-		expect(readme).toContain('# BrewDeck: PSP Go, firmware 5.70');
+		expect(readme).toContain('# Console Kitchen: PSP Go, firmware 5.70');
 		expect(readme).toContain('PSP Update ver 6.61');
 		expect(readme).toContain('- **missyhud**: XMB, Games and homebrew');
 		expect(readme).toContain('- **RemoteJoyLite**: Off');

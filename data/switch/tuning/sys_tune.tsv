@@ -1,7 +1,7 @@
 id	type	default	values	min	max	step	maxLength
 load_path	text						255
-shuffle	toggle	off
+shuffle	toggle
 repeat	select	1	0,1,2
 volume	range	100		0	100	5
 global_volume	range	100		0	100	5
-title_default	toggle	on
+title_default	toggle	1

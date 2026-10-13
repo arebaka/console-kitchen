@@ -1,5 +1,5 @@
 import type { BootEntry, BootMode, GalleryImage, ImageTarget, LaunchKey, OverclockData } from '@/types';
-import { type Conditions, type Row, compact, components, firmware, flag, link, number, presets, tuning } from '../parse';
+import { type Conditions, type Row, compact, components, firmware, flag, link, number, presets, tuning } from '@/parse';
 
 import LINK_ROWS from './link.tsv';
 import FIRMWARE_ROWS from './firmware.tsv';
@@ -15,7 +15,7 @@ import CLOCK_CAP_ROWS from './overclock/caps.tsv';
 import CLOCK_TEMPLATES from './overclock/templates.yaml';
 import GAME_ROWS from './overclock/games.tsv';
 
-// Keys of the entries lie in files named after them
+// Keys of the entries lie in files named after them, and so do the keys a component adds to the entries booting CFW
 const LAUNCH_KEYS = import.meta.glob<LaunchKey>('./launch/*.yaml', { eager: true, import: 'default' });
 // Options of the groups lie in tables, the index of the groups tells which: the tables of one component share its folder
 // and are named there after the sections of its config
@@ -35,6 +35,11 @@ export const LAUNCH: BootEntry[] = LAUNCH_ROWS.map(row => ({
 	caption: row.caption,
 	keys: LAUNCH_KEYS[`./launch/${row.id}.yaml`]
 }));
+
+// What hekate has to load with CFW for a component, such as its KIP: the keys the component adds to the entries booting CFW
+export const MODULES: {[component: string]: LaunchKey} = Object.fromEntries(SOFTWARE
+	.filter(comp => `./launch/${comp.id}.yaml` in LAUNCH_KEYS)
+	.map(comp => [comp.id, LAUNCH_KEYS[`./launch/${comp.id}.yaml`]]));
 
 // Pictures of the gallery, their files are named after their targets and ids
 export const APPEARANCE: Omit<GalleryImage, 'file'>[] = APPEARANCE_ROWS.map(row => compact({

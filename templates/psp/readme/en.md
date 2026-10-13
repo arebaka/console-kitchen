@@ -1,4 +1,4 @@
-# BrewDeck: {{hardware}}, firmware {{firmware}}
+# Console Kitchen: {{hardware}}, firmware {{firmware}}
 
 Generated on {{date}}.
 

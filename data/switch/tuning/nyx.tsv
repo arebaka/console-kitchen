@@ -3,9 +3,9 @@ themecolor	hue	167
 themebg	color	#2d2d2d
 homescreen	select	0	0,1,2,3
 verification	select	1	0,1,2
-entries5col	toggle	off
-timedst	toggle	on
-umsemmcrw	toggle	off
-jcdisable	toggle	off
-jcforceright	toggle	off
+entries5col	toggle
+timedst	toggle	1
+umsemmcrw	toggle
+jcdisable	toggle
+jcforceright	toggle
 bpmpclock	select	1	0,1,2,3,4,5

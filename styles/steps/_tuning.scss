@@ -49,12 +49,20 @@
 	}
 
 	// Fields of a row share its line and wrap on a narrow screen, a choice is as wide as its values.
-	// The last field holds a path or an address, so it takes more of the line
+	// The last field holds a path or an address, so it takes more of the line.
+	// A field of several values takes a line of its own below them
 	.entry {
 		display: flex;
 		flex-wrap: wrap;
 		gap: space(2);
 		width: 100%;
+
+		.buttons,
+		.choices {
+			order: 1;
+			flex-basis: 100%;
+			margin-bottom: space(2);
+		}
 
 		input {
 			flex: 1 1 160px;

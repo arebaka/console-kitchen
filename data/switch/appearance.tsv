@@ -1,41 +1,41 @@
-id	target	author	license	url	hue
-hekate-a	bootlogo	CTCaer	GPL-2.0	https://github.com/CTCaer/hekate/tree/master/res/bootlogo
-hekate-a-custom	bootlogo	CTCaer	GPL-2.0	https://github.com/CTCaer/hekate/tree/master/res/bootlogo
-hekate-b	bootlogo	CTCaer	GPL-2.0	https://github.com/CTCaer/hekate/tree/master/res/bootlogo
-hekate-b-custom	bootlogo	CTCaer	GPL-2.0	https://github.com/CTCaer/hekate/tree/master/res/bootlogo
-hekate-c	bootlogo	CTCaer	GPL-2.0	https://github.com/CTCaer/hekate/tree/master/res/bootlogo
-hekate-c-ctc	bootlogo	CTCaer	GPL-2.0	https://github.com/CTCaer/hekate/tree/master/res/bootlogo
-hekate-d	bootlogo	CTCaer	GPL-2.0	https://github.com/CTCaer/hekate/tree/master/res/bootlogo
-hekate-d-ctc	bootlogo	CTCaer	GPL-2.0	https://github.com/CTCaer/hekate/tree/master/res/bootlogo
-atmosphere-logo	bootlogo	Atmosphère-NX	GPL-2.0	https://github.com/Atmosphere-NX/Atmosphere/tree/master/img
-atmosphere-banner	bootlogo	Atmosphère-NX	GPL-2.0	https://github.com/Atmosphere-NX/Atmosphere/tree/master/img
-atmosphere-splash	bootlogo	Atmosphère-NX	GPL-2.0	https://github.com/Atmosphere-NX/Atmosphere/tree/master/img
-atmosphere-splash	background	Atmosphère-NX	GPL-2.0	https://github.com/Atmosphere-NX/Atmosphere/tree/master/img
-mattera-atmosphere-hue	icon	Nichole Mattera, Atmosphère-NX	GPL-2.0	https://github.com/NicholeMattera/Hekate-Icons/tree/main/atmosphere	on
-hekate-switch	icon	CTCaer	GPL-2.0	https://github.com/CTCaer/hekate/tree/master/nyx/resources	on
-hekate-lakka-hue	icon	CTCaer	GPL-2.0	https://github.com/CTCaer/hekate/tree/master/nyx/resources	on
-mattera-lockpick-hue	icon	Nichole Mattera	GPL-2.0	https://github.com/NicholeMattera/Hekate-Icons/tree/main/lockpick	on
-hekate-payload	icon	CTCaer	GPL-2.0	https://github.com/CTCaer/hekate/tree/master/nyx/resources	on
-brewdeck-emummc-hue	icon	BrewDeck	MIT	https://github.com/arebaka/brewdeck/tree/master/art/icons	on
-brewdeck-sysmmc-hue	icon	BrewDeck	MIT	https://github.com/arebaka/brewdeck/tree/master/art/icons	on
-brewdeck-stock-hue	icon	BrewDeck	MIT	https://github.com/arebaka/brewdeck/tree/master/art/icons	on
-brewdeck-fusee-hue	icon	BrewDeck	MIT	https://github.com/arebaka/brewdeck/tree/master/art/icons	on
-brewdeck-tegraexplorer-hue	icon	BrewDeck	MIT	https://github.com/arebaka/brewdeck/tree/master/art/icons	on
-brewdeck-resolver-hue	icon	BrewDeck	MIT	https://github.com/arebaka/brewdeck/tree/master/art/icons	on
-brewdeck-hwfly-hue	icon	BrewDeck	MIT	https://github.com/arebaka/brewdeck/tree/master/art/icons	on
-brewdeck-picofly-hue	icon	BrewDeck	MIT	https://github.com/arebaka/brewdeck/tree/master/art/icons	on
-atmosphere-logo	icon	Atmosphère-NX	GPL-2.0	https://github.com/Atmosphere-NX/Atmosphere/tree/master/img
-atmosphere-logo-light	icon	Atmosphère-NX	GPL-2.0	https://github.com/Atmosphere-NX/Atmosphere/tree/master/img
-mattera-atmosphere	icon	Nichole Mattera, Atmosphère-NX	GPL-2.0	https://github.com/NicholeMattera/Hekate-Icons/tree/main/atmosphere
-mattera-switch	icon	Nichole Mattera, CTCaer	GPL-2.0	https://github.com/NicholeMattera/Hekate-Icons/tree/main/switch
-hekate-lakka	icon	CTCaer	GPL-2.0	https://github.com/CTCaer/hekate/tree/master/nyx/resources
-mattera-lockpick	icon	Nichole Mattera	GPL-2.0	https://github.com/NicholeMattera/Hekate-Icons/tree/main/lockpick
-mattera-payload	icon	Nichole Mattera, CTCaer	GPL-2.0	https://github.com/NicholeMattera/Hekate-Icons/tree/main/payload
-brewdeck-emummc	icon	BrewDeck	MIT	https://github.com/arebaka/brewdeck/tree/master/art/icons
-brewdeck-sysmmc	icon	BrewDeck	MIT	https://github.com/arebaka/brewdeck/tree/master/art/icons
-brewdeck-stock	icon	BrewDeck	MIT	https://github.com/arebaka/brewdeck/tree/master/art/icons
-brewdeck-fusee	icon	BrewDeck	MIT	https://github.com/arebaka/brewdeck/tree/master/art/icons
-brewdeck-tegraexplorer	icon	BrewDeck	MIT	https://github.com/arebaka/brewdeck/tree/master/art/icons
-brewdeck-resolver	icon	BrewDeck	MIT	https://github.com/arebaka/brewdeck/tree/master/art/icons
-brewdeck-hwfly	icon	BrewDeck	MIT	https://github.com/arebaka/brewdeck/tree/master/art/icons
-brewdeck-picofly	icon	BrewDeck	MIT	https://github.com/arebaka/brewdeck/tree/master/art/icons
+id	target	author	url	license	hue
+hekate-a	bootlogo	CTCaer	https://github.com/CTCaer/hekate/tree/master/res/bootlogo	GPL-2.0
+hekate-a-custom	bootlogo	CTCaer	https://github.com/CTCaer/hekate/tree/master/res/bootlogo	GPL-2.0
+hekate-b	bootlogo	CTCaer	https://github.com/CTCaer/hekate/tree/master/res/bootlogo	GPL-2.0
+hekate-b-custom	bootlogo	CTCaer	https://github.com/CTCaer/hekate/tree/master/res/bootlogo	GPL-2.0
+hekate-c	bootlogo	CTCaer	https://github.com/CTCaer/hekate/tree/master/res/bootlogo	GPL-2.0
+hekate-c-ctc	bootlogo	CTCaer	https://github.com/CTCaer/hekate/tree/master/res/bootlogo	GPL-2.0
+hekate-d	bootlogo	CTCaer	https://github.com/CTCaer/hekate/tree/master/res/bootlogo	GPL-2.0
+hekate-d-ctc	bootlogo	CTCaer	https://github.com/CTCaer/hekate/tree/master/res/bootlogo	GPL-2.0
+atmosphere-logo	bootlogo	Atmosphère-NX	https://github.com/Atmosphere-NX/Atmosphere/tree/master/img	GPL-2.0
+atmosphere-banner	bootlogo	Atmosphère-NX	https://github.com/Atmosphere-NX/Atmosphere/tree/master/img	GPL-2.0
+atmosphere-splash	bootlogo	Atmosphère-NX	https://github.com/Atmosphere-NX/Atmosphere/tree/master/img	GPL-2.0
+atmosphere-splash	background	Atmosphère-NX	https://github.com/Atmosphere-NX/Atmosphere/tree/master/img	GPL-2.0
+mattera-atmosphere-hue	icon	Nichole Mattera, Atmosphère-NX	https://github.com/NicholeMattera/Hekate-Icons/tree/main/atmosphere	GPL-2.0	1
+hekate-switch	icon	CTCaer	https://github.com/CTCaer/hekate/tree/master/nyx/resources	GPL-2.0	1
+hekate-lakka-hue	icon	CTCaer	https://github.com/CTCaer/hekate/tree/master/nyx/resources	GPL-2.0	1
+mattera-lockpick-hue	icon	Nichole Mattera	https://github.com/NicholeMattera/Hekate-Icons/tree/main/lockpick	GPL-2.0	1
+hekate-payload	icon	CTCaer	https://github.com/CTCaer/hekate/tree/master/nyx/resources	GPL-2.0	1
+console-kitchen-emummc-hue	icon	Console Kitchen	https://github.com/arebaka/console-kitchen/tree/master/art/icons	MIT	1
+console-kitchen-sysmmc-hue	icon	Console Kitchen	https://github.com/arebaka/console-kitchen/tree/master/art/icons	MIT	1
+console-kitchen-stock-hue	icon	Console Kitchen	https://github.com/arebaka/console-kitchen/tree/master/art/icons	MIT	1
+console-kitchen-fusee-hue	icon	Console Kitchen	https://github.com/arebaka/console-kitchen/tree/master/art/icons	MIT	1
+console-kitchen-tegraexplorer-hue	icon	Console Kitchen	https://github.com/arebaka/console-kitchen/tree/master/art/icons	MIT	1
+console-kitchen-resolver-hue	icon	Console Kitchen	https://github.com/arebaka/console-kitchen/tree/master/art/icons	MIT	1
+console-kitchen-hwfly-hue	icon	Console Kitchen	https://github.com/arebaka/console-kitchen/tree/master/art/icons	MIT	1
+console-kitchen-picofly-hue	icon	Console Kitchen	https://github.com/arebaka/console-kitchen/tree/master/art/icons	MIT	1
+atmosphere-logo	icon	Atmosphère-NX	https://github.com/Atmosphere-NX/Atmosphere/tree/master/img	GPL-2.0
+atmosphere-logo-light	icon	Atmosphère-NX	https://github.com/Atmosphere-NX/Atmosphere/tree/master/img	GPL-2.0
+mattera-atmosphere	icon	Nichole Mattera, Atmosphère-NX	https://github.com/NicholeMattera/Hekate-Icons/tree/main/atmosphere	GPL-2.0
+mattera-switch	icon	Nichole Mattera, CTCaer	https://github.com/NicholeMattera/Hekate-Icons/tree/main/switch	GPL-2.0
+hekate-lakka	icon	CTCaer	https://github.com/CTCaer/hekate/tree/master/nyx/resources	GPL-2.0
+mattera-lockpick	icon	Nichole Mattera	https://github.com/NicholeMattera/Hekate-Icons/tree/main/lockpick	GPL-2.0
+mattera-payload	icon	Nichole Mattera, CTCaer	https://github.com/NicholeMattera/Hekate-Icons/tree/main/payload	GPL-2.0
+console-kitchen-emummc	icon	Console Kitchen	https://github.com/arebaka/console-kitchen/tree/master/art/icons	MIT
+console-kitchen-sysmmc	icon	Console Kitchen	https://github.com/arebaka/console-kitchen/tree/master/art/icons	MIT
+console-kitchen-stock	icon	Console Kitchen	https://github.com/arebaka/console-kitchen/tree/master/art/icons	MIT
+console-kitchen-fusee	icon	Console Kitchen	https://github.com/arebaka/console-kitchen/tree/master/art/icons	MIT
+console-kitchen-tegraexplorer	icon	Console Kitchen	https://github.com/arebaka/console-kitchen/tree/master/art/icons	MIT
+console-kitchen-resolver	icon	Console Kitchen	https://github.com/arebaka/console-kitchen/tree/master/art/icons	MIT
+console-kitchen-hwfly	icon	Console Kitchen	https://github.com/arebaka/console-kitchen/tree/master/art/icons	MIT
+console-kitchen-picofly	icon	Console Kitchen	https://github.com/arebaka/console-kitchen/tree/master/art/icons	MIT

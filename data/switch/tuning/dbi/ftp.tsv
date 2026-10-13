@@ -1,9 +1,9 @@
 id	type	default	min	max
-TurnOffScreen	toggle	off
-ReadMT	toggle	off
+TurnOffScreen	toggle
+ReadMT	toggle
 Port	number	5000	1	65535
 MinPassivePort	number	40000	0	65535
 MaxPassivePort	number	40100	0	65535
-CDIR	toggle	off
-ForceUtf8	toggle	on
-UseWaitAll	toggle	off
+CDIR	toggle
+ForceUtf8	toggle	1
+UseWaitAll	toggle

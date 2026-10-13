@@ -47,12 +47,13 @@ const EVERYTHING = {
 	})
 };
 
-// A config with lines that read as its end inside either installer, each followed by what would then run as a command.
-// The installers have to write them all, moved off the start of their lines
+// A config with lines that read as its end inside either installer, each followed by what would then run as a command,
+// and with what a shell runs or fills in when it does not take the config as it is written.
+// The installers have to write them all, the lines that read as the end moved off the start of their lines
 const HOSTILE = {
 	path: 'config/hostile.ini',
-	content: '[list]\nBREWDECK_EOF\ntouch pwned\n\'@; New-Item pwned\n\'@\nNew-Item pwned\n',
-	written: '[list]\n BREWDECK_EOF\ntouch pwned\n \'@; New-Item pwned\n \'@\nNew-Item pwned\n'
+	content: '[list]\nCONSOLE_KITCHEN_EOF\ntouch pwned\n\'@; New-Item pwned\n\'@\nNew-Item pwned\nrun=$(touch pwned)`touch pwned`$(New-Item pwned)\nhome=$HOME\\\n',
+	written: '[list]\n CONSOLE_KITCHEN_EOF\ntouch pwned\n \'@; New-Item pwned\n \'@\nNew-Item pwned\nrun=$(touch pwned)`touch pwned`$(New-Item pwned)\nhome=$HOME\\\n'
 };
 const HOSTILE_FILES = installers({
 	...installerView({ ...SWITCH.defaults(), selectedComponentIDs: [], lang: 'en', t: I18N.en }, HARDWARE[0], [], [HOSTILE], []),
@@ -68,7 +69,7 @@ const script = (files: GeneratedFile[], path: string) => files.find(file => file
 // Every installer gets an empty directory standing for the card and runs there, as from the root of the card
 const cards: string[] = [];
 function card(file: string, content: string): string {
-	const root = mkdtempSync(join(tmpdir(), 'brewdeck-'));
+	const root = mkdtempSync(join(tmpdir(), 'console-kitchen-'));
 	cards.push(root);
 	writeFileSync(join(root, file), content);
 	return root;
@@ -79,7 +80,7 @@ afterAll(() => cards.forEach(root => rmSync(root, { recursive: true, force: true
 // the installer is started from holds files with the same names, which have to stay
 const LEFTOVERS = ['LICENSE.txt', 'README.txt', 'README.md'];
 function elsewhere(): string {
-	const home = mkdtempSync(join(tmpdir(), 'brewdeck-home-'));
+	const home = mkdtempSync(join(tmpdir(), 'console-kitchen-home-'));
 	cards.push(home);
 	LEFTOVERS.forEach(file => writeFileSync(join(home, file), 'mine'));
 	return home;

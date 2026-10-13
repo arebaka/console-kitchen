@@ -1,11 +1,11 @@
 {
 	"name": "brewdeck",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "custom firmware builder for the Nintendo Switch and the PSP",
 	"license": "MIT",
 	"author": "arelive <me@are.moe> (https://are.moe)",
-	"repository": "github:arebaka/brewdeck",
-	"homepage": "https://github.com/arebaka/brewdeck",
+	"repository": "github:arebaka/console-kitchen",
+	"homepage": "https://github.com/arebaka/console-kitchen",
 	"type": "module",
 	"types": "dist/index.d.ts",
 	"scripts": {
@@ -23,7 +23,7 @@
 		"clean": "rm -rf dist"
 	},
 	"bugs": {
-		"url": "https://github.com/arebaka/brewdeck/issues"
+		"url": "https://github.com/arebaka/console-kitchen/issues"
 	},
 	"funding": {
 		"type": "patreon",

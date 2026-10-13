@@ -1,4 +1,4 @@
-# BrewDeck installer: {{title}}
+# Console Kitchen installer: {{title}}
 #
 # Usage: put the script into the root of the {{card}} and run it there:
 #   powershell -ExecutionPolicy Bypass -File install.ps1
@@ -15,7 +15,7 @@ $ProgressPreference = 'SilentlyContinue' # the progress bar slows Invoke-WebRequ
 $AppStore = 'https://switch.cdn.fortheusers.org'
 {{/hasAppstore}}
 $SdRoot = $PSScriptRoot
-$WorkDir = Join-Path $SdRoot '.brewdeck'
+$WorkDir = Join-Path $SdRoot '.console-kitchen'
 $Releases = @{}
 $Failed = @()
 
@@ -183,7 +183,7 @@ try {
 } finally {
 	Remove-Item -LiteralPath $WorkDir -Recurse -Force -ErrorAction SilentlyContinue
 	# The script and what archives leave in the root of the card go away, wherever the script was started from
-	foreach ($leftover in 'install.ps1', 'LICENSE.txt', 'README.txt', 'README.md', 'screen1.png', 'screen2.png') {
+	foreach ($leftover in 'install.ps1', 'LICENSE.txt', 'README.txt', 'README.md', 'screen1.png', 'screen2.png', 'switch/breeze/.Breeze.nro.star') {
 		Remove-Item -LiteralPath (Join-Path $SdRoot $leftover) -Force -ErrorAction SilentlyContinue
 	}
 }

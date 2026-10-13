@@ -15,9 +15,9 @@ import { Params } from './url';
 //     record  a number, then a value. 0 ends the records, 1 comes before a key that has no number, spelled out in pieces up to
 //             the mark of the end, anything above is the number of the key less the one of the record before, plus 2
 //     value   00 is 0 and 01 is 1, 10 comes before a single piece, 11 before pieces up to the mark of the end
-//     piece   00 and the number of a word, 01 and a number, 100 and a game ID,
-//             101 and three bits of a mark, 110 and a text: two bits of
-//             its spelling, the number of its characters less one, the characters. 111 is reserved.
+//     piece   00 and the number of a word, 01 and a number, 10 and three bits of a mark, 110 and the ID of a game, its
+//             sixteen hex digits four bits each, 111 and a text: two bits of its spelling, the number of its characters
+//             less one, the characters, which are bytes in UTF-8
 // Pieces are read one after another, with a comma between two of them that have no mark in between
 
 // The characters the short params are made of, six bits each
@@ -157,7 +157,7 @@ function pieces(text: string, words: Index): Piece[] {
 			const way = ways[at][open];
 			if (way.bits == Infinity) continue;
 			const mark = MARKS.indexOf(text[at]) + 1;
-			if (mark) reach(way, at + 1, 0, 6, { type: 'mark', index: mark });
+			if (mark) reach(way, at + 1, 0, 5, { type: 'mark', code: mark });
 
 			const startGames = !open ? at : text[at] == ',' ? at + 1 : text.length;
 			if (startGames + 16 <= text.length && /^[0-9A-F]{16}$/.test(text.substr(startGames, 16))) {
@@ -218,7 +218,7 @@ function putPiece(out: Writer, piece: Piece): void {
 			return out.number(piece.value);
 		case 'mark':
 			out.put(0b10, 2);
-			return out.put(piece.index, 3);
+			return out.put(piece.code, 3);
 		case 'game':
 			out.put(0b110, 3);
 			for (let i = 0; i < 16; i++) {
@@ -236,7 +236,7 @@ function putPiece(out: Writer, piece: Piece): void {
 	}
 }
 
-const putEnd = (out: Writer) => putPiece(out, { type: 'mark', index: 0 });
+const putEnd = (out: Writer) => putPiece(out, { type: 'mark', code: 0 });
 
 // The next piece: what it says, undefined when it cannot be said here, and whether it is a mark. Nothing at the mark of the end
 function takePiece(input: Reader, words: string[]): { text: string | undefined; isMark?: boolean } | undefined {
@@ -327,7 +327,6 @@ function unpack(text: string, keys: string[], words: string[]): Params {
 			const step = input.number();
 			if (step == 0) break;
 			const key = step == 1 ? takeText(input, words) : keys[previous += step - 2];
-			const kekek3 = input.position;
 			const value = takeValue(input, words);
 			if (key !== undefined && value !== undefined) params.push([key, value]);
 		}

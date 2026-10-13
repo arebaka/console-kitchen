@@ -1,34 +1,34 @@
 id	type	default	values	min	max	maxLength
-ExitToHomeScreen	toggle	off
+ExitToHomeScreen	toggle
 SavesFolder	text	sdmc:/switch/DBI/saves				128
-LogEvents	toggle	off
+LogEvents	toggle
 LogsFolder	text	sdmc:/switch/DBI/logs				128
 DumpsFolder	text	sdmc:/switch/DBI/dumps				128
 AppSorting	multiselect	LastPlayed,InstallLocation,Size,Name	LastPlayed,InstallLocation,Size,Name	1
 SaveSorting	multiselect	AppLastPlayed,AppName,UserUid,Size,Time	AppLastPlayed,AppName,UserUid,Size,Time	1
-HighlightUpdates	toggle	on
-RotateScreen	toggle	off
-RotateJoycon	toggle	off
+HighlightUpdates	toggle	1
+RotateScreen	toggle
+RotateJoycon	toggle
 VersionsURL	text	https://raw.githubusercontent.com/blawar/titledb/master/versions.txt				255
 TitleDB	text	https://raw.githubusercontent.com/blawar/titledb/master/US.en.json				255
-ROSaveFS	toggle	off
-ShowUpdateFromHere	toggle	on
-ShowCacheWarmingIndicator	toggle	on
-MoveDownAfterX	toggle	on
+ROSaveFS	toggle
+ShowUpdateFromHere	toggle	1
+ShowCacheWarmingIndicator	toggle	1
+MoveDownAfterX	toggle	1
 ScreenIdleTimeout	number	0		0	3600
-Autorepeat	toggle	on
-Secondcursor	toggle	off
-FoolproofSaveDelete	toggle	off
-TimeShow	toggle	on
-TimeShowSeconds	toggle	on
-BrowseAppsFromFiles	toggle	off
-ValidateSSL	toggle	off
+Autorepeat	toggle	1
+Secondcursor	toggle
+FoolproofSaveDelete	toggle
+TimeShow	toggle	1
+TimeShowSeconds	toggle	1
+BrowseAppsFromFiles	toggle
+ValidateSSL	toggle
 DBIUpdateURL	text	https://github.com/rashevskyv/DBI/releases/latest/download/latest.zip				255
-DumpForwarders	toggle	off
-HideFolderJpg	toggle	on
-ShowFolderImage	toggle	on
+DumpForwarders	toggle
+HideFolderJpg	toggle	1
+ShowFolderImage	toggle	1
 CustomDNS	text					64
-SmartNetworkConfig	toggle	on
+SmartNetworkConfig	toggle	1
 AutoSaveBackupInterval	number	0		0	365
 ContentsPath	text	/atmosphere/contents				128
 ExefsPatchesPath	text	/atmosphere/exefs_patches				128

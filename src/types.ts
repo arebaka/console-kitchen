@@ -76,7 +76,7 @@ export interface ComponentInfo {
 	tracks?: ('hos' | 'atmosphere')[]; // has to be updated for every new HOS or Atmosphere release
 	hardware?: HardwareRevision[]; // revisions the component is useful on
 	deprecated?: boolean;
-	is_required: boolean;
+	required: boolean;
 	risky?: boolean; // its note tells what may go wrong, the build warns about it too
 	plugin?: CfwPlugin; // a CFW plugin the build lists in the plugins file of its platform
 }
@@ -113,10 +113,11 @@ export type TuningOption = TuningOptionBase & (
 	| { type: 'list'; fields: ListField[]; maxLength: number; max?: number; default: string[][] } // rows of a value per field, `max` of them at most
 );
 
-// A field of the rows of a list: a line of text, or a choice among its values
+// A field of the rows of a list: a line of text, or a choice among its values, of one of them or of up to `max` at once
 export interface ListField {
 	id: string;
 	values?: string[];
+	max?: number;
 }
 
 export interface TuningGroup {

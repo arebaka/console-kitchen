@@ -1,12 +1,12 @@
 id	type	default	values	min	max
-blank_prodinfo_emummc	toggle	on
-blank_prodinfo_sysmmc	toggle	on
-allow_writing_to_cal_sysmmc	toggle	off
-debugmode	toggle	on
-debugmode_user	toggle	off
-disable_user_exception_handlers	toggle	off
-enable_user_pmu_access	toggle	off
-enable_mem_mode	toggle	off
+blank_prodinfo_emummc	toggle	1
+blank_prodinfo_sysmmc	toggle	1
+allow_writing_to_cal_sysmmc	toggle
+debugmode	toggle	1
+debugmode_user	toggle
+disable_user_exception_handlers	toggle
+enable_user_pmu_access	toggle
+enable_mem_mode	toggle
 log_port	select	0	0,1,2,3
 log_baud_rate	number	115200		0	4000000
-log_inverted	toggle	off
+log_inverted	toggle

@@ -48,7 +48,7 @@ daedalusx64:
 tempgba:
   github:
     repo: andymcca/TempGBA4PSP-mod
-    asset: ^TempGBA4PSP-Mod_[0-9]+\.zip$
+    asset: ^TempGBA4PSP-Mod[._][0-9]+\.zip$
     into: PSP/GAME/TempGBA4PSP
 
 gba_bios:

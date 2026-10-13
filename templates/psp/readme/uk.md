@@ -1,4 +1,4 @@
-# BrewDeck: {{hardware}}, прошивка {{firmware}}
+# Console Kitchen: {{hardware}}, прошивка {{firmware}}
 
 Згенеровано {{date}}.
 

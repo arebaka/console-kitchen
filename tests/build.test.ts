@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { resolveSelection } from '@/data';
-import { CATALOG, COMPONENTS, SWITCH } from '@/platforms/switch';
+import { BOOT_ENTRIES, CATALOG, COMPONENTS, SPARE_INI, SWITCH } from '@/platforms/switch';
 import { I18N } from '@i18n';
 import { TuningConfig } from '@/types';
 import { BITMAPS, customBuild, encodeBitmaps } from './fixtures';
@@ -27,16 +27,18 @@ describe('build', () => {
 	});
 
 	it('boots another emuMMC by its folder and sets Exosphere keys per entry', () => {
-		expect(section('CFW (emuMMC)')).toEqual(['pkg3=atmosphere/package3', 'emummcforce=1', 'cal0blank=0', 'icon=bootloader/res/brewdeck_emummc_hue.bmp']);
+		// Every emuMMC starts with the keys the catalog gives to the entry
+		const emummc = Object.entries(BOOT_ENTRIES.find(entry => entry.id == 'emummc')!.keys).map(([key, value]) => `${key}=${value}`);
+		expect(emummc).toEqual(expect.arrayContaining(['pkg3=atmosphere/package3', 'emummcforce=1']));
+		expect(section('CFW (emuMMC)')).toEqual([...emummc, 'cal0blank=0', 'icon=bootloader/res/console_kitchen_emummc_hue.bmp']);
 		expect(section('CFW (emuMMC SD01)')).toEqual([
-			'pkg3=atmosphere/package3',
-			'emummcforce=1',
+			...emummc,
 			'emupath=emuMMC/SD01',
 			'usb3force=1',
 			'memmode=1',
-			'logopath=bootloader/res/brewdeck_emummc-SD01_logo.bmp'
+			'logopath=bootloader/res/console_kitchen_emummc-SD01_logo.bmp'
 		]);
-		expect(section('Stock')).toEqual(expect.arrayContaining(['logopath=bootloader/res/brewdeck_stock_logo.bmp']));
+		expect(section('Stock')).toEqual(expect.arrayContaining(['logopath=bootloader/res/console_kitchen_stock_logo.bmp']));
 		expect(result.files.find(file => file.path == 'README.md')?.content).toContain('**Launch → CFW (emuMMC SD01)**: `emuMMC/SD01`');
 	});
 
@@ -63,18 +65,29 @@ describe('build', () => {
 		expect(config('config/sys-ftpd/config.ini')).toContain('hunter2');
 	});
 
+	it('writes the nogc patch only when it is set one way or the other', () => {
+		const stratosphere = (nogc: string) => {
+			const build = customBuild();
+			build.tuning.stratosphere.nogc = nogc;
+			return SWITCH.build({ ...build, lang: 'en', t: I18N.en }).configs.find(config => config.path == 'atmosphere/config/stratosphere.ini')?.content;
+		};
+		expect(stratosphere('auto')).toBeUndefined();
+		expect(stratosphere('on')).toContain('nogc = 1');
+		expect(stratosphere('off')).toContain('nogc = 0');
+	});
+
 	it('places images where hekate and Nyx look for them', () => {
 		expect(result.assets.map(asset => asset.path)).toEqual([
 			'bootloader/bootlogo.bmp',
 			'bootloader/res/background.bmp',
-			'bootloader/res/brewdeck_emummc-SD01_logo.bmp',
-			'bootloader/res/brewdeck_stock_logo.bmp',
-			'bootloader/res/brewdeck_emummc_hue.bmp',
-			'bootloader/res/brewdeck_stock.bmp',
-			'bootloader/res/brewdeck_fusee_hue.bmp'
+			'bootloader/res/console_kitchen_emummc-SD01_logo.bmp',
+			'bootloader/res/console_kitchen_stock_logo.bmp',
+			'bootloader/res/console_kitchen_emummc_hue.bmp',
+			'bootloader/res/console_kitchen_stock.bmp',
+			'bootloader/res/console_kitchen_fusee_hue.bmp'
 		]);
-		expect(section('Stock')).toContain('icon=bootloader/res/brewdeck_stock.bmp');
-		expect(section('Fusee')).toContain('icon=bootloader/res/brewdeck_fusee_hue.bmp');
+		expect(section('Stock')).toContain('icon=bootloader/res/console_kitchen_stock.bmp');
+		expect(section('Fusee')).toContain('icon=bootloader/res/console_kitchen_fusee_hue.bmp');
 	});
 
 	it('points the page at the pictures of the gallery', () => {
@@ -128,6 +141,56 @@ describe('build', () => {
 			expect(file.content).not.toMatch(/SdRoot E:|\[SD card root\]|path\/to/);
 		}
 		expect(result.files.find(file => file.path == 'README.md')?.content).toContain('`bash install.sh`');
+	});
+});
+
+// Horizon OC has hekate load a KIP and a secure monitor of its own with CFW
+describe('what hekate loads for a component', () => {
+	const build = (ids: string[]) => {
+		const custom = customBuild();
+		return SWITCH.build({ ...custom, selectedComponentIDs: resolveSelection(CATALOG, [...custom.selectedComponentIDs, ...ids]), lang: 'en', t: I18N.en });
+	};
+	const config = (result: ReturnType<typeof build>, path: string) => result.configs.find(config => config.path == path)?.content;
+	const readme = (result: ReturnType<typeof build>) => result.files.find(file => file.path == 'README.md')?.content;
+	// Lines of the sections of an ini of hekate by their names
+	const sections = (ini: string): {[name: string]: string[]} => Object.fromEntries(ini.trim().split('\n\n').map(section => {
+		const [header, ...lines] = section.split('\n');
+		return [header.slice(1, -1), lines];
+	}));
+	const PACKAGE = 'pkg3=atmosphere/package3';
+	const MODULES = ['kip1=atmosphere/kips/hoc.kip', 'secmon=atmosphere/exosphere.bin'];
+	const ENTRIES = ['CFW (emuMMC)', 'CFW (emuMMC SD01)'];
+
+	// Named before the package, a secure monitor gives way to the one the package holds
+	it('goes into the entries booting CFW after the package, and the stock system boots without it', () => {
+		const menu = sections(config(build(['horizon_oc']), 'bootloader/hekate_ipl.ini')!);
+		for (const entry of ENTRIES) {
+			expect(menu[entry], entry).toEqual(expect.arrayContaining([PACKAGE, ...MODULES]));
+			for (const key of MODULES) {
+				expect(menu[entry].indexOf(key), `${entry}: ${key}`).toBeGreaterThan(menu[entry].indexOf(PACKAGE));
+			}
+		}
+		expect(menu.Stock.filter(line => /^(kip1|secmon)=/.test(line))).toEqual([]);
+	});
+
+	it('leaves every entry booting CFW in More configs once more without it, with the rest of its keys, its logo and its icon', () => {
+		const result = build(['horizon_oc']);
+		const menu = sections(config(result, 'bootloader/hekate_ipl.ini')!);
+		const spare = sections(config(result, SPARE_INI)!);
+		expect(Object.keys(spare)).toEqual(ENTRIES.map(entry => `${entry} without Horizon OC`));
+		for (const entry of ENTRIES) {
+			expect(spare[`${entry} without Horizon OC`], entry).toEqual(menu[entry].filter(line => !MODULES.includes(line)));
+		}
+		expect(spare['CFW (emuMMC) without Horizon OC']).toEqual(expect.arrayContaining(['cal0blank=0', 'icon=bootloader/res/console_kitchen_emummc_hue.bmp']));
+		expect(spare['CFW (emuMMC SD01) without Horizon OC']).toEqual(expect.arrayContaining(['emupath=emuMMC/SD01', 'logopath=bootloader/res/console_kitchen_emummc-SD01_logo.bmp']));
+		expect(readme(result)).toContain('- **CFW (emuMMC SD01) without Horizon OC**');
+	});
+
+	it('writes nothing of it for a build without such a component', () => {
+		const result = build([]);
+		expect(result.configs.map(config => config.path)).not.toContain(SPARE_INI);
+		expect(config(result, 'bootloader/hekate_ipl.ini')).not.toMatch(/^(kip1|secmon)=/m);
+		expect(readme(result)).not.toContain('More configs');
 	});
 });
 
@@ -332,7 +395,7 @@ describe('configs of modules, overlays and applications', () => {
 		}
 		expect(content).not.toContain('{{');
 		// A folder left empty stays the one DBI ships with
-		expect(ini.General).toMatchObject({ ExitToHomeScreen: 'true', AppSorting: 'Size,Name', SavesFolder: 'sdmc:/switch/DBI/saves/', CustomDNS: '1.1.1.1', TimeShow: 'true' });
+		expect(ini.General).toMatchObject({ ExitToHomeScreen: 'true', AppSorting: 'Size,Name', SavesFolder: 'sdmc:/switch/DBI/saves', CustomDNS: '1.1.1.1', TimeShow: 'true' });
 		expect(ini.MTP).toMatchObject({ TurnOffScreen: 'true', AddBaseUpdate: 'false', BufferSize: '512' });
 		expect(ini.FTP).toMatchObject({ TurnOffScreen: 'false', Port: '2121' });
 		expect(ini.HTTP.Port).toBe('1234');
@@ -378,7 +441,7 @@ describe('configs of modules, overlays and applications', () => {
 			tuning: {
 				...build.tuning,
 				dbi_local_sources: { sources: [['\'@', 'x'], ['\'@; New-Item pwned', 'x']] },
-				dbi_disabled_titles_to_check_for_updates: { BlockAllTitlesWithLFS: true, titles: [['BREWDECK_EOF', ''], ['X', 'touch pwned']] }
+				dbi_disabled_titles_to_check_for_updates: { BlockAllTitlesWithLFS: true, titles: [['CONSOLE_KITCHEN_EOF', ''], ['X', 'touch pwned']] }
 			},
 			lang: 'en',
 			t: I18N.en
@@ -386,8 +449,8 @@ describe('configs of modules, overlays and applications', () => {
 		const sh = lines(files.find(file => file.path == 'install.sh')!.content);
 		const ps1 = lines(files.find(file => file.path == 'install.ps1')!.content);
 		// The rows are written, only not from the start of their lines
-		expect(sh).toEqual(expect.arrayContaining([' BREWDECK_EOF', 'X; touch pwned', ' \'@=x', ' \'@; New-Item pwned=x']));
-		expect(sh.filter(line => line == 'BREWDECK_EOF').length).toBe(sh.filter(line => line.endsWith('<< \'BREWDECK_EOF\'')).length);
+		expect(sh).toEqual(expect.arrayContaining([' CONSOLE_KITCHEN_EOF', 'X; touch pwned', ' \'@=x', ' \'@; New-Item pwned=x']));
+		expect(sh.filter(line => line == 'CONSOLE_KITCHEN_EOF').length).toBe(sh.filter(line => line.endsWith('<< \'CONSOLE_KITCHEN_EOF\'')).length);
 		expect(ps1.filter(line => line.startsWith('\'@')).length).toBe(ps1.filter(line => line.endsWith('@\'')).length);
 	});
 

@@ -78,7 +78,7 @@ function installSteps(comp: ComponentInfo, modchip: boolean, options: Record<str
 
 // A line that reads as the end of a config inside an installer would run what follows it as commands. The value of an option
 // never starts a line, a row of a list does, so such a line is moved off the start of its line: neither shell takes it then
-const sealed = (content: string) => content.replace(/^(?=BREWDECK_EOF$|'@)/gm, ' ');
+const sealed = (content: string) => content.replace(/^(?=CONSOLE_KITCHEN_EOF$|'@)/gm, ' ');
 
 // What the installers do on the card: download the selected components, write the configs and the images.
 // Platforms add the texts the installers greet with: `title`, `card` and `console`

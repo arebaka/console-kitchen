@@ -1399,9 +1399,21 @@ ultrahand_bt_audio:
   <<: *ultrahand_overlay
   title: Ultrahand, BT_Audio-ovl
 
+ultrahand_quickntp:
+  <<: *ultrahand_overlay
+  title: Ultrahand, QuickNTP
+
+ultrahand_ovl_sysmodules:
+  <<: *ultrahand_overlay
+  title: Ultrahand, ovl-sysmodules
+
 ultrahand_sys_clk:
   <<: *ultrahand_overlay
   title: Ultrahand, sys-clk
+
+ultrahand_horizon_oc:
+  <<: *ultrahand_overlay
+  title: Ultrahand, Horizon OC
 
 ultrahand_nx_fan_control:
   <<: *ultrahand_overlay
