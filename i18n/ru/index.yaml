@@ -170,7 +170,7 @@ pages:
     conflictBadge: конфликт
   launch:
     title: Меню запуска
-    description: 'Пункты меню Launch в hekate: режимы, в которых загружается консоль, и пэйлоады. Каждый пункт становится секцией bootloader/hekate_ipl.ini с ключами, показанными под ним.'
+    description: 'Пункты меню Launch в hekate: режимы, в которых загружается консоль, другие системы и пэйлоады. Каждый пункт становится секцией bootloader/hekate_ipl.ini с ключами, показанными под ним.'
     modes: Режимы загрузки
     entries:
       emummc: 'Atmosphere на emuMMC, копии системы на SD-карте. Системная NAND остаётся чистой: основной режим для homebrew и игр.'
@@ -188,6 +188,8 @@ pages:
     overridesDescription: 'Переключатели под пунктом задают ключи Exosphère только для него: они перекрывают exosphere.ini с шага "Безопасность" и system_settings.ini с шага "CFW". Вариант "как в настройках" ключ не пишет.'
     spares: Запуск без модулей
     sparesDescription: 'Пункты в More configs, которые загружают CFW без того, что hekate подгружает для компонента: его KIP и secure monitor. Выручат, когда с ними система не стартует, например после обновления Atmosphere.'
+    systems: Другие системы
+    systemsDescription: 'Пункты, которые приходят с выбранными компонентами: каждый загружает свою систему вместо Horizon OS.'
     payloads: Пэйлоады
     payloadsDescription: Инструменты, которые запускаются вместо системы. Каждый выбранный пэйлоад получает свой пункт в меню.
     autoboot: Автозагрузка
@@ -279,6 +281,7 @@ pages:
     thread: Ещё на GBAtemp
     common: Общий
     none: Стандартный
+    own: Свой
     upload: Загрузить
     uploaded: Своя картинка
     invalid: Браузер не смог прочитать картинку

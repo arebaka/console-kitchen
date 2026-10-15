@@ -200,6 +200,16 @@ async function run(page: Page, url: string, downloads: string, spellOut: (link: 
 	await page.act(`byText('.component .name', 'Horizon OC').closest('.component').click()`);
 	await page.act(`step('Launch')`);
 	await check('and both go away with the component', `!/kip1|secmon/.test(${entryKeys('CFW (emuMMC)')}) && byText('.row .name', 'CFW (emuMMC) without Horizon OC') == null`);
+	// Another system is in the menu with the component that installs it, and can boot by itself like any entry
+	await page.act(`step('Software')`);
+	await page.act(`byText('.component .name', 'Lakka').closest('.component').click()`);
+	await page.act(`step('Launch')`);
+	await check('a system a component brings gets an entry of its own', `${entryKeys('Lakka')} == 'l4t=1  boot_prefixes=lakka/boot/  id=SWR-LAK'
+		&& byText('.choices .choice', 'Lakka') != null`);
+	await page.act(`step('Software')`);
+	await page.act(`byText('.component .name', 'Lakka').closest('.component').click()`);
+	await page.act(`step('Launch')`);
+	await check('and the entry leaves the menu with the component', `byText('.row .name', 'Lakka') == null && byText('.choices .choice', 'Lakka') == null`);
 	// A mode of an overlay in the list of Ultrahand opens by a combo of its own, up to four buttons as the overlay itself
 	await page.act(`step('Overlays')`);
 	const modes = `byText('.tuning > .header .title', 'Ultrahand, Status Monitor').closest('.tuning')`;

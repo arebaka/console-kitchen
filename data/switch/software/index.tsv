@@ -9,10 +9,10 @@ common_problem_resolver	CommonProblemResolver	Team Neptune	payloads	0.3.5	86085	
 hwfly_toolbox	Hwfly Toolbox	hwfly-nx	payloads	1.1.1	78348	2022-05-09	github			bootloader/payloads/hwfly_toolbox.bin					mariko,oled,lite
 picofly_toolbox	Picofly Toolbox	Ansem-SoD	payloads	0.2	70608		url			bootloader/payloads/picofly_toolbox.bin					mariko,oled,lite
 sys_clk	sys-clk	RetroNX	sysmodules	2.0.1-fix	3438174	2026-02-17	appstore	c	sys_clk.png				horizon_oc
-horizon_oc	Horizon OC	Souldbminer / Lightos	sysmodules	2.5.1	1780565	2026-07-26	github	ho			ultrahand		sys_clk	atmosphere				1
+horizon_oc	Horizon OC	Souldbminer / Lightos	sysmodules	2.5.1	1780565	2026-07-26	github	ho	horizon_oc.png		ultrahand		sys_clk	atmosphere				1
 missioncontrol	MissionControl	ndeadly	sysmodules	0.16.0	204223	2026-10-03	appstore	mc	missioncontrol.png				ldn_mitm
 saltynx	SaltyNX	masagrator	sysmodules	2.1.2	261373	2026-10-06	appstore	sa
-ldn_mitm	ldn_mitm	spacemeowx2	sysmodules	1.25.1	343088	2026-04-08	github	lm	ldn_mitm.png				missioncontrol
+ldn_mitm	ldn_mitm	spacemeowx2	sysmodules	1.25.1	343088	2026-04-08	github	lm					missioncontrol
 sys_con	sys-con	cathery / o0Zz	sysmodules	2.0.0	280130	2026-09-26	appstore	co	sys_con.png
 sys_ftpd_light	sys-ftpd-light	cathery	sysmodules	1.0.5	133019	2024-11-16	appstore	ft
 fizeau	Fizeau	averne	sysmodules	2.8.3	1536484	2026-08-07	github	fi	fizeau.jpg
@@ -27,10 +27,10 @@ fps_locker	FPSLocker	masagrator	overlays	3.5.0	710486	2026-10-04	appstore	fl			s
 edizon_overlay	EdiZon Overlay	proferabg / WerWolv	overlays	1.0.15	380679	2026-04-25	appstore	ez	edizon_overlay.png		ovlmenu|ultrahand
 reversenx_rt	ReverseNX-RT	masagrator	overlays	2.2.1	315448	2025-11-15	github	rr			saltynx,ovlmenu|ultrahand
 sysdvr_overlay	SysDVR Overlay	Hartie95	overlays	1.0.15	143062	2026-02-13	appstore	vr	sysdvr_overlay.png		sysdvr,ovlmenu|ultrahand
-noled	noled	kemalsanli	overlays	1.0.0	282680	2026-03-12	github	nl			ovlmenu|ultrahand
+noled	noled	kemalsanli	overlays	1.0.0	282680	2026-03-12	github	nl	noled.png		ovlmenu|ultrahand
 master_volume	MasterVolume	averne	overlays	1.2.3	434772	2026-05-16	github	mv			ovlmenu|ultrahand			hos
 bt_audio	BT_Audio-ovl	masagrator	overlays	1.0.2	286776	2025-11-15	github	ba			ovlmenu|ultrahand
-quickntp	QuickNTP	nedex	overlays	1.6.0	153413	2025-12-04	github	qn			ovlmenu|ultrahand
+quickntp	QuickNTP	nedex	overlays	1.6.0	153413	2025-12-04	github	qn	quickntp.png		ovlmenu|ultrahand
 ovl_sysmodules	ovl-sysmodules	WerWolv / ppkantorski	overlays	1.5.3	639036	2026-06-25	github	os			ovlmenu|ultrahand
 alchemist	Alchemist	ppkantorski	overlays	1.0.6	13467	2026-04-23	github	ac			ultrahand
 memory_kit	Memory Kit	ppkantorski	overlays	1.0.2	1566609	2026-05-20	github	mk			ultrahand			atmosphere
@@ -46,7 +46,7 @@ dbi	DBI	duckbill	installers	912ru	16657965	2026-09-18	github	db	dbi.jpg			tinfoi
 dbi_patcher	DBIPatcher	rashevskyv	installers	905	16158253	2026-09-10	github	db	dbi_patcher.jpg		dbi							1
 nxdumptool	nxdumptool	DarkMatterCore	installers	2026.04.24	1308155	2026-05-14	appstore	dt	nxdumptool.png
 goldleaf	Goldleaf	XorTroll	installers	1.2.1	5249300	2026-09-23	appstore	gl	goldleaf.png			tinfoil
-tinfoil	Tinfoil	blawar	installers	20.0	8704000		manual	ti				goldleaf
+tinfoil	Tinfoil	blawar	installers	20.0	8704000		manual	ti	tinfoil.jpg			goldleaf
 jksv	JKSV	J-D-K	saves	12/02/2025	4472291	2025-12-03	appstore	jk	jksv.png			checkpoint,neumann
 checkpoint	Checkpoint	FlagBrew	saves	5.2.0	2436384	2026-08-27	appstore	cp	checkpoint.png			neumann
 neumann	Neumann	turtle-insect	saves	0.0.32	1170040	2026-04-17	appstore	nm	neumann.png			checkpoint
@@ -72,13 +72,14 @@ akira	Akira (chiaki-ng)	xlanor	streaming	0.6.5	8255345	2026-10-05	github	ak	akir
 skynx	SkyNX	DevL0rd	streaming	1.5	9492260	2022-03-21	appstore	sk	skynx.png			switch_remote_play				1
 switch_remote_play	switch-remote-play	Moehammered	streaming	1.0.0	9388140	2021-11-29	appstore	rp	switch_remote_play.png			skynx				1
 retroarch	RetroArch	libretro	emulators	1.22.1	62478624	2025-11-15	appstore	ra	retroarch.png			flycast,ppsspp,melonds,mgba,psnes,pnes,pfbneo
+lakka	Lakka	libretro	emulators	6.1	1269483520	2026-02-21	github	lk	lakka.png
 ppsspp	PPSSPP	hrydgard / m4xw	emulators	1.17.x (Sept 9, 2024)	20226510	2025-04-29	appstore	ps	ppsspp.png
 mgba	mGBA	endrift	emulators	0.10.5	2990112	2025-03-23	appstore	gb	mgba.png
 melonds	melonDS	Arisotura / ArcDelta	emulators	7.2.1	1389241	2026-04-25	appstore	md	melonds.png			noods,desmume
 noods	NooDS	Hydr8gon	emulators	release	2714438	2026-08-09	github	nd	noods.png			desmume
 desmume	DeSmuME-NX	Laproxi / MasterFeizz	emulators	0.0.3	1693444	2018-07-21	appstore	ds	desmume.png			noods				1
 scummvm	ScummVM	ScummVM Team	emulators	2026.3.0	121852316	2026-06-21	appstore	sv	scummvm.png
-flycast	Flycast	libretro	emulators	nightly	8393379		url	ra			retroarch
+flycast	Flycast	libretro	emulators	nightly	8393379		url	ra	flycast.jpg		retroarch
 psnes	pSNES	Cpasjuste	emulators	7.2	14858460	2026-08-19	appstore	sn	psnes.png
 pnes	pNES	Cpasjuste	emulators	7.2	14989033	2026-08-19	appstore	ne	pnes.png
 pfbneo	pFBNeo	Cpasjuste	emulators	7.2	22456946	2026-08-19	appstore	fb	pfbneo.png

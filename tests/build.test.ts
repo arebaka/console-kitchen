@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { resolveSelection } from '@/data';
 import { BOOT_ENTRIES, CATALOG, COMPONENTS, SPARE_INI, SWITCH } from '@/platforms/switch';
 import { I18N } from '@i18n';
-import { TuningConfig } from '@/types';
+import { SwitchState, TuningConfig } from '@/types';
 import { BITMAPS, customBuild, encodeBitmaps } from './fixtures';
 
 describe('build', () => {
@@ -191,6 +191,54 @@ describe('what hekate loads for a component', () => {
 		expect(result.configs.map(config => config.path)).not.toContain(SPARE_INI);
 		expect(config(result, 'bootloader/hekate_ipl.ini')).not.toMatch(/^(kip1|secmon)=/m);
 		expect(readme(result)).not.toContain('More configs');
+	});
+});
+
+// Lakka is another system hekate boots: it comes as a tar and with an entry of its own
+describe('a system a component brings', () => {
+	const KEYS = ['l4t=1', 'boot_prefixes=lakka/boot/', 'id=SWR-LAK'];
+	const build = (ids: string[], changes: Partial<SwitchState> = {}) => {
+		const custom = customBuild();
+		return SWITCH.build({ ...custom, ...changes, selectedComponentIDs: resolveSelection(CATALOG, [...custom.selectedComponentIDs, ...ids]), lang: 'en', t: I18N.en });
+	};
+	const file = (result: ReturnType<typeof build>, path: string) => result.files.find(file => file.path == path)!.content;
+	// Lines of the sections of the Launch menu by their names
+	const menu = (result: ReturnType<typeof build>): {[name: string]: string[]} => Object.fromEntries(result.configs
+		.find(config => config.path == 'bootloader/hekate_ipl.ini')!.content.trim().split('\n\n')
+		.map(section => [section.split('\n')[0].slice(1, -1), section.split('\n').slice(1)]));
+
+	it('gets its entry after the boot modes and before the payloads, with the logo and the icon it comes with', () => {
+		const result = build(['lakka']);
+		const payloads = COMPONENTS.filter(comp => comp.payload && customBuild().selectedComponentIDs.includes(comp.id)).map(comp => comp.name);
+		expect(Object.keys(menu(result))).toEqual(['config', 'CFW (emuMMC)', 'CFW (emuMMC SD01)', 'Stock', 'Lakka', ...payloads]);
+		expect(menu(result).Lakka).toEqual([...KEYS, 'logopath=lakka/boot/splash.bmp', 'icon=lakka/boot/icon_lakka_hue.bmp']);
+		expect(file(result, 'README.md')).toContain('- **Launch → Lakka**. ');
+	});
+
+	it('takes the logo and the icon picked for it in place of its own', () => {
+		const { appearance } = customBuild();
+		const result = build(['lakka'], { appearance: { ...appearance, logos: { ...appearance.logos, lakka: 'hekate-b' }, icons: { ...appearance.icons, lakka: 'hekate-switch' } } });
+		expect(menu(result).Lakka).toEqual([...KEYS, 'logopath=bootloader/res/console_kitchen_lakka_logo.bmp', 'icon=bootloader/res/console_kitchen_lakka_hue.bmp']);
+		expect(result.assets.map(asset => asset.path)).toEqual(expect.arrayContaining(['bootloader/res/console_kitchen_lakka_logo.bmp', 'bootloader/res/console_kitchen_lakka_hue.bmp']));
+	});
+
+	// What hekate loads for a component goes with CFW only, and the entry counts for autoboot like any other
+	it('boots by itself and without what hekate loads for CFW', () => {
+		const result = build(['lakka', 'horizon_oc'], { launch: { ...customBuild().launch, autoboot: 'lakka' } });
+		expect(menu(result).config).toContain('autoboot=4');
+		expect(menu(result).Lakka.filter(line => /^(kip1|secmon)=/.test(line))).toEqual([]);
+		expect(menu(result)['CFW (emuMMC)']).toContain('kip1=atmosphere/kips/hoc.kip');
+	});
+
+	it('is unpacked from its tar by both installers, which leave the tools for it out of the builds without one', () => {
+		const result = build(['lakka']);
+		expect(file(result, 'install.sh')).toContain("install_tar 'libretro/Lakka-LibreELEC' '^Lakka-Switch\\.aarch64-[0-9.]+\\.tar$' '1' &&");
+		expect(file(result, 'install.ps1')).toContain("Install-Tar (Get-Download (Get-AssetUrl 'libretro/Lakka-LibreELEC' '^Lakka-Switch\\.aarch64-[0-9.]+\\.tar$')) 1\n");
+		const without = build([]);
+		expect(file(without, 'install.sh')).not.toMatch(/\btar\b/);
+		expect(file(without, 'install.ps1')).not.toMatch(/\btar\b/i);
+		expect(Object.keys(menu(without))).not.toContain('Lakka');
+		expect(file(without, 'README.md')).not.toContain('Other systems');
 	});
 });
 

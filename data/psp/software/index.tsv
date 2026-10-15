@@ -1,6 +1,6 @@
 id	name	author	category	version	size	released	source	link	logo	plugin_path	plugin_scope	requires	required
 ark	ARK-5	PSP-Arkfive	base	5.1.0	13827816	2026-08-18	github	f	ark.png				1
-update661	System Update 6.61	Sony	base	6.61	32580549	2015-01-15	url
+update661	System Update 6.61	Sony	base	6.61	32580549	2015-01-15	url		update661.png
 gclite	Game Categories Lite	Bubbletune / Codestation	plugins	1.6	97933	2022-08-25	github	p		gclite/category_lite.prx	vsh
 missyhud	missyhud	pebeto	plugins	0.7	17846	2026-08-27	github	p		missyhud.prx	game,pops
 aemu	æmu	Coldbird / Kethen	plugins	2026-09-12	2961611	2026-09-12	github	p		atpro.prx	game

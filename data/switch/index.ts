@@ -1,5 +1,5 @@
-import type { BootEntry, BootMode, GalleryImage, ImageTarget, LaunchKey, OverclockData } from '@/types';
-import { type Conditions, type Row, compact, components, firmware, flag, link, number, presets, tuning } from '@/parse';
+import type { BootEntry, BootMode, ComponentEntry, GalleryImage, ImageTarget, LaunchKey, OverclockData } from '@/types';
+import { type Conditions, type Row, compact, components, firmware, flag, link, number, presets, text, tuning } from '@/parse';
 
 import LINK_ROWS from './link.tsv';
 import FIRMWARE_ROWS from './firmware.tsv';
@@ -28,17 +28,29 @@ export const TUNING = tuning(TUNING_ROWS, path => TUNING_TABLES[`./tuning/${path
 
 export const LINK = link(LINK_ROWS);
 
-// Entries of the Launch menu that boot the system, with the keys of their sections
-export const LAUNCH: BootEntry[] = LAUNCH_ROWS.map(row => ({
-	id: row.id as BootMode,
+const launchEntry = (row: Row) => compact({
+	id: row.id,
 	name: row.name,
 	caption: row.caption,
-	keys: LAUNCH_KEYS[`./launch/${row.id}.yaml`]
-}));
+	keys: LAUNCH_KEYS[`./launch/${row.id}.yaml`],
+	logo: text(row.logo),
+	icon: text(row.icon)
+});
 
-// What hekate has to load with CFW for a component, such as its KIP: the keys the component adds to the entries booting CFW
+// Entries of the Launch menu that boot the system, with the keys of their sections
+export const LAUNCH: BootEntry[] = LAUNCH_ROWS
+	.filter(row => !row.component)
+	.map(row => ({ ...launchEntry(row), id: row.id as BootMode }));
+
+// Entries that are in the menu with a component: the other systems hekate boots, such as a Linux
+export const SYSTEMS: ComponentEntry[] = LAUNCH_ROWS
+	.filter(row => row.component)
+	.map(row => ({ ...launchEntry(row), component: row.component }));
+
+// What hekate has to load with CFW for a component, such as its KIP: the keys the component adds to the entries booting CFW.
+// A file named after an entry holds the keys of that entry instead, whatever component shares the name
 export const MODULES: {[component: string]: LaunchKey} = Object.fromEntries(SOFTWARE
-	.filter(comp => `./launch/${comp.id}.yaml` in LAUNCH_KEYS)
+	.filter(comp => `./launch/${comp.id}.yaml` in LAUNCH_KEYS && !LAUNCH_ROWS.some(row => row.id == comp.id))
 	.map(comp => [comp.id, LAUNCH_KEYS[`./launch/${comp.id}.yaml`]]));
 
 // Pictures of the gallery, their files are named after their targets and ids

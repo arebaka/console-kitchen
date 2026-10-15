@@ -3,7 +3,7 @@ import { HARDWARE } from '@data';
 import { isTuningGroupActive, listRows } from '@/data';
 import { Asset, BuildRequest, BuildResult, ConfigSpec, installerView, installers, render, renderConfigs } from '@/build';
 import TEMPLATES, { README } from '@templates/switch';
-import { CATALOG, COMPONENTS, GALLERY, SPARE_INI, launchEntries, spareEntries } from './data';
+import { CATALOG, COMPONENTS, GALLERY, SPARE_INI, SYSTEM_ENTRIES, launchEntries, spareEntries } from './data';
 
 type Request = BuildRequest<SwitchState>;
 
@@ -116,12 +116,13 @@ function logoPath(request: Request, entry: string): string | undefined {
 	return request.appearance.logos[entry] ? `bootloader/res/console_kitchen_${entry}_logo.bmp` : undefined;
 }
 
-// An entry as a section of an ini of hekate: its keys, then the logo and the icon picked for it
+// An entry as a section of an ini of hekate: its keys, then its logo and its icon. The ones picked for the entry
+// take the place of the ones it comes with
 const entrySection = (request: Request, entry: LaunchEntry) => ({
 	name: entry.name,
 	keys: Object.entries(entry.keys).map(([key, value]) => ({ key, value })),
-	logo: logoPath(request, entry.id),
-	icon: iconPath(request, entry.id)
+	logo: logoPath(request, entry.id) ?? entry.logo,
+	icon: iconPath(request, entry.id) ?? entry.icon
 });
 
 const CONFIGS: ConfigSpec<Request>[] = [
@@ -467,6 +468,7 @@ export function build(request: Request): BuildResult {
 	const { dns } = request.tuning;
 	const entries = launchEntries(request.launch, request.selectedComponentIDs);
 	const spares = spareEntries(request.launch, request.selectedComponentIDs);
+	const systems = SYSTEM_ENTRIES.filter(entry => request.selectedComponentIDs.includes(entry.component));
 	const autoboot = entries.find(entry => entry.id == request.launch.autoboot);
 	const readmeView = {
 		...view,
@@ -482,6 +484,9 @@ export function build(request: Request): BuildResult {
 		// More emuMMCs have to be created in their folders before their entries boot
 		emummcs: request.launch.emummcs.map(folder => ({ folder, name: entries.find(entry => entry.id == `emummc-${folder}`)!.name })),
 		hasEmummcs: request.launch.emummcs.length > 0,
+		// Other systems in the menu, with what the catalog notes about the components that bring them
+		systems: systems.map(entry => ({ name: entry.name, note: t.software.switch[entry.component]?.note ?? '' })),
+		hasSystems: systems.length > 0,
 		// Entries of More configs that boot CFW without what hekate loads for a component
 		spares: spares.map(entry => entry.name),
 		hasSpares: spares.length > 0,

@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { HARDWARE } from '@data';
 import { matchingPreset, presetSelection, resolveSelection, tuningGroups } from '@/data';
 import { PLATFORMS } from '@/platforms';
-import { BOOT_ENTRIES, CATALOG, GALLERY, SWITCH } from '@/platforms/switch';
+import { BOOT_ENTRIES, CATALOG, GALLERY, SWITCH, SYSTEM_ENTRIES } from '@/platforms/switch';
 import { I18N } from '@i18n';
 import { buttonName, isButtons } from '@/components/Buttons';
 
@@ -54,8 +54,16 @@ describe('catalog', () => {
 	// Keys in a file named after nothing would go into no entry without a word
 	it('keeps the keys of the Launch menu in files named after its entries and after the components that add theirs', () => {
 		const names = readdirSync('data/switch/launch').filter(file => file.endsWith('.yaml')).map(file => file.replace(/\.yaml$/, ''));
-		const known = [...BOOT_ENTRIES.map(entry => entry.id), ...CATALOG.components.map(comp => comp.id)];
+		const known = [...BOOT_ENTRIES.map(entry => entry.id), ...SYSTEM_ENTRIES.map(entry => entry.id), ...CATALOG.components.map(comp => comp.id)];
 		expect(names.filter(name => !known.includes(name))).toEqual([]);
+	});
+
+	// An entry of another system is in the menu with the component that installs it, and boots something
+	it('brings every other system into the Launch menu with a component that exists', () => {
+		const ids = CATALOG.components.map(comp => comp.id);
+		expect(SYSTEM_ENTRIES.length).toBeGreaterThan(0);
+		expect(SYSTEM_ENTRIES.filter(entry => !ids.includes(entry.component) || !Object.keys(entry.keys ?? {}).length).map(entry => entry.id)).toEqual([]);
+		expect(BOOT_ENTRIES.filter(entry => !Object.keys(entry.keys ?? {}).length).map(entry => entry.id)).toEqual([]);
 	});
 
 	it('has every picture in public', () => {

@@ -96,6 +96,8 @@ export interface Translation {
 			overridesDescription: string;
 			spares: string;
 			sparesDescription: string;
+			systems: string;
+			systemsDescription: string;
 			payloads: string;
 			payloadsDescription: string;
 			autoboot: string;
@@ -141,6 +143,7 @@ export interface Translation {
 			thread: string; // link to more pictures on GBAtemp
 			common: string;
 			none: string;
+			own: string; // the picture an entry comes with
 			upload: string;
 			uploaded: string;
 			invalid: string;

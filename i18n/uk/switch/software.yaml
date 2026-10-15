@@ -326,6 +326,11 @@ retroarch:
   details: 'Фронтенд для ядер libretro: NES, SNES, Game Boy, Genesis, PlayStation і десятки інших систем в одному застосунку.'
   note: Пакет з магазину містить набір ядер.
 
+lakka:
+  description: Linux-система для емуляції на базі RetroArch
+  details: Завантажується з Hekate замість Horizon OS і повністю лежить у папці lakka на SD-карті. Отримує власний пункт у меню Launch.
+  note: 'Карта має бути у FAT32. Сполучення Joy-Con Lakka бере з дампа Hekate: після сполучення в Horizon OS зроби Nyx Options → Dump Joy-Con BT.'
+
 flycast:
   description: Ядро емулятора Dreamcast
   details: Емуляція Sega Dreamcast, Naomi й Atomiswave як ядро RetroArch з нічних збірок libretro.

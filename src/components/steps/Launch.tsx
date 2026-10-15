@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { BootMode, EntryOverride, Fix, Issue, LaunchConfig, TuningConfig, TuningValue } from '@/types';
 import { Language, Translation, format } from '@i18n';
 import { tuningGroups } from '@/data';
-import { BOOT_ENTRIES, CATALOG, COMPONENTS, ENTRY_OVERRIDES, SPARE_INI, SWITCH, isEmuMMCFolder, launchEntries, spareEntries } from '@/platforms/switch';
+import { BOOT_ENTRIES, CATALOG, COMPONENTS, ENTRY_OVERRIDES, SPARE_INI, SWITCH, SYSTEM_ENTRIES, isEmuMMCFolder, launchEntries, spareEntries } from '@/platforms/switch';
 import { activate } from '@/utils';
 import { Issues } from '../Issues';
 import { ComponentTile } from '../ComponentTile';
@@ -41,6 +41,7 @@ export function Launch({
 }: LaunchProps) {
 	const entries = launchEntries(launch, selectedComponentIDs);
 	const spares = spareEntries(launch, selectedComponentIDs);
+	const systems = SYSTEM_ENTRIES.filter(entry => selectedComponentIDs.includes(entry.component));
 	// An entry that left the menu takes autoboot with it, until it comes back
 	const autoboot = entries.some(entry => entry.id == launch.autoboot) ? launch.autoboot : 'menu';
 	const [folder, setFolder] = useState('');
@@ -217,6 +218,39 @@ export function Launch({
 									{entry.name}
 								</h4>
 							</header>
+							<p className="keys">
+								{Object.entries(entry.keys).map(([key, value]) => `${key}=${value}`).join('  ')}
+							</p>
+						</li>
+					))}
+				</ul>
+			</section>
+		)}
+
+		{systems.length > 0 && (
+			<section className="tuning">
+				<header className="header">
+					<h3 className="title">
+						{t.pages.launch.systems}
+					</h3>
+					<p className="file">
+						bootloader/hekate_ipl.ini
+					</p>
+				</header>
+				<p className="description">
+					{t.pages.launch.systemsDescription}
+				</p>
+				<ul className="rows">
+					{systems.map(entry => (
+						<li key={entry.id} className="row entry">
+							<header className="line">
+								<h4 className="name">
+									{entry.name}
+								</h4>
+							</header>
+							<p className="description">
+								{t.software.switch[entry.component]?.description}
+							</p>
 							<p className="keys">
 								{Object.entries(entry.keys).map(([key, value]) => `${key}=${value}`).join('  ')}
 							</p>

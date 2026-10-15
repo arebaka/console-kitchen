@@ -55,6 +55,16 @@
 
 Серверы Nintendo заблокированы в {{dnsTargets}}: обновления, eShop и онлайн-игра там не работают.
 {{/dnsBlock}}
+{{#hasSystems}}
+
+## Другие системы
+
+Hekate загружает их своими пунктами вместо Horizon OS:
+
+{{#systems}}
+- **Launch → {{name}}**. {{note}}
+{{/systems}}
+{{/hasSystems}}
 {{#hasSpares}}
 
 ## Если CFW не загружается

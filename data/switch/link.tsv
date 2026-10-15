@@ -167,6 +167,7 @@ software	83	quickntp
 software	84	ovl_sysmodules
 software	85	alchemist
 software	86	memory_kit
+software	87	lakka
 words	0	R
 words	1	L
 words	2	ZR
@@ -370,6 +371,7 @@ words	199	console-kitchen-tegraexplorer
 words	200	console-kitchen-resolver
 words	201	console-kitchen-hwfly
 words	202	console-kitchen-picofly
+words	203	lakka
 l	0	boot
 l	1	emummc
 l	2	autoboot
@@ -893,6 +895,8 @@ a	16	img.icon.tegraexplorer
 a	17	img.icon.common_problem_resolver
 a	18	img.icon.hwfly_toolbox
 a	19	img.icon.picofly_toolbox
+a	20	img.logo.lakka
+a	21	img.icon.lakka
 qn	0	ultrahand_quickntp.priority
 qn	1	ultrahand_quickntp.star
 qn	2	ultrahand_quickntp.hide

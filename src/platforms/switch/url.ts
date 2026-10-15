@@ -3,7 +3,7 @@ import { HARDWARE, HARDWARE_CODES } from '@data';
 import { LINK as CODES } from '@data/switch';
 import { compareVersions } from '@/data';
 import { Params, byParam, decodeSelection, decodeTuning, encodeSelection, encodeTuning, tuningKeys, tuningParam, tuningWords } from '@/url';
-import { BOOT_ENTRIES, CATALOG, COMPONENTS, ENTRY_OVERRIDES, GALLERY, HOS_VERSIONS, OVERCLOCK, defaultBuild, gameName, isEmuMMCFolder, templateClocks } from './data';
+import { BOOT_ENTRIES, CATALOG, COMPONENTS, COMPONENT_ENTRIES, ENTRY_OVERRIDES, GALLERY, HOS_VERSIONS, OVERCLOCK, defaultBuild, gameName, isEmuMMCFolder, templateClocks } from './data';
 
 const BOOT_MODES = BOOT_ENTRIES.map(entry => entry.id);
 
@@ -14,8 +14,9 @@ const CLOCK_KEYS = ['docked', 'handheld', 'handheld_charging', 'handheld_chargin
 // Entries booting the system, enabled or not: they keep overrides, logos and icons
 const hosEntries = (launch: LaunchConfig) => [...BOOT_MODES, ...launch.emummcs.map(folder => `emummc-${folder}`)];
 
-// Components with a payload, each of them can be an entry with a logo and an icon
-const PAYLOADS = COMPONENTS.filter(comp => comp.payload).map(comp => comp.id);
+// Entries that are in the menu with their components, the other systems and the payloads: each can boot by itself
+// and take a logo and an icon
+const BROUGHT = COMPONENT_ENTRIES.map(entry => entry.id);
 
 // The param of a short link a key goes into: the Launch menu with Hekate (l), the profiles of the overclock with sys-clk (c),
 // the pictures on their own (a), an option with the rest of what its group sets up
@@ -32,7 +33,7 @@ export const LINK: LinkCodes = { ...CODES, hardware: HARDWARE_CODES, firmwareKey
 // Everything links of the Switch name, to give it numbers: the system versions from the oldest, the software from what a build
 // starts with, the words the values are made of and the params in the order links spell them
 export function vocabulary(): Vocabulary {
-	const entries = [...BOOT_MODES, ...PAYLOADS];
+	const entries = [...BOOT_MODES, ...BROUGHT];
 	return {
 		firmware: HOS_VERSIONS.map(v => v.version).sort(compareVersions),
 		software: [...new Set([...defaultBuild().selectedComponentIDs, ...COMPONENTS.map(comp => comp.id)])],
@@ -46,7 +47,7 @@ export function vocabulary(): Vocabulary {
 		], paramOf),
 		words: [
 			...tuningWords(CATALOG.tuning),
-			...BOOT_MODES, 'menu', ...PAYLOADS,
+			...BOOT_MODES, 'menu', ...BROUGHT,
 			...GALLERY.map(image => image.id),
 			// What a profile of the overclock is made of apart from its game: links say the ID of a game as it is
 			'stock', 'custom', ...Object.keys(OVERCLOCK.templates), ...CLOCK_KEYS,
@@ -121,9 +122,9 @@ export function decode(params: URLSearchParams): SwitchState {
 	if (emummcs) build.launch.emummcs = [...new Set(emummcs)];
 	const entries = hosEntries(build.launch);
 
-	// Autoboot takes the menu, an entry booting the system or a component with a payload
+	// Autoboot takes the menu, an entry booting the system or one a component brings
 	const autoboot = get('autoboot');
-	if (autoboot == 'menu' || entries.includes(autoboot!) || PAYLOADS.includes(autoboot!)) {
+	if (autoboot == 'menu' || entries.includes(autoboot!) || BROUGHT.includes(autoboot!)) {
 		build.launch.autoboot = autoboot!;
 	}
 
@@ -155,7 +156,7 @@ export function decode(params: URLSearchParams): SwitchState {
 
 	const image = (target: ImageTarget, id: string | null) =>
 		id && GALLERY.some(item => item.target == target && item.id == id) ? id : undefined;
-	const images = (kind: 'logo' | 'icon', target: ImageTarget) => Object.fromEntries([...entries, ...PAYLOADS]
+	const images = (kind: 'logo' | 'icon', target: ImageTarget) => Object.fromEntries([...entries, ...BROUGHT]
 		.map(entry => [entry, image(target, get(`img.${kind}.${entry}`))])
 		.filter(([, id]) => id)) as Record<string, string>;
 	build.appearance = {

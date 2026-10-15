@@ -57,16 +57,19 @@ const assetPattern = (asset: string, options: Record<string, TuningValue>) =>
 
 // Every flag is set explicitly, so a missing one never resolves from an outer context
 function installSteps(comp: ComponentInfo, modchip: boolean, options: Record<string, TuningValue> = {}) {
-	const step = { appstore: false, zip: false, file: false, urlZip: false, urlFile: false };
+	const step = { appstore: false, zip: false, file: false, tar: false, urlZip: false, urlFile: false };
 	switch (comp.source) {
 		case 'appstore':
 			return comp.sources.appstore!.map(name => ({ ...step, appstore: true, package: name }));
 		case 'github':
 			return comp.sources.github!
 				.filter(item => !item.modchip || modchip)
-				.map(item => item.path
-					? { ...step, file: true, repo: item.repo, asset: assetPattern(item.asset, options), path: item.path }
-					: { ...step, zip: true, repo: item.repo, asset: assetPattern(item.asset, options), root: item.root ?? '', into: item.into ?? '' });
+				.map(item => {
+					const asset = { repo: item.repo, asset: assetPattern(item.asset, options) };
+					if (item.path) return { ...step, ...asset, file: true, path: item.path };
+					if (item.strip !== undefined) return { ...step, ...asset, tar: true, strip: item.strip };
+					return { ...step, ...asset, zip: true, root: item.root ?? '', into: item.into ?? '' };
+				});
 		case 'url':
 			return comp.sources.url!.map(item => item.path
 				? { ...step, urlFile: true, url: item.url, path: item.path }
@@ -90,8 +93,9 @@ export function installerView(request: BuildRequest, hardware: HardwareInfo, sel
 	return {
 		hardware: hardware.name,
 		components,
-		// The App Store helpers only go into installers that use them
+		// The App Store helpers only go into installers that use them, and so do the ones that unpack a tar
 		hasAppstore: components.some(comp => comp.steps.some(step => step.appstore)),
+		hasTar: components.some(comp => comp.steps.some(step => step.tar)),
 		// Heredocs and here-strings add the final line break themselves
 		configs: configs.map(config => ({ path: config.path, content: sealed(config.content.trimEnd()) })),
 		manual: manual.map(comp => ({ name: comp.name, url: comp.sources.manual })),

@@ -352,6 +352,13 @@ switch_remote_play:
 retroarch:
   appstore: RetroNX
 
+# A tar with a single folder on top, named after the release: it is unpacked without that folder
+lakka:
+  github:
+    repo: libretro/Lakka-LibreELEC
+    asset: ^Lakka-Switch\.aarch64-[0-9.]+\.tar$
+    strip: 1
+
 flycast:
   url:
     url: https://buildbot.libretro.com/nightly/nintendo/switch/libnx/latest/flycast_libretro_libnx.nro.zip

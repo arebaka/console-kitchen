@@ -55,6 +55,16 @@ Create each of them the same way, Hekate names the folders itself: SD00, SD01 an
 
 Nintendo servers are blocked on {{dnsTargets}}: updates, eShop and online play don't work there.
 {{/dnsBlock}}
+{{#hasSystems}}
+
+## Other systems
+
+Hekate boots them from entries of their own instead of Horizon OS:
+
+{{#systems}}
+- **Launch → {{name}}**. {{note}}
+{{/systems}}
+{{/hasSystems}}
 {{#hasSpares}}
 
 ## If CFW does not boot

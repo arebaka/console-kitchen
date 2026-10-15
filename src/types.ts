@@ -37,6 +37,7 @@ export interface GithubAsset {
 	root?: string; // archive directory that maps to the SD root
 	into?: string; // SD directory the archive is extracted to
 	path?: string; // destination on the SD card, turns the asset into a single file
+	strip?: number; // leading folders its paths lose on the SD card, turns the asset into a tar unpacked straight onto the card
 	modchip?: boolean; // only for revisions booted by a modchip
 }
 
@@ -203,19 +204,24 @@ export type LaunchKey = Record<string, string | number>;
 
 // Section of hekate_ipl.ini, an entry of the Launch menu
 export interface LaunchEntry {
-	id: string; // boot mode, `emummc-<folder>` of another emuMMC or a payload component
+	id: string; // boot mode, `emummc-<folder>` of another emuMMC, a payload component or an entry a component brings
 	name: string; // name of the section, shown in the Launch menu
 	caption: string; // caption of the group the section belongs to
 	keys: LaunchKey;
+	logo?: string; // SD paths of the boot logo and the icon the entry comes with, the ones picked for it take their place
+	icon?: string;
 }
 
 // Entry booting the console in one of the modes
 export type BootEntry = LaunchEntry & { id: BootMode };
 
+// Entry that is in the menu with its component: another system to boot or a payload
+export type ComponentEntry = LaunchEntry & { component: string };
+
 // Exosphere keys an entry sets for itself, overriding exosphere.ini and system_settings.ini
 export type EntryOverride = 'cal0blank' | 'usb3force' | 'memmode';
 
-// Launch menu of hekate: the boot modes, more emuMMCs, then payloads of the selected components
+// Launch menu of hekate: the boot modes, more emuMMCs, then what the selected components bring: other systems and payloads
 export interface LaunchConfig {
 	modes: BootMode[];
 	emummcs: string[]; // folders in emuMMC/ of more emuMMCs, each gets its own entry

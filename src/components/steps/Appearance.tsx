@@ -58,6 +58,9 @@ export function Appearance({
 	const [iconEntry, setIconEntry] = useState<string>();
 	const logoFor = entries.find(entry => entry.id == logoEntry)?.id;
 	const iconFor = entries.find(entry => entry.id == iconEntry)?.id ?? entries[0]?.id;
+	// The boot screen and the icon the entries come with, they stay until others are picked for them
+	const ownLogo = entries.find(entry => entry.id == logoFor)?.logo;
+	const ownIcon = entries.find(entry => entry.id == iconFor)?.icon;
 	// Picture under the pointer or the focus, the screen shows it until it is left
 	const [hovered, setHovered] = useState<{ key: string; image?: string }>();
 
@@ -68,11 +71,12 @@ export function Appearance({
 	const source = (target: ImageTarget, key: string, image?: string) =>
 		image == 'upload' ? uploads[key]?.url : GALLERY.find(item => item.target == target && item.id == image)?.file;
 
-	// What the screen shows for the key: the hovered picture, the chosen one, for an entry without its own the common one
+	// What the screen shows for the key: the hovered picture, the chosen one, for an entry without its own the common one.
+	// The screen an entry comes with is not here to show, so the screen names its file
 	const shown = (key: string, value?: string) => hovered?.key == key ? hovered.image : value;
 	const logoKey = logoFor ? `logo.${logoFor}` : 'bootlogo';
 	const logo = shown(logoKey, logoFor ? appearance.logos[logoFor] : appearance.bootlogo);
-	const logoSource = logo ? source('bootlogo', logoKey, logo) : source('bootlogo', 'bootlogo', appearance.bootlogo);
+	const logoSource = logo ? source('bootlogo', logoKey, logo) : ownLogo ? undefined : source('bootlogo', 'bootlogo', appearance.bootlogo);
 	const background = source('background', 'background', shown('background', appearance.background));
 
 	const upload = async (key: string, file: File) => {
@@ -144,9 +148,9 @@ export function Appearance({
 				src={logoSource}
 				fill={HEKATE_GRAY}
 				width={screenWidth}
-				caption={t.pages.appearance.defaults.bootlogo} />
+				caption={ownLogo ?? t.pages.appearance.defaults.bootlogo} />
 			{logoFor
-				? gallery('bootlogo', `logo.${logoFor}`, appearance.logos[logoFor], t.pages.appearance.common)
+				? gallery('bootlogo', `logo.${logoFor}`, appearance.logos[logoFor], ownLogo ? t.pages.appearance.own : t.pages.appearance.common)
 				: gallery('bootlogo', 'bootlogo', appearance.bootlogo)}
 		</section>
 
@@ -171,7 +175,7 @@ export function Appearance({
 				{t.pages.appearance.targets.icon.description}
 			</p>
 			{chips(entries, iconFor, appearance.icons, setIconEntry)}
-			{gallery('icon', `icon.${iconFor}`, appearance.icons[iconFor])}
+			{gallery('icon', `icon.${iconFor}`, appearance.icons[iconFor], ownIcon ? t.pages.appearance.own : undefined)}
 		</section>}
 
 		<p className="note">

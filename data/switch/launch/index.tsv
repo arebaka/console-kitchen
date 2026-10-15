@@ -1,4 +1,5 @@
-id	name	caption
+id	name	caption	component	logo	icon
 emummc	CFW (emuMMC)	Custom firmware
 sysmmc	CFW (sysMMC)	Custom firmware
 stock	Stock	Stock
+lakka	Lakka	Linux	lakka	lakka/boot/splash.bmp	lakka/boot/icon_lakka_hue.bmp

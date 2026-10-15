@@ -8,7 +8,7 @@
 # Set $env:GITHUB_TOKEN to lift the GitHub API limit of 60 requests per hour.
 
 $ErrorActionPreference = 'Stop'
-$ProgressPreference = 'SilentlyContinue' # the progress bar slows Invoke-WebRequest down dramatically on PowerShell 5
+$ProgressPreference = 'SilentlyContinue' # the bars cmdlets draw by themselves slow them down dramatically on PowerShell 5
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 {{#hasAppstore}}
@@ -49,9 +49,46 @@ function Write-Notice([string]$Text) {
 	Write-Host " $Text"
 }
 
+# A download is read part by part to show how far it is, a few times a second: Invoke-WebRequest draws its bar
+# for every part, which is what slows it down
 function Get-Download([string]$Url) {
-	$file = Join-Path $WorkDir ([IO.Path]::GetFileName(([Uri]$Url).AbsolutePath))
-	Invoke-WebRequest -Uri $Url -OutFile $file -UseBasicParsing
+	$name = [IO.Path]::GetFileName(([Uri]$Url).AbsolutePath)
+	$file = Join-Path $WorkDir $name
+	# The bar is for a console: with the input or the output going elsewhere it would land among them
+	if (-not ([Console]::IsInputRedirected -or [Console]::IsOutputRedirected)) {
+		$ProgressPreference = 'Continue'
+	}
+	$request = [Net.WebRequest]::Create($Url)
+	$request.UserAgent = 'console-kitchen'
+	$response = $request.GetResponse()
+	try {
+		$total = $response.ContentLength
+		$source = $response.GetResponseStream()
+		$target = [IO.File]::Create($file)
+		try {
+			$buffer = New-Object byte[] 1MB
+			[long]$done = 0
+			$drawn = [Diagnostics.Stopwatch]::StartNew()
+			while (($read = $source.Read($buffer, 0, $buffer.Length)) -gt 0) {
+				$target.Write($buffer, 0, $read)
+				$done += $read
+				if ($drawn.ElapsedMilliseconds -ge 200) {
+					# A server may leave the size untold, the bar then only counts what has come
+					if ($total -gt 0) {
+						Write-Progress -Activity $name -Status ('{0:N1} / {1:N1} MB' -f ($done / 1MB), ($total / 1MB)) -PercentComplete ([Math]::Min(100, [int](100 * $done / $total)))
+					} else {
+						Write-Progress -Activity $name -Status ('{0:N1} MB' -f ($done / 1MB))
+					}
+					$drawn.Restart()
+				}
+			}
+		} finally {
+			$target.Dispose()
+		}
+	} finally {
+		$response.Close()
+		Write-Progress -Activity $name -Completed
+	}
 	return $file
 }
 
@@ -93,6 +130,21 @@ function Install-Download([string]$File, [string]$Path) {
 	Copy-Item -LiteralPath $File -Destination $target -Force
 }
 
+{{#hasTar}}
+# A tar goes straight onto the card, its paths without their leading folders: such an archive is too big to unpack it twice.
+# Run by root, tar would give the files to the owners the archive names, which the card cannot keep
+function Install-Tar([string]$File, [int]$Strip) {
+	if (-not (Get-Command tar -CommandType Application -ErrorAction SilentlyContinue)) {
+		throw 'tar is required, Windows has it since Windows 10 version 1803'
+	}
+	& tar -xf $File -C $SdRoot "--strip-components=$Strip" --no-same-owner
+	if ($LASTEXITCODE) {
+		throw "tar could not unpack $(Split-Path $File -Leaf)"
+	}
+	Remove-Item -LiteralPath $File -Force
+}
+
+{{/hasTar}}
 {{#hasAppstore}}
 function Install-AppStore([string]$Package) {
 	$unpacked = Expand-Download (Get-Download "$AppStore/zips/$Package.zip")
@@ -141,12 +193,13 @@ try {
 	Write-Step '{{name}}'
 	try {
 {{#steps}}
-{{#appstore}}		Install-AppStore '{{package}}'{{/appstore}}{{#zip}}		Install-Archive (Get-Download (Get-AssetUrl '{{repo}}' '{{asset}}')) '{{root}}' '{{into}}'{{/zip}}{{#file}}		Install-Download (Get-Download (Get-AssetUrl '{{repo}}' '{{asset}}')) '{{path}}'{{/file}}{{#urlZip}}		Install-Archive (Get-Download '{{url}}') '{{root}}' '{{into}}'{{/urlZip}}{{#urlFile}}		Install-Download (Get-Download '{{url}}') '{{path}}'{{/urlFile}}
+{{#appstore}}		Install-AppStore '{{package}}'{{/appstore}}{{#zip}}		Install-Archive (Get-Download (Get-AssetUrl '{{repo}}' '{{asset}}')) '{{root}}' '{{into}}'{{/zip}}{{#file}}		Install-Download (Get-Download (Get-AssetUrl '{{repo}}' '{{asset}}')) '{{path}}'{{/file}}{{#tar}}		Install-Tar (Get-Download (Get-AssetUrl '{{repo}}' '{{asset}}')) {{strip}}{{/tar}}{{#urlZip}}		Install-Archive (Get-Download '{{url}}') '{{root}}' '{{into}}'{{/urlZip}}{{#urlFile}}		Install-Download (Get-Download '{{url}}') '{{path}}'{{/urlFile}}
 {{/steps}}
 		Write-Ok '{{name}}'
 	} catch {
 		Write-Fail '{{name}}'
-		Write-Host "        $($_.Exception.Message)" -ForegroundColor DarkGray
+		# What went wrong itself, without the words PowerShell wraps the errors of .NET into
+		Write-Host "        $($_.Exception.GetBaseException().Message)" -ForegroundColor DarkGray
 		$Failed += '{{name}}'
 	}
 {{/components}}
@@ -183,7 +236,7 @@ try {
 } finally {
 	Remove-Item -LiteralPath $WorkDir -Recurse -Force -ErrorAction SilentlyContinue
 	# The script and what archives leave in the root of the card go away, wherever the script was started from
-	foreach ($leftover in 'install.ps1', 'LICENSE.txt', 'README.txt', 'README.md', 'screen1.png', 'screen2.png', 'switch/breeze/.Breeze.nro.star') {
+	foreach ($leftover in 'install.ps1', 'LICENSE.txt', 'README.txt', 'README.md', 'CHANGELOG.md', 'screen1.png', 'screen2.png', 'switch/breeze/.Breeze.nro.star') {
 		Remove-Item -LiteralPath (Join-Path $SdRoot $leftover) -Force -ErrorAction SilentlyContinue
 	}
 }

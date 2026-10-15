@@ -28,6 +28,12 @@ if [ -t 1 ]; then
 else
 	CLR_RESET='' CLR_BOLD='' CLR_DIM='' CLR_GREEN='' CLR_RED='' CLR_CYAN='' CLR_YELLOW=''
 fi
+# Downloads draw the progress bar of curl where there is a terminal to draw it in
+if [ -t 1 ] && [ -t 2 ]; then
+	BAR=1
+else
+	BAR=''
+fi
 
 info()    { printf "\n${CLR_CYAN}>${CLR_RESET} ${CLR_BOLD}%s${CLR_RESET}\n" "$1"; }
 step()    { printf "  ${CLR_DIM}[..]${CLR_RESET} %s..." "$1"; }
@@ -49,6 +55,12 @@ else
 	echo "error: unzip, bsdtar or python3 is required" >&2
 	exit 1
 fi
+{{#hasTar}}
+if ! command -v tar > /dev/null; then
+	echo "error: tar is required" >&2
+	exit 1
+fi
+{{/hasTar}}
 {{#hasImages}}
 if ! command -v base64 > /dev/null || ! command -v gzip > /dev/null; then
 	echo "error: base64 and gzip are required" >&2
@@ -67,6 +79,7 @@ cleanup() {
 		"$SD_ROOT/LICENSE.txt" \
 		"$SD_ROOT/README.txt" \
 		"$SD_ROOT/README.md" \
+		"$SD_ROOT/CHANGELOG.md" \
 		"$SD_ROOT/screen1.png" \
 		"$SD_ROOT/screen2.png" \
 		"$SD_ROOT/switch/breeze/.Breeze.nro.star"
@@ -95,7 +108,14 @@ asset_url() {
 download() {
 	local file
 	file="$WORK_DIR/$(basename "${1%%\?*}")"
-	curl -fsSL -o "$file" "$1" || return 1
+	if [ -n "$BAR" ]; then
+		# The bar takes the line under the step and is wiped off once the file is here, the cursor goes back to the step
+		printf '\n' >&2
+		curl -fL --progress-bar -o "$file" "$1" || return 1
+		printf '\033[A\033[2K\033[A' >&2
+	else
+		curl -fsSL -o "$file" "$1" || return 1
+	fi
 	echo "$file"
 }
 
@@ -135,6 +155,17 @@ install_file() {
 	url="$(asset_url "$1" "$2")" && file="$(download "$url")" && save "$file" "$3"
 }
 
+{{#hasTar}}
+# A tar goes straight onto the card, its paths without their leading folders: such an archive is too big to unpack it twice.
+# Run by root, tar would give the files to the owners the archive names, which the card cannot keep
+install_tar() {
+	local url file
+	url="$(asset_url "$1" "$2")" && file="$(download "$url")" &&
+		tar -xf "$file" -C "$SD_ROOT" --strip-components="$3" --no-same-owner &&
+		rm -f "$file"
+}
+
+{{/hasTar}}
 write_config() {
 	mkdir -p "$SD_ROOT/$(dirname "$1")" && cat > "$SD_ROOT/$1"
 }
@@ -147,7 +178,7 @@ info "Downloading & unpacking components"
 {{#components}}
 
 step '{{name}}'
-if {{#steps}}{{#appstore}}install_appstore '{{package}}' &&{{/appstore}}{{#zip}}install_zip '{{repo}}' '{{asset}}' '{{root}}' '{{into}}' &&{{/zip}}{{#file}}install_file '{{repo}}' '{{asset}}' '{{path}}' &&{{/file}}{{#urlZip}}{ archive="$(download '{{url}}')" && unpack "$archive" '{{root}}' '{{into}}'; } &&{{/urlZip}}{{#urlFile}}{ file="$(download '{{url}}')" && save "$file" '{{path}}'; } &&{{/urlFile}}{{/steps}} true; then
+if {{#steps}}{{#appstore}}install_appstore '{{package}}' &&{{/appstore}}{{#zip}}install_zip '{{repo}}' '{{asset}}' '{{root}}' '{{into}}' &&{{/zip}}{{#file}}install_file '{{repo}}' '{{asset}}' '{{path}}' &&{{/file}}{{#tar}}install_tar '{{repo}}' '{{asset}}' '{{strip}}' &&{{/tar}}{{#urlZip}}{ archive="$(download '{{url}}')" && unpack "$archive" '{{root}}' '{{into}}'; } &&{{/urlZip}}{{#urlFile}}{ file="$(download '{{url}}')" && save "$file" '{{path}}'; } &&{{/urlFile}}{{/steps}} true; then
 	ok '{{name}}'
 else
 	fail '{{name}}'

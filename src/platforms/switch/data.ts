@@ -1,7 +1,7 @@
-import { BootEntry, BootMode, Catalog, Clocks, ComponentInfo, EntryOverride, FirmwareVersion, GalleryImage, LaunchConfig, LaunchEntry, LaunchKey, SwitchState } from '@/types';
+import { BootEntry, BootMode, Catalog, Clocks, ComponentEntry, ComponentInfo, EntryOverride, FirmwareVersion, GalleryImage, LaunchConfig, LaunchEntry, LaunchKey, SwitchState } from '@/types';
 import { compareVersions, getTuningDefaults, presetSelection } from '@/data';
 
-import { APPEARANCE, FIRMWARE, LAUNCH, MODULES, OVERCLOCK, PRESETS, SOFTWARE, TUNING } from '@data/switch';
+import { APPEARANCE, FIRMWARE, LAUNCH, MODULES, OVERCLOCK, PRESETS, SOFTWARE, SYSTEMS, TUNING } from '@data/switch';
 
 export { OVERCLOCK };
 export const HOS_VERSIONS: FirmwareVersion[] = FIRMWARE;
@@ -15,6 +15,15 @@ export const CATALOG: Catalog = {
 	tuning: TUNING
 };
 export const BOOT_ENTRIES: BootEntry[] = LAUNCH;
+// Other systems hekate boots, each in the menu with the component that brings it
+export const SYSTEM_ENTRIES: ComponentEntry[] = SYSTEMS;
+// Entries that are in the menu with a component, selected or not: the other systems, then a payload each
+export const COMPONENT_ENTRIES: ComponentEntry[] = [
+	...SYSTEM_ENTRIES,
+	...COMPONENTS
+		.filter(comp => comp.payload)
+		.map(comp => ({ id: comp.id, name: comp.name, caption: 'Payloads', keys: { payload: comp.payload! }, component: comp.id }))
+];
 // Pictures lie in the folder of their target under their ID: appearance/icon/hekate-switch.png
 export const GALLERY: GalleryImage[] = APPEARANCE.map(image => ({ ...image, file: `appearance/${image.target}/${image.id}.png` }));
 
@@ -75,13 +84,14 @@ function systemEntries(launch: LaunchConfig, componentIDs: string[]): LaunchEntr
 	].map(entry => ({ ...entry, keys: { ...entry.keys, ...(bootsCFW(entry) ? modules : {}), ...launch.overrides[entry.id] } }));
 }
 
-// Entries of the Launch menu in their order: the ones booting the system, then payloads of the selected components
+// Entries of the Launch menu in their order: the ones booting the system, then what the selected components bring,
+// their systems and their payloads
 export function launchEntries(launch: LaunchConfig, selectedComponentIDs: string[]): LaunchEntry[] {
 	return [
 		...systemEntries(launch, selectedComponentIDs),
-		...COMPONENTS
-			.filter(comp => comp.payload && selectedComponentIDs.includes(comp.id))
-			.map(comp => ({ id: comp.id, name: comp.name, caption: 'Payloads', keys: { payload: comp.payload! } }))
+		...COMPONENT_ENTRIES
+			.filter(entry => selectedComponentIDs.includes(entry.component))
+			.map(({ component, ...entry }) => entry)
 	];
 }
 

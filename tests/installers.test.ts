@@ -1,5 +1,5 @@
 import { execFileSync, spawnSync } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, describe, expect, it } from 'vitest';
@@ -120,6 +120,47 @@ describe.skipIf(!CAN_RUN_BASH)('install.sh', () => {
 		execFileSync('bash', [join(root, 'install.sh')], { cwd: root, stdio: 'pipe' });
 		expect(existsSync(join(root, 'pwned'))).toBe(false);
 		expect(readFileSync(join(root, HOSTILE.path), 'utf8')).toBe(HOSTILE.written);
+	});
+});
+
+// A tar goes straight onto the card without its top folder. The release and its archive are made up here,
+// a stand-in for curl hands them over, so nothing is downloaded
+describe.skipIf(!CAN_RUN_BASH || !has('tar'))('install.sh with a tar', () => {
+	it('unpacks it onto the card without its top folder and leaves nothing else there', () => {
+		const lakka = CATALOG.components.find(comp => comp.id == 'lakka')!;
+		const files = installers({
+			...installerView({ ...SWITCH.defaults(), selectedComponentIDs: [lakka.id], lang: 'en', t: I18N.en }, HARDWARE[0], [lakka], [], []),
+			title: 'a tar',
+			card: 'SD card',
+			console: 'Nintendo Switch'
+		});
+		const root = card('install.sh', script(files, 'install.sh'));
+
+		const stage = mkdtempSync(join(tmpdir(), 'console-kitchen-tar-'));
+		cards.push(stage);
+		const release = join(stage, 'Lakka-Switch.aarch64-9.9');
+		mkdirSync(join(release, 'lakka/storage'), { recursive: true });
+		mkdirSync(join(release, 'bootloader/ini'), { recursive: true });
+		writeFileSync(join(release, 'lakka/SYSTEM'), 'system');
+		writeFileSync(join(release, 'bootloader/ini/Lakka.ini'), '[Lakka]\n');
+		writeFileSync(join(release, 'CHANGELOG.md'), 'changes');
+		execFileSync('tar', ['-cf', join(stage, 'release.tar'), '-C', stage, 'Lakka-Switch.aarch64-9.9']);
+		// Asked about the latest release, the stand-in names the archive, asked for a download, it gives the archive
+		mkdirSync(join(stage, 'bin'));
+		writeFileSync(join(stage, 'bin/curl'), [
+			'#!/usr/bin/env bash',
+			'while [ $# -gt 1 ]; do [ "$1" = -o ] && target="$2"; shift; done',
+			'case "$1" in',
+			'	https://api.github.com/*) echo \'"browser_download_url": "https://example.invalid/Lakka-Switch.aarch64-9.9.tar"\' ;;',
+			`	*) cp '${join(stage, 'release.tar')}' "$target" ;;`,
+			'esac'
+		].join('\n'), { mode: 0o755 });
+
+		execFileSync('bash', [join(root, 'install.sh')], { cwd: root, stdio: 'pipe', env: { ...process.env, PATH: `${join(stage, 'bin')}:${process.env.PATH}` } });
+		expect(readdirSync(root).sort()).toEqual(['bootloader', 'lakka']);
+		expect(readFileSync(join(root, 'lakka/SYSTEM'), 'utf8')).toBe('system');
+		expect(existsSync(join(root, 'lakka/storage'))).toBe(true);
+		expect(existsSync(join(root, 'bootloader/ini/Lakka.ini'))).toBe(true);
 	});
 });
 

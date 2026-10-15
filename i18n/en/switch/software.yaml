@@ -326,6 +326,11 @@ retroarch:
   details: 'Frontend for libretro cores: NES, SNES, Game Boy, Genesis, PlayStation and dozens of other systems in one app.'
   note: The App Store package includes a set of cores.
 
+lakka:
+  description: Linux system for emulation built on RetroArch
+  details: Boots from Hekate instead of Horizon OS and lives entirely in the lakka folder of the SD card. Gets an entry of its own in the Launch menu.
+  note: 'The card has to be FAT32. Lakka takes the pairing of the Joy-Con from a dump of Hekate: after pairing them in Horizon OS, run Nyx Options → Dump Joy-Con BT.'
+
 flycast:
   description: Dreamcast emulator core
   details: Sega Dreamcast, Naomi and Atomiswave emulation as a RetroArch core from the libretro nightly builds.

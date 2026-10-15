@@ -67,6 +67,15 @@ describe('links', () => {
 		expect(query).toContain('img.icon.fusee=hekate-payload');
 	});
 
+	// The entry of Lakka is in the menu with its component, like the one of a payload
+	it('let the entry of a system a component brings boot by itself and take a logo and an icon', () => {
+		const spelled = '?sw=lakka&autoboot=lakka&img.logo.lakka=hekate-b&img.icon.lakka=hekate-switch';
+		const { launch, appearance } = decodeState(spelled).builds.switch;
+		expect(launch.autoboot).toBe('lakka');
+		expect(appearance).toEqual({ logos: { lakka: 'hekate-b' }, icons: { lakka: 'hekate-switch' } });
+		expect(decodeState(`?${encodeState(decodeState(spelled))}`)).toEqual(decodeState(spelled));
+	});
+
 	it('take as many values of an option as it holds at once', () => {
 		const combo = (raw: string) => decodeState(`?status_monitor.key_combo=${raw}`).builds.switch.tuning.status_monitor.key_combo;
 		expect(combo('ZR,ZL,R,L')).toEqual(['L', 'R', 'ZL', 'ZR']);

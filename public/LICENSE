@@ -54,8 +54,9 @@ assets/
 
 logos/switch/
     Icons of the homebrew applications, taken from the Homebrew App Store
-    (https://hb-app.store), from the releases or the repositories of the
-    projects. Every icon belongs to the authors of its application.
+    (https://hb-app.store), from the releases, the repositories, the websites
+    or the GitHub organizations of the projects. Every icon belongs to the
+    authors of its application.
 
     aio_updater.jpg             AIO Switch Updater, HamletDuFromage
                                 https://github.com/HamletDuFromage/aio-switch-updater
@@ -93,16 +94,20 @@ logos/switch/
                                 https://github.com/XorTroll/emuiibo
     fizeau.jpg                  Fizeau, averne
                                 https://github.com/averne/Fizeau
+    flycast.jpg                 Flycast, flyinghead
+                                https://github.com/flyinghead/flycast
     goldleaf.png                Goldleaf, XorTroll
                                 https://github.com/XorTroll/Goldleaf
     hekate.png                  Hekate, CTCaer
                                 https://github.com/CTCaer/hekate
+    horizon_oc.png              Horizon OC, Souldbminer / Lightos
+                                https://github.com/Horizon-OC
     jc_color_swapper.png        JC Color Swapper, HamletDuFromage
                                 https://github.com/HamletDuFromage/JC-color-swapper
     jksv.png                    JKSV, J-D-K
                                 https://github.com/J-D-K/JKSV
-    ldn_mitm.png                ldn_mitm, spacemeowx2
-                                https://github.com/spacemeowx2/ldn_mitm
+    lakka.png                   Lakka, libretro
+                                https://www.lakka.tv
     lennytube.png               lennytube, noirscape
                                 https://github.com/noirscape/lennytube
     linkalho.jpg                Linkalho, rdmrocha / impeeza
@@ -117,6 +122,8 @@ logos/switch/
                                 https://github.com/XITRIX/Moonlight-Switch
     neumann.png                 Neumann, turtle-insect
                                 https://github.com/turtle-insect/Neumann
+    noled.png                   noled, kemalsanli
+                                https://github.com/kemalsanli/noled
     noods.png                   NooDS, Hydr8gon
                                 https://github.com/Hydr8gon/NooDS
     nx_activity_log.jpg         NX Activity Log, tallbl0nde / zdm65477730
@@ -141,6 +148,8 @@ logos/switch/
                                 https://www.ppsspp.org
     psnes.png                   pSNES, Cpasjuste
                                 https://github.com/Cpasjuste/pemu
+    quickntp.png                QuickNTP, nedex
+                                https://github.com/nedex/QuickNTP
     retroarch.png               RetroArch, libretro
                                 https://github.com/libretro/RetroArch
     scummvm.png                 ScummVM, ScummVM Team
@@ -171,14 +180,17 @@ logos/switch/
                                 https://github.com/exelix11/SysDVR
     themezer.png                Themezer, suchmememanyskill
                                 https://github.com/suchmememanyskill/themezer-nx
+    tinfoil.jpg                 Tinfoil, blawar
+                                https://tinfoil.io
     ulaunch.png                 uLaunch, XorTroll
                                 https://github.com/XorTroll/uLaunch
     ultrahand.png               Ultrahand, ppkantorski
                                 https://github.com/ppkantorski/Ultrahand-Overlay
 
 logos/psp/
-    Icons of the PSP homebrew, the ICON0 of their EBOOT.PBP from the releases
-    of the projects. Every icon belongs to the authors of its application.
+    Icons of the PSP homebrew and of the system update, the ICON0 of their
+    EBOOT.PBP from the releases of the projects and the update server of Sony.
+    Every icon belongs to the authors of its application.
 
     ark.png                     ARK-5 (FasterARK), PSP-Arkfive
                                 https://github.com/PSP-Arkfive/FasterARK
@@ -188,3 +200,5 @@ logos/psp/
                                 https://github.com/DaedalusX64/daedalus
     tempgba.png                 TempGBA4PSP-mod, andymcca
                                 https://github.com/andymcca/TempGBA4PSP-mod
+    update661.png               System Update 6.61, Sony Interactive Entertainment
+                                http://du01.psp.update.playstation.org/update/psp/image/us/2014_1212_6be8878f475ac5b1a499b95ab2f7d301/EBOOT.PBP
