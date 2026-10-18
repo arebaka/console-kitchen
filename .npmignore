@@ -8,6 +8,9 @@ data
 node_modules
 jspm_packages
 
+# DevTools
+.devtools-oxc
+
 # Dotenv
 .env
 .env.local
@@ -63,3 +66,6 @@ logs/*
 Session.vim
 Sessionx.vim
 [._]*.un~
+
+# Agents
+.claude

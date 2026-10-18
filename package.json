@@ -1,43 +1,47 @@
 {
 	"name": "brewdeck",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"description": "custom firmware builder for the Nintendo Switch and the PSP",
+	"keywords": [
+		"ark",
+		"cfw",
+		"homebrew",
+		"nintendo",
+		"nx",
+		"psp",
+		"switch"
+	],
+	"homepage": "https://github.com/arebaka/console-kitchen",
+	"bugs": {
+		"url": "https://github.com/arebaka/console-kitchen/issues"
+	},
 	"license": "MIT",
 	"author": "arelive <me@are.moe> (https://are.moe)",
 	"repository": "github:arebaka/console-kitchen",
-	"homepage": "https://github.com/arebaka/console-kitchen",
+	"funding": {
+		"type": "patreon",
+		"url": "https://www.patreon.com/arelive"
+	},
 	"type": "module",
 	"types": "dist/index.d.ts",
 	"scripts": {
-		"lint": "tsc --noEmit",
+		"lint": "oxlint",
+		"lint:fix": "oxlint --fix",
+		"format": "oxfmt --check",
+		"format:write": "oxfmt --write",
 		"test": "vitest run",
 		"test:watch": "vitest",
 		"test:ui": "bun tests/ui.ts",
-		"check": "bun run lint && bun run test && bun run build && bun run test:ui",
-		"build": "vite build",
+		"check": "bun run format && tsc --noEmit && bun run lint && bun run test && bun run build && bun run test:ui",
+		"clean": "rm -rf dist",
+		"build": "bun run clean && vite build",
 		"dev": "vite --host=0.0.0.0 --port=3000",
 		"preview": "vite preview",
 		"start": "bun run build && bun run preview",
 		"sync": "bun scripts/sync.mjs",
 		"number": "bun scripts/number.mjs",
-		"clean": "rm -rf dist"
+		"prepublishOnly": "bun run sync && bun run number && bun run check && bun run build"
 	},
-	"bugs": {
-		"url": "https://github.com/arebaka/console-kitchen/issues"
-	},
-	"funding": {
-		"type": "patreon",
-		"url": "https://www.patreon.com/arelive"
-	},
-	"keywords": [
-		"nintendo",
-		"switch",
-		"nx",
-		"psp",
-		"ark",
-		"homebrew",
-		"cfw"
-	],
 	"dependencies": {
 		"@arelive/reset.css": "^1.2.0",
 		"@fontsource/biz-udpgothic": "^5.3.0",
@@ -53,13 +57,31 @@
 	"devDependencies": {
 		"@modyfi/vite-plugin-yaml": "^1.1.1",
 		"@rollup/plugin-dsv": "^4.0.0",
+		"@stylistic/eslint-plugin": "^5.10.0",
 		"@types/mustache": "^4.2.6",
 		"@types/node": "^26.1.0",
 		"@types/react": "^19.2.17",
 		"@types/react-dom": "^19.2.3",
+		"@vitejs/devtools": "^0.8.0",
+		"@vitejs/devtools-oxc": "^0.8.0",
+		"@vitejs/devtools-rolldown": "^0.8.0",
+		"@vitejs/devtools-vite": "^0.8.0",
+		"@vitejs/devtools-vitest": "^0.8.0",
 		"@vitejs/plugin-react": "^6.0.3",
+		"@vitest/ui": "^5.0.5",
+		"eslint-plugin-json": "^5.0.0",
+		"eslint-plugin-perfectionist": "^5.12.1",
+		"eslint-plugin-regexp": "^3.3.1",
+		"eslint-plugin-security": "^4.2.0",
+		"eslint-plugin-sonarjs": "^4.2.2",
+		"eslint-plugin-testing-library": "^7.16.2",
+		"eslint-plugin-toml": "^1.5.0",
+		"eslint-plugin-yml": "^3.9.0",
 		"jszip": "^3.10.1",
+		"oxc-transform-react": "^0.154.0",
+		"oxfmt": "^0.73.0",
 		"oxlint": "^1.86.0",
+		"oxlint-tsgolint": "^7.0.2004",
 		"sass-embedded": "^1.105.0",
 		"typescript": "^5.9.3",
 		"vite": "^8.1.3",

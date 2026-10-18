@@ -4,11 +4,19 @@ import dsv from '@rollup/plugin-dsv';
 import yaml from '@modyfi/vite-plugin-yaml';
 
 export default defineConfig({
-	plugins: [react(), dsv(), yaml()],
+	base: "./",
+	plugins: [
+		react({
+			compiler: true,
+		}),
+		dsv(),
+		yaml(),
+	],
 	resolve: {
 		tsconfigPaths: true,
 	},
 	build: {
+		target: 'esnext',
 		sourcemap: true,
 		manifest: true,
 		minify: 'oxc',
@@ -20,4 +28,5 @@ export default defineConfig({
 		cors: true,
 		hmr: true,
 	},
+	devtools: true,
 });

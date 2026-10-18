@@ -5,6 +5,9 @@ dist
 node_modules
 jspm_packages
 
+# DevTools
+.devtools-oxc
+
 # Dotenv
 .env*
 !.env.example
@@ -59,3 +62,6 @@ logs/*
 Session.vim
 Sessionx.vim
 [._]*.un~
+
+# Agents
+.claude

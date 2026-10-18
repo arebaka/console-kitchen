@@ -1,0 +1,22 @@
+endOfLine: lf
+useTabs: true
+tabWidth: 4
+insertFinalNewline: true
+printWidth: 80
+semi: true
+trailingComma: all
+singleQuote: true
+jsxSingleQuote: true
+bracketSpacing: true
+bracketSameLine: false
+arrowParens: avoid
+sortImports: true
+experimentalOperatorPosition: end
+jsdoc: true
+sortPackageJson: true
+
+ignorePatterns:
+  - dist/**
+  - node_modules/**
+  - jspm_packages/**
+  - "templates/switch/config/JKSV/**.json"

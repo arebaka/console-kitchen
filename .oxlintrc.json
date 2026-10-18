@@ -1,0 +1,69 @@
+{
+	"$schema": "./node_modules/oxlint/configuration_schema.json",
+	"plugins": [
+		"import",
+		"unicorn",
+		"promise",
+		"typescript",
+		"jsx-a11y",
+		"react",
+		"react-perf",
+		"oxc",
+		"vitest",
+		"eslint",
+		"jsdoc"
+	],
+	"env": {
+		"browser": true,
+		"es2024": true,
+		"node": true
+	},
+	"jsPlugins": [
+		"@stylistic/eslint-plugin",
+		"eslint-plugin-perfectionist",
+		"eslint-plugin-security",
+		"eslint-plugin-sonarjs",
+		"eslint-plugin-regexp",
+		"eslint-plugin-testing-library",
+		"eslint-plugin-json",
+		"eslint-plugin-yml",
+		"eslint-plugin-toml"
+	],
+	"categories": {
+		"correctness": "error",
+		"suspicious": "warn",
+		"pedantic": "warn",
+		"perf": "warn",
+		"style": "off",
+		"restriction": "allow",
+		"nursery": "allow"
+	},
+	"rules": {},
+	"options": {
+		"typeAware": true,
+		"typeCheck": true
+	},
+	"settings": {
+		"react": {
+			"version": "19"
+		},
+		"vitest": {
+			"typecheck": false
+		},
+		"jsdoc": {
+			"ignorePrivate": false,
+			"ignoreInternal": false,
+			"ignoreReplacesDocs": true,
+			"overrideReplacesDocs": true,
+			"augmentsExtendsReplacesDocs": false,
+			"implementsReplacesDocs": false,
+			"exemptDestructuredRootsFromChecks": false
+		}
+	},
+	"ignorePatterns": [
+		"dist/**",
+		"node_modules/**",
+		"jspm_packages/**",
+		"templates/**.json"
+	]
+}
