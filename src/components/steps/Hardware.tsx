@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { HardwareRevision, PLATFORM_IDS } from '@/types';
+import { HardwareRevision } from '@/types';
 import { Language, Translation, format } from '@i18n';
 import { HARDWARE } from '@data';
+import { PLATFORM_IDS } from '@/state';
 import { activate, pixelsPerInch } from '@/utils';
 
 interface HardwareProps {

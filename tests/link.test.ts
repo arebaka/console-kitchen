@@ -6,8 +6,8 @@ import { expand, shorten, unnumbered } from '@/link';
 import { PLATFORMS } from '@/platforms';
 import { vocabulary as pspVocabulary } from '@/platforms/psp/url';
 import { vocabulary as switchVocabulary } from '@/platforms/switch/url';
-import { decodeState, defaultState, encodeState, spellOut } from '@/state';
-import { BuildState, LinkCodes, PLATFORM_IDS, Vocabulary } from '@/types';
+import { decodeState, defaultState, encodeState, spellOut, PLATFORM_IDS } from '@/state';
+import { BuildState, LinkCodes, Vocabulary } from '@/types';
 import { Params, query } from '@/url';
 import { customState } from './fixtures';
 

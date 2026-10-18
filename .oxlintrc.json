@@ -64,6 +64,7 @@
 		"dist/**",
 		"node_modules/**",
 		"jspm_packages/**",
-		"templates/**.json"
+		"templates/switch/sd/**",
+		"templates/psp/ms/**"
 	]
 }

@@ -19,4 +19,5 @@ ignorePatterns:
   - dist/**
   - node_modules/**
   - jspm_packages/**
-  - "templates/switch/config/JKSV/**.json"
+  - templates/switch/sd/**
+  - templates/psp/ms/**

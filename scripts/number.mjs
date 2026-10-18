@@ -35,7 +35,7 @@ const server = await createServer({ appType: 'custom', logLevel: 'error', server
 try {
 	const { unnumbered } = await server.ssrLoadModule('/src/link.ts');
 	const { HARDWARE } = await server.ssrLoadModule('/data/index.ts');
-	const { PLATFORM_IDS } = await server.ssrLoadModule('/src/types.ts');
+	const { PLATFORM_IDS } = await server.ssrLoadModule('/src/state.ts');
 	const tables = [
 		['data/link.tsv', { hardware: HARDWARE.map(hw => hw.id) }],
 		...await Promise.all(PLATFORM_IDS.map(async platform => {

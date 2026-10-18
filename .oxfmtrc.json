@@ -18,10 +18,21 @@
 	"jsdoc": true,
 	"sortPackageJson": true,
 
+	"overrides": [
+		{
+			"files": ["**.yaml", "**.md"],
+			"options": {
+				"useTabs": false,
+				"tabWidth": 2
+			}
+		}
+	],
+
 	"ignorePatterns": [
 		"dist/**",
 		"node_modules/**",
 		"jspm_packages/**",
-		"templates/switch/config/JKSV/**.json"
+		"templates/switch/sd/**",
+		"templates/psp/ms/**"
 	]
 }

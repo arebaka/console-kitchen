@@ -1,8 +1,12 @@
 export type PlatformId = 'switch' | 'psp';
-export const PLATFORM_IDS: PlatformId[] = ['switch', 'psp'];
 
 export type SwitchRevision = 'erista' | 'mariko' | 'oled' | 'lite';
-export type PspRevision = 'psp1000' | 'psp2000' | 'psp3000' | 'pspgo' | 'pspstreet';
+export type PspRevision =
+	| 'psp1000'
+	| 'psp2000'
+	| 'psp3000'
+	| 'pspgo'
+	| 'pspstreet';
 export type HardwareRevision = SwitchRevision | PspRevision;
 
 export interface HardwareInfo {
@@ -27,8 +31,28 @@ export interface FirmwareVersion {
 	supported?: Date;
 }
 
-export type ComponentCategory = 'base' | 'payloads' | 'sysmodules' | 'overlays' | 'plugins' | 'tools' | 'installers' | 'saves' | 'mods' | 'amiibo' | 'themes' | 'media' | 'streaming' | 'emulators' | 'development';
-export type ComponentSource = 'appstore' | 'github' | 'url' | 'manual' | 'bundled';
+export type ComponentCategory =
+	| 'base'
+	| 'payloads'
+	| 'sysmodules'
+	| 'overlays'
+	| 'plugins'
+	| 'tools'
+	| 'installers'
+	| 'saves'
+	| 'mods'
+	| 'amiibo'
+	| 'themes'
+	| 'media'
+	| 'streaming'
+	| 'emulators'
+	| 'development';
+export type ComponentSource =
+	| 'appstore'
+	| 'github'
+	| 'url'
+	| 'manual'
+	| 'bundled';
 
 // Asset of the latest GitHub release: an archive merged into the SD card or a single file
 export interface GithubAsset {
@@ -93,7 +117,18 @@ export interface Preset {
 }
 
 export type TuningValue = boolean | number | string | string[] | string[][];
-export type TuningStep = 'launch' | 'system' | 'security' | 'sysmodules' | 'overlays' | 'status_monitor' | 'dbi' | 'jksv' | 'amiibo' | 'plugins' | 'overclock';
+export type TuningStep =
+	| 'launch'
+	| 'system'
+	| 'security'
+	| 'sysmodules'
+	| 'overlays'
+	| 'status_monitor'
+	| 'dbi'
+	| 'jksv'
+	| 'amiibo'
+	| 'plugins'
+	| 'overclock';
 
 interface TuningOptionBase {
 	id: string;
@@ -101,18 +136,41 @@ interface TuningOptionBase {
 	when?: { [option: string]: TuningValue | TuningValue[] }; // active only while sibling options hold one of the listed value
 }
 
-export type TuningOption = TuningOptionBase & (
-	| { type: 'toggle'; default: boolean }
-	| { type: 'select'; values: (string | number)[]; default: string | number }
-	| { type: 'multiselect'; values: string[]; default: string[]; min?: number; max?: number } // from `min` to `max` values at once, any number of them without the bounds
-	| { type: 'range'; min: number; max: number; step: number; default: number }
-	| { type: 'number'; min: number; max: number; default: number }
-	| { type: 'text'; maxLength: number; default: string }
-	| { type: 'hue'; default: number }
-	| { type: 'color'; default: string }
-	| { type: 'rgba4444'; default: string } // a color with its opacity, a hex digit per channel: #1117
-	| { type: 'list'; fields: ListField[]; maxLength: number; max?: number; default: string[][] } // rows of a value per field, `max` of them at most
-);
+export type TuningOption = TuningOptionBase &
+	(
+		| { type: 'toggle'; default: boolean }
+		| {
+				type: 'select';
+				values: (string | number)[];
+				default: string | number;
+		  }
+		| {
+				type: 'multiselect';
+				values: string[];
+				default: string[];
+				min?: number;
+				max?: number;
+		  } // from `min` to `max` values at once, any number of them without the bounds
+		| {
+				type: 'range';
+				min: number;
+				max: number;
+				step: number;
+				default: number;
+		  }
+		| { type: 'number'; min: number; max: number; default: number }
+		| { type: 'text'; maxLength: number; default: string }
+		| { type: 'hue'; default: number }
+		| { type: 'color'; default: string }
+		| { type: 'rgba4444'; default: string } // a color with its opacity, a hex digit per channel: #1117
+		| {
+				type: 'list';
+				fields: ListField[];
+				maxLength: number;
+				max?: number;
+				default: string[][];
+		  } // rows of a value per field, `max` of them at most
+	);
 
 // A field of the rows of a list: a line of text, or a choice among its values, of one of them or of up to `max` at once
 export interface ListField {
@@ -132,7 +190,9 @@ export interface TuningGroup {
 }
 
 // Values of the options a build holds, by group and option
-export type TuningConfig = { [group: string]: { [option: string]: TuningValue } };
+export type TuningConfig = {
+	[group: string]: { [option: string]: TuningValue };
+};
 
 // Software of a platform: its components, presets of them and options of their configs
 export interface Catalog {
@@ -141,7 +201,7 @@ export interface Catalog {
 	categories: ComponentCategory[]; // picked on the Software step in this order, the others on steps of their own
 	presets: Preset[];
 	tuning: TuningGroup[];
-	files: {[component: string]: string[]}; // what the releases of the components put onto the card, by `bun run sync`
+	files: { [component: string]: string[] }; // what the releases of the components put onto the card, by `bun run sync`
 }
 
 // What links of a platform name, by the list it is numbered in. The tables in data/**/link.tsv give a number once and for good
@@ -149,7 +209,7 @@ export interface Vocabulary {
 	firmware: string[]; // system versions
 	software: string[]; // components
 	words: string[]; // what the values of the params are made of
-	keys: {[param: string]: string[]}; // params of a link spelled in full, by the param of a short link they are packed into
+	keys: { [param: string]: string[] }; // params of a link spelled in full, by the param of a short link they are packed into
 }
 
 // What a short link names by numbers instead of spelling: the ids behind the numbers
@@ -168,7 +228,12 @@ export interface BuildState {
 }
 
 export type ClockModule = 'cpu' | 'gpu' | 'mem';
-export type ClockMode = 'docked' | 'handheld' | 'handheld_charging' | 'handheld_charging_usb' | 'handheld_charging_official';
+export type ClockMode =
+	| 'docked'
+	| 'handheld'
+	| 'handheld_charging'
+	| 'handheld_charging_usb'
+	| 'handheld_charging_official';
 export type ClockKey = `${ClockMode}_${ClockModule}`;
 export type Clocks = Partial<Record<ClockKey, number>>;
 
@@ -255,7 +320,23 @@ export interface PspState extends BuildState {
 	plugins: Record<string, string[]>;
 }
 
-export type StepId = 'hardware' | 'firmware' | 'software' | 'launch' | 'system' | 'security' | 'sysmodules' | 'overlays' | 'status_monitor' | 'dbi' | 'jksv' | 'amiibo' | 'plugins' | 'overclock' | 'appearance' | 'build';
+export type StepId =
+	| 'hardware'
+	| 'firmware'
+	| 'software'
+	| 'launch'
+	| 'system'
+	| 'security'
+	| 'sysmodules'
+	| 'overlays'
+	| 'status_monitor'
+	| 'dbi'
+	| 'jksv'
+	| 'amiibo'
+	| 'plugins'
+	| 'overclock'
+	| 'appearance'
+	| 'build';
 
 export type IssueLevel = 'error' | 'warning' | 'info';
 

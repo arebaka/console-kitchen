@@ -8,6 +8,8 @@ import { expand, hardwareOf, shorten } from './link';
 import { readToml, tomlParams } from './toml';
 import { query } from './url';
 
+export const PLATFORM_IDS: PlatformId[] = ['switch', 'psp'];
+
 // A build of every platform, so a console picked by mistake does not cost the build of another one
 export interface Builds {
 	switch: SwitchState;

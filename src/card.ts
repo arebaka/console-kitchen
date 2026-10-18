@@ -1,7 +1,7 @@
-import { BuildState, Catalog, PlatformId, PLATFORM_IDS } from './types';
+import { BuildState, Catalog, PlatformId } from './types';
 import { BuildRequest, GeneratedFile } from './build';
 import { PLATFORMS } from './platforms';
-import { AppState, decodeState, withBuild } from './state';
+import { AppState, decodeState, withBuild, PLATFORM_IDS } from './state';
 import { CardTexts, MovedSections, isReplaced, textOf } from './read';
 import { TomlTable, readToml, tomlParams } from './toml';
 import { Params, decodeTuning, query } from './url';
