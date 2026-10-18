@@ -9,7 +9,7 @@ const SIZES: Record<ImageTarget, [number, number]> = {
 
 // Decodes the image of a URL or a blob
 async function loadImage(source: Blob | string): Promise<ImageBitmap> {
-	return createImageBitmap(typeof source == 'string' ? await (await fetch(source)).blob() : source);
+	return createImageBitmap(typeof source === 'string' ? await (await fetch(source)).blob() : source);
 }
 
 // Boot logos keep their size unless too big and hekate centers them, backgrounds cover the screen, icons fit the square

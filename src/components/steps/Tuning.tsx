@@ -418,16 +418,7 @@ function ListRows({
 		<div className="list">
 			{rows.map((row, at) => (
 				<div key={at} className="entry">
-					{option.fields.map((field, index) => field.max !== undefined ? (
-						<Picks
-							key={field.id}
-							field={field}
-							cell={row[index]}
-							label={label(field.id)}
-							isEnabled={isEnabled}
-							setCell={value => setCell(at, index, value)}
-							t={t} />
-					) : field.values ? (
+					{option.fields.map((field, index) => field.max === undefined ? field.values ? (
 						<select
 							key={field.id}
 							className="field"
@@ -453,6 +444,15 @@ function ListRows({
 							autoComplete="off"
 							spellCheck={false}
 							onChange={event => setCell(at, index, clean(index, event.target.value))} />
+					) : (
+						<Picks
+							key={field.id}
+							field={field}
+							cell={row[index]}
+							label={label(field.id)}
+							isEnabled={isEnabled}
+							setCell={value => setCell(at, index, value)}
+							t={t} />
 					))}
 					<button
 						className="control"

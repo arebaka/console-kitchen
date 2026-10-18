@@ -180,7 +180,7 @@ function readSystemSettings(card: CardConfig, texts: CardTexts): Params {
 	const params: Params = [];
 	if (values.enable_dns_mitm !== undefined) {
 		const targets = ['emummc', 'sysmmc'].filter(target => textOf(texts, `atmosphere/hosts/${target}.txt`) !== undefined);
-		params.push(['dns.mode', !isOn(values.enable_dns_mitm) ? 'off' : targets.length ? 'block' : 'default']);
+		params.push(['dns.mode', isOn(values.enable_dns_mitm) ? targets.length ? 'block' : 'default' : 'off']);
 		if (targets.length) params.push(['dns.targets', targets.join(',')]);
 	}
 	if (values.add_defaults_to_dns_hosts !== undefined) params.push(['dns.add_defaults', isOn(values.add_defaults_to_dns_hosts) ? '1' : '0']);
@@ -529,7 +529,7 @@ const CONFIGS: ConfigSpec<Request>[] = [
 		template: TEMPLATES.jksvJson,
 		// JKSV keeps its switches as numbers and fills in what the file leaves out
 		view: ({ tuning: { jksv } }) => ({
-			...Object.fromEntries(Object.entries(jksv).map(([key, value]) => [key, typeof value == 'boolean' ? flag(value) : value])),
+			...Object.fromEntries(Object.entries(jksv).map(([key, value]) => [key, typeof value === 'boolean' ? flag(value) : value])),
 			WorkingDirectory: JSON.stringify(jksv.WorkingDirectory || 'sdmc:/JKSV')
 		}),
 		when: request => isGroupSelected(request, 'jksv')

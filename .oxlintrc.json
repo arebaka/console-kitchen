@@ -2,8 +2,8 @@
 	"$schema": "./node_modules/oxlint/configuration_schema.json",
 	"plugins": [
 		"import",
-		"unicorn",
 		"promise",
+		"unicorn",
 		"typescript",
 		"jsx-a11y",
 		"react",
@@ -38,7 +38,10 @@
 		"restriction": "allow",
 		"nursery": "allow"
 	},
-	"rules": {},
+	"rules": {
+		"arrow-body-style": "off",
+		"@stylistic/arrow-parens": ["error", "as-needed"]
+	},
 	"options": {
 		"typeAware": true,
 		"typeCheck": true

@@ -259,8 +259,8 @@ async function syncSoftware({ platform, software: SOFTWARE, sources: SOURCES, tu
 			for (const item of items) {
 				const info = await release(item.repo);
 				const asset = info.assets.find(asset => assetPattern(item, options).test(asset.name));
-				if (!asset) problems.push(`${component.id}: no asset ${item.asset} in ${item.repo} ${info.version}`);
-				else matched.push(asset);
+				if (asset) {matched.push(asset);}
+				else {problems.push(`${component.id}: no asset ${item.asset} in ${item.repo} ${info.version}`);}
 			}
 			const main = await release(items[0].repo);
 			releaseInfo = { ...main, size: matched.reduce((sum, asset) => sum + asset.size, 0) };
@@ -384,8 +384,8 @@ async function componentFiles(component, release, options) {
 		const asset = (await release(item.repo)).assets.find(asset => assetPattern(item, options).test(asset.name));
 		if (!asset) continue;
 		if (item.path) files.add(item.path);
-		else if (item.strip !== undefined) add((await tarEntries(asset.browser_download_url)).map(name => name.split('/').slice(item.strip).join('/')).filter(Boolean));
-		else add(await zipEntries(asset.browser_download_url, asset.size), item.root, item.into);
+		else if (item.strip === undefined) {add(await zipEntries(asset.browser_download_url, asset.size), item.root, item.into);}
+		else {add((await tarEntries(asset.browser_download_url)).map(name => name.split('/').slice(item.strip).join('/')).filter(Boolean));}
 	}
 	for (const item of component.sources.url ?? []) {
 		if (item.path) files.add(item.path);

@@ -186,11 +186,11 @@ function templateParts(template: string, isList: (name: string) => boolean) {
 // What the placeholders of a JSON template stand for: the values of the keys they fill in, as text
 function jsonValues(template: string, json: unknown): {[name: string]: string} {
 	const values: {[name: string]: string} = {};
-	if (typeof json != 'object' || json === null) return values;
+	if (typeof json !== 'object' || json === null) return values;
 	for (const line of template.replace(/\{\{[#^/][\w.]+\}\}/g, '').split('\n')) {
 		const [, key, name] = line.match(/^\s*"([^"]+)":\s*\{\{([\w.]+)\}\},?\s*$/) ?? [];
 		const value = key === undefined ? undefined : (json as {[key: string]: unknown})[key];
-		if (value !== undefined && value !== null && typeof value != 'object') values[name] = String(value);
+		if (value !== undefined && value !== null && typeof value !== 'object') values[name] = String(value);
 	}
 	return values;
 }

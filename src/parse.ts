@@ -138,7 +138,7 @@ function option(row: Row): TuningOption {
 			return { id, type: 'toggle', default: flag(row.default) };
 		case 'select': {
 			const values = scalars(list(row.values) ?? []);
-			return { id, type: 'select', values, default: typeof values[0] == 'number' ? number(row.default) : row.default };
+			return { id, type: 'select', values, default: typeof values[0] === 'number' ? number(row.default) : row.default };
 		}
 		case 'multiselect': {
 			// The bounds are on how many values are picked at once

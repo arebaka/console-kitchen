@@ -21,7 +21,7 @@ export type TomlValue = string | number | boolean | TomlValue[];
 export interface TomlTable { [key: string]: TomlValue | TomlTable }
 
 const isTable = (value: unknown): value is TomlTable =>
-	typeof value == 'object' && value !== null && !Array.isArray(value) && !(value instanceof Date);
+	typeof value === 'object' && value !== null && !Array.isArray(value) && !(value instanceof Date);
 
 // The option a param sets, if it sets one
 function optionOf(catalog: Catalog, key: string): TuningOption | undefined {
@@ -79,7 +79,7 @@ export function readToml(text: string): TomlTable | undefined {
 
 // A value as links spell it
 const raw = (value: TomlValue): string =>
-	typeof value == 'boolean' ? (value ? '1' : '0') : Array.isArray(value) ? value.map(raw).join(',') : String(value);
+	typeof value === 'boolean' ? (value ? '1' : '0') : Array.isArray(value) ? value.map(raw).join(',') : String(value);
 
 // The params of a link a build file holds, spelled the way a link spells them, so the platform reads them as it reads
 // a link and keeps its defaults for whatever is invalid

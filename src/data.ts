@@ -56,7 +56,7 @@ export function pickedCell(field: ListField, picked: string[]): string | undefin
 
 // A component is required by its id, alternatives by any of theirs
 export function isRequirementMet(requirement: Requirement, selectedComponentIDs: string[]): boolean {
-	return typeof requirement == 'string'
+	return typeof requirement === 'string'
 		? selectedComponentIDs.includes(requirement)
 		: requirement.some(id => selectedComponentIDs.includes(id));
 }
@@ -81,7 +81,7 @@ export function resolveSelection(catalog: Catalog, ids: string[], dependencies: 
 		for (const comp of components.filter(comp => selected.has(comp.id))) {
 			for (const requirement of comp.requires ?? []) {
 				if (!isRequirementMet(requirement, [...selected])) {
-					selected.add(typeof requirement == 'string' ? requirement : requirement[0]);
+					selected.add(typeof requirement === 'string' ? requirement : requirement[0]);
 					changed = true;
 				}
 			}

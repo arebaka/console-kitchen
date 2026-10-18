@@ -40,20 +40,20 @@ function fromBase64(data: string): string | undefined {
 // The dump in a file of the Console Kitchen, undefined unless it is one of a platform there is
 export function readDump(table: TomlTable | undefined): CardDump | undefined {
 	if (table?.kind != 'dump' || !PLATFORM_IDS.includes(table.platform as PlatformId)) return undefined;
-	const entries = (value: unknown) => typeof value == 'object' && value !== null && !Array.isArray(value)
+	const entries = (value: unknown) => typeof value === 'object' && value !== null && !Array.isArray(value)
 		? Object.entries(value as {[key: string]: unknown}).filter(([path]) => isCardPath(path))
 		: [];
 	const texts: CardTexts = {};
 	for (const [path, value] of entries(table.texts)) {
-		const base64 = typeof value == 'object' && value !== null ? (value as { base64?: unknown }).base64 : undefined;
-		const text = typeof value == 'string' ? value : typeof base64 == 'string' ? fromBase64(base64) : undefined;
+		const base64 = typeof value === 'object' && value !== null ? (value as { base64?: unknown }).base64 : undefined;
+		const text = typeof value === 'string' ? value : typeof base64 === 'string' ? fromBase64(base64) : undefined;
 		if (text !== undefined) texts[path] = text;
 	}
 	return {
 		platform: table.platform as PlatformId,
-		made: typeof table.made == 'string' ? table.made : '',
-		files: Object.fromEntries(entries(table.files).filter(([, size]) => typeof size == 'number' && size >= 0)) as CardDump['files'],
-		hashes: Object.fromEntries(entries(table.hashes).filter(([, hash]) => typeof hash == 'string' && /^[0-9a-f]{64}$/.test(hash))) as CardDump['hashes'],
+		made: typeof table.made === 'string' ? table.made : '',
+		files: Object.fromEntries(entries(table.files).filter(([, size]) => typeof size === 'number' && size >= 0)) as CardDump['files'],
+		hashes: Object.fromEntries(entries(table.hashes).filter(([, hash]) => typeof hash === 'string' && /^[0-9a-f]{64}$/.test(hash))) as CardDump['hashes'],
 		texts
 	};
 }

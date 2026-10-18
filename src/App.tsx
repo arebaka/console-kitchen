@@ -35,7 +35,7 @@ export default function App() {
 	// Changes the build of the current platform, a function gets the build as it is by then
 	const updateBuild = (patch: Partial<SwitchState | PspState> | ((build: BuildState) => Partial<BuildState>)) => setState(prev => {
 		const build = prev.builds[prev.platform];
-		return { ...prev, builds: withBuild(prev.builds, prev.platform, { ...build, ...(typeof patch == 'function' ? patch(build) : patch) }) };
+		return { ...prev, builds: withBuild(prev.builds, prev.platform, { ...build, ...(typeof patch === 'function' ? patch(build) : patch) }) };
 	});
 
 	const { lang } = state;

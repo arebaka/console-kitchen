@@ -159,13 +159,13 @@ function pieces(text: string, words: Index): Piece[] {
 			const mark = MARKS.indexOf(text[at]) + 1;
 			if (mark) reach(way, at + 1, 0, 5, { type: 'mark', code: mark });
 
-			const startGames = !open ? at : text[at] == ',' ? at + 1 : text.length;
+			const startGames = open ? text[at] == ',' ? at + 1 : text.length : at;
 			if (startGames + 16 <= text.length && /^[0-9A-F]{16}$/.test(text.substr(startGames, 16))) {
 				reach(way, startGames + 16, 1, 3 + 64, { type: 'game', id: text.substr(startGames, 16) });
 			}
 
 			// After a piece the next one starts behind the comma that is read by itself
-			const start = !open ? at : text[at] == ',' ? at + 1 : text.length;
+			const start = open ? text[at] == ',' ? at + 1 : text.length : at;
 			for (let length = 1; length <= Math.min(words.longest, text.length - start); length++) {
 				const code = words.codes.get(text.substr(start, length));
 				if (code !== undefined) reach(way, start + length, 1, 2 + numberBits(code), { type: 'word', code });

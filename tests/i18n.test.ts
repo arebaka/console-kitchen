@@ -23,8 +23,8 @@ const isText = (type: ts.Type): boolean => type.isUnion() ? type.types.every(isT
 function mismatches(declared: ts.Type, value: unknown, path: string): string[] {
 	const { checker } = DECLARED;
 	const type = checker.getNonNullableType(declared);
-	if (isText(type)) return typeof value == 'string' ? [] : [`${path}: not a text`];
-	if (!value || typeof value != 'object') return [`${path}: not a section`];
+	if (isText(type)) return typeof value === 'string' ? [] : [`${path}: not a text`];
+	if (!value || typeof value !== 'object') return [`${path}: not a section`];
 
 	const section = value as Record<string, unknown>;
 	const properties = checker.getPropertiesOfType(type);
@@ -42,7 +42,7 @@ function mismatches(declared: ts.Type, value: unknown, path: string): string[] {
 
 // Every text with its path: `pages.hardware.size`
 function texts(node: object, path = ''): [string, string][] {
-	return Object.entries(node).flatMap(([key, value]): [string, string][] => typeof value == 'string'
+	return Object.entries(node).flatMap(([key, value]): [string, string][] => typeof value === 'string'
 		? [[`${path}${key}`, value]]
 		: texts(value, `${path}${key}.`));
 }

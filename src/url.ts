@@ -11,7 +11,7 @@ export const query = (params: Params) => params.map(([key, value]) => `${key}=${
 
 // Values of options as links spell them
 function serialize(value: TuningValue): string {
-	if (typeof value == 'boolean') return value ? '1' : '0';
+	if (typeof value === 'boolean') return value ? '1' : '0';
 	if (Array.isArray(value)) return value.join(',');
 	return String(value);
 }

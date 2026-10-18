@@ -19,7 +19,7 @@ export function componentIssues(catalog: Catalog, build: BuildState, comp: Compo
 
 	for (const requirement of comp.requires ?? []) {
 		if (!isRequirementMet(requirement, build.selectedComponentIDs)) {
-			const alternatives = typeof requirement == 'string' ? [requirement] : requirement;
+			const alternatives = typeof requirement === 'string' ? [requirement] : requirement;
 			issues.push({
 				level: 'warning',
 				code: 'requires',

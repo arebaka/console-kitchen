@@ -70,7 +70,7 @@ interface Dump {
 	texts: {[path: string]: string | { base64: string }};
 }
 
-const text = (value: string | { base64: string }) => typeof value == 'string' ? value : Buffer.from(value.base64, 'base64').toString('utf8');
+const text = (value: string | { base64: string }) => typeof value === 'string' ? value : Buffer.from(value.base64, 'base64').toString('utf8');
 const sha256 = (content: string) => createHash('sha256').update(content).digest('hex');
 
 const RUNS = [
