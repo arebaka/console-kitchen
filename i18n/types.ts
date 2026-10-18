@@ -168,6 +168,24 @@ export interface Translation {
 			readme: string;
 			preview: string;
 			imageData: string;
+			// What the update of a card does, by the dump of the card
+			card: {
+				title: string;
+				made: string;
+				install: string;
+				refresh: string;
+				remove: string;
+				write: string;
+				keep: string;
+				none: string;
+				moved: string;
+				lost: string;
+				foreign: string;
+				kinds: {[kind in string]: string};
+				actions: {[action in string]: string};
+				backup: string;
+				forget: string;
+			};
 		};
 	};
 	issues: {
@@ -193,6 +211,15 @@ export interface Translation {
 		or: string;
 		go: string;
 		dismiss: string; // closes a toast
+	};
+	// The menu of files in the top bar: builds and dumps of cards to open, the scripts that dump a card
+	file: {
+		title: string;
+		open: string;
+		dump: string; // how a card is dumped
+		scripts: {[file in string]: string};
+		opened: {[kind in 'build' | 'dump']: string};
+		invalid: string;
 	};
 	metrics: {
 		size: string;

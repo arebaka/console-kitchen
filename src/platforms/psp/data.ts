@@ -1,7 +1,7 @@
 import { Catalog, ComponentInfo, PspState } from '@/types';
 import { compareVersions, getTuningDefaults, presetSelection } from '@/data';
 
-import { FIRMWARE, PRESETS, SOFTWARE, TUNING } from '@data/psp';
+import { FILES, FIRMWARE, PRESETS, SOFTWARE, TUNING } from '@data/psp';
 
 export { FIRMWARE };
 export const COMPONENTS: ComponentInfo[] = SOFTWARE;
@@ -10,7 +10,8 @@ export const CATALOG: Catalog = {
 	components: COMPONENTS,
 	categories: ['base', 'plugins', 'tools', 'emulators'],
 	presets: PRESETS,
-	tuning: TUNING
+	tuning: TUNING,
+	files: FILES
 };
 
 // ARK-5 runs on the firmware 6.60 and 6.61, an older PSP takes the official update first

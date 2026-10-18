@@ -21,6 +21,37 @@ Download manually: {{#manual}}**{{.}}** {{/manual}}
 3. Eject the card safely and leave the USB mode.
 
 The installer downloads everything right onto the card: files with the same names are overwritten, the rest of the card stays as it is. GitHub allows 60 anonymous API requests per hour, set `GITHUB_TOKEN` if you run the installer often.
+
+To update the card later, put `dump.sh` or `dump.ps1` into its root and run it, then open `console-kitchen-dump.toml` in the Console Kitchen with **File → Open**: the Build step gets `update.sh` and `update.ps1`. The installer leaves the build and the files of every component in `{{trace}}/` for it.
+{{#cardUpdate}}
+
+## Update of the card
+
+`update.sh` and `update.ps1` make the card the dump was made of this build. Put one of them into the root of that card and run it there:
+
+- Linux and macOS: `bash update.sh`
+- Windows: `powershell -ExecutionPolicy Bypass -File update.ps1`
+
+What the update does:
+
+{{#added}}
+- Adds {{added}}
+{{/added}}
+{{#refreshed}}
+- Downloads again what has a newer release out: {{refreshed}}
+{{/refreshed}}
+{{#removed}}
+- Removes {{removed}}, their configs stay on the card
+{{/removed}}
+{{#written}}
+- Writes the configs whose options changed: {{written}}. The others stay as the card has them
+{{/written}}
+{{#deleted}}
+- Deletes what other builds left: {{deleted}}
+{{/deleted}}
+
+What it overwrites or deletes goes into `backup/` on the card with its paths: copy it back to undo. A config changed on the card after the dump stays as it is, dump the card again to change it. Once done, the update deletes the dump: it holds the configs with their passwords.
+{{/cardUpdate}}
 {{#update}}
 
 ## System update

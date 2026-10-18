@@ -5,6 +5,7 @@ import { PSP } from '@/platforms/psp';
 import { Language } from '@i18n';
 import { BuildState, PlatformId, PspState, StepId, SwitchState } from './types';
 import { expand, hardwareOf, shorten } from './link';
+import { readToml, tomlParams } from './toml';
 import { query } from './url';
 
 // A build of every platform, so a console picked by mistake does not cost the build of another one
@@ -57,3 +58,15 @@ export function decodeState(query: string): AppState {
 
 // What a link says spelled in full, a param for everything
 export const spellOut = (link: string): string => query([...spelled(link).params]);
+
+// The state with the build of a file of the Console Kitchen, read as its link would be, the build of the other platform
+// as it is. Undefined unless the file holds a build. A file without a console is of the console of its platform
+export function importBuild(state: AppState, text: string): AppState | undefined {
+	const table = readToml(text);
+	const platform = PLATFORMS[table?.platform as PlatformId];
+	if (table?.kind != 'build' || !platform) return undefined;
+	const params = tomlParams(platform.catalog, table);
+	if (!params.some(([key]) => key == 'hw')) params.push(['hw', platform.defaults().hardware]);
+	const imported = decodeState(query(params));
+	return { ...state, platform: imported.platform, builds: withBuild(state.builds, imported.platform, imported.builds[imported.platform]) };
+}

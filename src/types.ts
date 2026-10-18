@@ -141,6 +141,7 @@ export interface Catalog {
 	categories: ComponentCategory[]; // picked on the Software step in this order, the others on steps of their own
 	presets: Preset[];
 	tuning: TuningGroup[];
+	files: {[component: string]: string[]}; // what the releases of the components put onto the card, by `bun run sync`
 }
 
 // What links of a platform name, by the list it is numbered in. The tables in data/**/link.tsv give a number once and for good

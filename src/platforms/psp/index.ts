@@ -3,7 +3,7 @@ import { Platform } from '..';
 import { CATALOG, FIRMWARE, defaultBuild, isFirmwareSupported, selectedPlugins } from './data';
 import { LINK, decode, encode } from './url';
 import { validate } from './validation';
-import { build } from './build';
+import { CONFIG_PATHS, TRACE_DIR, build, moveCard, readCard, uncoveredCard } from './build';
 
 export * from './data';
 
@@ -26,5 +26,10 @@ export const PSP: Platform<PspState> = {
 	encode,
 	decode,
 	validate,
-	build
+	build,
+	trace: TRACE_DIR,
+	configPaths: CONFIG_PATHS,
+	readCard,
+	uncoveredCard,
+	moveCard
 };

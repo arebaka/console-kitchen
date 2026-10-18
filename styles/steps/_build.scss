@@ -38,6 +38,31 @@
 	}
 }
 
+// The update of a card: what it does, the lines configs lose, the foreign items with a choice each
+.card-update {
+	.subtitle {
+		font-size: $size-base;
+		color: var(--color-text);
+	}
+
+	.line select {
+		margin-left: auto;
+	}
+
+	.lost pre {
+		margin-top: space(1);
+		padding: space(2) space(3);
+		font: #{$size-small}/1.5 $font-mono;
+		white-space: pre-wrap;
+		background: var(--color-sunken);
+		border-radius: $radius;
+	}
+
+	.control {
+		align-self: flex-start;
+	}
+}
+
 // The generated readme as a document: its own headings, lists and code
 .readme {
 	padding: space(5) space(6);

@@ -5,6 +5,7 @@ import { join } from 'node:path';
 import { afterAll, describe, expect, it } from 'vitest';
 
 import { BuildResult, GeneratedFile, installerView, installers } from '@/build';
+import { BUILD_FILE } from '@/toml';
 import { presetSelection } from '@/data';
 import { HARDWARE } from '@data';
 import { CATALOG, SWITCH } from '@/platforms/switch';
@@ -55,16 +56,18 @@ const HOSTILE = {
 	content: '[list]\nCONSOLE_KITCHEN_EOF\ntouch pwned\n\'@; New-Item pwned\n\'@\nNew-Item pwned\nrun=$(touch pwned)`touch pwned`$(New-Item pwned)\nhome=$HOME\\\n',
 	written: '[list]\n CONSOLE_KITCHEN_EOF\ntouch pwned\n \'@; New-Item pwned\n \'@\nNew-Item pwned\nrun=$(touch pwned)`touch pwned`$(New-Item pwned)\nhome=$HOME\\\n'
 };
+// The build the installers leave in the trace is written the same way, so it gets the same lines
 const HOSTILE_FILES = installers({
-	...installerView({ ...SWITCH.defaults(), selectedComponentIDs: [], lang: 'en', t: I18N.en }, HARDWARE[0], [], [HOSTILE], []),
+	...installerView({ ...SWITCH.defaults(), selectedComponentIDs: [], lang: 'en', t: I18N.en }, HARDWARE[0], [], [HOSTILE], [], { dir: SWITCH.trace, build: HOSTILE.content }),
 	title: 'a hostile config',
 	card: 'SD card',
 	console: 'Nintendo Switch'
 });
 
-const RUNS = Object.entries(OFFLINE);
+const RUNS = Object.entries(OFFLINE) as [keyof typeof OFFLINE, BuildResult][];
 const BUILDS = Object.entries(EVERYTHING).flatMap(([platform, result]) => [[`${platform} offline`, OFFLINE[platform as keyof typeof OFFLINE].files], [`${platform} everything`, result.files]] as const);
 const script = (files: GeneratedFile[], path: string) => files.find(file => file.path == path)!.content;
+const TRACES = { switch: SWITCH.trace, psp: PSP.trace };
 
 // Every installer gets an empty directory standing for the card and runs there, as from the root of the card
 const cards: string[] = [];
@@ -91,20 +94,23 @@ function expectCleaned(root: string, home: string, installer: string) {
 	expect(LEFTOVERS.filter(file => existsSync(join(home, file)))).toEqual(LEFTOVERS);
 }
 
-function expectInstalled(root: string, result: BuildResult) {
+function expectInstalled(root: string, platform: keyof typeof OFFLINE, result: BuildResult) {
 	for (const asset of result.assets) {
 		expect(readFileSync(join(root, asset.path)).equals(BITMAPS[asset.path]), asset.path).toBe(true);
 	}
 	for (const config of result.configs) {
 		expect(readFileSync(join(root, config.path), 'utf8'), config.path).toBe(`${config.content.trimEnd()}\n`);
 	}
+	// The trace holds the build as the page exports it, without components it lists no files
+	expect(readFileSync(join(root, TRACES[platform], 'build.toml'), 'utf8')).toBe(`${script(result.files, BUILD_FILE).trimEnd()}\n`);
+	expect(readFileSync(join(root, TRACES[platform], 'installed.tsv'), 'utf8')).toBe('component\ttag\tpath\n');
 }
 
 describe.skipIf(!CAN_RUN_BASH)('install.sh', () => {
 	it.each(RUNS)('writes the configuration and the images of %s next to itself', (platform, result) => {
 		const root = card('install.sh', script(result.files, 'install.sh'));
 		execFileSync('bash', [join(root, 'install.sh')], { cwd: root, stdio: 'pipe' });
-		expectInstalled(root, result);
+		expectInstalled(root, platform, result);
 	});
 
 	it('cleans up the card, wherever it is started from', () => {
@@ -120,6 +126,7 @@ describe.skipIf(!CAN_RUN_BASH)('install.sh', () => {
 		execFileSync('bash', [join(root, 'install.sh')], { cwd: root, stdio: 'pipe' });
 		expect(existsSync(join(root, 'pwned'))).toBe(false);
 		expect(readFileSync(join(root, HOSTILE.path), 'utf8')).toBe(HOSTILE.written);
+		expect(readFileSync(join(root, SWITCH.trace, 'build.toml'), 'utf8')).toBe(HOSTILE.written);
 	});
 });
 
@@ -129,7 +136,7 @@ describe.skipIf(!CAN_RUN_BASH || !has('tar'))('install.sh with a tar', () => {
 	it('unpacks it onto the card without its top folder and leaves nothing else there', () => {
 		const lakka = CATALOG.components.find(comp => comp.id == 'lakka')!;
 		const files = installers({
-			...installerView({ ...SWITCH.defaults(), selectedComponentIDs: [lakka.id], lang: 'en', t: I18N.en }, HARDWARE[0], [lakka], [], []),
+			...installerView({ ...SWITCH.defaults(), selectedComponentIDs: [lakka.id], lang: 'en', t: I18N.en }, HARDWARE[0], [lakka], [], [], { dir: SWITCH.trace, build: '' }),
 			title: 'a tar',
 			card: 'SD card',
 			console: 'Nintendo Switch'
@@ -145,22 +152,26 @@ describe.skipIf(!CAN_RUN_BASH || !has('tar'))('install.sh with a tar', () => {
 		writeFileSync(join(release, 'bootloader/ini/Lakka.ini'), '[Lakka]\n');
 		writeFileSync(join(release, 'CHANGELOG.md'), 'changes');
 		execFileSync('tar', ['-cf', join(stage, 'release.tar'), '-C', stage, 'Lakka-Switch.aarch64-9.9']);
-		// Asked about the latest release, the stand-in names the archive, asked for a download, it gives the archive
+		// Asked about the latest release, the stand-in names its tag and the archive, asked for a download, it gives the archive
 		mkdirSync(join(stage, 'bin'));
 		writeFileSync(join(stage, 'bin/curl'), [
 			'#!/usr/bin/env bash',
 			'while [ $# -gt 1 ]; do [ "$1" = -o ] && target="$2"; shift; done',
 			'case "$1" in',
-			'	https://api.github.com/*) echo \'"browser_download_url": "https://example.invalid/Lakka-Switch.aarch64-9.9.tar"\' ;;',
+			'	https://api.github.com/*) printf \'%s\\n\' \'"tag_name": "9.9",\' \'"browser_download_url": "https://example.invalid/Lakka-Switch.aarch64-9.9.tar"\' ;;',
 			`	*) cp '${join(stage, 'release.tar')}' "$target" ;;`,
 			'esac'
 		].join('\n'), { mode: 0o755 });
 
 		execFileSync('bash', [join(root, 'install.sh')], { cwd: root, stdio: 'pipe', env: { ...process.env, PATH: `${join(stage, 'bin')}:${process.env.PATH}` } });
-		expect(readdirSync(root).sort()).toEqual(['bootloader', 'lakka']);
+		expect(readdirSync(root).sort()).toEqual(['bootloader', 'console-kitchen', 'lakka']);
 		expect(readFileSync(join(root, 'lakka/SYSTEM'), 'utf8')).toBe('system');
 		expect(existsSync(join(root, 'lakka/storage'))).toBe(true);
 		expect(existsSync(join(root, 'bootloader/ini/Lakka.ini'))).toBe(true);
+		// The trace lists the files of the archive with the tag of the release, not what the installer removes from the root
+		const [header, ...lines] = readFileSync(join(root, SWITCH.trace, 'installed.tsv'), 'utf8').trimEnd().split('\n');
+		expect(header).toBe('component\ttag\tpath');
+		expect(lines.sort()).toEqual(['lakka\t9.9\tbootloader/ini/Lakka.ini', 'lakka\t9.9\tlakka/SYSTEM']);
 	});
 });
 
@@ -177,7 +188,7 @@ describe.skipIf(!has('pwsh'))('install.ps1', () => {
 	it.each(RUNS)('writes the configuration and the images of %s next to itself', (platform, result) => {
 		const root = card('install.ps1', `﻿${script(result.files, 'install.ps1')}`);
 		execFileSync('pwsh', ['-NoProfile', '-File', join(root, 'install.ps1')], { cwd: root, stdio: 'pipe' });
-		expectInstalled(root, result);
+		expectInstalled(root, platform, result);
 	}, 60_000);
 
 	it('cleans up the card, wherever it is started from', () => {
@@ -193,6 +204,7 @@ describe.skipIf(!has('pwsh'))('install.ps1', () => {
 		execFileSync('pwsh', ['-NoProfile', '-File', join(root, 'install.ps1')], { cwd: root, stdio: 'pipe' });
 		expect(existsSync(join(root, 'pwned'))).toBe(false);
 		expect(readFileSync(join(root, HOSTILE.path), 'utf8')).toBe(HOSTILE.written);
+		expect(readFileSync(join(root, SWITCH.trace, 'build.toml'), 'utf8')).toBe(HOSTILE.written);
 	}, 60_000);
 
 	it.each(BUILDS)('parses the %s build', (name, files) => {

@@ -47,7 +47,8 @@
 		"marked": "^18.0.14",
 		"mustache": "^4.2.0",
 		"react": "^19.2.7",
-		"react-dom": "^19.2.7"
+		"react-dom": "^19.2.7",
+		"smol-toml": "^1.9.1"
 	},
 	"devDependencies": {
 		"@modyfi/vite-plugin-yaml": "^1.1.1",

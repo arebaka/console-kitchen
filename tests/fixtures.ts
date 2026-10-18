@@ -1,9 +1,10 @@
 import { gzipSync } from 'node:zlib';
 
 import { AppState, defaultState } from '@/state';
+import { PLATFORMS } from '@/platforms';
 import { CATALOG, SWITCH, templateClocks } from '@/platforms/switch';
 import { resolveSelection } from '@/data';
-import { Issue, SwitchState } from '@/types';
+import { Issue, PlatformId, SwitchState } from '@/types';
 import { I18N } from '@i18n';
 
 // A build touching every kind of option, a secret, overclock profiles of every kind, launch extras and uploads
@@ -61,6 +62,32 @@ export const BITMAPS: Record<string, Buffer> = {
 	'bootloader/res/console_kitchen_emummc_hue.bmp': Buffer.from(Array.from({ length: 147510 }, (_, i) => (i >> 5) % 256)),
 	'bootloader/res/background.bmp': Buffer.alloc(3686454, 0x2d)
 };
+
+// A build of the platform with every component and every option other than its default, the secret ones too.
+// A text is the default with a letter more, a list has a row of the last value of every field, or of plain words
+export function everythingState(platform: PlatformId): AppState {
+	const state = defaultState();
+	state.platform = platform;
+	const { catalog } = PLATFORMS[platform];
+	const build = state.builds[platform];
+	build.selectedComponentIDs = catalog.components.map(comp => comp.id);
+	for (const group of catalog.tuning) {
+		for (const option of group.options) {
+			const tuning = build.tuning[group.id];
+			if (option.type == 'toggle') tuning[option.id] = !option.default;
+			if (option.type == 'range' || option.type == 'number') tuning[option.id] = option.default == option.max ? option.min : option.max;
+			if (option.type == 'select') tuning[option.id] = [...option.values].reverse().find(value => value != option.default)!;
+			if (option.type == 'multiselect') tuning[option.id] = option.values.slice(-Math.min(option.max ?? 3, option.values.length));
+			if (option.type == 'text') tuning[option.id] = `${option.default}x`.slice(0, option.maxLength);
+			if (option.type == 'hue') tuning[option.id] = (option.default + 1) % 360;
+			if (option.type == 'color') tuning[option.id] = '#123456';
+			if (option.type == 'rgba4444') tuning[option.id] = '#1234';
+			if (option.type == 'list') tuning[option.id] = [option.fields.map(field => field.max ? (field.values ?? []).slice(0, field.max).join('+') : field.values?.at(-1) ?? 'x')];
+		}
+	}
+	if (platform == 'psp') state.builds.psp.plugins = { missyhud: ['game'] };
+	return state;
+}
 
 // The encoding of `encodeImage`: gzip, base64, lines of 76 characters
 export function encodeBitmaps(bitmaps: Record<string, Buffer>): Record<string, string> {

@@ -1,11 +1,24 @@
 import { ImageTarget, LaunchEntry, SwitchState, TuningOption, TuningValue } from '@/types';
 import { HARDWARE } from '@data';
 import { isTuningGroupActive, listRows } from '@/data';
-import { Asset, BuildRequest, BuildResult, ConfigSpec, installerView, installers, render, renderConfigs } from '@/build';
+import { Asset, BuildRequest, BuildResult, ConfigSpec, installerView, installers, render, renderConfigs, updateSummary } from '@/build';
+import { BUILD_FILE, buildToml } from '@/toml';
+import { CardConfig, CardTexts, movedConfigs, optionRaw, readConfigs, textOf, uncoveredConfigs } from '@/read';
+import { Params } from '@/url';
 import TEMPLATES, { README } from '@templates/switch';
-import { CATALOG, COMPONENTS, GALLERY, SPARE_INI, SYSTEM_ENTRIES, launchEntries, spareEntries } from './data';
+import {
+	BOOT_ENTRIES, CATALOG, COMPONENTS, COMPONENT_ENTRIES, ENTRY_OVERRIDES, GALLERY, OVERCLOCK, SPARE_INI, SYSTEM_ENTRIES,
+	launchEntries, spareEntries, templateClocks
+} from './data';
+import { encode } from './url';
 
 type Request = BuildRequest<SwitchState>;
+
+// Where the installers leave the build and the files of its components: a folder of its own in the root of the card
+export const TRACE_DIR = 'console-kitchen';
+
+// The file of More configs the entries of other builds move into once hekate_ipl.ini is written again
+export const KEPT_INI = 'bootloader/ini/console_kitchen_kept.ini';
 
 // Values as the configs spell them: hekate flags, Atmosphere u8 and u64 settings
 const flag = (value: TuningValue) => value ? 1 : 0;
@@ -125,6 +138,116 @@ const entrySection = (request: Request, entry: LaunchEntry) => ({
 	icon: iconPath(request, entry.id) ?? entry.icon
 });
 
+// Reading the configs of a card back into a build: what the views above turn the options into, turned back
+// into the params of a link. A switch is on as 1, true or the u8 1 of Atmosphere, buttons are joined with a plus
+const isOn = (value: string) => /^(1|true|on|0x0*1)$/i.test(value.trim());
+const buttons = (value: string) => value.split('+').map(button => button.trim()).filter(Boolean).join(',');
+
+// A section of hekate_ipl.ini the Console Kitchen writes: its config, an entry booting the system or another emuMMC,
+// one a component brings. The other ones move into More configs when the file is written again
+const isOwnSection = (name: string) => name == 'config' || /^CFW \(emuMMC .+\)$/.test(name)
+	|| [...BOOT_ENTRIES, ...COMPONENT_ENTRIES].some(entry => entry.name == name);
+
+// The Launch menu of hekate_ipl.ini: the boot modes and the emuMMCs its entries are, the keys of Exosphere the entries set
+// for themselves and the entry autoboot starts, counted from 1. Entries of other builds tell nothing and leave the menu as it is
+function readLaunch(card: CardConfig): Params {
+	const entries = card.sections.filter(section => section.name != '' && section.name != 'config');
+	const ids = entries.map(section => {
+		const folder = section.keys.emupath?.match(/^emuMMC\/(.+)$/)?.[1];
+		if (folder && section.name == `CFW (emuMMC ${folder})`) return `emummc-${folder}`;
+		return [...BOOT_ENTRIES, ...COMPONENT_ENTRIES].find(entry => entry.name == section.name)?.id;
+	});
+	if (!ids.some(Boolean)) return [];
+
+	const params: Params = [
+		['boot', BOOT_ENTRIES.map(entry => entry.id).filter(id => ids.includes(id)).join(',')],
+		['emummc', ids.flatMap(id => id?.startsWith('emummc-') ? [id.slice('emummc-'.length)] : []).join(',')]
+	];
+	entries.forEach((section, index) => {
+		for (const key of ENTRY_OVERRIDES) {
+			if (ids[index] && section.keys[key] !== undefined) params.push([`launch.${ids[index]}.${key}`, section.keys[key]]);
+		}
+	});
+	const autoboot = Number(card.values.autoboot);
+	if (autoboot == 0) params.push(['autoboot', 'menu']);
+	else if (ids[autoboot - 1]) params.push(['autoboot', ids[autoboot - 1]!]);
+	return params;
+}
+
+// DNS of Atmosphere: off, its own hosts, or the hosts of the systems Nintendo is blocked on. Applets get their heap in bytes
+function readSystemSettings(card: CardConfig, texts: CardTexts): Params {
+	const { values } = card;
+	const params: Params = [];
+	if (values.enable_dns_mitm !== undefined) {
+		const targets = ['emummc', 'sysmmc'].filter(target => textOf(texts, `atmosphere/hosts/${target}.txt`) !== undefined);
+		params.push(['dns.mode', !isOn(values.enable_dns_mitm) ? 'off' : targets.length ? 'block' : 'default']);
+		if (targets.length) params.push(['dns.targets', targets.join(',')]);
+	}
+	if (values.add_defaults_to_dns_hosts !== undefined) params.push(['dns.add_defaults', isOn(values.add_defaults_to_dns_hosts) ? '1' : '0']);
+	if (values.enable_dns_mitm_debug_log !== undefined) params.push(['dns.debug_log', isOn(values.enable_dns_mitm_debug_log) ? '1' : '0']);
+	for (const key of ['applet_heap_size', 'applet_heap_reservation_size']) {
+		if (values[key] !== undefined) params.push([`atmosphere.${key}`, String(Math.round(Number(values[key]) / MIB))]);
+	}
+	return params;
+}
+
+// Ultrahand keeps as hidden what its menus show as shown, and its combo is the one of the overlay menu
+function readUltrahand(card: CardConfig): Params {
+	const { options } = CATALOG.tuning.find(group => group.id == 'ultrahand')!;
+	const params: Params = Object.entries(card.values).flatMap(([name, value]): Params => {
+		const shown = name.startsWith('hide_') ? options.find(option => option.id == name.replace('hide_', 'show_')) : undefined;
+		return shown ? [[`ultrahand.${shown.id}`, isOn(value) ? '0' : '1']] : [];
+	});
+	if (card.values.key_combo !== undefined) params.push(['tesla.key_combo', buttons(card.values.key_combo)]);
+	return params;
+}
+
+// Overlays in the list of Ultrahand by the sections of their files, the modes from the three lists side by side
+function readOverlays(card: CardConfig): Params {
+	return CATALOG.tuning.filter(group => group.file == OVERLAYS_INI).flatMap(group => {
+		const section = card.sections.find(item => item.name == group.section);
+		if (!section) return [];
+		return group.options.flatMap((option): Params => {
+			const key = `${group.id}.${option.id}`;
+			if (option.type != 'list') {
+				const raw = section.keys[option.id] === undefined ? undefined : optionRaw(option, section.keys[option.id]);
+				return raw === undefined ? [] : [[key, raw]];
+			}
+			const [args, combos, labels] = ['mode_args', 'mode_combos', 'mode_labels']
+				.map(name => (section.keys[name] ?? '').replace(/^\((.*)\)$/, '$1').split(', '));
+			const fields: {[field: string]: string[]} = { args, combo: combos.map(buttons), label: labels };
+			const rows = labels.map((label, index) => option.fields.map(field => fields[field.id]?.[index] ?? '').join('='))
+				.filter((row, index) => labels[index].trim() != '');
+			return rows.length ? rows.map(row => [key, row] as [string, string]) : [[key, '']];
+		});
+	});
+}
+
+// Network locations of DBI by the sections of their file
+function readLocations(card: CardConfig): Params {
+	const [option] = CATALOG.tuning.find(group => group.id == 'dbi_locations')!.options;
+	if (option.type != 'list') return [];
+	const key = `dbi_locations.${option.id}`;
+	const rows = card.sections
+		.filter(section => /^Location_\d+$/.test(section.name))
+		.map(section => option.fields.map(field => section.keys[field.id] ?? '').join('='));
+	return rows.length ? rows.map(row => [key, row] as [string, string]) : [[key, '']];
+}
+
+// Profiles of the overclock by the sections of the titles they are for: a template where the clocks are the ones
+// of a template, custom clocks otherwise. A config without them has none
+function readProfiles(card: CardConfig): Params {
+	const profiles = card.sections.filter(section => /^[0-9A-F]{16}$/i.test(section.name)).map(section => {
+		const clocks = Object.entries(section.keys).map(([key, mhz]) => [key, Number(mhz)] as const);
+		const template = Object.keys(OVERCLOCK.templates).find(id => {
+			const own = Object.entries(templateClocks(id));
+			return own.length == clocks.length && own.every(([key, mhz]) => clocks.some(clock => clock[0] == key && clock[1] == mhz));
+		});
+		return [section.name.toUpperCase(), template ?? 'custom', ...(template ? [] : clocks.map(([key, mhz]) => `${key}-${mhz}`))].join('.');
+	});
+	return [['oc', profiles.join(',')]];
+}
+
 const CONFIGS: ConfigSpec<Request>[] = [
 	{
 		path: 'BOOT.INI',
@@ -134,6 +257,9 @@ const CONFIGS: ConfigSpec<Request>[] = [
 	{
 		path: 'bootloader/hekate_ipl.ini',
 		template: TEMPLATES.hekateIplIni,
+		read: readLaunch,
+		covers: ['boot', 'emummc', 'autoboot', 'launch.'],
+		moves: { into: KEPT_INI, owns: isOwnSection },
 		view: (request) => {
 			const { hekate, logo } = request.tuning;
 			const entries = launchEntries(request.launch, request.selectedComponentIDs);
@@ -199,6 +325,8 @@ const CONFIGS: ConfigSpec<Request>[] = [
 	{
 		path: 'atmosphere/config/system_settings.ini',
 		template: TEMPLATES.systemSettingsIni,
+		read: readSystemSettings,
+		covers: ['dns.'],
 		view: ({ tuning: { atmosphere, dns } }) => ({
 			upload_enabled: u8(atmosphere.upload_enabled),
 			usb30_force_enabled: u8(atmosphere.usb30_force_enabled),
@@ -230,7 +358,8 @@ const CONFIGS: ConfigSpec<Request>[] = [
 		view: ({ tuning: { stratosphere } }) => ({
 			nogc: flag(stratosphere.nogc == 'on')
 		}),
-		when: ({ tuning: { stratosphere } }) => stratosphere.nogc != 'auto'
+		when: ({ tuning: { stratosphere } }) => stratosphere.nogc != 'auto',
+		read: ({ values }) => values.nogc === undefined ? [] : [['stratosphere.nogc', isOn(values.nogc) ? 'on' : 'off']]
 	},
 	{
 		path: 'atmosphere/config/override_config.ini',
@@ -244,7 +373,11 @@ const CONFIGS: ConfigSpec<Request>[] = [
 			path: hbl.path || 'atmosphere/hbl.nsp',
 			mods_key: hbl.mods_key,
 			cheat_key: hbl.cheat_key
-		})
+		}),
+		read: ({ values: { album_key } }) => album_key === undefined ? [] : [
+			['hbl.album', album_key.startsWith('!') ? '1' : '0'],
+			['hbl.key', album_key.replace(/^!/, '')]
+		]
 	},
 	{
 		path: 'atmosphere/hosts/emummc.txt',
@@ -281,13 +414,17 @@ const CONFIGS: ConfigSpec<Request>[] = [
 				.map(([key, value]) => key.startsWith('show_') ? [key.replace('show_', 'hide_'), String(!value)] : [key, String(value)])),
 			key_combo: menuCombo(request)
 		}),
-		when: request => isGroupSelected(request, 'ultrahand')
+		when: request => isGroupSelected(request, 'ultrahand'),
+		read: readUltrahand,
+		// State of its menus and labels of the theme, the sounds and the wallpaper picked there, which it copies by itself
+		transient: ['in_overlay', 'to_packages', 'current_theme', 'current_sounds', 'current_wallpaper']
 	},
 	{
 		path: OVERLAYS_INI,
 		template: TEMPLATES.ultrahandOverlaysIni,
 		view: request => ({ overlays: ultrahandOverlays(request) }),
-		when: request => ultrahandOverlays(request).length > 0
+		when: request => ultrahandOverlays(request).length > 0,
+		read: readOverlays
 	},
 	{
 		path: 'config/sys-patch/config.ini',
@@ -328,7 +465,8 @@ const CONFIGS: ConfigSpec<Request>[] = [
 			section,
 			Object.fromEntries(Object.entries(tuning[group]).map(([key, value]) => [key, Array.isArray(value) ? value.join('+') : String(value)]))
 		])),
-		when: request => isGroupSelected(request, 'status_monitor')
+		when: request => isGroupSelected(request, 'status_monitor'),
+		prefixes: STATUS_MONITOR
 	},
 	{
 		path: 'config/sys-tune/config.ini',
@@ -342,7 +480,9 @@ const CONFIGS: ConfigSpec<Request>[] = [
 			load_path: sys_tune.load_path && cardPath(sys_tune.load_path),
 			title_default: flag(sys_tune.title_default)
 		}),
-		when: request => isGroupSelected(request, 'sys_tune')
+		when: request => isGroupSelected(request, 'sys_tune'),
+		read: ({ values }) => ['volume', 'global_volume'].flatMap((key): Params =>
+			values[key] === undefined ? [] : [[`sys_tune.${key}`, String(Math.round(Number(values[key]) * 100))]])
 	},
 	{
 		path: 'config/sys-ftpd/config.ini',
@@ -356,7 +496,8 @@ const CONFIGS: ConfigSpec<Request>[] = [
 			keycombo: (sys_ftpd_light.keycombo as string[]).join('+'),
 			led: flag(sys_ftpd_light.led)
 		}),
-		when: request => isGroupSelected(request, 'sys_ftpd_light')
+		when: request => isGroupSelected(request, 'sys_ftpd_light'),
+		read: ({ values: { pause_disabled } }) => pause_disabled === undefined ? [] : [['sys_ftpd_light.pause', isOn(pause_disabled) ? '0' : '1']]
 	},
 	{
 		path: 'switch/DBI/dbi.config',
@@ -373,13 +514,15 @@ const CONFIGS: ConfigSpec<Request>[] = [
 				return [option.id, Array.isArray(value) ? value.join(',') : String(value === '' ? option.default : value)];
 			}))
 		])),
-		when: request => isGroupSelected(request, 'dbi_general')
+		when: request => isGroupSelected(request, 'dbi_general'),
+		prefixes: DBI
 	},
 	{
 		path: 'switch/DBI/dbi.locations',
 		template: TEMPLATES.dbiLocations,
 		view: request => ({ locations: dbiLocations(request) }),
-		when: request => isGroupSelected(request, 'dbi_locations') && dbiLocations(request).length > 0
+		when: request => isGroupSelected(request, 'dbi_locations') && dbiLocations(request).length > 0,
+		read: readLocations
 	},
 	{
 		path: 'config/JKSV/JKSV.json',
@@ -421,9 +564,22 @@ const CONFIGS: ConfigSpec<Request>[] = [
 					clocks: Object.entries(profile.clocks).map(([key, value]) => ({ key, value }))
 				}))
 		}),
-		when: request => isGroupSelected(request, 'sys_clk')
+		when: request => isGroupSelected(request, 'sys_clk'),
+		read: readProfiles,
+		covers: ['oc']
 	}
 ];
+
+export const CONFIG_PATHS = CONFIGS.map(config => config.path);
+
+// What the configs of a card stand for, as the params of a link, with the groups of options they hold
+export const readCard = (texts: CardTexts) => readConfigs(CONFIGS, CATALOG.tuning, texts);
+
+// Lines of the configs of a card the build would lose writing them again
+export const uncoveredCard = (request: Request, texts: CardTexts) => uncoveredConfigs(CONFIGS, texts, renderConfigs(CONFIGS, request));
+
+// What moves out of the configs of a card an update writes again, as the entries of other builds into More configs
+export const moveCard = (texts: CardTexts, written: string[]) => movedConfigs(CONFIGS, texts, written);
 
 // Images the appearance asks for, logos and icons only of the entries in the menu
 function assets(request: Request): Asset[] {
@@ -457,13 +613,19 @@ export function build(request: Request): BuildResult {
 
 	const configs = renderConfigs(CONFIGS, request);
 	const images = assets(request);
+	const title = `Nintendo Switch ${hardware.name}, Horizon OS ${request.firmware}`;
+	const exported = buildToml(CATALOG, title, encode(request));
+	const trace = { dir: TRACE_DIR, build: exported };
 	const view = {
-		...installerView(request, hardware, selected, configs, images),
-		title: `Nintendo Switch ${hardware.name}, Horizon OS ${request.firmware}`,
+		...installerView(request, hardware, selected, configs, images, trace),
+		title,
 		card: 'SD card',
 		console: 'Nintendo Switch',
 		hos: request.firmware
 	};
+	// The scripts of an update write the configs and the images the plan has changed
+	const { update } = request;
+	const updates = update ? installers({ ...view, ...installerView(request, hardware, selected, update.configs, update.images ? images : [], trace, update) }, 'update') : [];
 
 	const { dns } = request.tuning;
 	const entries = launchEntries(request.launch, request.selectedComponentIDs);
@@ -472,6 +634,8 @@ export function build(request: Request): BuildResult {
 	const autoboot = entries.find(entry => entry.id == request.launch.autoboot);
 	const readmeView = {
 		...view,
+		// What the update of the card of a dump does
+		cardUpdate: update && updateSummary(update, COMPONENTS),
 		date: new Date().toISOString().slice(0, 10),
 		components: selected.map(comp => ({
 			name: comp.name,
@@ -496,7 +660,7 @@ export function build(request: Request): BuildResult {
 
 	return {
 		configs,
-		files: [...installers(view), { path: 'README.md', content: render(README[request.lang], readmeView) }],
+		files: [...installers(view), ...updates, { path: BUILD_FILE, content: exported }, { path: 'README.md', content: render(README[request.lang], readmeView) }],
 		assets: images,
 		manual
 	};

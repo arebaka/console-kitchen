@@ -6,7 +6,9 @@ import { HARDWARE } from '@data';
 import { Platform } from '@/platforms';
 import { encodeImage } from '@/images';
 import { highlight, renderMarkdown } from '@/markup';
-import { activate, downloadFile, formatSize } from '@/utils';
+import { DUMP_SCRIPTS } from '@/dump';
+import { CardSnapshot, ForeignAction, UpdatePlan, updatePlan } from '@/card';
+import { activate, downloadFile, formatSize, withBOM } from '@/utils';
 import { Issues } from '../Issues';
 
 interface BuildProps {
@@ -19,6 +21,9 @@ interface BuildProps {
 	issues: Issue[];
 	applyFix: (fix: Fix) => void;
 	setStep: (step: StepId) => void;
+	card?: CardSnapshot; // the dump of a card the build updates
+	setCardAction: (path: string, action: ForeignAction) => void;
+	forgetCard: () => void;
 	t: Translation;
 }
 
@@ -27,9 +32,6 @@ interface Encoded {
 	images?: Record<string, string>;
 	error?: string;
 }
-
-// Windows PowerShell reads scripts without a byte order mark in the ANSI code page
-const withBOM = (path: string, content: string) => path.endsWith('.ps1') ? `\uFEFF${content}` : content;
 
 export function Build({
 	lang,
@@ -41,11 +43,16 @@ export function Build({
 	issues,
 	applyFix,
 	setStep,
+	card,
+	setCardAction,
+	forgetCard,
 	t
 }: BuildProps) {
 	const { hardware, firmware, selectedComponentIDs } = build;
-	const request = { ...build, lang, t };
-	const result = useMemo(() => platform.build(request), [platform, build, lang, t]);
+	// With the dump of a card the files also have the scripts that update it to the build
+	const plan = useMemo(() => card && updatePlan(card, { ...build, lang, t }), [card, build, lang, t]);
+	const request = { ...build, lang, t, update: plan };
+	const result = useMemo(() => platform.build(request), [platform, build, lang, t, plan]);
 
 	// Images are converted in the background and embedded into the installers once ready
 	const sources = result.assets.map(asset => ({
@@ -77,7 +84,7 @@ export function Build({
 			`# ${images ? format(t.pages.build.imageData, { size: formatSize(images[asset.path].length) }) : '…'}`
 		]));
 		const { files, configs } = platform.build({ ...request, images: placeholders });
-		return [...files.filter(file => file.path != 'README.md'), ...configs];
+		return [...files.filter(file => file.path != 'README.md'), ...DUMP_SCRIPTS, ...configs];
 	}, [result, images]);
 
 	const readme = result.files.find(file => file.path == 'README.md')!;
@@ -127,12 +134,22 @@ export function Build({
 			</section>
 		)}
 
+		{card && plan && (
+			<CardUpdate
+				card={card}
+				plan={plan}
+				platform={platform}
+				setAction={setCardAction}
+				forget={forgetCard}
+				t={t} />
+		)}
+
 		<section className="files">
 			<h3 className="title">
 				{t.pages.build.installer}
 			</h3>
 			<ul className="rows">
-				{(files ?? result.files).map(file => (
+				{[...(files ?? result.files), ...DUMP_SCRIPTS].map(file => (
 					<li
 						key={file.path}
 						className={`row ${files ? 'interactive' : 'disabled'}`}
@@ -219,4 +236,111 @@ export function Build({
 			</pre>
 		</section>
 	</>);
+}
+
+interface CardUpdateProps {
+	card: CardSnapshot;
+	plan: UpdatePlan;
+	platform: Platform;
+	setAction: (path: string, action: ForeignAction) => void;
+	forget: () => void;
+	t: Translation;
+}
+
+// What the scripts of the update do to the card of the dump: the components they install, update and remove,
+// the configs they write, the lines those lose, and the foreign items, a choice for each
+function CardUpdate({ card, plan, platform, setAction, forget, t }: CardUpdateProps) {
+	const texts = t.pages.build.card;
+	const names = (ids: string[]) => ids.map(id => platform.catalog.components.find(comp => comp.id == id)?.name ?? id).join(', ') || texts.none;
+	const rows = [
+		{ key: texts.install, value: names(plan.added) },
+		{ key: texts.refresh, value: names(plan.refreshed) },
+		{ key: texts.remove, value: names(plan.removed) },
+		{ key: texts.write, value: plan.configs.map(config => config.path).join(', ') || texts.none },
+		{ key: texts.keep, value: plan.unchanged.join(', ') || texts.none }
+	];
+
+	return (
+		<section className="files card-update">
+			<h3 className="title">
+				{texts.title}
+			</h3>
+			<p className="caption">
+				{format(texts.made, { date: card.dump.made.replace('T', ' ').replace('Z', ' UTC') })}
+			</p>
+			<ul className="rows">
+				{rows.map(row => (
+					<li key={row.key} className="row">
+						<div className="line">
+							<span className="name">
+								{row.key}
+							</span>
+						</div>
+						<p className="description">
+							{row.value}
+						</p>
+					</li>
+				))}
+			</ul>
+
+			{plan.moved.map(move => (
+				<p key={move.from} className="caption">
+					{format(texts.moved, { entries: move.sections.join(', '), from: move.from, into: move.into })}
+				</p>
+			))}
+
+			{plan.uncovered.map(item => (
+				<div key={item.path} className="lost">
+					<p className="caption error">
+						{format(texts.lost, { path: item.path })}
+					</p>
+					<pre className="code">
+						<code>
+							{item.lines.join('\n')}
+						</code>
+					</pre>
+				</div>
+			))}
+
+			{card.foreign.length > 0 && (
+				<>
+					<h4 className="subtitle">
+						{texts.foreign}
+					</h4>
+					<ul className="rows">
+						{card.foreign.map(item => (
+							<li key={item.path} className="row">
+								<div className="line">
+									<span className="name">
+										{texts.kinds[item.kind]}: {item.name}
+									</span>
+									<select
+										className="field"
+										aria-label={item.name}
+										value={card.actions[item.path]}
+										onChange={event => setAction(item.path, event.target.value as ForeignAction)}>
+										{(item.kind == 'sysmodule' ? ['keep', 'disable', 'delete'] : ['keep', 'delete']).map(action => (
+											<option key={action} value={action}>
+												{texts.actions[action]}
+											</option>
+										))}
+									</select>
+								</div>
+								<p className="description">
+									{item.path}
+								</p>
+							</li>
+						))}
+					</ul>
+				</>
+			)}
+
+			<p className="caption">
+				{texts.backup}
+			</p>
+			<button className="control" onClick={forget}>
+				{texts.forget}
+			</button>
+		</section>
+	);
 }

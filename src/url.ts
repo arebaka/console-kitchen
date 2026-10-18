@@ -122,10 +122,11 @@ export function tuningWords(groups: TuningGroup[]): string[] {
 	}));
 }
 
-// Options of a link into the tuning, an invalid value keeps the one there is
-export function decodeTuning(groups: TuningGroup[], params: URLSearchParams, tuning: TuningConfig): void {
+// Options of a link into the tuning, an invalid value keeps the one there is. Links never carry the secret ones,
+// a dump of a card brings them and they are read the same way
+export function decodeTuning(groups: TuningGroup[], params: URLSearchParams, tuning: TuningConfig, secrets = false): void {
 	for (const group of groups) {
-		for (const option of group.options.filter(option => !option.secret)) {
+		for (const option of group.options.filter(option => !!option.secret == secrets)) {
 			const raws = params.getAll(`${group.id}.${option.id}`);
 			const value = raws.length ? parse(option, raws) : undefined;
 			if (value !== undefined) tuning[group.id][option.id] = value;

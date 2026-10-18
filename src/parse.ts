@@ -117,6 +117,13 @@ export const presets = (rows: Row[]): Preset[] => rows.map(row => ({
 	components: list(row.components) ?? []
 }));
 
+// Files the components put onto the card, a row per file
+export function files(rows: Row[]): {[component: string]: string[]} {
+	const byComponent: {[component: string]: string[]} = {};
+	for (const row of rows) (byComponent[row.id] ??= []).push(row.path);
+	return byComponent;
+}
+
 // Values of a select are numbers when every one of them reads as a number
 function scalars(cells: string[]): (string | number)[] {
 	return cells.every(cell => cell != '' && !Number.isNaN(Number(cell))) ? cells.map(Number) : cells;

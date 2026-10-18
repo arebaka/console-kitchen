@@ -4,7 +4,7 @@ import { Platform } from '..';
 import { CATALOG, HOS_VERSIONS, defaultBuild, isHOSSupported, launchEntries } from './data';
 import { LINK, decode, encode } from './url';
 import { validate } from './validation';
-import { build } from './build';
+import { CONFIG_PATHS, TRACE_DIR, build, moveCard, readCard, uncoveredCard } from './build';
 
 export * from './data';
 
@@ -41,5 +41,10 @@ export const SWITCH: Platform<SwitchState> = {
 	encode,
 	decode,
 	validate,
-	build
+	build,
+	trace: TRACE_DIR,
+	configPaths: CONFIG_PATHS,
+	readCard,
+	uncoveredCard,
+	moveCard
 };

@@ -301,6 +301,11 @@ pages:
     files:
       'install.sh': Linux и macOS
       'install.ps1': Windows, PowerShell 5.1+
+      'update.sh': Обновление карты из снимка, Linux и macOS
+      'update.ps1': Обновление карты из снимка, Windows
+      'console-kitchen.toml': Сборка в файле, открой его через Файл → Открыть, чтобы потом её изменить
+      'dump.sh': Снимок карты для обновления, Linux и macOS
+      'dump.ps1': Снимок карты для обновления, Windows
       'README.md': Сводка сборки и инструкция по первому запуску
     download: Скачать
     failed: Не удалось сконвертировать картинки
@@ -309,6 +314,33 @@ pages:
     readme: Инструкция
     preview: Сгенерированные файлы
     imageData: '{size} картинки в gzip + base64'
+    card:
+      title: Обновление карты
+      made: 'Снимок карты от {date}: update.sh и update.ps1 ниже приведут карту к этой сборке'
+      install: Добавятся на карту
+      refresh: Обновятся, если вышел новый релиз
+      remove: Удалятся, их конфиги останутся на карте
+      write: Перепишутся конфиги, в которых поменялись опции
+      keep: Останутся как на карте
+      none: ничего
+      moved: 'Пункты других сборок переедут из {from} в {into}, hekate покажет их в More configs: {entries}'
+      lost: 'Строки {path}, которых нет в опциях: обновление запишет файл без них, старый уйдёт в бэкап'
+      foreign: Осталось от других сборок
+      kinds:
+        sysmodule: Сисмодуль
+        overlay: Оверлей
+        app: Приложение
+        payload: Payload
+        kip: KIP
+        patches: Патчи
+        package: Пакет Ultrahand
+        plugin: Плагин
+      actions:
+        keep: Оставить
+        disable: Выключить
+        delete: Удалить
+      backup: Всё, что обновление перезапишет или удалит, ляжет в backup/ на карте с теми же путями, скопируй обратно, чтобы вернуть
+      forget: Забыть снимок
 
 issues:
   requires: '{component} требует {dependency}'
@@ -333,6 +365,18 @@ issues:
   or: ' или '
   go: Открыть
   dismiss: Скрыть
+
+file:
+  title: Файл
+  open: Открыть сборку или снимок карты…
+  dump: 'Снимок карты: положи скрипт в корень карты и запусти, он запишет console-kitchen-dump.toml. В снимке конфиги с паролями, не делись им'
+  scripts:
+    'dump.sh': Linux и macOS
+    'dump.ps1': Windows, PowerShell 5.1+
+  opened:
+    build: Сборка загружена
+    dump: Снимок карты загружен, план обновления — на шаге сборки
+  invalid: Это не сборка и не снимок карты Console Kitchen
 
 metrics:
   size: Общий вес

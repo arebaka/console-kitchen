@@ -301,6 +301,11 @@ pages:
     files:
       'install.sh': Linux and macOS
       'install.ps1': Windows, PowerShell 5.1+
+      'update.sh': Update of the card of the dump, Linux and macOS
+      'update.ps1': Update of the card of the dump, Windows
+      'console-kitchen.toml': The build as a file, open it with File → Open to change it later
+      'dump.sh': Dump of a card for an update, Linux and macOS
+      'dump.ps1': Dump of a card for an update, Windows
       'README.md': Build summary and first-boot instructions
     download: Download
     failed: Could not convert the images
@@ -309,6 +314,33 @@ pages:
     readme: Instructions
     preview: Generated files
     imageData: '{size} of the image in gzip + base64'
+    card:
+      title: Card update
+      made: 'The dump of the card from {date}: update.sh and update.ps1 below make the card this build'
+      install: Added to the card
+      refresh: Updated when a newer release is out
+      remove: Removed, their configs stay on the card
+      write: Configs written, their options changed
+      keep: Configs left as the card has them
+      none: nothing
+      moved: 'Entries of other builds move from {from} into {into}, hekate shows them in More configs: {entries}'
+      lost: 'Lines of {path} no option holds: the update writes the file without them, the old one goes into the backup'
+      foreign: Left by other builds
+      kinds:
+        sysmodule: Sysmodule
+        overlay: Overlay
+        app: Application
+        payload: Payload
+        kip: KIP
+        patches: Patches
+        package: Ultrahand package
+        plugin: Plugin
+      actions:
+        keep: Keep
+        disable: Turn off
+        delete: Delete
+      backup: What the update overwrites or deletes goes into backup/ on the card with its paths, copy it back to undo
+      forget: Forget the dump
 
 issues:
   requires: '{component} needs {dependency}'
@@ -333,6 +365,18 @@ issues:
   or: ' or '
   go: Open
   dismiss: Dismiss
+
+file:
+  title: File
+  open: Open a build or a dump of a card…
+  dump: 'Dump of a card: put a script into the root of the card and run it, it writes console-kitchen-dump.toml. The dump holds the configs with their passwords, keep it to yourself'
+  scripts:
+    'dump.sh': Linux and macOS
+    'dump.ps1': Windows, PowerShell 5.1+
+  opened:
+    build: The build is loaded
+    dump: The dump is loaded, the plan of the update is on the Build step
+  invalid: This is neither a build nor a dump of a card made by the Console Kitchen
 
 metrics:
   size: Total size

@@ -7,10 +7,13 @@ import { getTuningDefaults, isTuningOptionChanged, presetSelection, resolveSelec
 import { PLATFORMS } from './platforms';
 import { launchEntries } from './platforms/switch';
 import { PSP } from './platforms/psp';
-import { AppState, decodeState, encodeState, withBuild } from './state';
+import { AppState, decodeState, encodeState, importBuild, withBuild } from './state';
 import { issueKey } from './validation';
+import { DUMP_SCRIPTS } from './dump';
+import { CardSnapshot, ForeignAction, importDump, readDump } from './card';
+import { readToml } from './toml';
 
-import { Topbar, Sidebar, SidebarItem, Toast, Toasts, Glyph, Hardware, Firmware, Software, Launch, Tuning, Plugins, Overclock, Appearance, Build } from './components';
+import { Topbar, OpenedFile, Sidebar, SidebarItem, Toast, Toasts, Glyph, Hardware, Firmware, Software, Launch, Tuning, Plugins, Overclock, Appearance, Build } from './components';
 
 // Options changed on a step, counting only groups whose components are selected
 function countChanges(groups: TuningGroup[], build: BuildState, step: TuningStep): number {
@@ -26,6 +29,8 @@ const SETTINGS_STEPS = ['system', 'security', 'sysmodules', 'overlays', 'status_
 export default function App() {
 	const [state, setState] = useState<AppState>(() => decodeState(location.search));
 	const [uploads, setUploads] = useState<Uploads>({});
+	// Dumps of cards by platform, kept only in this tab like the uploads: links cannot carry them
+	const [cards, setCards] = useState<{[platform: string]: CardSnapshot}>({});
 	const update = (patch: Partial<AppState>) => setState(prev => ({ ...prev, ...patch }));
 	// Changes the build of the current platform, a function gets the build as it is by then
 	const updateBuild = (patch: Partial<SwitchState | PspState> | ((build: BuildState) => Partial<BuildState>)) => setState(prev => {
@@ -189,6 +194,29 @@ export default function App() {
 		}
 	};
 
+	// A build file replaces the build of its platform, as its link would
+	// A dump of a card brings the build the card stands for and stays for the update the Build step makes of it
+	const openFile = (text: string): OpenedFile | undefined => {
+		const imported = importBuild(state, text);
+		if (imported) {
+			setState(imported);
+			return 'build';
+		}
+		const dump = readDump(readToml(text));
+		if (!dump) return undefined;
+		const loaded = importDump(state, dump);
+		setState(loaded.state);
+		setCards(prev => ({ ...prev, [dump.platform]: loaded.snapshot }));
+		return 'dump';
+	};
+
+	// What the update does with a foreign item on the card of the current platform
+	const setCardAction = (path: string, action: ForeignAction) => setCards(prev => {
+		const card = prev[platform.id];
+		return card ? { ...prev, [platform.id]: { ...card, actions: { ...card.actions, [path]: action } } } : prev;
+	});
+	const forgetCard = () => setCards(({ [platform.id]: forgotten, ...rest }) => rest);
+
 	const stepIssues = (step: StepId) => issues.filter(issue => issue.step == step);
 	// The most serious issue of a step marks it in the sidebar
 	const worst = (step: StepId) => LEVELS.find(level => stepIssues(step).some(issue => issue.level == level));
@@ -211,6 +239,8 @@ export default function App() {
 			lang={lang}
 			setLang={lang => update({ lang })}
 			subtitle={texts.subtitle}
+			scripts={DUMP_SCRIPTS}
+			openFile={openFile}
 			t={t} />
 
 		<Sidebar
@@ -340,6 +370,9 @@ export default function App() {
 					issues={issues}
 					applyFix={applyFix}
 					setStep={setStep}
+					card={cards[platform.id]}
+					setCardAction={setCardAction}
+					forgetCard={forgetCard}
 					t={t} />
 			)}
 		</main>

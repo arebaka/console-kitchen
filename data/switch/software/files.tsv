@@ -1,0 +1,2253 @@
+id	path
+hekate	atmosphere/reboot_payload.bin
+hekate	bootloader/res/icon_payload.bmp
+hekate	bootloader/res/icon_switch.bmp
+hekate	bootloader/sys/emummc.kipm
+hekate	bootloader/sys/l4t/bpmpfw.bin
+hekate	bootloader/sys/l4t/bpmpfw_b01.bin
+hekate	bootloader/sys/l4t/mtc_tbl_b01.bin
+hekate	bootloader/sys/l4t/sc7entry.bin
+hekate	bootloader/sys/l4t/sc7exit.bin
+hekate	bootloader/sys/l4t/sc7exit_b01.bin
+hekate	bootloader/sys/libsys_lp0.bso
+hekate	bootloader/sys/libsys_minerva.bso
+hekate	bootloader/sys/nyx.bin
+hekate	bootloader/sys/res.pak
+hekate	bootloader/sys/thk.bin
+hekate	bootloader/update.bin
+hekate	hekate_ctcaer_6.5.4.bin
+hekate	payload.bin
+atmosphere	atmosphere/config_templates/exosphere.ini
+atmosphere	atmosphere/config_templates/override_config.ini
+atmosphere	atmosphere/config_templates/stratosphere.ini
+atmosphere	atmosphere/config_templates/system_settings.ini
+atmosphere	atmosphere/hbl.nsp
+atmosphere	atmosphere/hbl_html/accessible-urls/accessible-urls.txt
+atmosphere	atmosphere/package3
+atmosphere	atmosphere/reboot_payload.bin
+atmosphere	atmosphere/stratosphere.romfs
+atmosphere	hbmenu.nro
+atmosphere	switch/daybreak.nro
+atmosphere	switch/haze.nro
+atmosphere	switch/reboot_to_payload.nro
+sys_patch	atmosphere/contents/420000000000000B/exefs.nsp
+sys_patch	atmosphere/contents/420000000000000B/flags/boot2.flag
+sys_patch	atmosphere/contents/420000000000000B/toolbox.json
+sys_patch	switch/.overlays/sys-patch-overlay.ovl
+fusee	bootloader/payloads/fusee.bin
+lockpick_rcm	bootloader/payloads/Lockpick_RCM.bin
+tegraexplorer	bootloader/payloads/TegraExplorer.bin
+common_problem_resolver	bootloader/payloads/CommonProblemResolver.bin
+hwfly_toolbox	bootloader/payloads/hwfly_toolbox.bin
+picofly_toolbox	bootloader/payloads/picofly_toolbox.bin
+sys_clk	atmosphere/contents/00FF0000636C6BFF/exefs.nsp
+sys_clk	atmosphere/contents/00FF0000636C6BFF/flags/boot2.flag
+sys_clk	config/sys-clk/config.ini.template
+sys_clk	switch/.overlays/sys-clk-overlay.ovl
+sys_clk	switch/sys-clk-manager.nro
+horizon_oc	atmosphere/contents/00FF0000636C6BFF/exefs.nsp
+horizon_oc	atmosphere/contents/00FF0000636C6BFF/flags/boot2.flag
+horizon_oc	atmosphere/contents/00FF0000636C6BFF/toolbox.json
+horizon_oc	atmosphere/exosphere.bin
+horizon_oc	atmosphere/kips/hoc.kip
+horizon_oc	config/horizon-oc/config.ini.template
+horizon_oc	config/horizon-oc/kip/current.ini.template
+horizon_oc	config/horizon-oc/lang/de.json
+horizon_oc	config/horizon-oc/lang/en.json
+horizon_oc	config/horizon-oc/lang/es.json
+horizon_oc	config/horizon-oc/lang/fr.json
+horizon_oc	config/horizon-oc/lang/it.json
+horizon_oc	config/horizon-oc/lang/ja.json
+horizon_oc	config/horizon-oc/lang/jp.json
+horizon_oc	config/horizon-oc/lang/ko.json
+horizon_oc	config/horizon-oc/lang/nl.json
+horizon_oc	config/horizon-oc/lang/pl.json
+horizon_oc	config/horizon-oc/lang/pt.json
+horizon_oc	config/horizon-oc/lang/ru.json
+horizon_oc	config/horizon-oc/lang/template.json
+horizon_oc	config/horizon-oc/lang/uk.json
+horizon_oc	config/horizon-oc/lang/zh-cn.json
+horizon_oc	config/horizon-oc/lang/zh-tw.json
+horizon_oc	config/horizon-oc/profiles/README.ini
+horizon_oc	config/horizon-oc/settings.ini.template
+horizon_oc	config/ultrahand/assets/notifications/hoc.rgba
+horizon_oc	switch/.overlays/Status-Monitor-Overlay.ovl
+horizon_oc	switch/.overlays/horizon-oc-overlay.ovl
+missioncontrol	atmosphere/contents/010000000000bd00/exefs.nsp
+missioncontrol	atmosphere/contents/010000000000bd00/flags/boot2.flag
+missioncontrol	atmosphere/contents/010000000000bd00/mitm.lst
+missioncontrol	atmosphere/contents/010000000000bd00/toolbox.json
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/064521C83399E09105D9A190688BF8B8C2C7F17C.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/08601CC4C629F981F92CE3A53C2633FB46DDEA00.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/144B678306269E3D5245497373C09866D2BB8997.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/1494B3B0E7AA4234ED20F6A5EEA60620522C68DD.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/1F66DEC82762261430EE292541FB42F5C4E10AA5.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/2C0A323887EF342C448A72DDCC4CD737A298CD46.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/2CAAD3898B7B2F01DF66480EDD919C6A26735EC9.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/2FB16085E21E54B90E88ED2F98CCC850334E128E.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/3714A43B8F9608D08E15067AB1D9CE8E68FE56BC.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/4F57845D1DC166A46C42D5AF45164196DC7CD198.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/532B667232B3992A0A3D007AA85E4944C4138D15.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/63C4312A5D74B29DFC3DA25B6E3E4825575D23C9.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/68C915388537833D1AC9F3920708A1A0FF73E35A.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/6B33C2B7C850A47325F775218C40FCEA2F935A65.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/6FCF8BF53C10AA346555D74EC602FE53BF3BD88E.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/874B8CD62BF6715648382BBADB70790558FB3F35.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/8C2A437B9890F6DA0FC3B17442B10E7C6FCDA6AA.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/935E9D4099CE74FC162915E7CA4952E64FAD6671.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/9480B34033289645E7924E99F467CCB9B4632A5D.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/9E95C91568327AD850AC0C2246F1078DE72B28F9.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/A3278455B3EC297F0CE6CD629183EC86376EE0DC.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/A5E6C2D20334CC787617A15BFB9F53F2DABA3E41.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/B58A6445D7C724D6285EB3922FE6BBAACDA33EB3.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/BF43446888D1182FF37420B6762EB1136DE45947.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/C91C6FC8AA4C39222D6CCFE0FFF468543105E59B.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/CCE16D29FE9BCB44AC40BB1703D586FE467496CE.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/CF0C34FC10F75EB2DAFB302FAA3E0C188621B2AD.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/DBCA0074043CA7E74E9C58A84ACD7A3058968528.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/DE1AC63A4A0B77CCEA606CF15B62AA587EB9CACC.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/E9A6DBF13FE4A6833606A834C7BA1B44F4DDD60F.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/F013FF4FC88A8376A6F3C401485C0718E1B5E148.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/F3DCA5480F0523699683C0D16B7C51C6394897AF.ips
+missioncontrol	atmosphere/exefs_patches/bluetooth_patches/FEE47E024FC9C62838FF1A476DE243DCE673DA7E.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/0A2E87DB96AC17AC6260A878D215A20D9EDF0917.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/14F4527DDB0C367055C384E2DAD037B3996664FE.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/18D29F36EFBD14C6187F1E337749326DBC6BB205.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/1D460F761919B94522A10B3EB98F4EC75FBDBC4F.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/29B9122754BCEE48E4225933979F233939A49CF2.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/344A9B35C77BF85392AFE04B38701D1EB0BD41CF.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/37B45CA18B0D5E1768119971677690857A185AAB.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/38FD02642C00EB3EDD3625728EA308C3B3CDF4B4.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/3B03D2FF7700627216F3562340991844C957F457.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/479F51DAD54016A7F68CFCB521F5D3E37B2855B2.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/4B92BF76660CCD6DE63528EFDE37147BA5997B09.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/4BBB2B9942C1DA04BBFB4933AA2E350BB88F3C14.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/52E5D19BDDF49586901BA4CF869723BCA222AAEC.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/58518E8DDEB26A678AD332B3C8D772C24F2B0636.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/5A2AA468F272E49EBF0FAB8B379CC5B32C1A7409.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/5B1ED394A7DD3910E5B375F3C90B13505347AB0A.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/5C60D97B9800074FE755847EE2380477A751BDAE.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/65AFEE4DCE1AB795540D204AF5D20AAF83C68A82.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/6DC55293131192B617564C62732CC2CF445BD248.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/702DADCB98BF9D965F570BCB6A6480C00AC536FB.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/72FC67F6B4096661FDF4773527E84967B7D8A460.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/A0542C24E727081A6A63208700C9CE2952B6914C.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/A27AE05114E0A17160A8C74BE8472F8EE6ABB273.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/ADB4B59EFF92BC8D10F28F87FD9C13666213EE53.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/B517E72EBBE1EB0223C3DF26E0017F727F9AD776.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/BEB8B07DA484E04B326001799DBE53D53D0B5D52.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/C35EF7937BD7C91FDC66F2E983D39388988364AF.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/F4D4976A1E1E6F498F6824151C11C6AA9EF81375.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/F5FC951E3AB69B6FBE6250B7B73D22B3F75EDE28.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/F9A63D3E811CAE0F06495124042CE7F951CE505B.ips
+missioncontrol	atmosphere/exefs_patches/btm_patches/FE1CFC6CE0B8F5A3C779ED67C9EF8C08DE959AE9.ips
+missioncontrol	atmosphere/exefs_patches/hid_patches/0ABCF878B3E22287ABD15F1F73B365DB26A4E124.ips
+missioncontrol	atmosphere/exefs_patches/hid_patches/0F02EFFAEF77015948F635C1559FC32507074451.ips
+missioncontrol	atmosphere/exefs_patches/hid_patches/12DB6C7DF6BF40BC02695C611EC46F458504A5AD.ips
+missioncontrol	atmosphere/exefs_patches/hid_patches/1780B569DE805B4E9AFBCC366D93BB313DCBA67E.ips
+missioncontrol	atmosphere/exefs_patches/hid_patches/296FB63B038723955A5EEE4720C3E17BF49B5ECC.ips
+missioncontrol	atmosphere/exefs_patches/hid_patches/2ABBA006E9E162C1EF0A28E6477725F2836FFEC9.ips
+missioncontrol	atmosphere/exefs_patches/hid_patches/403978CD2BC64E4ACB3BF1A5E556F582BFC3498B.ips
+missioncontrol	atmosphere/exefs_patches/hid_patches/453AF9911A69ED566732A7AF2BF54B0B50BC3255.ips
+missioncontrol	atmosphere/exefs_patches/hid_patches/47BCA8366FC3D4C9E86592E8FC42485989E69CCB.ips
+missioncontrol	atmosphere/exefs_patches/hid_patches/6AC68185D4597477D9AD8A2EBE014733F2BCB104.ips
+missioncontrol	atmosphere/exefs_patches/hid_patches/74480E653551A0415F90CD61E4B851C60E71E674.ips
+missioncontrol	atmosphere/exefs_patches/hid_patches/765B710D7D40049E06C1326F5B57123B74A2E4AD.ips
+missioncontrol	atmosphere/exefs_patches/hid_patches/8BDBD223E61D122E98CDBFC77C231BBB5CBE56E3.ips
+missioncontrol	atmosphere/exefs_patches/hid_patches/98EB0277ADFC171F79765FCC8A56674AE39B08FC.ips
+missioncontrol	atmosphere/exefs_patches/hid_patches/9A1F471859D99957A81B2FC21169EE4DBC191734.ips
+missioncontrol	atmosphere/exefs_patches/hid_patches/A2F71DB9568A864B8AC81AC79E2735A53A9CD291.ips
+missioncontrol	atmosphere/exefs_patches/hid_patches/ACA9C5D9BF1A0558251E6D2FE2D0CA4DFE7B90AC.ips
+missioncontrol	atmosphere/exefs_patches/hid_patches/AE8B325431ED958F335615EBA5312870A92978CB.ips
+missioncontrol	atmosphere/exefs_patches/hid_patches/B5D1C5A111EB89E72F2EBF93D1343DFD7BF4E421.ips
+missioncontrol	atmosphere/exefs_patches/hid_patches/BBEE6C2C132C849BC313B0E38732D91B9C45FBFD.ips
+missioncontrol	atmosphere/exefs_patches/hid_patches/C3030310E47B3841417518902AFFB2301F0033FC.ips
+missioncontrol	atmosphere/exefs_patches/hid_patches/C5FCB68A301FD160FF5209C54175AC51D69750BC.ips
+missioncontrol	atmosphere/exefs_patches/hid_patches/C9636704F7726BF77CEBBC53FFB14A80D8F789A1.ips
+missioncontrol	atmosphere/exefs_patches/hid_patches/CA1A12452AF8789F5D03BF2A70260CE80D7DA5C4.ips
+missioncontrol	atmosphere/exefs_patches/hid_patches/CEE923637C0797454FBE98A64F63D2B9F39B62FC.ips
+missioncontrol	atmosphere/exefs_patches/hid_patches/CFCBD39A38FC2E8FC1273B4B5BF7C619FA93579E.ips
+missioncontrol	atmosphere/exefs_patches/hid_patches/D7E71B92FAFD5E6D670F36593D98DC30AD15A24F.ips
+missioncontrol	atmosphere/exefs_patches/hid_patches/E5139E8D47BE57C31DA97FCFBB66472416D60BD1.ips
+missioncontrol	atmosphere/exefs_patches/hid_patches/FA528960A4ED9B4C408D2667BFE7C8BCD80E1FE2.ips
+missioncontrol	config/MissionControl/missioncontrol.ini.template
+saltynx	SaltySD/exceptions.txt
+saltynx	SaltySD/flags/log.flag
+saltynx	SaltySD/saltynx_bootstrap.elf
+saltynx	SaltySD/saltynx_bootstrap32.elf
+saltynx	SaltySD/saltynx_core.elf
+saltynx	SaltySD/saltynx_core32.elf
+saltynx	atmosphere/contents/0000000000534C56/exefs.nsp
+saltynx	atmosphere/contents/0000000000534C56/flags/boot2.flag
+saltynx	atmosphere/contents/0000000000534C56/toolbox.json
+saltynx	atmosphere/exefs_patches/SaltyNX_Fixes/053ABE9494B5397AE818B3721DE50995.ips
+saltynx	atmosphere/exefs_patches/SaltyNX_Fixes/10C14AD346AE02E32AA52A9030A3A87B98D89642000000000000000000000000.ips
+saltynx	atmosphere/exefs_patches/SaltyNX_Fixes/66A8EB853DE90A1AF13D19DA575E339B.ips
+saltynx	atmosphere/exefs_patches/SaltyNX_Fixes/C4D1BCED9D8C5B813295345B7F9FDF97.ips
+saltynx	atmosphere/exefs_patches/SaltyNX_Fixes/ECF4B91AF1B669ECD92829F25E4B530EE48985FA000000000000000000000000.ips
+saltynx	atmosphere/exefs_patches/SaltyNX_Fixes/IDs.txt
+ldn_mitm	atmosphere/contents/4200000000000010/exefs.nsp
+ldn_mitm	atmosphere/contents/4200000000000010/flags/boot2.flag
+ldn_mitm	atmosphere/contents/4200000000000010/toolbox.json
+ldn_mitm	switch/.overlays/ldnmitm_config.ovl
+ldn_mitm	switch/ldnmitm_config/ldnmitm_config.nro
+sys_con	atmosphere/contents/690000000000000D/exefs.nsp
+sys_con	atmosphere/contents/690000000000000D/flags/boot2.flag
+sys_con	atmosphere/contents/690000000000000D/toolbox.json
+sys_con	config/sys-con/config.ini
+sys_con	switch/sys-con.nro
+sys_ftpd_light	atmosphere/contents/420000000000000E/exefs.nsp
+sys_ftpd_light	atmosphere/contents/420000000000000E/flags/boot2.flag
+sys_ftpd_light	atmosphere/contents/420000000000000E/toolbox.json
+sys_ftpd_light	config/sys-ftpd/config.ini
+fizeau	atmosphere/contents/0100000000000F12/exefs.nsp
+fizeau	atmosphere/contents/0100000000000F12/flags/boot2.flag
+fizeau	atmosphere/contents/0100000000000F12/toolbox.json
+fizeau	atmosphere/exefs_patches/nvnflinger_cmu/08b4cba0de0157faa5b05e114cd44a5a2a7faf4a.ips
+fizeau	atmosphere/exefs_patches/nvnflinger_cmu/120d46563db1260c55974432e3e166c51652db4d.ips
+fizeau	atmosphere/exefs_patches/nvnflinger_cmu/327bea76ed384cc403e82e53bca29bc201d33a35.ips
+fizeau	atmosphere/exefs_patches/nvnflinger_cmu/3efdbab0fcae7bbfa6fa08e9ff1f2a7ac4f38a28.ips
+fizeau	atmosphere/exefs_patches/nvnflinger_cmu/44cba61ee715e0307dc6ef7f56177c6a5625c6c6.ips
+fizeau	atmosphere/exefs_patches/nvnflinger_cmu/5134d71aa6c82f222e58abfeabf4d4833041e1d8.ips
+fizeau	atmosphere/exefs_patches/nvnflinger_cmu/5284441b5f268cd3e08ed9be073664d80f6939d1.ips
+fizeau	atmosphere/exefs_patches/nvnflinger_cmu/6142225e9c1fe3bf6a5bdae3ef1b46892d2cc222.ips
+fizeau	atmosphere/exefs_patches/nvnflinger_cmu/66ef1a7b999ce2a9e36a91285e6ef991c139bed3.ips
+fizeau	atmosphere/exefs_patches/nvnflinger_cmu/69ce0180dfde03849829898665827a800ee68333.ips
+fizeau	atmosphere/exefs_patches/nvnflinger_cmu/6b76285bf1e6c66b426ce953282112eeb65a1ab0.ips
+fizeau	atmosphere/exefs_patches/nvnflinger_cmu/74fc488c86fde06e08f1f805bedcb3b40124f3f5.ips
+fizeau	atmosphere/exefs_patches/nvnflinger_cmu/824e653f7c84b2835618f035482da3678a8c8c5f.ips
+fizeau	atmosphere/exefs_patches/nvnflinger_cmu/83c900bebb87f1a7c7a4610ad1ec34eefc897ad0.ips
+fizeau	atmosphere/exefs_patches/nvnflinger_cmu/86837caec5c0b071d5e07c65ec45f54615cae721.ips
+fizeau	atmosphere/exefs_patches/nvnflinger_cmu/891b9081511d2d25346598cc345ec071ae10b90b.ips
+fizeau	atmosphere/exefs_patches/nvnflinger_cmu/9059ee5061a3c0b9c98c705216a7d21dd2cbf6aa.ips
+fizeau	atmosphere/exefs_patches/nvnflinger_cmu/91bc34d3bd1bcdf6cfe8778e98ae3e62492ba36f.ips
+fizeau	atmosphere/exefs_patches/nvnflinger_cmu/b0fe9cb6bfc859454f186167cc3426fe627fe76e.ips
+fizeau	atmosphere/exefs_patches/nvnflinger_cmu/ba73011c3f81954c142a802ddfac4551d80f97a8.ips
+fizeau	atmosphere/exefs_patches/nvnflinger_cmu/bcd23ead031f4d02b4869cc1adea70bf70edfd7b.ips
+fizeau	atmosphere/exefs_patches/nvnflinger_cmu/c9f5f57618273f6e747e171df5b5d967bc0ead1b.ips
+fizeau	atmosphere/exefs_patches/nvnflinger_cmu/cb812afaef6a42954c60315499afcffbca5f15f4.ips
+fizeau	atmosphere/exefs_patches/nvnflinger_cmu/d469053b05ebd7b256b849577cba015bdafb0201.ips
+fizeau	atmosphere/exefs_patches/nvnflinger_cmu/d66198db9847cc77e8f04c0d473d4a66431c1fe3.ips
+fizeau	atmosphere/exefs_patches/nvnflinger_cmu/f25463b5d502f1f7913d53559e1c394fda3d9d9e.ips
+fizeau	atmosphere/exefs_patches/nvnflinger_cmu/fc6f19d9a9fbe252916fc5bc4d769432bfba7236.ips
+fizeau	atmosphere/exefs_patches/nvnflinger_cmu/ffe29428924ce91f77c3705eb7d7e32eeb7c45ac.ips
+fizeau	config/Fizeau/config.ini
+fizeau	switch/.overlays/Fizeau.ovl
+fizeau	switch/Fizeau/Fizeau.nro
+sys_tune	atmosphere/contents/4200000000000000/exefs.nsp
+sys_tune	atmosphere/contents/4200000000000000/flags/boot2.flag
+sys_tune	atmosphere/contents/4200000000000000/toolbox.json
+sys_tune	switch/.overlays/sys-tune-overlay.ovl
+sysdvr	atmosphere/contents/00FF0000A53BB665/exefs.nsp
+sysdvr	atmosphere/contents/00FF0000A53BB665/flags/boot2.flag
+sysdvr	atmosphere/contents/00FF0000A53BB665/toolbox.json
+sysdvr	config/sysdvr/rtsp
+sysdvr	switch/SysDVR-conf.nro
+nx_fan_control	atmosphere/contents/00FF0000B378D640/exefs.nsp
+nx_fan_control	atmosphere/contents/00FF0000B378D640/flags/boot2.flag
+nx_fan_control	atmosphere/contents/00FF0000B378D640/toolbox.json
+nx_fan_control	switch/.overlays/Nx-FanControl.ovl
+sys_hidplus	atmosphere/contents/4200000000001312/exefs.nsp
+sys_hidplus	atmosphere/contents/4200000000001312/flags/boot2.flag
+ovlmenu	atmosphere/contents/420000000007E51A/exefs.nsp
+ovlmenu	atmosphere/contents/420000000007E51A/flags/boot2.flag
+ovlmenu	atmosphere/contents/420000000007E51A/toolbox.json
+ovlmenu	switch/.overlays/example.ovl
+ovlmenu	switch/.overlays/ovlmenu.ovl
+ultrahand	atmosphere/contents/420000000007E51A/exefs.nsp
+ultrahand	atmosphere/contents/420000000007E51A/flags/boot2.flag
+ultrahand	atmosphere/contents/420000000007E51A/toolbox.json
+ultrahand	atmosphere/contents/420000000007E51B/exefs.nsp
+ultrahand	atmosphere/exefs_patches/audio_mastervolume/3a75b4a62dad189b2c8b30e4dedb4e15ece56850.ips
+ultrahand	atmosphere/exefs_patches/audio_mastervolume/62b74bae7163b0ea9b29ed5a050c09cd8299c14e.ips
+ultrahand	atmosphere/exefs_patches/audio_mastervolume/d1e98d469d5bd0e878fdb06e7ca517ba411d4682.ips
+ultrahand	atmosphere/exefs_patches/audio_mastervolume/e163d0b718e32f87430ca8c98fda2e22ba733990.ips
+ultrahand	config/ultrahand/.sounds/default.zip
+ultrahand	config/ultrahand/assets/ppkantorski-1.rgba
+ultrahand	config/ultrahand/assets/ppkantorski-2.rgba
+ultrahand	config/ultrahand/flags/NTP_SYNC_PENDING.flag
+ultrahand	config/ultrahand/lang/de.json
+ultrahand	config/ultrahand/lang/en.json
+ultrahand	config/ultrahand/lang/es.json
+ultrahand	config/ultrahand/lang/fr.json
+ultrahand	config/ultrahand/lang/it.json
+ultrahand	config/ultrahand/lang/ja.json
+ultrahand	config/ultrahand/lang/ko.json
+ultrahand	config/ultrahand/lang/nl.json
+ultrahand	config/ultrahand/lang/pl.json
+ultrahand	config/ultrahand/lang/pt.json
+ultrahand	config/ultrahand/lang/ru.json
+ultrahand	config/ultrahand/lang/uk.json
+ultrahand	config/ultrahand/lang/zh-cn.json
+ultrahand	config/ultrahand/lang/zh-tw.json
+ultrahand	config/ultrahand/payloads/ultrahand_updater.bin
+ultrahand	config/ultrahand/sounds/enter.wav
+ultrahand	config/ultrahand/sounds/exit.wav
+ultrahand	config/ultrahand/sounds/move.wav
+ultrahand	config/ultrahand/sounds/notification.wav
+ultrahand	config/ultrahand/sounds/off.wav
+ultrahand	config/ultrahand/sounds/on.wav
+ultrahand	config/ultrahand/sounds/settings.wav
+ultrahand	config/ultrahand/sounds/tick.wav
+ultrahand	config/ultrahand/sounds/wall.wav
+ultrahand	config/ultrahand/themes/classic.ini
+ultrahand	config/ultrahand/themes/ultra-blue.ini
+ultrahand	config/ultrahand/themes/ultra.ini
+ultrahand	config/ultrahand/wallpapers/atmosphere.rgba
+ultrahand	switch/.overlays/ovlmenu.ovl
+ultrahand	switch/Ultrahand-Reload/Ultrahand-Reload.nro
+status_monitor	config/status-monitor/config.ini.template
+status_monitor	switch/.overlays/Status-Monitor-Overlay.ovl
+fps_locker	switch/.overlays/FPSLocker.ovl
+edizon_overlay	switch/.overlays/ovlEdiZon.ovl
+reversenx_rt	switch/.overlays/ReverseNX-RT-ovl.ovl
+sysdvr_overlay	switch/.overlays/sysdvr-overlay.ovl
+noled	switch/.overlays/noled.ovl
+master_volume	atmosphere/exefs_patches/audio_mastervolume/116db0393d9d91c689d74505344e52f670961f74.ips
+master_volume	atmosphere/exefs_patches/audio_mastervolume/3a75b4a62dad189b2c8b30e4dedb4e15ece56850.ips
+master_volume	atmosphere/exefs_patches/audio_mastervolume/62b74bae7163b0ea9b29ed5a050c09cd8299c14e.ips
+master_volume	atmosphere/exefs_patches/audio_mastervolume/d1e98d469d5bd0e878fdb06e7ca517ba411d4682.ips
+master_volume	atmosphere/exefs_patches/audio_mastervolume/e163d0b718e32f87430ca8c98fda2e22ba733990.ips
+master_volume	switch/.overlays/MasterVolume.ovl
+bt_audio	switch/.overlays/BT_Audio-ovl.ovl
+quickntp	config/quickntp.ini
+quickntp	switch/.overlays/QuickNTP.ovl
+ovl_sysmodules	switch/.overlays/ovlSysmodules.ovl
+alchemist	switch/.packages/Alchemist/contents/README.md
+alchemist	switch/.packages/Alchemist/include/contents_all.ini
+alchemist	switch/.packages/Alchemist/include/contents_cucholix.ini
+alchemist	switch/.packages/Alchemist/include/contents_install.ini
+alchemist	switch/.packages/Alchemist/include/contents_mods.ini
+alchemist	switch/.packages/Alchemist/include/contents_repos.ini
+alchemist	switch/.packages/Alchemist/include/exefs_patches.ini
+alchemist	switch/.packages/Alchemist/include/pchtxt_Fl4sh9174.ini
+alchemist	switch/.packages/Alchemist/include/pchtxt_KeatonTheBot.ini
+alchemist	switch/.packages/Alchemist/include/pchtxt_StevensND.ini
+alchemist	switch/.packages/Alchemist/include/pchtxt_all.ini
+alchemist	switch/.packages/Alchemist/include/pchtxt_cucholix.ini
+alchemist	switch/.packages/Alchemist/include/pchtxt_install.ini
+alchemist	switch/.packages/Alchemist/include/pchtxt_repos.ini
+alchemist	switch/.packages/Alchemist/include/pchtxt_theboy181.ini
+alchemist	switch/.packages/Alchemist/include/software_update.ini
+alchemist	switch/.packages/Alchemist/package.ini
+alchemist	switch/.packages/Alchemist/pchtxts/readme.md
+alchemist	switch/.packages/Alchemist/repos/README.md
+alchemist	switch/.packages/Alchemist/search_patterns.txt
+memory_kit	switch/.packages/Memory Kit/configure_commands.ini
+memory_kit	switch/.packages/Memory Kit/data/mesosphere_1.85MB_1.10.bin
+memory_kit	switch/.packages/Memory Kit/data/mesosphere_1.85MB_1.11.bin
+memory_kit	switch/.packages/Memory Kit/data/mesosphere_1.85MB_1.9.bin
+memory_kit	switch/.packages/Memory Kit/data/mesosphere_stripped_1.10.bin
+memory_kit	switch/.packages/Memory Kit/data/mesosphere_stripped_1.11.bin
+memory_kit	switch/.packages/Memory Kit/data/mesosphere_stripped_1.9.bin
+memory_kit	switch/.packages/Memory Kit/memory_hack.ini
+memory_kit	switch/.packages/Memory Kit/package.ini
+appstore	switch/appstore/.get/repos.json
+appstore	switch/appstore/appstore.nro
+appstore	switch/appstore/background.mp3
+aio_updater	switch/aio-switch-updater/aio-switch-updater.nro
+linkalho	switch/linkalho/linkalho.nro
+nx_activity_log	switch/NX-Activity-Log/NX-Activity-Log.nro
+nx_shell	switch/NX-Shell/NX-Shell.nro
+sphaira	switch/sphaira/sphaira.nro
+jc_color_swapper	switch/JC-color-swapper/JC-color-swapper.nro
+jc_color_swapper	switch/JC-color-swapper/profiles.json
+dbi	switch/DBI/DBI.nro
+dbi_patcher	switch/DBI/DBI.nro
+nxdumptool	switch/nxdt_rw_poc/nxdt_rw_poc.nro
+goldleaf	switch/Goldleaf/Goldleaf.nro
+jksv	switch/JKSV/JKSV.nro
+checkpoint	switch/Checkpoint/Checkpoint.nro
+neumann	switch/Neumann/Neumann.nro
+edizon	atmosphere/contents/010000000000000D/flags/boot2.flag
+edizon	atmosphere/contents/0100000000001013/exefs.nsp1
+edizon	atmosphere/contents/054e4f4558454000/exefs.nsp
+edizon	atmosphere/contents/054e4f4558454000/toolbox.json
+edizon	atmosphere/contents/420000000000000F/exefs.nsp
+edizon	atmosphere/contents/420000000000000F/toolbox.json
+edizon	atmosphere/contents/420000000000012B/exefs.nsp
+edizon	atmosphere/contents/420000000000012B/toolbox.json
+edizon	config/sys-ftpd-10k/config.ini
+edizon	switch/EdiZon/EdiZon.nro
+edizon	switch/EdiZon/profile.zip
+edizon	switch/breeze/054e4f4558454000_18.zip
+edizon	switch/breeze/Breeze.nro
+edizon	switch/breeze/alt_color.ini.template
+edizon	switch/breeze/asm.txt
+edizon	switch/breeze/asm0.txt
+edizon	switch/breeze/asm1.txt
+edizon	switch/breeze/cheat_url_txt.template
+edizon	switch/breeze/config.ini.template
+edizon	switch/breeze/configs.zip
+edizon	switch/breeze/default.focus
+edizon	switch/breeze/eazy_mode_buttons.default
+edizon	switch/breeze/gen1.zip
+edizon	switch/breeze/gen1_18.zip
+edizon	switch/breeze/gen2.zip
+edizon	switch/breeze/gen2_18.zip
+edizon	switch/breeze/gen2_19.zip
+edizon	switch/breeze/gold 1M others 1000.txt
+edizon	switch/breeze/hbl.nsp
+edizon	switch/breeze/hbmenu.nro
+edizon	switch/breeze/nitro.txt
+edizon	switch/breeze/override_config.zip
+edizon	switch/breeze/profile.zip
+edizon	switch/breeze/profile_18.zip
+edizon	switch/breeze/profile_arm32.zip
+edizon	switch/breeze/profile_arm32_18.zip
+edizon	switch/breeze/profile_hbl.zip
+edizon	switch/breeze/profile_hbl_18.zip
+edizon	switch/breeze/profilehbm.zip
+edizon	switch/breeze/reeze/Breeze.nro
+edizon	switch/breeze/reeze/ftpexe.nro
+edizon	switch/breeze/reeze/hbmenu.nro
+edizon	switch/breeze/setptr.txt
+edizon	switch/breeze/simple cheat.focus
+edizon	switch/breeze/x30.txt
+edizon	switch/edizon/EdiZon.nro
+edizon	switch/edizon/profile.zip
+edizon	switch/reboot_to_hekate.nro
+breeze	atmosphere/contents/420000000000000D/exefs.nsp
+breeze	atmosphere/contents/420000000000000D/toolbox.json
+breeze	atmosphere/contents/420000000000000F/exefs.nsp
+breeze	atmosphere/contents/420000000000000F/toolbox.json
+breeze	atmosphere/contents/420000000000012B/exefs.nsp
+breeze	atmosphere/contents/420000000000012B/toolbox.json
+breeze	config/sys-ftpd-10k/config.ini
+breeze	switch/breeze/054e4f4558454000_18.zip
+breeze	switch/breeze/Breeze.nro
+breeze	switch/breeze/UE.focus
+breeze	switch/breeze/alt_color.ini.template
+breeze	switch/breeze/asm.txt
+breeze	switch/breeze/asm0.txt
+breeze	switch/breeze/asm1.txt
+breeze	switch/breeze/cheat_url_txt.template
+breeze	switch/breeze/class field.focus
+breeze	switch/breeze/config.ini.template
+breeze	switch/breeze/configs.zip
+breeze	switch/breeze/default.focus
+breeze	switch/breeze/eazy_mode_buttons.default
+breeze	switch/breeze/gen2_19.zip
+breeze	switch/breeze/gold 1M others 1000.txt
+breeze	switch/breeze/hbl.nsp
+breeze	switch/breeze/hbmenu.nro
+breeze	switch/breeze/nitro.txt
+breeze	switch/breeze/override_config.zip
+breeze	switch/breeze/profile.zip
+breeze	switch/breeze/profile_18.zip
+breeze	switch/breeze/profile_arm32.zip
+breeze	switch/breeze/profile_arm32_18.zip
+breeze	switch/breeze/profile_hbl.zip
+breeze	switch/breeze/profile_hbl_18.zip
+breeze	switch/breeze/profilehbm.zip
+breeze	switch/breeze/qlaunch.zip
+breeze	switch/breeze/reeze/Breeze.nro
+breeze	switch/breeze/reeze/Breezehelper.nro
+breeze	switch/breeze/reeze/ftpexe.nro
+breeze	switch/breeze/reeze/hbmenu.nro
+breeze	switch/breeze/reeze/switch_il2cpp_metadata.nro
+breeze	switch/breeze/setptr.txt
+breeze	switch/breeze/simple cheat.focus
+breeze	switch/breeze/x30.txt
+breeze	switch/reboot_to_hekate.nro
+switch_cheats_updater	switch/switch-cheats-updater/switch-cheats-updater.nro
+simple_mod_manager	switch/SimpleModManager/SimpleModManager.nro
+simple_mod_downloader	switch/SimpleModDownloader.nro
+emuiibo	atmosphere/contents/0100000000000352/exefs.nsp
+emuiibo	atmosphere/contents/0100000000000352/flags/boot2.flag
+emuiibo	atmosphere/contents/0100000000000352/toolbox.json
+emuiibo	emuiibo/overlay/lang/de.json
+emuiibo	emuiibo/overlay/lang/en.json
+emuiibo	emuiibo/overlay/lang/es.json
+emuiibo	emuiibo/overlay/lang/fr.json
+emuiibo	emuiibo/overlay/lang/it.json
+emuiibo	emuiibo/overlay/lang/ko.json
+emuiibo	emuiibo/overlay/lang/pt-BR.json
+emuiibo	emuiibo/overlay/lang/ru.json
+emuiibo	emuiibo/overlay/lang/zh-Hans.json
+emuiibo	emuiibo/overlay/lang/zh-Hant.json
+emuiibo	switch/.overlays/emuiibo.ovl
+amiigo	switch/Amiigo/Amiigo.nro
+amiibo_generator	switch/AmiiboGenerator/AmiiboGenerator.nro
+nxthemes_installer	switch/Switch_themes_Installer/NXThemesInstaller.nro
+themezer	switch/ThemezerNX/themezer-nx.nro
+ulaunch	atmosphere/contents/0100000000001000/exefs.nsp
+ulaunch	switch/uManager.nro
+ulaunch	ulaunch/bin/uLoader/applet/main
+ulaunch	ulaunch/bin/uLoader/applet/main.npdm
+ulaunch	ulaunch/bin/uLoader/application/main
+ulaunch	ulaunch/bin/uLoader/application/main.npdm
+ulaunch	ulaunch/bin/uMenu/main
+ulaunch	ulaunch/bin/uMenu/main.npdm
+ulaunch	ulaunch/bin/uMenu/romfs.bin
+ulaunch	ulaunch/bin/uSystem/exefs.nsp
+nxmp	switch/nxmp/config.ini
+nxmp	switch/nxmp/eqpresets.ini
+nxmp	switch/nxmp/langs/nxmp-cn-s.json
+nxmp	switch/nxmp/langs/nxmp-de.json
+nxmp	switch/nxmp/langs/nxmp-es.json
+nxmp	switch/nxmp/langs/nxmp-fr.json
+nxmp	switch/nxmp/langs/nxmp-jp.json
+nxmp	switch/nxmp/langs/nxmp-ko.json
+nxmp	switch/nxmp/langs/nxmp-pt_br.json
+nxmp	switch/nxmp/langs/nxmp-ro.json
+nxmp	switch/nxmp/langs/nxmp-ru.json
+nxmp	switch/nxmp/mpv/subfont.ttf
+nxmp	switch/nxmp/nxmp.nro
+pplay	switch/pplay/mpv/subfont.ttf
+pplay	switch/pplay/pplay.nro
+switchfin	switch/Switchfin/Switchfin.nro
+browsenx	switch/Browser.nro
+lennytube	switch/lennytube/lennytube.nro
+comicnx	switch/ComicNX/ComicNX.nro
+moonlight	switch/Moonlight-Switch/Moonlight-Switch.nro
+akira	switch/akira.nro
+skynx	SkyNX_Forwarder.nsp
+skynx	switch/SkyNX/SkyNX.nro
+skynx	switch/SkyNX/iconTransparent.png
+switch_remote_play	switch/switch-remote-play/common.ini
+switch_remote_play	switch/switch-remote-play/controller.ini
+switch_remote_play	switch/switch-remote-play/decoder.ini
+switch_remote_play	switch/switch-remote-play/h264_amd.ini
+switch_remote_play	switch/switch-remote-play/h264_cpu.ini
+switch_remote_play	switch/switch-remote-play/keyboard.ini
+switch_remote_play	switch/switch-remote-play/mouse.ini
+switch_remote_play	switch/switch-remote-play/network.ini
+switch_remote_play	switch/switch-remote-play/simulated_mouse.ini
+switch_remote_play	switch/switch-remote-play/switch-remote-play.nro
+switch_remote_play	switch/switch-remote-play/touch_config.ini
+switch_remote_play	switch/switch-remote-play/virtual_touch.ini
+retroarch	retroarch/assets/glui/README.md
+retroarch	retroarch/assets/glui/add.png
+retroarch	retroarch/assets/glui/add_to_favorites.png
+retroarch	retroarch/assets/glui/add_to_mixer.png
+retroarch	retroarch/assets/glui/archive.png
+retroarch	retroarch/assets/glui/back.png
+retroarch	retroarch/assets/glui/back_tab.png
+retroarch	retroarch/assets/glui/battery_100.png
+retroarch	retroarch/assets/glui/battery_20.png
+retroarch	retroarch/assets/glui/battery_30.png
+retroarch	retroarch/assets/glui/battery_50.png
+retroarch	retroarch/assets/glui/battery_60.png
+retroarch	retroarch/assets/glui/battery_80.png
+retroarch	retroarch/assets/glui/battery_90.png
+retroarch	retroarch/assets/glui/battery_charging.png
+retroarch	retroarch/assets/glui/battery_critical.png
+retroarch	retroarch/assets/glui/close.png
+retroarch	retroarch/assets/glui/configurations.png
+retroarch	retroarch/assets/glui/controls.png
+retroarch	retroarch/assets/glui/core_cheat_options.png
+retroarch	retroarch/assets/glui/core_options.png
+retroarch	retroarch/assets/glui/cores.png
+retroarch	retroarch/assets/glui/database.png
+retroarch	retroarch/assets/glui/disk.png
+retroarch	retroarch/assets/glui/eject.png
+retroarch	retroarch/assets/glui/file.png
+retroarch	retroarch/assets/glui/folder.png
+retroarch	retroarch/assets/glui/font.ttf
+retroarch	retroarch/assets/glui/help.png
+retroarch	retroarch/assets/glui/history.png
+retroarch	retroarch/assets/glui/image.png
+retroarch	retroarch/assets/glui/information.png
+retroarch	retroarch/assets/glui/key-hover.png
+retroarch	retroarch/assets/glui/key.png
+retroarch	retroarch/assets/glui/load_content.png
+retroarch	retroarch/assets/glui/load_state.png
+retroarch	retroarch/assets/glui/main_tab_passive.png
+retroarch	retroarch/assets/glui/menu_check.png
+retroarch	retroarch/assets/glui/music.png
+retroarch	retroarch/assets/glui/netplay.png
+retroarch	retroarch/assets/glui/parent_directory.png
+retroarch	retroarch/assets/glui/playlist.png
+retroarch	retroarch/assets/glui/playlists_tab_passive.png
+retroarch	retroarch/assets/glui/pointer.png
+retroarch	retroarch/assets/glui/quickmenu.png
+retroarch	retroarch/assets/glui/quit.png
+retroarch	retroarch/assets/glui/remove.png
+retroarch	retroarch/assets/glui/rename.png
+retroarch	retroarch/assets/glui/restart.png
+retroarch	retroarch/assets/glui/resume.png
+retroarch	retroarch/assets/glui/resume_tab.png
+retroarch	retroarch/assets/glui/run.png
+retroarch	retroarch/assets/glui/save_state.png
+retroarch	retroarch/assets/glui/scan.png
+retroarch	retroarch/assets/glui/search.png
+retroarch	retroarch/assets/glui/settings.png
+retroarch	retroarch/assets/glui/settings_tab_passive.png
+retroarch	retroarch/assets/glui/shaders.png
+retroarch	retroarch/assets/glui/start_core.png
+retroarch	retroarch/assets/glui/state_slot.png
+retroarch	retroarch/assets/glui/switch_bg.png
+retroarch	retroarch/assets/glui/switch_off.png
+retroarch	retroarch/assets/glui/switch_on.png
+retroarch	retroarch/assets/glui/switch_view.png
+retroarch	retroarch/assets/glui/take_screenshot.png
+retroarch	retroarch/assets/glui/undo_load_state.png
+retroarch	retroarch/assets/glui/undo_save_state.png
+retroarch	retroarch/assets/glui/update.png
+retroarch	retroarch/assets/glui/video.png
+retroarch	retroarch/assets/ozone/README.md
+retroarch	retroarch/assets/ozone/bold.ttf
+retroarch	retroarch/assets/ozone/png/boysenberry/check.png
+retroarch	retroarch/assets/ozone/png/boysenberry/cursor_noborder.png
+retroarch	retroarch/assets/ozone/png/boysenberry/cursor_static.png
+retroarch	retroarch/assets/ozone/png/boysenberry/switch.png
+retroarch	retroarch/assets/ozone/png/cursor_border.png
+retroarch	retroarch/assets/ozone/png/dark/check.png
+retroarch	retroarch/assets/ozone/png/dark/cursor_noborder.png
+retroarch	retroarch/assets/ozone/png/dark/cursor_static.png
+retroarch	retroarch/assets/ozone/png/dark/switch.png
+retroarch	retroarch/assets/ozone/png/dracula/check.png
+retroarch	retroarch/assets/ozone/png/dracula/cursor_noborder.png
+retroarch	retroarch/assets/ozone/png/dracula/cursor_static.png
+retroarch	retroarch/assets/ozone/png/dracula/switch.png
+retroarch	retroarch/assets/ozone/png/gruvbox_dark/check.png
+retroarch	retroarch/assets/ozone/png/gruvbox_dark/cursor_noborder.png
+retroarch	retroarch/assets/ozone/png/gruvbox_dark/cursor_static.png
+retroarch	retroarch/assets/ozone/png/gruvbox_dark/switch.png
+retroarch	retroarch/assets/ozone/png/hacking_the_kernel/check.png
+retroarch	retroarch/assets/ozone/png/hacking_the_kernel/cursor_noborder.png
+retroarch	retroarch/assets/ozone/png/hacking_the_kernel/cursor_static.png
+retroarch	retroarch/assets/ozone/png/hacking_the_kernel/switch.png
+retroarch	retroarch/assets/ozone/png/icons/2048-content.png
+retroarch	retroarch/assets/ozone/png/icons/2048.png
+retroarch	retroarch/assets/ozone/png/icons/Acorn - Risc PC-content.png
+retroarch	retroarch/assets/ozone/png/icons/Acorn - Risc PC.png
+retroarch	retroarch/assets/ozone/png/icons/Acorn RISC OS - Flash Media-content.png
+retroarch	retroarch/assets/ozone/png/icons/Acorn RISC OS - Flash Media.png
+retroarch	retroarch/assets/ozone/png/icons/Amstrad - CPC-content.png
+retroarch	retroarch/assets/ozone/png/icons/Amstrad - CPC.png
+retroarch	retroarch/assets/ozone/png/icons/Analogue - Analogue Pocket-content.png
+retroarch	retroarch/assets/ozone/png/icons/Analogue - Analogue Pocket.png
+retroarch	retroarch/assets/ozone/png/icons/Apple - IIGS-content.png
+retroarch	retroarch/assets/ozone/png/icons/Apple - IIGS.png
+retroarch	retroarch/assets/ozone/png/icons/Apple - Macintosh (BETA)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Apple - Macintosh (BETA).png
+retroarch	retroarch/assets/ozone/png/icons/Apple-Bandai - Pippin-content.png
+retroarch	retroarch/assets/ozone/png/icons/Apple-Bandai - Pippin.png
+retroarch	retroarch/assets/ozone/png/icons/Arduboy Inc - Arduboy-content.png
+retroarch	retroarch/assets/ozone/png/icons/Arduboy Inc - Arduboy.png
+retroarch	retroarch/assets/ozone/png/icons/Atari - 2600-content.png
+retroarch	retroarch/assets/ozone/png/icons/Atari - 2600.png
+retroarch	retroarch/assets/ozone/png/icons/Atari - 5200-content.png
+retroarch	retroarch/assets/ozone/png/icons/Atari - 5200.png
+retroarch	retroarch/assets/ozone/png/icons/Atari - 7800-content.png
+retroarch	retroarch/assets/ozone/png/icons/Atari - 7800.png
+retroarch	retroarch/assets/ozone/png/icons/Atari - Jaguar CD-content.png
+retroarch	retroarch/assets/ozone/png/icons/Atari - Jaguar CD.png
+retroarch	retroarch/assets/ozone/png/icons/Atari - Jaguar-content.png
+retroarch	retroarch/assets/ozone/png/icons/Atari - Jaguar.png
+retroarch	retroarch/assets/ozone/png/icons/Atari - Lynx-content.png
+retroarch	retroarch/assets/ozone/png/icons/Atari - Lynx.png
+retroarch	retroarch/assets/ozone/png/icons/Atari - ST-content.png
+retroarch	retroarch/assets/ozone/png/icons/Atari - ST.png
+retroarch	retroarch/assets/ozone/png/icons/Atari - XEGS-content.png
+retroarch	retroarch/assets/ozone/png/icons/Atari - XEGS.png
+retroarch	retroarch/assets/ozone/png/icons/Bally - Astrocade (Tapes)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Bally - Astrocade-content.png
+retroarch	retroarch/assets/ozone/png/icons/Bally - Astrocade.png
+retroarch	retroarch/assets/ozone/png/icons/Bandai - Super Vision 8000-content.png
+retroarch	retroarch/assets/ozone/png/icons/Bandai - Super Vision 8000.png
+retroarch	retroarch/assets/ozone/png/icons/Bandai - WonderSwan Color-content.png
+retroarch	retroarch/assets/ozone/png/icons/Bandai - WonderSwan Color.png
+retroarch	retroarch/assets/ozone/png/icons/Bandai - WonderSwan-content.png
+retroarch	retroarch/assets/ozone/png/icons/Bandai - WonderSwan.png
+retroarch	retroarch/assets/ozone/png/icons/Benesse - Pocket Challenge V2-content.png
+retroarch	retroarch/assets/ozone/png/icons/Benesse - Pocket Challenge V2.png
+retroarch	retroarch/assets/ozone/png/icons/CHIP-8-content.png
+retroarch	retroarch/assets/ozone/png/icons/CHIP-8.png
+retroarch	retroarch/assets/ozone/png/icons/Cannonball-content.png
+retroarch	retroarch/assets/ozone/png/icons/Cannonball.png
+retroarch	retroarch/assets/ozone/png/icons/Capcom - CP System I-content.png
+retroarch	retroarch/assets/ozone/png/icons/Capcom - CP System I.png
+retroarch	retroarch/assets/ozone/png/icons/Capcom - CP System II-content.png
+retroarch	retroarch/assets/ozone/png/icons/Capcom - CP System II.png
+retroarch	retroarch/assets/ozone/png/icons/Capcom - CP System III-content.png
+retroarch	retroarch/assets/ozone/png/icons/Capcom - CP System III.png
+retroarch	retroarch/assets/ozone/png/icons/Casio - Loopy-content.png
+retroarch	retroarch/assets/ozone/png/icons/Casio - Loopy.png
+retroarch	retroarch/assets/ozone/png/icons/Casio - PV-1000-content.png
+retroarch	retroarch/assets/ozone/png/icons/Casio - PV-1000.png
+retroarch	retroarch/assets/ozone/png/icons/Cave Story-content.png
+retroarch	retroarch/assets/ozone/png/icons/Cave Story.png
+retroarch	retroarch/assets/ozone/png/icons/ChaiLove-content.png
+retroarch	retroarch/assets/ozone/png/icons/ChaiLove.png
+retroarch	retroarch/assets/ozone/png/icons/Coleco - ColecoVision ADAM-content.png
+retroarch	retroarch/assets/ozone/png/icons/Coleco - ColecoVision ADAM.png
+retroarch	retroarch/assets/ozone/png/icons/Coleco - ColecoVision-content.png
+retroarch	retroarch/assets/ozone/png/icons/Coleco - ColecoVision.png
+retroarch	retroarch/assets/ozone/png/icons/Commodore - 64-content.png
+retroarch	retroarch/assets/ozone/png/icons/Commodore - 64.png
+retroarch	retroarch/assets/ozone/png/icons/Commodore - Amiga-content.png
+retroarch	retroarch/assets/ozone/png/icons/Commodore - Amiga.png
+retroarch	retroarch/assets/ozone/png/icons/Commodore - CD32-content.png
+retroarch	retroarch/assets/ozone/png/icons/Commodore - CD32.png
+retroarch	retroarch/assets/ozone/png/icons/Commodore - PET-content.png
+retroarch	retroarch/assets/ozone/png/icons/Commodore - PET.png
+retroarch	retroarch/assets/ozone/png/icons/Commodore - Plus-4-content.png
+retroarch	retroarch/assets/ozone/png/icons/Commodore - Plus-4.png
+retroarch	retroarch/assets/ozone/png/icons/Commodore - VIC-20-content.png
+retroarch	retroarch/assets/ozone/png/icons/Commodore - VIC-20.png
+retroarch	retroarch/assets/ozone/png/icons/DICE-content.png
+retroarch	retroarch/assets/ozone/png/icons/DICE.png
+retroarch	retroarch/assets/ozone/png/icons/DOOM-content.png
+retroarch	retroarch/assets/ozone/png/icons/DOOM.png
+retroarch	retroarch/assets/ozone/png/icons/DOS-content.png
+retroarch	retroarch/assets/ozone/png/icons/DOS.png
+retroarch	retroarch/assets/ozone/png/icons/Dinothawr-content.png
+retroarch	retroarch/assets/ozone/png/icons/Dinothawr.png
+retroarch	retroarch/assets/ozone/png/icons/Dungeon Crawl Stone Soup-content.png
+retroarch	retroarch/assets/ozone/png/icons/Dungeon Crawl Stone Soup.png
+retroarch	retroarch/assets/ozone/png/icons/Emerson - Arcadia 2001-content.png
+retroarch	retroarch/assets/ozone/png/icons/Emerson - Arcadia 2001.png
+retroarch	retroarch/assets/ozone/png/icons/Entex - Adventure Vision-content.png
+retroarch	retroarch/assets/ozone/png/icons/Entex - Adventure Vision.png
+retroarch	retroarch/assets/ozone/png/icons/Epoch - Super Cassette Vision-content.png
+retroarch	retroarch/assets/ozone/png/icons/Epoch - Super Cassette Vision.png
+retroarch	retroarch/assets/ozone/png/icons/FBNeo - Arcade Games-content.png
+retroarch	retroarch/assets/ozone/png/icons/FBNeo - Arcade Games.png
+retroarch	retroarch/assets/ozone/png/icons/FFmpeg-content.png
+retroarch	retroarch/assets/ozone/png/icons/FFmpeg.png
+retroarch	retroarch/assets/ozone/png/icons/Fairchild - Channel F-content.png
+retroarch	retroarch/assets/ozone/png/icons/Fairchild - Channel F.png
+retroarch	retroarch/assets/ozone/png/icons/Flashback-content.png
+retroarch	retroarch/assets/ozone/png/icons/Flashback.png
+retroarch	retroarch/assets/ozone/png/icons/Fujitsu - FM 7-content.png
+retroarch	retroarch/assets/ozone/png/icons/Fujitsu - FM 7.png
+retroarch	retroarch/assets/ozone/png/icons/Fujitsu - FM Towns-content.png
+retroarch	retroarch/assets/ozone/png/icons/Fujitsu - FM Towns.png
+retroarch	retroarch/assets/ozone/png/icons/Fujitsu - FMR50-content.png
+retroarch	retroarch/assets/ozone/png/icons/Fujitsu - FMR50.png
+retroarch	retroarch/assets/ozone/png/icons/Fukutake Publishing - StudyBox-content.png
+retroarch	retroarch/assets/ozone/png/icons/Fukutake Publishing - StudyBox.png
+retroarch	retroarch/assets/ozone/png/icons/Funtech - Super Acan-content.png
+retroarch	retroarch/assets/ozone/png/icons/Funtech - Super Acan.png
+retroarch	retroarch/assets/ozone/png/icons/GCE - Vectrex-content.png
+retroarch	retroarch/assets/ozone/png/icons/GCE - Vectrex.png
+retroarch	retroarch/assets/ozone/png/icons/GamePark - GP2X (Digital)-content.png
+retroarch	retroarch/assets/ozone/png/icons/GamePark - GP2X (Digital).png
+retroarch	retroarch/assets/ozone/png/icons/GamePark - GP2X-content.png
+retroarch	retroarch/assets/ozone/png/icons/GamePark - GP2X.png
+retroarch	retroarch/assets/ozone/png/icons/GamePark - GP32-content.png
+retroarch	retroarch/assets/ozone/png/icons/GamePark - GP32.png
+retroarch	retroarch/assets/ozone/png/icons/Google - Android (Amazon Appstore)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Google - Android (Amazon Appstore).png
+retroarch	retroarch/assets/ozone/png/icons/Google - Android (Misc)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Google - Android (Misc).png
+retroarch	retroarch/assets/ozone/png/icons/Google - Android (Samsung Galaxy Apps)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Google - Android (Samsung Galaxy Apps).png
+retroarch	retroarch/assets/ozone/png/icons/Handheld Electronic Game-content.png
+retroarch	retroarch/assets/ozone/png/icons/Handheld Electronic Game.png
+retroarch	retroarch/assets/ozone/png/icons/Hartung - Game Master-content.png
+retroarch	retroarch/assets/ozone/png/icons/Hartung - Game Master.png
+retroarch	retroarch/assets/ozone/png/icons/Hitachi - S1-content.png
+retroarch	retroarch/assets/ozone/png/icons/Hitachi - S1.png
+retroarch	retroarch/assets/ozone/png/icons/IBM - PC and Compatibles (Digital) (Desura)-content.png
+retroarch	retroarch/assets/ozone/png/icons/IBM - PC and Compatibles (Digital) (Desura).png
+retroarch	retroarch/assets/ozone/png/icons/IBM - PC and Compatibles (Digital) (Groupees)-content.png
+retroarch	retroarch/assets/ozone/png/icons/IBM - PC and Compatibles (Digital) (Groupees).png
+retroarch	retroarch/assets/ozone/png/icons/IBM - PC and Compatibles (Digital) (JAST USA)-content.png
+retroarch	retroarch/assets/ozone/png/icons/IBM - PC and Compatibles (Digital) (JAST USA).png
+retroarch	retroarch/assets/ozone/png/icons/IBM - PC and Compatibles (Digital) (Misc) (Adult)-content.png
+retroarch	retroarch/assets/ozone/png/icons/IBM - PC and Compatibles (Digital) (Misc) (Adult).png
+retroarch	retroarch/assets/ozone/png/icons/IBM - PC and Compatibles (Digital) (Misc)-content.png
+retroarch	retroarch/assets/ozone/png/icons/IBM - PC and Compatibles (Digital) (Misc).png
+retroarch	retroarch/assets/ozone/png/icons/IBM - PC and Compatibles (Digital) (Steam) (Hentai)-content.png
+retroarch	retroarch/assets/ozone/png/icons/IBM - PC and Compatibles (Digital) (Steam) (Hentai).png
+retroarch	retroarch/assets/ozone/png/icons/IBM - PC and Compatibles (Digital) (Unknown)-content.png
+retroarch	retroarch/assets/ozone/png/icons/IBM - PC and Compatibles (Digital) (Unknown).png
+retroarch	retroarch/assets/ozone/png/icons/IBM - PC and Compatibles (Digital) (Updates and DLC)-content.png
+retroarch	retroarch/assets/ozone/png/icons/IBM - PC and Compatibles (Digital) (Updates and DLC).png
+retroarch	retroarch/assets/ozone/png/icons/IBM - PC and Compatibles (Flash Media)-content.png
+retroarch	retroarch/assets/ozone/png/icons/IBM - PC and Compatibles (Flash Media).png
+retroarch	retroarch/assets/ozone/png/icons/IBM - PC and Compatibles-content.png
+retroarch	retroarch/assets/ozone/png/icons/IBM - PC and Compatibles.png
+retroarch	retroarch/assets/ozone/png/icons/Interton - VC 4000-content.png
+retroarch	retroarch/assets/ozone/png/icons/Interton - VC 4000.png
+retroarch	retroarch/assets/ozone/png/icons/Konami - Picno-content.png
+retroarch	retroarch/assets/ozone/png/icons/Konami - Picno.png
+retroarch	retroarch/assets/ozone/png/icons/LeapFrog - LeapPad-content.png
+retroarch	retroarch/assets/ozone/png/icons/LeapFrog - LeapPad.png
+retroarch	retroarch/assets/ozone/png/icons/LeapFrog - Leapster Learning Game System-content.png
+retroarch	retroarch/assets/ozone/png/icons/LeapFrog - Leapster Learning Game System.png
+retroarch	retroarch/assets/ozone/png/icons/LeapFrog - My First LeapPad-content.png
+retroarch	retroarch/assets/ozone/png/icons/LeapFrog - My First LeapPad.png
+retroarch	retroarch/assets/ozone/png/icons/Libretro - Pad.png
+retroarch	retroarch/assets/ozone/png/icons/Lutro-content.png
+retroarch	retroarch/assets/ozone/png/icons/Lutro.png
+retroarch	retroarch/assets/ozone/png/icons/Luxor - ABC 800-content.png
+retroarch	retroarch/assets/ozone/png/icons/Luxor - ABC 800.png
+retroarch	retroarch/assets/ozone/png/icons/MAME 2000-content.png
+retroarch	retroarch/assets/ozone/png/icons/MAME 2000.png
+retroarch	retroarch/assets/ozone/png/icons/MAME 2003-Plus-content.png
+retroarch	retroarch/assets/ozone/png/icons/MAME 2003-Plus.png
+retroarch	retroarch/assets/ozone/png/icons/MAME 2003-content.png
+retroarch	retroarch/assets/ozone/png/icons/MAME 2003.png
+retroarch	retroarch/assets/ozone/png/icons/MAME 2010-content.png
+retroarch	retroarch/assets/ozone/png/icons/MAME 2010.png
+retroarch	retroarch/assets/ozone/png/icons/MAME 2015-content.png
+retroarch	retroarch/assets/ozone/png/icons/MAME 2015.png
+retroarch	retroarch/assets/ozone/png/icons/MAME 2016-content.png
+retroarch	retroarch/assets/ozone/png/icons/MAME 2016.png
+retroarch	retroarch/assets/ozone/png/icons/MAME-content.png
+retroarch	retroarch/assets/ozone/png/icons/MAME.png
+retroarch	retroarch/assets/ozone/png/icons/Magnavox - Odyssey-content.png
+retroarch	retroarch/assets/ozone/png/icons/Magnavox - Odyssey.png
+retroarch	retroarch/assets/ozone/png/icons/Magnavox - Odyssey2-content.png
+retroarch	retroarch/assets/ozone/png/icons/Magnavox - Odyssey2.png
+retroarch	retroarch/assets/ozone/png/icons/Mattel - Intellivision-content.png
+retroarch	retroarch/assets/ozone/png/icons/Mattel - Intellivision.png
+retroarch	retroarch/assets/ozone/png/icons/Microsoft - MSX-content.png
+retroarch	retroarch/assets/ozone/png/icons/Microsoft - MSX.png
+retroarch	retroarch/assets/ozone/png/icons/Microsoft - MSX2-content.png
+retroarch	retroarch/assets/ozone/png/icons/Microsoft - MSX2.png
+retroarch	retroarch/assets/ozone/png/icons/Microsoft - XBOX 360 (Digital).png
+retroarch	retroarch/assets/ozone/png/icons/Microsoft - Xbox (Development Kit Hard Drives)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Microsoft - Xbox (Development Kit Hard Drives).png
+retroarch	retroarch/assets/ozone/png/icons/Microsoft - Xbox 360 (Development Kit Hard Drives)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Microsoft - Xbox 360 (Development Kit Hard Drives).png
+retroarch	retroarch/assets/ozone/png/icons/Microsoft - Xbox 360 (Digital) (CDN)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Microsoft - Xbox 360 (Digital) (CDN).png
+retroarch	retroarch/assets/ozone/png/icons/Microsoft - Xbox 360 (Digital)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Microsoft - Xbox 360-content.png
+retroarch	retroarch/assets/ozone/png/icons/Microsoft - Xbox 360.png
+retroarch	retroarch/assets/ozone/png/icons/Microsoft - Xbox One (Digital)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Microsoft - Xbox One (Digital).png
+retroarch	retroarch/assets/ozone/png/icons/Microsoft - Xbox One-content.png
+retroarch	retroarch/assets/ozone/png/icons/Microsoft - Xbox One.png
+retroarch	retroarch/assets/ozone/png/icons/Microsoft - Xbox-content.png
+retroarch	retroarch/assets/ozone/png/icons/Microsoft - Xbox.png
+retroarch	retroarch/assets/ozone/png/icons/Milton Bradley - Omni-content.png
+retroarch	retroarch/assets/ozone/png/icons/Milton Bradley - Omni.png
+retroarch	retroarch/assets/ozone/png/icons/Minecraft-content.png
+retroarch	retroarch/assets/ozone/png/icons/Minecraft.png
+retroarch	retroarch/assets/ozone/png/icons/Mobile - J2ME-content.png
+retroarch	retroarch/assets/ozone/png/icons/Mobile - J2ME.png
+retroarch	retroarch/assets/ozone/png/icons/Mobile - Palm OS (Digital)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Mobile - Palm OS (Digital).png
+retroarch	retroarch/assets/ozone/png/icons/Mobile - Palm OS-content.png
+retroarch	retroarch/assets/ozone/png/icons/Mobile - Palm OS.png
+retroarch	retroarch/assets/ozone/png/icons/Mobile - Pocket PC (Digital)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Mobile - Pocket PC (Digital).png
+retroarch	retroarch/assets/ozone/png/icons/Mobile - Pocket PC-content.png
+retroarch	retroarch/assets/ozone/png/icons/Mobile - Pocket PC.png
+retroarch	retroarch/assets/ozone/png/icons/Mobile - Symbian-content.png
+retroarch	retroarch/assets/ozone/png/icons/Mobile - Symbian.png
+retroarch	retroarch/assets/ozone/png/icons/MrBoom-content.png
+retroarch	retroarch/assets/ozone/png/icons/MrBoom.png
+retroarch	retroarch/assets/ozone/png/icons/NEC - PC Engine - TurboGrafx 16-content.png
+retroarch	retroarch/assets/ozone/png/icons/NEC - PC Engine - TurboGrafx 16.png
+retroarch	retroarch/assets/ozone/png/icons/NEC - PC Engine CD - TurboGrafx-CD-content.png
+retroarch	retroarch/assets/ozone/png/icons/NEC - PC Engine CD - TurboGrafx-CD.png
+retroarch	retroarch/assets/ozone/png/icons/NEC - PC Engine SuperGrafx-content.png
+retroarch	retroarch/assets/ozone/png/icons/NEC - PC Engine SuperGrafx.png
+retroarch	retroarch/assets/ozone/png/icons/NEC - PC-8001 - PC-8801-content.png
+retroarch	retroarch/assets/ozone/png/icons/NEC - PC-8001 - PC-8801.png
+retroarch	retroarch/assets/ozone/png/icons/NEC - PC-98-content.png
+retroarch	retroarch/assets/ozone/png/icons/NEC - PC-98.png
+retroarch	retroarch/assets/ozone/png/icons/NEC - PC-FX-content.png
+retroarch	retroarch/assets/ozone/png/icons/NEC - PC-FX.png
+retroarch	retroarch/assets/ozone/png/icons/Namco, Sega, Nintendo - TriForce (Cartridges)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Namco, Sega, Nintendo - TriForce (Cartridges).png
+retroarch	retroarch/assets/ozone/png/icons/Neo Geo-content.png
+retroarch	retroarch/assets/ozone/png/icons/Neo Geo.png
+retroarch	retroarch/assets/ozone/png/icons/Nichibutsu - My Vision-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nichibutsu - My Vision.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Family BASIC (Cartridge).png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Family BASIC (Tapes).png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Family BASIC.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Family Computer Disk System-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Family Computer Disk System.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Family Computer Network System-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Family Computer Network System.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Game & Watch-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Game & Watch.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Game Boy Advance (Multiboot)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Game Boy Advance (Multiboot).png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Game Boy Advance (Play-Yan)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Game Boy Advance (Play-Yan).png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Game Boy Advance (Video)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Game Boy Advance (Video).png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Game Boy Advance (e-Reader)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Game Boy Advance (e-Reader).png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Game Boy Advance-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Game Boy Advance.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Game Boy Color-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Game Boy Color.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Game Boy-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Game Boy.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - GameCube-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - GameCube.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Kiosk Video Compact Flash-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Kiosk Video Compact Flash.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Misc-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Misc.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - New Nintendo 3DS (Digital) (Deprecated)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - New Nintendo 3DS (Digital) (Deprecated).png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - New Nintendo 3DS-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - New Nintendo 3DS.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo 3DS (AR Cards)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo 3DS (AR Cards).png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo 3DS (DLC)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo 3DS (DLC).png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo 3DS (Digital) (CDN)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo 3DS (Digital) (CDN).png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo 3DS (Digital) (Deprecated)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo 3DS (Digital) (Deprecated).png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo 3DS (Digital) (Dev ROMs)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo 3DS (Digital) (Dev ROMs).png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo 3DS (Digital) (Pre Install)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo 3DS (Digital) (Pre Install).png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo 3DS (Digital)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo 3DS (Digital).png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo 3DS-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo 3DS.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo 64 (Mario no Photopi SmartMedia)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo 64 (Mario no Photopi SmartMedia).png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo 64-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo 64.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo 64DD-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo 64DD.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo DS (Download Play) (BETA)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo DS (Download Play) (BETA).png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo DS (Download Play)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo DS (Download Play).png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo DS-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo DS.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo DSi (DLC)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo DSi (DLC).png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo DSi (Digital) (CDN)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo DSi (Digital) (CDN).png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo DSi (Digital)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo DSi (Digital).png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo DSi Decrypted-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo DSi Decrypted.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo DSi-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo DSi.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo Entertainment System-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo Entertainment System.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo GameCube (NPDP Carts)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Nintendo GameCube (NPDP Carts).png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Pokemon Mini-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Pokemon Mini.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Satellaview-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Satellaview.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Sufami Turbo-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Sufami Turbo.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Super Nintendo Entertainment System-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Super Nintendo Entertainment System.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Switch-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Switch.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Virtual Boy-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Virtual Boy.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Wallpapers-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Wallpapers.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Wii (Digital) (CDN)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Wii (Digital) (CDN).png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Wii U (Digital) (CDN) (Dev)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Wii U (Digital) (CDN) (Dev).png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Wii U (Digital) (CDN) (Lotcheck)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Wii U (Digital) (CDN) (Lotcheck).png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Wii U (Digital) (CDN)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Wii U (Digital) (CDN).png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Wii U-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Wii U.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Wii-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - Wii.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - amiibo-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - amiibo.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - e-Reader-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nintendo - e-Reader.png
+retroarch	retroarch/assets/ozone/png/icons/Nokia - N Gage (WIP)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nokia - N Gage (WIP).png
+retroarch	retroarch/assets/ozone/png/icons/Nokia - N-Gage 2.0-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nokia - N-Gage 2.0.png
+retroarch	retroarch/assets/ozone/png/icons/Nokia - N-Gage-content.png
+retroarch	retroarch/assets/ozone/png/icons/Nokia - N-Gage.png
+retroarch	retroarch/assets/ozone/png/icons/Non Redump - Apple - Macintosh (Discs) (Non Game)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non Redump - Apple - Macintosh (Discs) (Non Game).png
+retroarch	retroarch/assets/ozone/png/icons/Non Redump - BD Video-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non Redump - BD Video.png
+retroarch	retroarch/assets/ozone/png/icons/Non Redump - IBM - PC Compatible (Discs) (Non Game)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non Redump - IBM - PC Compatible (Discs) (Non Game).png
+retroarch	retroarch/assets/ozone/png/icons/Non Redump - Konami - Python 2-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non Redump - Konami - Python 2.png
+retroarch	retroarch/assets/ozone/png/icons/Non Redump - Microsoft - Pocket PC-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non Redump - Microsoft - Pocket PC.png
+retroarch	retroarch/assets/ozone/png/icons/Non Redump - Microsoft - Xbox Series X-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non Redump - Microsoft - Xbox Series X.png
+retroarch	retroarch/assets/ozone/png/icons/Non Redump - Sega - ALLS-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non Redump - Sega - ALLS.png
+retroarch	retroarch/assets/ozone/png/icons/Non Redump - Sony - PlayStation Portable-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non Redump - Sony - PlayStation Portable.png
+retroarch	retroarch/assets/ozone/png/icons/Non Redump - Sony Electronic Book-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non Redump - Sony Electronic Book.png
+retroarch	retroarch/assets/ozone/png/icons/Non Redump - Super Audio CD-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non Redump - Super Audio CD.png
+retroarch	retroarch/assets/ozone/png/icons/Non Redump - ZAPiT Games - Game Wave Family Entertainment System-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non Redump - ZAPiT Games - Game Wave Family Entertainment System.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Apple-Bandai - Pippin-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Apple-Bandai - Pippin.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Atari - Atari Jaguar CD-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Atari - Atari Jaguar CD.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Audio CD-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Audio CD.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - DVD-Video-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - DVD-Video.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - IBM - PC Compatible (Discs) (Adult)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - IBM - PC Compatible (Discs) (Adult).png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - IBM - PC Compatible (Discs)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - IBM - PC Compatible (Discs).png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Microsoft - Microsoft Xbox 360-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Microsoft - Microsoft Xbox 360.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Microsoft - Microsoft Xbox-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Microsoft - Microsoft Xbox.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Microsoft - Xbox One-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Microsoft - Xbox One.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - NEC - PC Engine CD + TurboGrafx CD-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - NEC - PC Engine CD + TurboGrafx CD.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Nintendo - Nintendo GameCube-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Nintendo - Nintendo GameCube.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Nintendo - Wii U-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Nintendo - Wii U.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Nintendo - Wii-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Nintendo - Wii.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Panasonic - 3DO Interactive Multiplayer-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Panasonic - 3DO Interactive Multiplayer.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Philips - CD-i-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Philips - CD-i.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Sega - Dreamcast-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Sega - Dreamcast.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Sega - Sega Mega CD + Sega CD-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Sega - Sega Mega CD + Sega CD.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Sega - Sega Saturn-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Sega - Sega Saturn.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Sony - PlayStation 2-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Sony - PlayStation 2.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Sony - PlayStation 3-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Sony - PlayStation 3.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Sony - PlayStation-content.png
+retroarch	retroarch/assets/ozone/png/icons/Non-Redump - Sony - PlayStation.png
+retroarch	retroarch/assets/ozone/png/icons/Ouya - Ouya-content.png
+retroarch	retroarch/assets/ozone/png/icons/Ouya - Ouya.png
+retroarch	retroarch/assets/ozone/png/icons/Philips - Videopac+-content.png
+retroarch	retroarch/assets/ozone/png/icons/Philips - Videopac+.png
+retroarch	retroarch/assets/ozone/png/icons/Quake II-content.png
+retroarch	retroarch/assets/ozone/png/icons/Quake II.png
+retroarch	retroarch/assets/ozone/png/icons/Quake III-content.png
+retroarch	retroarch/assets/ozone/png/icons/Quake III.png
+retroarch	retroarch/assets/ozone/png/icons/Quake-content.png
+retroarch	retroarch/assets/ozone/png/icons/Quake.png
+retroarch	retroarch/assets/ozone/png/icons/RCA - Studio II-content.png
+retroarch	retroarch/assets/ozone/png/icons/RCA - Studio II.png
+retroarch	retroarch/assets/ozone/png/icons/RPG Maker-content.png
+retroarch	retroarch/assets/ozone/png/icons/RPG Maker.png
+retroarch	retroarch/assets/ozone/png/icons/Rick Dangerous-content.png
+retroarch	retroarch/assets/ozone/png/icons/Rick Dangerous.png
+retroarch	retroarch/assets/ozone/png/icons/SNK - Neo Geo CD-content.png
+retroarch	retroarch/assets/ozone/png/icons/SNK - Neo Geo CD.png
+retroarch	retroarch/assets/ozone/png/icons/SNK - Neo Geo Pocket Color-content.png
+retroarch	retroarch/assets/ozone/png/icons/SNK - Neo Geo Pocket Color.png
+retroarch	retroarch/assets/ozone/png/icons/SNK - Neo Geo Pocket-content.png
+retroarch	retroarch/assets/ozone/png/icons/SNK - Neo Geo Pocket.png
+retroarch	retroarch/assets/ozone/png/icons/SNK - Neo Geo-content.png
+retroarch	retroarch/assets/ozone/png/icons/SNK - Neo Geo.png
+retroarch	retroarch/assets/ozone/png/icons/Sanyo - MBC 550-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sanyo - MBC 550.png
+retroarch	retroarch/assets/ozone/png/icons/ScummVM-content.png
+retroarch	retroarch/assets/ozone/png/icons/ScummVM.png
+retroarch	retroarch/assets/ozone/png/icons/Sega - 32X-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sega - 32X.png
+retroarch	retroarch/assets/ozone/png/icons/Sega - Beena-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sega - Beena.png
+retroarch	retroarch/assets/ozone/png/icons/Sega - Dreamcast (Visual Memory Unit)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sega - Dreamcast (Visual Memory Unit).png
+retroarch	retroarch/assets/ozone/png/icons/Sega - Dreamcast-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sega - Dreamcast.png
+retroarch	retroarch/assets/ozone/png/icons/Sega - Game Gear-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sega - Game Gear.png
+retroarch	retroarch/assets/ozone/png/icons/Sega - Master System - Mark III-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sega - Master System - Mark III.png
+retroarch	retroarch/assets/ozone/png/icons/Sega - Mega Drive - Genesis-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sega - Mega Drive - Genesis.png
+retroarch	retroarch/assets/ozone/png/icons/Sega - Mega-CD - Sega CD-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sega - Mega-CD - Sega CD.png
+retroarch	retroarch/assets/ozone/png/icons/Sega - PICO-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sega - PICO.png
+retroarch	retroarch/assets/ozone/png/icons/Sega - SG-1000-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sega - SG-1000.png
+retroarch	retroarch/assets/ozone/png/icons/Sega - Saturn-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sega - Saturn.png
+retroarch	retroarch/assets/ozone/png/icons/Seta - Aleck64-content.png
+retroarch	retroarch/assets/ozone/png/icons/Seta - Aleck64.png
+retroarch	retroarch/assets/ozone/png/icons/Sharp - MZ 2200-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sharp - MZ 2200.png
+retroarch	retroarch/assets/ozone/png/icons/Sharp - MZ 700-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sharp - MZ 700.png
+retroarch	retroarch/assets/ozone/png/icons/Sharp - X1-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sharp - X1.png
+retroarch	retroarch/assets/ozone/png/icons/Sharp - X68000-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sharp - X68000.png
+retroarch	retroarch/assets/ozone/png/icons/Sinclair - ZX 81-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sinclair - ZX 81.png
+retroarch	retroarch/assets/ozone/png/icons/Sinclair - ZX Spectrum +3-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sinclair - ZX Spectrum +3.png
+retroarch	retroarch/assets/ozone/png/icons/Sinclair - ZX Spectrum-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sinclair - ZX Spectrum.png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation (PS one Classics) (PSN)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation (PS one Classics) (PSN).png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation (PocketStation)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation (PocketStation).png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation 2-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation 2.png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation 3 (DLC)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation 3 (DLC).png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation 3 (Development Kit Hard Drives) (Decrypted)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation 3 (Development Kit Hard Drives) (Decrypted).png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation 3 (Downloadable)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation 3 (Downloadable).png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation 3 (PSN) (Content)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation 3 (PSN) (Content).png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation 3 (PSN) (Updates)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation 3 (PSN) (Updates).png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation 3 (PSN)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation 3 (PSN).png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation 3-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation 3.png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation 4-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation 4.png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation Mobile (PSN)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation Mobile (PSN).png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation Portable (DLC)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation Portable (DLC).png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation Portable (PSN) (Encrypted)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation Portable (PSN) (Encrypted).png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation Portable (PSN)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation Portable (PSN).png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation Portable (PSX2PSP)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation Portable (PSX2PSP).png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation Portable (UMD Music)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation Portable (UMD Music).png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation Portable (UMD Video)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation Portable (UMD Video).png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation Portable-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation Portable.png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation Vita (PSN) (Content)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation Vita (PSN) (Content).png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation Vita (PSN) (Updates)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation Vita (PSN) (Updates).png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation Vita-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation Vita.png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation-content.png
+retroarch	retroarch/assets/ozone/png/icons/Sony - PlayStation.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Apple - I-content.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Apple - I.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Apple - II-content.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Apple - II.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Apple - IIGS-content.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Apple - IIGS.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Atari - 8-bit Family-content.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Atari - 8-bit Family.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - IBM - PC and Compatibles-content.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - IBM - PC and Compatibles.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Microsoft - Xbox 360-content.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Microsoft - Xbox 360.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Mobile - Palm OS-content.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Mobile - Palm OS.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Nintendo - Game Boy Advance-content.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Nintendo - Game Boy Advance.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Nintendo - Game Boy Color-content.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Nintendo - Game Boy Color.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Nintendo - Game Boy-content.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Nintendo - Game Boy.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Nintendo - GameCube-content.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Nintendo - GameCube.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Nintendo - Nintendo DS-content.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Nintendo - Nintendo DS.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Nintendo - Nintendo Entertainment System-content.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Nintendo - Nintendo Entertainment System.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Nintendo - Super Nintendo Entertainment System-content.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Nintendo - Super Nintendo Entertainment System.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Panasonic - 3DO Interactive Multiplayer-content.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Panasonic - 3DO Interactive Multiplayer.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Sega - DreamCast-content.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Sega - DreamCast.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - VM Labs - NUON-content.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - VM Labs - NUON.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Various-content.png
+retroarch	retroarch/assets/ozone/png/icons/Source Code - Various.png
+retroarch	retroarch/assets/ozone/png/icons/Spectravideo - SVI-318 - SVI-328-content.png
+retroarch	retroarch/assets/ozone/png/icons/Spectravideo - SVI-318 - SVI-328.png
+retroarch	retroarch/assets/ozone/png/icons/TIC-80-content.png
+retroarch	retroarch/assets/ozone/png/icons/TIC-80.png
+retroarch	retroarch/assets/ozone/png/icons/Tangerine Computer Systems - Oric-content.png
+retroarch	retroarch/assets/ozone/png/icons/Tangerine Computer Systems - Oric.png
+retroarch	retroarch/assets/ozone/png/icons/TeleNova - Compis-content.png
+retroarch	retroarch/assets/ozone/png/icons/TeleNova - Compis.png
+retroarch	retroarch/assets/ozone/png/icons/Texas Instruments - TI 99 4A-content.png
+retroarch	retroarch/assets/ozone/png/icons/Texas Instruments - TI 99 4A.png
+retroarch	retroarch/assets/ozone/png/icons/The 3DO Company - 3DO-content.png
+retroarch	retroarch/assets/ozone/png/icons/The 3DO Company - 3DO.png
+retroarch	retroarch/assets/ozone/png/icons/Thomson - MOTO-content.png
+retroarch	retroarch/assets/ozone/png/icons/Thomson - MOTO.png
+retroarch	retroarch/assets/ozone/png/icons/Tiger - Game.com-content.png
+retroarch	retroarch/assets/ozone/png/icons/Tiger - Game.com.png
+retroarch	retroarch/assets/ozone/png/icons/Tomb Raider-content.png
+retroarch	retroarch/assets/ozone/png/icons/Tomb Raider.png
+retroarch	retroarch/assets/ozone/png/icons/Toshiba - Pasopia-content.png
+retroarch	retroarch/assets/ozone/png/icons/Toshiba - Pasopia.png
+retroarch	retroarch/assets/ozone/png/icons/Toshiba - Visicom-content.png
+retroarch	retroarch/assets/ozone/png/icons/Toshiba - Visicom.png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Microsoft - Xbox 360 (Title Updates)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Microsoft - Xbox 360 (Title Updates).png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Nintendo - Nintendo 3DS (Digital) (Updates and DLC)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Nintendo - Nintendo 3DS (Digital) (Updates and DLC).png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Nintendo - Wii (Digital) (Deprecated)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Nintendo - Wii (Digital) (Deprecated).png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Nintendo - Wii (Digital) (Split DLC) (Deprecated)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Nintendo - Wii (Digital) (Split DLC) (Deprecated).png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Nintendo - Wii U (Digital) (Deprecated)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Nintendo - Wii U (Digital) (Deprecated).png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Sony - PlayStation 3 (PSN) (Decrypted)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Sony - PlayStation 3 (PSN) (Decrypted).png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Sony - PlayStation 4 (PSN)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Sony - PlayStation 4 (PSN).png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Sony - PlayStation Portable (PSN) (Decrypted)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Sony - PlayStation Portable (PSN) (Decrypted).png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Sony - PlayStation Portable (PSX2PSP)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Sony - PlayStation Portable (PSX2PSP).png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Sony - PlayStation Portable (UMD Music)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Sony - PlayStation Portable (UMD Music).png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Sony - PlayStation Portable (UMD Video)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Sony - PlayStation Portable (UMD Video).png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Sony - PlayStation Portable-content.png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Sony - PlayStation Portable.png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Sony - PlayStation Vita (PSN) (Decrypted)-content.png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Sony - PlayStation Vita (PSN) (Decrypted).png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Sony - PlayStation Vita-content.png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Sony - PlayStation Vita.png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Video Game Documents-content.png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Video Game Documents.png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Video Game Guide Scans-content.png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Video Game Guide Scans.png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Video Game Magazine Scans-content.png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Video Game Magazine Scans.png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Video Game Manual Scans-content.png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Video Game Manual Scans.png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Video Game Scans-content.png
+retroarch	retroarch/assets/ozone/png/icons/Unofficial - Video Game Scans.png
+retroarch	retroarch/assets/ozone/png/icons/Uzebox-content.png
+retroarch	retroarch/assets/ozone/png/icons/Uzebox.png
+retroarch	retroarch/assets/ozone/png/icons/VM-Labs - NUON-(Digital)-content.png
+retroarch	retroarch/assets/ozone/png/icons/VM-Labs - NUON-(Digital).png
+retroarch	retroarch/assets/ozone/png/icons/VM-Labs - NUON-content.png
+retroarch	retroarch/assets/ozone/png/icons/VM-Labs - NUON.png
+retroarch	retroarch/assets/ozone/png/icons/VTech - CreatiVision-content.png
+retroarch	retroarch/assets/ozone/png/icons/VTech - CreatiVision.png
+retroarch	retroarch/assets/ozone/png/icons/VTech - Mobigo-content.png
+retroarch	retroarch/assets/ozone/png/icons/VTech - Mobigo.png
+retroarch	retroarch/assets/ozone/png/icons/VTech - V.Smile-content.png
+retroarch	retroarch/assets/ozone/png/icons/VTech - V.Smile.png
+retroarch	retroarch/assets/ozone/png/icons/Watara - Supervision-content.png
+retroarch	retroarch/assets/ozone/png/icons/Watara - Supervision.png
+retroarch	retroarch/assets/ozone/png/icons/Welback - Mega-Duck-content.png
+retroarch	retroarch/assets/ozone/png/icons/Welback - Mega-Duck.png
+retroarch	retroarch/assets/ozone/png/icons/Yamaha - Copera-content.png
+retroarch	retroarch/assets/ozone/png/icons/Yamaha - Copera.png
+retroarch	retroarch/assets/ozone/png/icons/Zeebo - Zeebo-content.png
+retroarch	retroarch/assets/ozone/png/icons/Zeebo - Zeebo.png
+retroarch	retroarch/assets/ozone/png/icons/achievement-list.png
+retroarch	retroarch/assets/ozone/png/icons/add-favorite.png
+retroarch	retroarch/assets/ozone/png/icons/add.png
+retroarch	retroarch/assets/ozone/png/icons/arrow.png
+retroarch	retroarch/assets/ozone/png/icons/battery-20.png
+retroarch	retroarch/assets/ozone/png/icons/battery-40.png
+retroarch	retroarch/assets/ozone/png/icons/battery-60.png
+retroarch	retroarch/assets/ozone/png/icons/battery-80.png
+retroarch	retroarch/assets/ozone/png/icons/battery-charging.png
+retroarch	retroarch/assets/ozone/png/icons/battery-full.png
+retroarch	retroarch/assets/ozone/png/icons/bg.png
+retroarch	retroarch/assets/ozone/png/icons/bluetooth.png
+retroarch	retroarch/assets/ozone/png/icons/clock.png
+retroarch	retroarch/assets/ozone/png/icons/close.png
+retroarch	retroarch/assets/ozone/png/icons/core-cheat-options.png
+retroarch	retroarch/assets/ozone/png/icons/core-disk-options.png
+retroarch	retroarch/assets/ozone/png/icons/core-infos.png
+retroarch	retroarch/assets/ozone/png/icons/core-input-remapping-options.png
+retroarch	retroarch/assets/ozone/png/icons/core-options.png
+retroarch	retroarch/assets/ozone/png/icons/core-shader-options.png
+retroarch	retroarch/assets/ozone/png/icons/core.png
+retroarch	retroarch/assets/ozone/png/icons/cursor.png
+retroarch	retroarch/assets/ozone/png/icons/database.png
+retroarch	retroarch/assets/ozone/png/icons/default-content.png
+retroarch	retroarch/assets/ozone/png/icons/default.png
+retroarch	retroarch/assets/ozone/png/icons/dialog-slice.png
+retroarch	retroarch/assets/ozone/png/icons/disc.png
+retroarch	retroarch/assets/ozone/png/icons/favorites-content.png
+retroarch	retroarch/assets/ozone/png/icons/favorites.png
+retroarch	retroarch/assets/ozone/png/icons/file.png
+retroarch	retroarch/assets/ozone/png/icons/folder.png
+retroarch	retroarch/assets/ozone/png/icons/history.png
+retroarch	retroarch/assets/ozone/png/icons/iQue - iQue-content.png
+retroarch	retroarch/assets/ozone/png/icons/iQue - iQue.png
+retroarch	retroarch/assets/ozone/png/icons/image.png
+retroarch	retroarch/assets/ozone/png/icons/images.png
+retroarch	retroarch/assets/ozone/png/icons/input_ADC.png
+retroarch	retroarch/assets/ozone/png/icons/input_BIND_ALL.png
+retroarch	retroarch/assets/ozone/png/icons/input_BTN-D.png
+retroarch	retroarch/assets/ozone/png/icons/input_BTN-L.png
+retroarch	retroarch/assets/ozone/png/icons/input_BTN-R.png
+retroarch	retroarch/assets/ozone/png/icons/input_BTN-U.png
+retroarch	retroarch/assets/ozone/png/icons/input_DPAD-D.png
+retroarch	retroarch/assets/ozone/png/icons/input_DPAD-L.png
+retroarch	retroarch/assets/ozone/png/icons/input_DPAD-R.png
+retroarch	retroarch/assets/ozone/png/icons/input_DPAD-U.png
+retroarch	retroarch/assets/ozone/png/icons/input_LB.png
+retroarch	retroarch/assets/ozone/png/icons/input_LGUN.png
+retroarch	retroarch/assets/ozone/png/icons/input_LT.png
+retroarch	retroarch/assets/ozone/png/icons/input_MOUSE.png
+retroarch	retroarch/assets/ozone/png/icons/input_RB.png
+retroarch	retroarch/assets/ozone/png/icons/input_RT.png
+retroarch	retroarch/assets/ozone/png/icons/input_SELECT.png
+retroarch	retroarch/assets/ozone/png/icons/input_START.png
+retroarch	retroarch/assets/ozone/png/icons/input_STCK-D.png
+retroarch	retroarch/assets/ozone/png/icons/input_STCK-L.png
+retroarch	retroarch/assets/ozone/png/icons/input_STCK-P.png
+retroarch	retroarch/assets/ozone/png/icons/input_STCK-R.png
+retroarch	retroarch/assets/ozone/png/icons/input_STCK-U.png
+retroarch	retroarch/assets/ozone/png/icons/input_TURBO.png
+retroarch	retroarch/assets/ozone/png/icons/key-hover.png
+retroarch	retroarch/assets/ozone/png/icons/key.png
+retroarch	retroarch/assets/ozone/png/icons/lakka.png
+retroarch	retroarch/assets/ozone/png/icons/loadstate.png
+retroarch	retroarch/assets/ozone/png/icons/menu_achievements.png
+retroarch	retroarch/assets/ozone/png/icons/menu_add.png
+retroarch	retroarch/assets/ozone/png/icons/menu_apply_cog.png
+retroarch	retroarch/assets/ozone/png/icons/menu_apply_toggle.png
+retroarch	retroarch/assets/ozone/png/icons/menu_audio.png
+retroarch	retroarch/assets/ozone/png/icons/menu_brightness.png
+retroarch	retroarch/assets/ozone/png/icons/menu_check.png
+retroarch	retroarch/assets/ozone/png/icons/menu_drivers.png
+retroarch	retroarch/assets/ozone/png/icons/menu_exit.png
+retroarch	retroarch/assets/ozone/png/icons/menu_frameskip.png
+retroarch	retroarch/assets/ozone/png/icons/menu_help.png
+retroarch	retroarch/assets/ozone/png/icons/menu_hourglass.png
+retroarch	retroarch/assets/ozone/png/icons/menu_info.png
+retroarch	retroarch/assets/ozone/png/icons/menu_latency.png
+retroarch	retroarch/assets/ozone/png/icons/menu_log.png
+retroarch	retroarch/assets/ozone/png/icons/menu_mixer.png
+retroarch	retroarch/assets/ozone/png/icons/menu_network.png
+retroarch	retroarch/assets/ozone/png/icons/menu_notifications.png
+retroarch	retroarch/assets/ozone/png/icons/menu_osd.png
+retroarch	retroarch/assets/ozone/png/icons/menu_overlay.png
+retroarch	retroarch/assets/ozone/png/icons/menu_override.png
+retroarch	retroarch/assets/ozone/png/icons/menu_pause.png
+retroarch	retroarch/assets/ozone/png/icons/menu_playlist.png
+retroarch	retroarch/assets/ozone/png/icons/menu_power.png
+retroarch	retroarch/assets/ozone/png/icons/menu_privacy.png
+retroarch	retroarch/assets/ozone/png/icons/menu_quickmenu.png
+retroarch	retroarch/assets/ozone/png/icons/menu_record.png
+retroarch	retroarch/assets/ozone/png/icons/menu_rewind.png
+retroarch	retroarch/assets/ozone/png/icons/menu_room.png
+retroarch	retroarch/assets/ozone/png/icons/menu_room_lan.png
+retroarch	retroarch/assets/ozone/png/icons/menu_room_relay.png
+retroarch	retroarch/assets/ozone/png/icons/menu_saving.png
+retroarch	retroarch/assets/ozone/png/icons/menu_shutdown.png
+retroarch	retroarch/assets/ozone/png/icons/menu_stream.png
+retroarch	retroarch/assets/ozone/png/icons/menu_ui.png
+retroarch	retroarch/assets/ozone/png/icons/menu_updater.png
+retroarch	retroarch/assets/ozone/png/icons/menu_user.png
+retroarch	retroarch/assets/ozone/png/icons/menu_video.png
+retroarch	retroarch/assets/ozone/png/icons/menu_volume_max.png
+retroarch	retroarch/assets/ozone/png/icons/menu_volume_med.png
+retroarch	retroarch/assets/ozone/png/icons/menu_volume_min.png
+retroarch	retroarch/assets/ozone/png/icons/menu_volume_mute.png
+retroarch	retroarch/assets/ozone/png/icons/movie.png
+retroarch	retroarch/assets/ozone/png/icons/movies.png
+retroarch	retroarch/assets/ozone/png/icons/music.png
+retroarch	retroarch/assets/ozone/png/icons/musics.png
+retroarch	retroarch/assets/ozone/png/icons/netplay - LAN Room-locked.png
+retroarch	retroarch/assets/ozone/png/icons/netplay - LAN Room.png
+retroarch	retroarch/assets/ozone/png/icons/netplay - iRoom-locked.png
+retroarch	retroarch/assets/ozone/png/icons/netplay - iRoom.png
+retroarch	retroarch/assets/ozone/png/icons/netplay - rooms-locked.png
+retroarch	retroarch/assets/ozone/png/icons/netplay - rooms.png
+retroarch	retroarch/assets/ozone/png/icons/netplay.png
+retroarch	retroarch/assets/ozone/png/icons/off.png
+retroarch	retroarch/assets/ozone/png/icons/on.png
+retroarch	retroarch/assets/ozone/png/icons/on_alt.png
+retroarch	retroarch/assets/ozone/png/icons/pointer.png
+retroarch	retroarch/assets/ozone/png/icons/reload.png
+retroarch	retroarch/assets/ozone/png/icons/rename.png
+retroarch	retroarch/assets/ozone/png/icons/resume.png
+retroarch	retroarch/assets/ozone/png/icons/retroarch.png
+retroarch	retroarch/assets/ozone/png/icons/run.png
+retroarch	retroarch/assets/ozone/png/icons/savestate.png
+retroarch	retroarch/assets/ozone/png/icons/screenshot.png
+retroarch	retroarch/assets/ozone/png/icons/setting.png
+retroarch	retroarch/assets/ozone/png/icons/settings.png
+retroarch	retroarch/assets/ozone/png/icons/subsetting.png
+retroarch	retroarch/assets/ozone/png/icons/undo.png
+retroarch	retroarch/assets/ozone/png/icons/wifi.png
+retroarch	retroarch/assets/ozone/png/icons/zip.png
+retroarch	retroarch/assets/ozone/png/light/check.png
+retroarch	retroarch/assets/ozone/png/light/cursor_noborder.png
+retroarch	retroarch/assets/ozone/png/light/cursor_static.png
+retroarch	retroarch/assets/ozone/png/light/switch.png
+retroarch	retroarch/assets/ozone/png/mei/check.png
+retroarch	retroarch/assets/ozone/png/mei/cursor_noborder.png
+retroarch	retroarch/assets/ozone/png/mei/cursor_static.png
+retroarch	retroarch/assets/ozone/png/mei/switch.png
+retroarch	retroarch/assets/ozone/png/nord/check.png
+retroarch	retroarch/assets/ozone/png/nord/cursor_noborder.png
+retroarch	retroarch/assets/ozone/png/nord/cursor_static.png
+retroarch	retroarch/assets/ozone/png/nord/switch.png
+retroarch	retroarch/assets/ozone/png/purple_rain/check.png
+retroarch	retroarch/assets/ozone/png/purple_rain/cursor_noborder.png
+retroarch	retroarch/assets/ozone/png/purple_rain/cursor_static.png
+retroarch	retroarch/assets/ozone/png/purple_rain/switch.png
+retroarch	retroarch/assets/ozone/png/retroarch.png
+retroarch	retroarch/assets/ozone/png/sidebar/add.png
+retroarch	retroarch/assets/ozone/png/sidebar/favorites.png
+retroarch	retroarch/assets/ozone/png/sidebar/history.png
+retroarch	retroarch/assets/ozone/png/sidebar/image.png
+retroarch	retroarch/assets/ozone/png/sidebar/music.png
+retroarch	retroarch/assets/ozone/png/sidebar/netplay.png
+retroarch	retroarch/assets/ozone/png/sidebar/retroarch.png
+retroarch	retroarch/assets/ozone/png/sidebar/settings.png
+retroarch	retroarch/assets/ozone/png/sidebar/video.png
+retroarch	retroarch/assets/ozone/png/solarized_dark/check.png
+retroarch	retroarch/assets/ozone/png/solarized_dark/cursor_noborder.png
+retroarch	retroarch/assets/ozone/png/solarized_dark/cursor_static.png
+retroarch	retroarch/assets/ozone/png/solarized_dark/switch.png
+retroarch	retroarch/assets/ozone/png/solarized_light/check.png
+retroarch	retroarch/assets/ozone/png/solarized_light/cursor_noborder.png
+retroarch	retroarch/assets/ozone/png/solarized_light/cursor_static.png
+retroarch	retroarch/assets/ozone/png/solarized_light/switch.png
+retroarch	retroarch/assets/ozone/png/twilight_zone/check.png
+retroarch	retroarch/assets/ozone/png/twilight_zone/cursor_noborder.png
+retroarch	retroarch/assets/ozone/png/twilight_zone/cursor_static.png
+retroarch	retroarch/assets/ozone/png/twilight_zone/switch.png
+retroarch	retroarch/assets/ozone/regular.ttf
+retroarch	retroarch/assets/pkg/chinese-fallback-font.ttf
+retroarch	retroarch/assets/pkg/chinese-fallback-font.txt
+retroarch	retroarch/assets/pkg/fallback-font.ttf
+retroarch	retroarch/assets/pkg/fallback-font.txt
+retroarch	retroarch/assets/pkg/korean-fallback-font.ttf
+retroarch	retroarch/assets/pkg/korean-fallback-font.txt
+retroarch	retroarch/assets/pkg/osd-font.ttf
+retroarch	retroarch/assets/rgui/Blue.cfg
+retroarch	retroarch/assets/rgui/Fires.cfg
+retroarch	retroarch/assets/rgui/Fractal Spiral.cfg
+retroarch	retroarch/assets/rgui/GB - DMG.cfg
+retroarch	retroarch/assets/rgui/GB - Pocket.cfg
+retroarch	retroarch/assets/rgui/Game and Watch.cfg
+retroarch	retroarch/assets/rgui/Leaves.cfg
+retroarch	retroarch/assets/rgui/Lines.cfg
+retroarch	retroarch/assets/rgui/MageBoy Color 2.cfg
+retroarch	retroarch/assets/rgui/MageBoy Color 3.cfg
+retroarch	retroarch/assets/rgui/MageBoy Color 4.cfg
+retroarch	retroarch/assets/rgui/MageBoy Color 5.cfg
+retroarch	retroarch/assets/rgui/MageBoy Color.cfg
+retroarch	retroarch/assets/rgui/Mermaid Opal.cfg
+retroarch	retroarch/assets/rgui/Mystery Blocks.cfg
+retroarch	retroarch/assets/rgui/Night Sky.cfg
+retroarch	retroarch/assets/rgui/Pac-Man.cfg
+retroarch	retroarch/assets/rgui/Pinball Arcade.cfg
+retroarch	retroarch/assets/rgui/Space Invaders.cfg
+retroarch	retroarch/assets/rgui/Sweetie-16 Dark.cfg
+retroarch	retroarch/assets/rgui/Sweetie-16.cfg
+retroarch	retroarch/assets/rgui/Theatre Curtain.cfg
+retroarch	retroarch/assets/rgui/VT1 - Amber.cfg
+retroarch	retroarch/assets/rgui/VT1 - Blue.cfg
+retroarch	retroarch/assets/rgui/VT1 - Green.cfg
+retroarch	retroarch/assets/rgui/VT2 - Amber.cfg
+retroarch	retroarch/assets/rgui/VT2 - Blue.cfg
+retroarch	retroarch/assets/rgui/VT2 - Green.cfg
+retroarch	retroarch/assets/rgui/font/bitmap10x10_chn.bin
+retroarch	retroarch/assets/rgui/font/bitmap10x10_chn.txt
+retroarch	retroarch/assets/rgui/font/bitmap10x10_eng.bin
+retroarch	retroarch/assets/rgui/font/bitmap10x10_jpn.bin
+retroarch	retroarch/assets/rgui/font/bitmap10x10_jpn.txt
+retroarch	retroarch/assets/rgui/font/bitmap10x10_kor.bin
+retroarch	retroarch/assets/rgui/font/bitmap10x10_kor.txt
+retroarch	retroarch/assets/rgui/font/bitmap10x10_rus.bin
+retroarch	retroarch/assets/rgui/font/bitmap6x10_eng.bin
+retroarch	retroarch/assets/rgui/font/bitmap6x10_lse.bin
+retroarch	retroarch/assets/rgui/wallpaper/c1902.png
+retroarch	retroarch/assets/rgui/wallpaper/c1902.txt
+retroarch	retroarch/assets/rgui/wallpaper/c1902_16_10.png
+retroarch	retroarch/assets/rgui/wallpaper/c1902_16_9.png
+retroarch	retroarch/assets/rgui/wallpaper/fractal_spiral.png
+retroarch	retroarch/assets/rgui/wallpaper/fractal_spiral.txt
+retroarch	retroarch/assets/rgui/wallpaper/fractal_spiral_16_10.png
+retroarch	retroarch/assets/rgui/wallpaper/fractal_spiral_16_9.png
+retroarch	retroarch/assets/rgui/wallpaper/gadsby_blue.png
+retroarch	retroarch/assets/rgui/wallpaper/gadsby_blue.txt
+retroarch	retroarch/assets/rgui/wallpaper/gadsby_blue_16_10.png
+retroarch	retroarch/assets/rgui/wallpaper/gadsby_blue_16_9.png
+retroarch	retroarch/assets/rgui/wallpaper/gadsby_fires.png
+retroarch	retroarch/assets/rgui/wallpaper/gadsby_fires.txt
+retroarch	retroarch/assets/rgui/wallpaper/gadsby_fires_16_10.png
+retroarch	retroarch/assets/rgui/wallpaper/gadsby_fires_16_9.png
+retroarch	retroarch/assets/rgui/wallpaper/gadsby_lines.png
+retroarch	retroarch/assets/rgui/wallpaper/gadsby_lines.txt
+retroarch	retroarch/assets/rgui/wallpaper/gadsby_lines_16_10.png
+retroarch	retroarch/assets/rgui/wallpaper/gadsby_lines_16_9.png
+retroarch	retroarch/assets/rgui/wallpaper/game_and_watch.png
+retroarch	retroarch/assets/rgui/wallpaper/game_and_watch.txt
+retroarch	retroarch/assets/rgui/wallpaper/game_and_watch_16_10.png
+retroarch	retroarch/assets/rgui/wallpaper/game_and_watch_16_9.png
+retroarch	retroarch/assets/rgui/wallpaper/gb_dmg.png
+retroarch	retroarch/assets/rgui/wallpaper/gb_dmg.txt
+retroarch	retroarch/assets/rgui/wallpaper/gb_dmg_16_10.png
+retroarch	retroarch/assets/rgui/wallpaper/gb_dmg_16_9.png
+retroarch	retroarch/assets/rgui/wallpaper/gb_pocket.png
+retroarch	retroarch/assets/rgui/wallpaper/gb_pocket.txt
+retroarch	retroarch/assets/rgui/wallpaper/gb_pocket_16_10.png
+retroarch	retroarch/assets/rgui/wallpaper/gb_pocket_16_9.png
+retroarch	retroarch/assets/rgui/wallpaper/jcpenny.png
+retroarch	retroarch/assets/rgui/wallpaper/jcpenny.txt
+retroarch	retroarch/assets/rgui/wallpaper/jcpenny_16_10.png
+retroarch	retroarch/assets/rgui/wallpaper/jcpenny_16_9.png
+retroarch	retroarch/assets/rgui/wallpaper/leaves.png
+retroarch	retroarch/assets/rgui/wallpaper/leaves.txt
+retroarch	retroarch/assets/rgui/wallpaper/leaves_16_10.png
+retroarch	retroarch/assets/rgui/wallpaper/leaves_16_9.png
+retroarch	retroarch/assets/rgui/wallpaper/mageboy_color-2.png
+retroarch	retroarch/assets/rgui/wallpaper/mageboy_color-2_16_10.png
+retroarch	retroarch/assets/rgui/wallpaper/mageboy_color-2_16_9.png
+retroarch	retroarch/assets/rgui/wallpaper/mageboy_color-2_5_3.png
+retroarch	retroarch/assets/rgui/wallpaper/mageboy_color-3.png
+retroarch	retroarch/assets/rgui/wallpaper/mageboy_color-3_16_10.png
+retroarch	retroarch/assets/rgui/wallpaper/mageboy_color-3_16_9.png
+retroarch	retroarch/assets/rgui/wallpaper/mageboy_color-3_5_3.png
+retroarch	retroarch/assets/rgui/wallpaper/mageboy_color-4.png
+retroarch	retroarch/assets/rgui/wallpaper/mageboy_color-4_16_10.png
+retroarch	retroarch/assets/rgui/wallpaper/mageboy_color-4_16_9.png
+retroarch	retroarch/assets/rgui/wallpaper/mageboy_color-4_5_3.png
+retroarch	retroarch/assets/rgui/wallpaper/mageboy_color-5.png
+retroarch	retroarch/assets/rgui/wallpaper/mageboy_color-5_16_10.png
+retroarch	retroarch/assets/rgui/wallpaper/mageboy_color-5_16_9.png
+retroarch	retroarch/assets/rgui/wallpaper/mageboy_color-5_5_3.png
+retroarch	retroarch/assets/rgui/wallpaper/mageboy_color.png
+retroarch	retroarch/assets/rgui/wallpaper/mageboy_color.txt
+retroarch	retroarch/assets/rgui/wallpaper/mageboy_color_16_10.png
+retroarch	retroarch/assets/rgui/wallpaper/mageboy_color_16_9.png
+retroarch	retroarch/assets/rgui/wallpaper/mageboy_color_5_3.png
+retroarch	retroarch/assets/rgui/wallpaper/mermaid_opal.png
+retroarch	retroarch/assets/rgui/wallpaper/mermaid_opal.txt
+retroarch	retroarch/assets/rgui/wallpaper/mermaid_opal_16_10.png
+retroarch	retroarch/assets/rgui/wallpaper/mermaid_opal_16_9.png
+retroarch	retroarch/assets/rgui/wallpaper/mystery_blocks.png
+retroarch	retroarch/assets/rgui/wallpaper/mystery_blocks.txt
+retroarch	retroarch/assets/rgui/wallpaper/mystery_blocks_16_10.png
+retroarch	retroarch/assets/rgui/wallpaper/mystery_blocks_16_9.png
+retroarch	retroarch/assets/rgui/wallpaper/night_sky.png
+retroarch	retroarch/assets/rgui/wallpaper/night_sky.txt
+retroarch	retroarch/assets/rgui/wallpaper/night_sky_16_10.png
+retroarch	retroarch/assets/rgui/wallpaper/night_sky_16_9.png
+retroarch	retroarch/assets/rgui/wallpaper/pac_man.png
+retroarch	retroarch/assets/rgui/wallpaper/pac_man.txt
+retroarch	retroarch/assets/rgui/wallpaper/pac_man_16_10.png
+retroarch	retroarch/assets/rgui/wallpaper/pac_man_16_9.png
+retroarch	retroarch/assets/rgui/wallpaper/pinball_arcade.png
+retroarch	retroarch/assets/rgui/wallpaper/pinball_arcade.txt
+retroarch	retroarch/assets/rgui/wallpaper/pinball_arcade_16_10.png
+retroarch	retroarch/assets/rgui/wallpaper/pinball_arcade_16_9.png
+retroarch	retroarch/assets/rgui/wallpaper/space_invaders.png
+retroarch	retroarch/assets/rgui/wallpaper/space_invaders.txt
+retroarch	retroarch/assets/rgui/wallpaper/space_invaders_16_10.png
+retroarch	retroarch/assets/rgui/wallpaper/space_invaders_16_9.png
+retroarch	retroarch/assets/rgui/wallpaper/sweetie16.png
+retroarch	retroarch/assets/rgui/wallpaper/sweetie16_16_10.png
+retroarch	retroarch/assets/rgui/wallpaper/sweetie16_16_9.png
+retroarch	retroarch/assets/rgui/wallpaper/sweetie16dark.png
+retroarch	retroarch/assets/rgui/wallpaper/sweetie16dark_16_10.png
+retroarch	retroarch/assets/rgui/wallpaper/sweetie16dark_16_9.png
+retroarch	retroarch/assets/rgui/wallpaper/theatre_curtain.png
+retroarch	retroarch/assets/rgui/wallpaper/theatre_curtain.txt
+retroarch	retroarch/assets/rgui/wallpaper/theatre_curtain_16_10.png
+retroarch	retroarch/assets/rgui/wallpaper/theatre_curtain_16_9.png
+retroarch	retroarch/assets/sounds/Licence.txt
+retroarch	retroarch/assets/sounds/README.md
+retroarch	retroarch/assets/sounds/bgm.ogg
+retroarch	retroarch/assets/sounds/cancel.ogg
+retroarch	retroarch/assets/sounds/down.ogg
+retroarch	retroarch/assets/sounds/launch.ogg
+retroarch	retroarch/assets/sounds/notice.ogg
+retroarch	retroarch/assets/sounds/notice_back.ogg
+retroarch	retroarch/assets/sounds/ok.ogg
+retroarch	retroarch/assets/sounds/unlock.ogg
+retroarch	retroarch/assets/sounds/up.ogg
+retroarch	retroarch/assets/switch/menu_retroarch/RetroArch.png
+retroarch	retroarch/assets/switch/menu_retroarch/RetroArch_Splash.png
+retroarch	retroarch/assets/switch/menu_retroarch/Retro_NX_Wallpaper_25.png
+retroarch	retroarch/assets/switch/menu_retroarch/menu_bg_blank.png
+retroarch	retroarch/assets/switch/menu_retroarch/menu_nx.png
+retroarch	retroarch/assets/switch/menu_retroarch/menu_transparent.png
+retroarch	retroarch/assets/switch/menu_retroarch/menu_transparent_2.png
+retroarch	retroarch/assets/switch/menu_retroarch/retronx_menu_bg_blank.png
+retroarch	retroarch/assets/switch/nxrgui.ttf
+retroarch	retroarch/assets/switch/retroarch.jpg
+retroarch	retroarch/assets/switch/retroarch_hbmenu.png
+retroarch	retroarch/autoconfig/hid/ NES PC Game Pad   .cfg
+retroarch	retroarch/autoconfig/hid/8BitDo_N30_Pro2_BT.cfg
+retroarch	retroarch/autoconfig/hid/8BitDo_N30_Pro2_USB.cfg
+retroarch	retroarch/autoconfig/hid/8BitDo_Pro2_BT.cfg
+retroarch	retroarch/autoconfig/hid/8BitDo_Pro2_USB.cfg
+retroarch	retroarch/autoconfig/hid/8BitDo_SN30_Pro+_BT.cfg
+retroarch	retroarch/autoconfig/hid/8BitDo_SN30_Pro+_USB.cfg
+retroarch	retroarch/autoconfig/hid/8BitDo_Ultimate_Wired_Controller.cfg
+retroarch	retroarch/autoconfig/hid/8BitDo_Ultimate_wireless_Controller.cfg
+retroarch	retroarch/autoconfig/hid/8BitDo_Zero2_gamepad_BT.cfg
+retroarch	retroarch/autoconfig/hid/8Bitdo_NES30_Pro.cfg
+retroarch	retroarch/autoconfig/hid/8Bitdo_Pro_SF30_USB.cfg
+retroarch	retroarch/autoconfig/hid/8Bitdo_SN30_Pro.cfg
+retroarch	retroarch/autoconfig/hid/8Bitdo_SNES30_BT.cfg
+retroarch	retroarch/autoconfig/hid/8Bitdo_SNES30_USB.cfg
+retroarch	retroarch/autoconfig/hid/Atari VCS Classic Controller.cfg
+retroarch	retroarch/autoconfig/hid/Atari VCS Modern Controller.cfg
+retroarch	retroarch/autoconfig/hid/Buffalo_Classic_USB_Gamepad.cfg
+retroarch	retroarch/autoconfig/hid/DUALSHOCK_4_USB_Wireless_Adaptor.cfg
+retroarch	retroarch/autoconfig/hid/DragonRise_ZeroDelay.cfg
+retroarch	retroarch/autoconfig/hid/DualSense Wireless Controller (PS5).cfg
+retroarch	retroarch/autoconfig/hid/Elecom_JC-W01U.cfg
+retroarch	retroarch/autoconfig/hid/Generic_NES_USB_Controller.cfg
+retroarch	retroarch/autoconfig/hid/Generic_SNES_USB_Controller.cfg
+retroarch	retroarch/autoconfig/hid/HORIPAD S.cfg
+retroarch	retroarch/autoconfig/hid/HORI_mini_wired_ps4.cfg
+retroarch	retroarch/autoconfig/hid/Hyperkin Adapter.cfg
+retroarch	retroarch/autoconfig/hid/KADE.cfg
+retroarch	retroarch/autoconfig/hid/Logitech_RumblePad_2_USB.cfg
+retroarch	retroarch/autoconfig/hid/MD_Gen_Control_Pad_Switch_Online.cfg
+retroarch	retroarch/autoconfig/hid/MFi_Gamepad.cfg
+retroarch	retroarch/autoconfig/hid/MP-8866_Dual_USB_Joypad.cfg
+retroarch	retroarch/autoconfig/hid/Mayflash_Wii_Classic_Controller_Adapter.cfg
+retroarch	retroarch/autoconfig/hid/Micreal SNES Wireless Controller.cfg
+retroarch	retroarch/autoconfig/hid/Microsoft(R)Sidewinder(R)_Game_Pad_USB.cfg
+retroarch	retroarch/autoconfig/hid/N64_Nintendo_Switch_Online.cfg
+retroarch	retroarch/autoconfig/hid/NVIDIA Controller v01.04.cfg
+retroarch	retroarch/autoconfig/hid/Nimbus+.cfg
+retroarch	retroarch/autoconfig/hid/Nimbus.cfg
+retroarch	retroarch/autoconfig/hid/Nintendo_RVL_CNT_01.cfg
+retroarch	retroarch/autoconfig/hid/Nintendo_Wii_U_GCN_Controller_Adapter.cfg
+retroarch	retroarch/autoconfig/hid/PCEngine PAD.cfg
+retroarch	retroarch/autoconfig/hid/PDP Fight Pad Pro.cfg
+retroarch	retroarch/autoconfig/hid/PS2-PSX_Controller_Adapter.cfg
+retroarch	retroarch/autoconfig/hid/PSX_to_PS3_Controller_Adapter.cfg
+retroarch	retroarch/autoconfig/hid/Pokken Controller.cfg
+retroarch	retroarch/autoconfig/hid/Pro Controller.cfg
+retroarch	retroarch/autoconfig/hid/RetroUSB_Genesis_Retroport.cfg
+retroarch	retroarch/autoconfig/hid/Retrode_2.cfg
+retroarch	retroarch/autoconfig/hid/Retrolink_N64_USB_Controller.cfg
+retroarch	retroarch/autoconfig/hid/SNES PC Game Pad   .cfg
+retroarch	retroarch/autoconfig/hid/SNES_Nintendo_Switch_Online.cfg
+retroarch	retroarch/autoconfig/hid/Sony_Computer_Entertainment_Wireless_Controller.cfg
+retroarch	retroarch/autoconfig/hid/Sony_PLAYSTATION(R)3_Controller.cfg
+retroarch	retroarch/autoconfig/hid/Stadia_Controller.cfg
+retroarch	retroarch/autoconfig/hid/T.Flight Hotas PS3.cfg
+retroarch	retroarch/autoconfig/hid/Xbox Series XS (Bluetooth).cfg
+retroarch	retroarch/autoconfig/hid/Xbox Wireless Controller.cfg
+retroarch	retroarch/autoconfig/hid/Xbox_360_Wireless_Receiver.cfg
+retroarch	retroarch/autoconfig/hid/Xbox_One_Wired_Controller.cfg
+retroarch	retroarch/autoconfig/sdl2/8BitDo Pro 2.cfg
+retroarch	retroarch/autoconfig/sdl2/8BitDo_Ultimate_C_Wired_Controller.cfg
+retroarch	retroarch/autoconfig/sdl2/8BitDo_Ultimate_C_Wired_Controller_for_Xbox.cfg
+retroarch	retroarch/autoconfig/sdl2/8Bitdo NES30 Pro   8Bitdo NES30 Pro.cfg
+retroarch	retroarch/autoconfig/sdl2/8Bitdo_M30_24G.cfg
+retroarch	retroarch/autoconfig/sdl2/Afterglow.cfg
+retroarch	retroarch/autoconfig/sdl2/Akishop Customs PS360+ v1.66.cfg
+retroarch	retroarch/autoconfig/sdl2/Arduino LLC Arduino Leonardo.cfg
+retroarch	retroarch/autoconfig/sdl2/Bliss-Box-4Play.cfg
+retroarch	retroarch/autoconfig/sdl2/CHA1.cfg
+retroarch	retroarch/autoconfig/sdl2/CHA2.cfg
+retroarch	retroarch/autoconfig/sdl2/ClockworkPi DevTerm.cfg
+retroarch	retroarch/autoconfig/sdl2/Controller (FightingEdge4).cfg
+retroarch	retroarch/autoconfig/sdl2/Controller (Gamepad F310).cfg
+retroarch	retroarch/autoconfig/sdl2/Controller (Wireless Gamepad F710).cfg
+retroarch	retroarch/autoconfig/sdl2/DragonRise Inc. GameCube Controller Adapter.cfg
+retroarch	retroarch/autoconfig/sdl2/DragonRise Inc. Generic USB Joystick.cfg
+retroarch	retroarch/autoconfig/sdl2/Flydigi Apex 2 Bluetooth.cfg
+retroarch	retroarch/autoconfig/sdl2/Flydigi Apex 2.cfg
+retroarch	retroarch/autoconfig/sdl2/GAMESAIKE USB GAME Controller .cfg
+retroarch	retroarch/autoconfig/sdl2/Generic X-Box pad.cfg
+retroarch	retroarch/autoconfig/sdl2/HORIPAD S.cfg
+retroarch	retroarch/autoconfig/sdl2/HORIPAD STEAM.cfg
+retroarch	retroarch/autoconfig/sdl2/HORI_Fighting_Commander_for_Nintendo_Switch_1.cfg
+retroarch	retroarch/autoconfig/sdl2/HORI_Fighting_Commander_for_Nintendo_Switch_2.cfg
+retroarch	retroarch/autoconfig/sdl2/HORI_HORIPAD_mini_PS4.cfg
+retroarch	retroarch/autoconfig/sdl2/Logitech Dual Action.cfg
+retroarch	retroarch/autoconfig/sdl2/Logitech F310 Gamepad (XInput).cfg
+retroarch	retroarch/autoconfig/sdl2/MAYFLASH N64 USB Adapter MF103.cfg
+retroarch	retroarch/autoconfig/sdl2/NVIDIA Corporation NVIDIA Controller v01.04.cfg
+retroarch	retroarch/autoconfig/sdl2/Nintendo GameCube Controller Adapter.cfg
+retroarch	retroarch/autoconfig/sdl2/Nintendo N64 Controller.cfg
+retroarch	retroarch/autoconfig/sdl2/Nintendo NES Controller (L).cfg
+retroarch	retroarch/autoconfig/sdl2/Nintendo NES Controller (R).cfg
+retroarch	retroarch/autoconfig/sdl2/Nintendo SEGA Genesis Controller.cfg
+retroarch	retroarch/autoconfig/sdl2/Nintendo SNES Controller.cfg
+retroarch	retroarch/autoconfig/sdl2/Nintendo Switch Combined Joy-Cons.cfg
+retroarch	retroarch/autoconfig/sdl2/Nintendo Switch Pro Controller (non-HID) (default-off).cfg
+retroarch	retroarch/autoconfig/sdl2/Nintendo Switch Pro Controller.cfg
+retroarch	retroarch/autoconfig/sdl2/Nokia GC 5000.cfg
+retroarch	retroarch/autoconfig/sdl2/PCEngine PAD.cfg
+retroarch	retroarch/autoconfig/sdl2/PDP Fight Pad Pro.cfg
+retroarch	retroarch/autoconfig/sdl2/PDP Xbox One Controller.cfg
+retroarch	retroarch/autoconfig/sdl2/PS3 Controller.cfg
+retroarch	retroarch/autoconfig/sdl2/PS4 Controller.cfg
+retroarch	retroarch/autoconfig/sdl2/PS5 Controller.cfg
+retroarch	retroarch/autoconfig/sdl2/Pokken Controller.cfg
+retroarch	retroarch/autoconfig/sdl2/Razer Huntsman V3 Pro.cfg
+retroarch	retroarch/autoconfig/sdl2/Razer Kishi.cfg
+retroarch	retroarch/autoconfig/sdl2/Retrolink_N64_USB.cfg
+retroarch	retroarch/autoconfig/sdl2/STK-7004X.cfg
+retroarch	retroarch/autoconfig/sdl2/ShanWan Gioteck PS3 Wired Controller.cfg
+retroarch	retroarch/autoconfig/sdl2/Stadia Controller.cfg
+retroarch	retroarch/autoconfig/sdl2/Steam Controller.cfg
+retroarch	retroarch/autoconfig/sdl2/Steam Virtual Gamepad.cfg
+retroarch	retroarch/autoconfig/sdl2/T.Flight Hotas PS3.cfg
+retroarch	retroarch/autoconfig/sdl2/T.Flight Hotas X.cfg
+retroarch	retroarch/autoconfig/sdl2/Toodles 2008 Cthulhu Mult.cfg
+retroarch	retroarch/autoconfig/sdl2/X360 Controller.cfg
+retroarch	retroarch/autoconfig/sdl2/X360 Wireless Controller.cfg
+retroarch	retroarch/autoconfig/sdl2/Xbox One Elite 2 Controller(pid2850).cfg
+retroarch	retroarch/autoconfig/sdl2/Xbox One Elite Series 2 Controller.cfg
+retroarch	retroarch/autoconfig/sdl2/Xbox One Wireless Controller.cfg
+retroarch	retroarch/autoconfig/sdl2/Xbox Series X Controller.cfg
+retroarch	retroarch/autoconfig/sdl2/Xiaomi Black Shark 2 L.cfg
+retroarch	retroarch/autoconfig/sdl2/iBuffalo SNES Controller.cfg
+retroarch	retroarch/autoconfig/sdl2/iPEGA_PG_9083S.cfg
+retroarch	retroarch/cores/gambatte_libretro_libnx.nro
+retroarch	retroarch/cores/melonds_libretro_libnx.nro
+retroarch	retroarch/cores/mgba_libretro_libnx.nro
+retroarch	retroarch/cores/mupen64plus_next_libretro_libnx.nro
+retroarch	retroarch/cores/nestopia_libretro_libnx.nro
+retroarch	retroarch/cores/snes9x_libretro_libnx.nro
+retroarch	retroarch/filters/2xBR.filt
+retroarch	retroarch/filters/2xSaI.filt
+retroarch	retroarch/filters/Blargg_NTSC_SNES_Composite.filt
+retroarch	retroarch/filters/Blargg_NTSC_SNES_Custom.filt
+retroarch	retroarch/filters/Blargg_NTSC_SNES_Custom_pseudo_Amiga.filt
+retroarch	retroarch/filters/Blargg_NTSC_SNES_Custom_pseudo_MD_Composite.filt
+retroarch	retroarch/filters/Blargg_NTSC_SNES_Custom_pseudo_MD_S-Video.filt
+retroarch	retroarch/filters/Blargg_NTSC_SNES_Custom_pseudo_PCE_PSX_SNES_Composite.filt
+retroarch	retroarch/filters/Blargg_NTSC_SNES_Custom_pseudo_PCE_PSX_SNES_RGB.filt
+retroarch	retroarch/filters/Blargg_NTSC_SNES_Custom_pseudo_PCE_PSX_SNES_S-Video.filt
+retroarch	retroarch/filters/Blargg_NTSC_SNES_RF.filt
+retroarch	retroarch/filters/Blargg_NTSC_SNES_RGB.filt
+retroarch	retroarch/filters/Blargg_NTSC_SNES_S-Video.filt
+retroarch	retroarch/filters/Darken.filt
+retroarch	retroarch/filters/Dot_Matrix_3x.filt
+retroarch	retroarch/filters/Dot_Matrix_3x_Dark_Grid.filt
+retroarch	retroarch/filters/Dot_Matrix_3x_GB_DMG_Grid.filt
+retroarch	retroarch/filters/Dot_Matrix_3x_GB_Greenscale_Grid.filt
+retroarch	retroarch/filters/Dot_Matrix_3x_GB_Light_Grid.filt
+retroarch	retroarch/filters/Dot_Matrix_3x_GB_Pocket_Grid.filt
+retroarch	retroarch/filters/Dot_Matrix_3x_GB_TI-83_Grid.filt
+retroarch	retroarch/filters/Dot_Matrix_4x.filt
+retroarch	retroarch/filters/Dot_Matrix_4x_Dark_Grid.filt
+retroarch	retroarch/filters/Dot_Matrix_4x_GB_DMG_Grid.filt
+retroarch	retroarch/filters/Dot_Matrix_4x_GB_Greenscale_Grid.filt
+retroarch	retroarch/filters/Dot_Matrix_4x_GB_Light_Grid.filt
+retroarch	retroarch/filters/Dot_Matrix_4x_GB_Pocket_Grid.filt
+retroarch	retroarch/filters/Dot_Matrix_4x_GB_TI-83_Grid.filt
+retroarch	retroarch/filters/EPX.filt
+retroarch	retroarch/filters/Gameboy3x_DMG.filt
+retroarch	retroarch/filters/Gameboy3x_Greenscale.filt
+retroarch	retroarch/filters/Gameboy3x_Light.filt
+retroarch	retroarch/filters/Gameboy3x_Pocket.filt
+retroarch	retroarch/filters/Gameboy3x_TI-83.filt
+retroarch	retroarch/filters/Gameboy4x_DMG.filt
+retroarch	retroarch/filters/Gameboy4x_Greenscale.filt
+retroarch	retroarch/filters/Gameboy4x_Light.filt
+retroarch	retroarch/filters/Gameboy4x_Pocket.filt
+retroarch	retroarch/filters/Gameboy4x_TI-83.filt
+retroarch	retroarch/filters/Grid2x.filt
+retroarch	retroarch/filters/Grid3x.filt
+retroarch	retroarch/filters/LQ2x.filt
+retroarch	retroarch/filters/NULL.filt
+retroarch	retroarch/filters/Normal2x.filt
+retroarch	retroarch/filters/Normal2x_Height.filt
+retroarch	retroarch/filters/Normal2x_Width.filt
+retroarch	retroarch/filters/Normal4x.filt
+retroarch	retroarch/filters/Phosphor2x.filt
+retroarch	retroarch/filters/Picoscale_bl2_256x-320x240.filt
+retroarch	retroarch/filters/Picoscale_bl4_256x-320x240.filt
+retroarch	retroarch/filters/Picoscale_snn_256x-320x240.filt
+retroarch	retroarch/filters/Scale2x.filt
+retroarch	retroarch/filters/Scanline2x.filt
+retroarch	retroarch/filters/Super2xSaI.filt
+retroarch	retroarch/filters/SuperEagle.filt
+retroarch	retroarch/filters/Upscale1.5x.filt
+retroarch	retroarch/filters/Upscale1.66x_fast.filt
+retroarch	retroarch/filters/Upscale_240x160-320x240-mix.filt
+retroarch	retroarch/filters/Upscale_240x160-320x240.filt
+retroarch	retroarch/filters/Upscale_240x160-320x240_Stretched-mix.filt
+retroarch	retroarch/filters/Upscale_240x160-320x240_Stretched.filt
+retroarch	retroarch/filters/Upscale_256x-320x240.filt
+retroarch	retroarch/info/gambatte_libretro.info
+retroarch	retroarch/info/melonds_libretro.info
+retroarch	retroarch/info/mgba_libretro.info
+retroarch	retroarch/info/mupen64plus_next_libretro.info
+retroarch	retroarch/info/nestopia_libretro.info
+retroarch	retroarch/info/snes9x_libretro.info
+retroarch	switch/retroarch_switch.nro
+lakka	bootloader/ini/Lakka.ini
+lakka	lakka/CHANGELOG.md
+lakka	lakka/KERNEL
+lakka	lakka/KERNEL.md5
+lakka	lakka/README.md
+lakka	lakka/README_CONFIG.txt
+lakka	lakka/RELEASE
+lakka	lakka/SYSTEM
+lakka	lakka/SYSTEM.md5
+lakka	lakka/boot/bl31.bin
+lakka	lakka/boot/bl33.bin
+lakka	lakka/boot/boot.scr
+lakka	lakka/boot/icon_lakka_hue.bmp
+lakka	lakka/boot/splash.bmp
+lakka	lakka/licenses/0BSD.txt
+lakka	lakka/licenses/7-Zip.txt
+lakka	lakka/licenses/APL-1.0.txt
+lakka	lakka/licenses/APSL-2.0.txt
+lakka	lakka/licenses/APSL.txt
+lakka	lakka/licenses/AROS.txt
+lakka	lakka/licenses/ATI.txt
+lakka	lakka/licenses/Apache-2.0.txt
+lakka	lakka/licenses/Artistic.txt
+lakka	lakka/licenses/BSD-1-Clause.txt
+lakka	lakka/licenses/BSD-2-Clause.txt
+lakka	lakka/licenses/BSD-3-Clause.txt
+lakka	lakka/licenses/BSD-4-Clause.txt
+lakka	lakka/licenses/BSL.txt
+lakka	lakka/licenses/Clarified_Artistic.txt
+lakka	lakka/licenses/EPL-1.0.txt
+lakka	lakka/licenses/FDL.txt
+lakka	lakka/licenses/FDL1_2.txt
+lakka	lakka/licenses/FDL1_3.txt
+lakka	lakka/licenses/FLIRC.txt
+lakka	lakka/licenses/GPL-1.0-only.txt
+lakka	lakka/licenses/GPL-2.0-only.txt
+lakka	lakka/licenses/GPL-2.0-or-later.txt
+lakka	lakka/licenses/GPL-3.0-only.txt
+lakka	lakka/licenses/GPL-3.0-or-later.txt
+lakka	lakka/licenses/HIDAPI-orig.txt
+lakka	lakka/licenses/ISC.txt
+lakka	lakka/licenses/Info-ZIP.txt
+lakka	lakka/licenses/LGPL-2.0-only.txt
+lakka	lakka/licenses/LGPL-2.0-or-later.txt
+lakka	lakka/licenses/LGPL-2.1-only.txt
+lakka	lakka/licenses/LGPL-2.1-or-later.txt
+lakka	lakka/licenses/LGPL-3.0-only.txt
+lakka	lakka/licenses/LGPL-3.0-or-later.txt
+lakka	lakka/licenses/LLVM.txt
+lakka	lakka/licenses/LibPNG2.txt
+lakka	lakka/licenses/MIT.txt
+lakka	lakka/licenses/MIT_Modified.txt
+lakka	lakka/licenses/MPL-1.1.txt
+lakka	lakka/licenses/MPL-2.0.txt
+lakka	lakka/licenses/NVIDIA.txt
+lakka	lakka/licenses/NextPVR.txt
+lakka	lakka/licenses/OFL-1.1.txt
+lakka	lakka/licenses/QCA.txt
+lakka	lakka/licenses/Radeon_rlc.txt
+lakka	lakka/licenses/Unlicense.txt
+lakka	lakka/licenses/Vim.txt
+lakka	lakka/licenses/Zlib.txt
+lakka	lakka/licenses/fdk-aac.txt
+lakka	lakka/licenses/gpgme.txt
+lakka	lakka/nx-plat.dtimg
+ppsspp	switch/ppsspp/PPSSPP_GL.nro
+ppsspp	switch/ppsspp/assets/7z.png
+ppsspp	switch/ppsspp/assets/Roboto-Condensed.ttf
+ppsspp	switch/ppsspp/assets/asciifont_atlas.meta
+ppsspp	switch/ppsspp/assets/asciifont_atlas.zim
+ppsspp	switch/ppsspp/assets/compat.ini
+ppsspp	switch/ppsspp/assets/debugger/.git
+ppsspp	switch/ppsspp/assets/debugger/.nojekyll
+ppsspp	switch/ppsspp/assets/debugger/asset-manifest.json
+ppsspp	switch/ppsspp/assets/debugger/favicon.ico
+ppsspp	switch/ppsspp/assets/debugger/index.html
+ppsspp	switch/ppsspp/assets/debugger/manifest.json
+ppsspp	switch/ppsspp/assets/debugger/static/css/main.3eab8a01.css
+ppsspp	switch/ppsspp/assets/debugger/static/css/main.3eab8a01.css.map
+ppsspp	switch/ppsspp/assets/debugger/static/js/main.fe87e942.js
+ppsspp	switch/ppsspp/assets/debugger/static/js/main.fe87e942.js.LICENSE.txt
+ppsspp	switch/ppsspp/assets/debugger/static/js/main.fe87e942.js.map
+ppsspp	switch/ppsspp/assets/debugger/static/media/logo.94f885ce93dfb6d29a122402a15cccca.svg
+ppsspp	switch/ppsspp/assets/flash0/font/jpn0.pgf
+ppsspp	switch/ppsspp/assets/flash0/font/kr0.pgf
+ppsspp	switch/ppsspp/assets/flash0/font/ltn0.pgf
+ppsspp	switch/ppsspp/assets/flash0/font/ltn1.pgf
+ppsspp	switch/ppsspp/assets/flash0/font/ltn10.pgf
+ppsspp	switch/ppsspp/assets/flash0/font/ltn11.pgf
+ppsspp	switch/ppsspp/assets/flash0/font/ltn12.pgf
+ppsspp	switch/ppsspp/assets/flash0/font/ltn13.pgf
+ppsspp	switch/ppsspp/assets/flash0/font/ltn14.pgf
+ppsspp	switch/ppsspp/assets/flash0/font/ltn15.pgf
+ppsspp	switch/ppsspp/assets/flash0/font/ltn2.pgf
+ppsspp	switch/ppsspp/assets/flash0/font/ltn3.pgf
+ppsspp	switch/ppsspp/assets/flash0/font/ltn4.pgf
+ppsspp	switch/ppsspp/assets/flash0/font/ltn5.pgf
+ppsspp	switch/ppsspp/assets/flash0/font/ltn6.pgf
+ppsspp	switch/ppsspp/assets/flash0/font/ltn7.pgf
+ppsspp	switch/ppsspp/assets/flash0/font/ltn8.pgf
+ppsspp	switch/ppsspp/assets/flash0/font/ltn9.pgf
+ppsspp	switch/ppsspp/assets/font_atlas.meta
+ppsspp	switch/ppsspp/assets/font_atlas.zim
+ppsspp	switch/ppsspp/assets/gamecontrollerdb.txt
+ppsspp	switch/ppsspp/assets/icon_regular_72.png
+ppsspp	switch/ppsspp/assets/lang/README.md
+ppsspp	switch/ppsspp/assets/lang/ar_AE.ini
+ppsspp	switch/ppsspp/assets/lang/az_AZ.ini
+ppsspp	switch/ppsspp/assets/lang/bg_BG.ini
+ppsspp	switch/ppsspp/assets/lang/ca_ES.ini
+ppsspp	switch/ppsspp/assets/lang/cz_CZ.ini
+ppsspp	switch/ppsspp/assets/lang/da_DK.ini
+ppsspp	switch/ppsspp/assets/lang/de_DE.ini
+ppsspp	switch/ppsspp/assets/lang/dr_ID.ini
+ppsspp	switch/ppsspp/assets/lang/en_US.ini
+ppsspp	switch/ppsspp/assets/lang/es_ES.ini
+ppsspp	switch/ppsspp/assets/lang/es_LA.ini
+ppsspp	switch/ppsspp/assets/lang/fa_IR.ini
+ppsspp	switch/ppsspp/assets/lang/fi_FI.ini
+ppsspp	switch/ppsspp/assets/lang/fr_FR.ini
+ppsspp	switch/ppsspp/assets/lang/gl_ES.ini
+ppsspp	switch/ppsspp/assets/lang/gr_EL.ini
+ppsspp	switch/ppsspp/assets/lang/he_IL.ini
+ppsspp	switch/ppsspp/assets/lang/he_IL_invert.ini
+ppsspp	switch/ppsspp/assets/lang/hr_HR.ini
+ppsspp	switch/ppsspp/assets/lang/hu_HU.ini
+ppsspp	switch/ppsspp/assets/lang/id_ID.ini
+ppsspp	switch/ppsspp/assets/lang/it_IT.ini
+ppsspp	switch/ppsspp/assets/lang/ja_JP.ini
+ppsspp	switch/ppsspp/assets/lang/jv_ID.ini
+ppsspp	switch/ppsspp/assets/lang/ko_KR.ini
+ppsspp	switch/ppsspp/assets/lang/ku_SO.ini
+ppsspp	switch/ppsspp/assets/lang/lo_LA.ini
+ppsspp	switch/ppsspp/assets/lang/lt-LT.ini
+ppsspp	switch/ppsspp/assets/lang/ms_MY.ini
+ppsspp	switch/ppsspp/assets/lang/nl_NL.ini
+ppsspp	switch/ppsspp/assets/lang/no_NO.ini
+ppsspp	switch/ppsspp/assets/lang/pl_PL.ini
+ppsspp	switch/ppsspp/assets/lang/pt_BR.ini
+ppsspp	switch/ppsspp/assets/lang/pt_PT.ini
+ppsspp	switch/ppsspp/assets/lang/ro_RO.ini
+ppsspp	switch/ppsspp/assets/lang/ru_RU.ini
+ppsspp	switch/ppsspp/assets/lang/sv_SE.ini
+ppsspp	switch/ppsspp/assets/lang/tg_PH.ini
+ppsspp	switch/ppsspp/assets/lang/th_TH.ini
+ppsspp	switch/ppsspp/assets/lang/tr_TR.ini
+ppsspp	switch/ppsspp/assets/lang/uk_UA.ini
+ppsspp	switch/ppsspp/assets/lang/vi_VN.ini
+ppsspp	switch/ppsspp/assets/lang/zh_CN.ini
+ppsspp	switch/ppsspp/assets/lang/zh_TW.ini
+ppsspp	switch/ppsspp/assets/langregion.ini
+ppsspp	switch/ppsspp/assets/logo.png
+ppsspp	switch/ppsspp/assets/ppge_atlas.meta
+ppsspp	switch/ppsspp/assets/ppge_atlas.zim
+ppsspp	switch/ppsspp/assets/rargray.png
+ppsspp	switch/ppsspp/assets/sfx_achievement_unlocked.wav
+ppsspp	switch/ppsspp/assets/sfx_back.wav
+ppsspp	switch/ppsspp/assets/sfx_confirm.wav
+ppsspp	switch/ppsspp/assets/sfx_leaderbord_submitted.wav
+ppsspp	switch/ppsspp/assets/sfx_select.wav
+ppsspp	switch/ppsspp/assets/sfx_toggle_off.wav
+ppsspp	switch/ppsspp/assets/sfx_toggle_on.wav
+ppsspp	switch/ppsspp/assets/shaders/4xhqglsl.fsh
+ppsspp	switch/ppsspp/assets/shaders/4xhqglsl.vsh
+ppsspp	switch/ppsspp/assets/shaders/5xBR-lv2.fsh
+ppsspp	switch/ppsspp/assets/shaders/5xBR.fsh
+ppsspp	switch/ppsspp/assets/shaders/5xBR.vsh
+ppsspp	switch/ppsspp/assets/shaders/GaussianDownscale.fsh
+ppsspp	switch/ppsspp/assets/shaders/aacolor.fsh
+ppsspp	switch/ppsspp/assets/shaders/aacolor.vsh
+ppsspp	switch/ppsspp/assets/shaders/bloom.fsh
+ppsspp	switch/ppsspp/assets/shaders/bloomnoblur.fsh
+ppsspp	switch/ppsspp/assets/shaders/cartoon.fsh
+ppsspp	switch/ppsspp/assets/shaders/cartoon.vsh
+ppsspp	switch/ppsspp/assets/shaders/checkers.fsh
+ppsspp	switch/ppsspp/assets/shaders/colorcorrection.fsh
+ppsspp	switch/ppsspp/assets/shaders/crt.fsh
+ppsspp	switch/ppsspp/assets/shaders/defaultshaders.ini
+ppsspp	switch/ppsspp/assets/shaders/fakereflections.fsh
+ppsspp	switch/ppsspp/assets/shaders/fxaa.fsh
+ppsspp	switch/ppsspp/assets/shaders/fxaa.vsh
+ppsspp	switch/ppsspp/assets/shaders/natural.fsh
+ppsspp	switch/ppsspp/assets/shaders/natural.vsh
+ppsspp	switch/ppsspp/assets/shaders/naturalA.fsh
+ppsspp	switch/ppsspp/assets/shaders/naturalA.vsh
+ppsspp	switch/ppsspp/assets/shaders/persistence.fsh
+ppsspp	switch/ppsspp/assets/shaders/psp_color.fsh
+ppsspp	switch/ppsspp/assets/shaders/scanlines.fsh
+ppsspp	switch/ppsspp/assets/shaders/sharpen.fsh
+ppsspp	switch/ppsspp/assets/shaders/stereo_red_blue.fsh
+ppsspp	switch/ppsspp/assets/shaders/stereo_sbs.fsh
+ppsspp	switch/ppsspp/assets/shaders/tex_2xbrz.csh
+ppsspp	switch/ppsspp/assets/shaders/tex_4xbrz.csh
+ppsspp	switch/ppsspp/assets/shaders/tex_mmpx.csh
+ppsspp	switch/ppsspp/assets/shaders/upscale_bicubic.fsh
+ppsspp	switch/ppsspp/assets/shaders/upscale_bicubic.vsh
+ppsspp	switch/ppsspp/assets/shaders/upscale_spline36.fsh
+ppsspp	switch/ppsspp/assets/shaders/upscale_spline36.vsh
+ppsspp	switch/ppsspp/assets/shaders/videoAA.fsh
+ppsspp	switch/ppsspp/assets/shaders/vignette.fsh
+ppsspp	switch/ppsspp/assets/themes/defaultthemes.ini
+ppsspp	switch/ppsspp/assets/ui_atlas.meta
+ppsspp	switch/ppsspp/assets/ui_atlas.zim
+ppsspp	switch/ppsspp/assets/unknown.png
+ppsspp	switch/ppsspp/assets/vfpu/vfpu_asin_lut65536.dat
+ppsspp	switch/ppsspp/assets/vfpu/vfpu_asin_lut_deltas.dat
+ppsspp	switch/ppsspp/assets/vfpu/vfpu_asin_lut_indices.dat
+ppsspp	switch/ppsspp/assets/vfpu/vfpu_exp2_lut.dat
+ppsspp	switch/ppsspp/assets/vfpu/vfpu_exp2_lut65536.dat
+ppsspp	switch/ppsspp/assets/vfpu/vfpu_log2_lut.dat
+ppsspp	switch/ppsspp/assets/vfpu/vfpu_log2_lut65536.dat
+ppsspp	switch/ppsspp/assets/vfpu/vfpu_log2_lut65536_quadratic.dat
+ppsspp	switch/ppsspp/assets/vfpu/vfpu_rcp_lut.dat
+ppsspp	switch/ppsspp/assets/vfpu/vfpu_rsqrt_lut.dat
+ppsspp	switch/ppsspp/assets/vfpu/vfpu_sin_lut8192.dat
+ppsspp	switch/ppsspp/assets/vfpu/vfpu_sin_lut_delta.dat
+ppsspp	switch/ppsspp/assets/vfpu/vfpu_sin_lut_exceptions.dat
+ppsspp	switch/ppsspp/assets/vfpu/vfpu_sin_lut_interval_delta.dat
+ppsspp	switch/ppsspp/assets/vfpu/vfpu_sqrt_lut.dat
+ppsspp	switch/ppsspp/assets/zip.png
+ppsspp	switch/ppsspp/config/ppsspp/PSP/SYSTEM/controls.ini
+mgba	switch/mgba.nro
+melonds	switch/melonds/melonDS.nro
+noods	switch/noods.nro
+desmume	switch/desmume/DeSmuME-NX.nro
+scummvm	switch/scummvm/data/Roland_SC-55.sf2
+scummvm	switch/scummvm/data/access.dat
+scummvm	switch/scummvm/data/achievements.dat
+scummvm	switch/scummvm/data/bagel.dat
+scummvm	switch/scummvm/data/classicmacfonts.dat
+scummvm	switch/scummvm/data/cryomni3d.dat
+scummvm	switch/scummvm/data/darkseed.dat
+scummvm	switch/scummvm/data/drascula.dat
+scummvm	switch/scummvm/data/encoding.dat
+scummvm	switch/scummvm/data/fonts-cjk.dat
+scummvm	switch/scummvm/data/fonts.dat
+scummvm	switch/scummvm/data/freescape.dat
+scummvm	switch/scummvm/data/got.aud
+scummvm	switch/scummvm/data/got.gfx
+scummvm	switch/scummvm/data/grim-patch.lab
+scummvm	switch/scummvm/data/gui-icons.dat
+scummvm	switch/scummvm/data/hadesch_translations.dat
+scummvm	switch/scummvm/data/helpdialog.zip
+scummvm	switch/scummvm/data/hugo.dat
+scummvm	switch/scummvm/data/kyra.dat
+scummvm	switch/scummvm/data/lure.dat
+scummvm	switch/scummvm/data/macgui.dat
+scummvm	switch/scummvm/data/mm.dat
+scummvm	switch/scummvm/data/mort.dat
+scummvm	switch/scummvm/data/myst3.dat
+scummvm	switch/scummvm/data/nancy.dat
+scummvm	switch/scummvm/data/neverhood.dat
+scummvm	switch/scummvm/data/pred.dic
+scummvm	switch/scummvm/data/prince_translation.dat
+scummvm	switch/scummvm/data/queen.tbl
+scummvm	switch/scummvm/data/residualvm.zip
+scummvm	switch/scummvm/data/scummclassic.zip
+scummvm	switch/scummvm/data/scummmodern.zip
+scummvm	switch/scummvm/data/scummremastered.zip
+scummvm	switch/scummvm/data/shaders.dat
+scummvm	switch/scummvm/data/shaders/emi_actor.fragment
+scummvm	switch/scummvm/data/shaders/emi_actor.vertex
+scummvm	switch/scummvm/data/shaders/emi_actorlights.fragment
+scummvm	switch/scummvm/data/shaders/emi_actorlights.vertex
+scummvm	switch/scummvm/data/shaders/emi_background.fragment
+scummvm	switch/scummvm/data/shaders/emi_background.vertex
+scummvm	switch/scummvm/data/shaders/emi_dimplane.fragment
+scummvm	switch/scummvm/data/shaders/emi_dimplane.vertex
+scummvm	switch/scummvm/data/shaders/emi_sprite.fragment
+scummvm	switch/scummvm/data/shaders/emi_sprite.vertex
+scummvm	switch/scummvm/data/shaders/freescape_bitmap.fragment
+scummvm	switch/scummvm/data/shaders/freescape_bitmap.vertex
+scummvm	switch/scummvm/data/shaders/freescape_cubemap.fragment
+scummvm	switch/scummvm/data/shaders/freescape_cubemap.vertex
+scummvm	switch/scummvm/data/shaders/freescape_triangle.fragment
+scummvm	switch/scummvm/data/shaders/freescape_triangle.vertex
+scummvm	switch/scummvm/data/shaders/grim_actor.fragment
+scummvm	switch/scummvm/data/shaders/grim_actor.vertex
+scummvm	switch/scummvm/data/shaders/grim_actorlights.fragment
+scummvm	switch/scummvm/data/shaders/grim_actorlights.vertex
+scummvm	switch/scummvm/data/shaders/grim_background.fragment
+scummvm	switch/scummvm/data/shaders/grim_background.vertex
+scummvm	switch/scummvm/data/shaders/grim_dim.fragment
+scummvm	switch/scummvm/data/shaders/grim_dim.vertex
+scummvm	switch/scummvm/data/shaders/grim_emerg.fragment
+scummvm	switch/scummvm/data/shaders/grim_emerg.vertex
+scummvm	switch/scummvm/data/shaders/grim_primitive.fragment
+scummvm	switch/scummvm/data/shaders/grim_primitive.vertex
+scummvm	switch/scummvm/data/shaders/grim_shadowplane.fragment
+scummvm	switch/scummvm/data/shaders/grim_shadowplane.vertex
+scummvm	switch/scummvm/data/shaders/grim_smush.fragment
+scummvm	switch/scummvm/data/shaders/grim_smush.vertex
+scummvm	switch/scummvm/data/shaders/grim_text.fragment
+scummvm	switch/scummvm/data/shaders/grim_text.vertex
+scummvm	switch/scummvm/data/shaders/hpl1_Ambient_Color.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_Bump2D_Light.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_Bump2D_Light.vertex
+scummvm	switch/scummvm/data/shaders/hpl1_BumpColorSpec_Light.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_BumpColorSpec_Light_Spot.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_BumpSpec2D_Light.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_BumpSpec2D_Light.vertex
+scummvm	switch/scummvm/data/shaders/hpl1_BumpSpec_Light.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_BumpSpec_Light_Spot.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_BumpSpec_Light_Spot_pass2.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_Bump_Light.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_Bump_Light_Spot.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_Bump_Light_Spot_pass2.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_DiffuseSpec_Light.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_DiffuseSpec_Light.vertex
+scummvm	switch/scummvm/data/shaders/hpl1_DiffuseSpec_Light_Spot.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_DiffuseSpec_Light_Spot.vertex
+scummvm	switch/scummvm/data/shaders/hpl1_DiffuseSpec_Light_Spot_pass2.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_Diffuse_Color.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_Diffuse_Color.vertex
+scummvm	switch/scummvm/data/shaders/hpl1_Diffuse_ColorMul.vertex
+scummvm	switch/scummvm/data/shaders/hpl1_Diffuse_EnvMap_Reflect.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_Diffuse_EnvMap_Reflect.vertex
+scummvm	switch/scummvm/data/shaders/hpl1_Diffuse_Light.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_Diffuse_Light.vertex
+scummvm	switch/scummvm/data/shaders/hpl1_Diffuse_Light_Spot.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_Diffuse_Light_Spot.vertex
+scummvm	switch/scummvm/data/shaders/hpl1_Diffuse_Light_Spot_pass1.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_Diffuse_Light_Spot_pass2.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_Fallback01_Bump_Light.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_Fallback01_Diffuse_Light_Spot.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_Fallback01_Diffuse_Light_Spot_p2.vertex
+scummvm	switch/scummvm/data/shaders/hpl1_Fallback01_Diffuse_Light_p1.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_Fallback01_Diffuse_Light_p1.vertex
+scummvm	switch/scummvm/data/shaders/hpl1_Fallback01_Diffuse_Light_p2.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_Fallback01_Diffuse_Light_p2.vertex
+scummvm	switch/scummvm/data/shaders/hpl1_Fallback02_DIffuse_Light_Spot_p2.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_Fallback02_DIffuse_Light_Spot_p3.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_Fallback02_Diffuse_Light_Spot_p2.vertex
+scummvm	switch/scummvm/data/shaders/hpl1_Fallback02_Diffuse_Light_Spot_p3.vertex
+scummvm	switch/scummvm/data/shaders/hpl1_Fallback02_Diffuse_Light_p1.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_Fallback02_Diffuse_Light_p1.vertex
+scummvm	switch/scummvm/data/shaders/hpl1_Fallback02_Diffuse_Light_p2.vertex
+scummvm	switch/scummvm/data/shaders/hpl1_Fog_Solid.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_Fog_Solid.vertex
+scummvm	switch/scummvm/data/shaders/hpl1_Fog_Trans.vertex
+scummvm	switch/scummvm/data/shaders/hpl1_Fog_Trans_Alpha.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_Fog_Trans_Mod.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_Fog_Trans_ModX2.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_PostEffect_Bloom.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_PostEffect_Bloom.vertex
+scummvm	switch/scummvm/data/shaders/hpl1_PostEffect_Blur.vertex
+scummvm	switch/scummvm/data/shaders/hpl1_PostEffect_Blur_2D.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_PostEffect_Blur_Rect.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_PostEffect_DoF.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_PostEffect_DoF.vertex
+scummvm	switch/scummvm/data/shaders/hpl1_PostEffect_Fallback01_Blur_2D.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_PostEffect_Fallback01_Blur_Rect.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_PostEffect_Motion.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_PostEffect_Motion.vertex
+scummvm	switch/scummvm/data/shaders/hpl1_PostEffect_Motion_staticloop.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_PostEffect_Offset.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_PostEffect_Offset.vertex
+scummvm	switch/scummvm/data/shaders/hpl1_ShadowExtrude.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_ShadowExtrude.vertex
+scummvm	switch/scummvm/data/shaders/hpl1_Water_Diffuse.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_Water_Diffuse.vertex
+scummvm	switch/scummvm/data/shaders/hpl1_Water_Fog.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_Water_Fog.vertex
+scummvm	switch/scummvm/data/shaders/hpl1_gamma_correction.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_gamma_correction.vertex
+scummvm	switch/scummvm/data/shaders/hpl1_refract.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_refract.vertex
+scummvm	switch/scummvm/data/shaders/hpl1_refract_special.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_refract_water.fragment
+scummvm	switch/scummvm/data/shaders/hpl1_refract_water.vertex
+scummvm	switch/scummvm/data/shaders/myst3_box.fragment
+scummvm	switch/scummvm/data/shaders/myst3_box.vertex
+scummvm	switch/scummvm/data/shaders/myst3_cube.fragment
+scummvm	switch/scummvm/data/shaders/myst3_cube.vertex
+scummvm	switch/scummvm/data/shaders/myst3_text.fragment
+scummvm	switch/scummvm/data/shaders/myst3_text.vertex
+scummvm	switch/scummvm/data/shaders/stark_actor.fragment
+scummvm	switch/scummvm/data/shaders/stark_actor.vertex
+scummvm	switch/scummvm/data/shaders/stark_fade.fragment
+scummvm	switch/scummvm/data/shaders/stark_fade.vertex
+scummvm	switch/scummvm/data/shaders/stark_prop.fragment
+scummvm	switch/scummvm/data/shaders/stark_prop.vertex
+scummvm	switch/scummvm/data/shaders/stark_shadow.fragment
+scummvm	switch/scummvm/data/shaders/stark_shadow.vertex
+scummvm	switch/scummvm/data/shaders/stark_surface.fragment
+scummvm	switch/scummvm/data/shaders/stark_surface.vertex
+scummvm	switch/scummvm/data/shaders/stark_surface_fill.fragment
+scummvm	switch/scummvm/data/shaders/stark_surface_fill.vertex
+scummvm	switch/scummvm/data/shaders/wme_fade.fragment
+scummvm	switch/scummvm/data/shaders/wme_fade.vertex
+scummvm	switch/scummvm/data/shaders/wme_flat_shadow_modelx.fragment
+scummvm	switch/scummvm/data/shaders/wme_flat_shadow_modelx.vertex
+scummvm	switch/scummvm/data/shaders/wme_geometry.fragment
+scummvm	switch/scummvm/data/shaders/wme_geometry.vertex
+scummvm	switch/scummvm/data/shaders/wme_line.fragment
+scummvm	switch/scummvm/data/shaders/wme_line.vertex
+scummvm	switch/scummvm/data/shaders/wme_modelx.fragment
+scummvm	switch/scummvm/data/shaders/wme_modelx.vertex
+scummvm	switch/scummvm/data/shaders/wme_postfilter.fragment
+scummvm	switch/scummvm/data/shaders/wme_postfilter.vertex
+scummvm	switch/scummvm/data/shaders/wme_shadow_mask.fragment
+scummvm	switch/scummvm/data/shaders/wme_shadow_mask.vertex
+scummvm	switch/scummvm/data/shaders/wme_shadow_volume.fragment
+scummvm	switch/scummvm/data/shaders/wme_shadow_volume.vertex
+scummvm	switch/scummvm/data/shaders/wme_simple_shadow.fragment
+scummvm	switch/scummvm/data/shaders/wme_simple_shadow.vertex
+scummvm	switch/scummvm/data/shaders/wme_sprite.fragment
+scummvm	switch/scummvm/data/shaders/wme_sprite.vertex
+scummvm	switch/scummvm/data/sky.cpt
+scummvm	switch/scummvm/data/supernova.dat
+scummvm	switch/scummvm/data/teenagent.dat
+scummvm	switch/scummvm/data/titanic.dat
+scummvm	switch/scummvm/data/tony.dat
+scummvm	switch/scummvm/data/toon.dat
+scummvm	switch/scummvm/data/translations.dat
+scummvm	switch/scummvm/data/ultima.dat
+scummvm	switch/scummvm/data/ultima8.dat
+scummvm	switch/scummvm/data/vkeybd_default.zip
+scummvm	switch/scummvm/data/vkeybd_small.zip
+scummvm	switch/scummvm/data/wintermute.zip
+scummvm	switch/scummvm/data/wwwroot.zip
+scummvm	switch/scummvm/doc/AUTHORS
+scummvm	switch/scummvm/doc/CONTRIBUTING.md
+scummvm	switch/scummvm/doc/COPYING
+scummvm	switch/scummvm/doc/COPYING.Apache
+scummvm	switch/scummvm/doc/COPYING.BSD
+scummvm	switch/scummvm/doc/COPYING.BSL
+scummvm	switch/scummvm/doc/COPYING.GLAD
+scummvm	switch/scummvm/doc/COPYING.ISC
+scummvm	switch/scummvm/doc/COPYING.LGPL
+scummvm	switch/scummvm/doc/COPYING.LUA
+scummvm	switch/scummvm/doc/COPYING.MIT
+scummvm	switch/scummvm/doc/COPYING.MKV
+scummvm	switch/scummvm/doc/COPYING.MPL
+scummvm	switch/scummvm/doc/COPYING.OFL
+scummvm	switch/scummvm/doc/COPYING.TINYGL
+scummvm	switch/scummvm/doc/COPYRIGHT
+scummvm	switch/scummvm/doc/COPYRIGHT.Roland_SC-55
+scummvm	switch/scummvm/doc/CatharonLicense.txt
+scummvm	switch/scummvm/doc/NEWS.md
+scummvm	switch/scummvm/doc/README.SWITCH
+scummvm	switch/scummvm/doc/README.md
+scummvm	switch/scummvm/scummvm.nro
+flycast	retroarch/cores/flycast_libretro_libnx.nro
+psnes	switch/psnes/psnes.nro
+pnes	switch/pnes/pnes.nro
+pfbneo	switch/pfbneo/pfbneo.nro
+sys_botbase	atmosphere/contents/430000000000000B/exefs.nsp
+sys_botbase	atmosphere/contents/430000000000000B/flags/boot2.flag
+usb_botbase	atmosphere/contents/430000000000000B/exefs.nsp
+usb_botbase	atmosphere/contents/430000000000000B/flags/boot2.flag
+sys_gdbstub	atmosphere/contents/4200000000474442/exefs.nsp
+sys_gdbstub	atmosphere/contents/4200000000474442/flags/boot2.flag
+sys_gdbstub	atmosphere/contents/4200000000474442/toolbox.json
+twili	atmosphere/contents/0100000000006480/exefs.nsp
+twili	atmosphere/contents/0100000000006480/flags/boot2.flag
+twili	atmosphere/contents/0100000000006482/exefs.nsp
+twili	atmosphere/hbl.nsp

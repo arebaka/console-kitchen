@@ -111,6 +111,87 @@
 	}
 }
 
+// Files to open and scripts to download, in a menu that opens under its button over the page.
+// The button stands at the right with the languages, also where the subtitle is hidden
+.file-menu {
+	position: relative;
+	margin-left: auto;
+
+	+ .lang-switch {
+		margin-left: space(4);
+	}
+
+	.file-button {
+		padding: 2px 0;
+		font-size: $size-small;
+		text-transform: uppercase;
+		color: var(--color-muted);
+		border: none;
+		border-bottom: 2px solid transparent;
+
+		&:hover,
+		&:focus-visible,
+		&[aria-expanded='true'] {
+			color: var(--color-text);
+		}
+
+		&[aria-expanded='true'] {
+			border-bottom-color: var(--color-accent);
+		}
+
+		@media (pointer: coarse) {
+			padding: space(2) 0;
+		}
+	}
+
+	.menu {
+		position: absolute;
+		top: calc(100% + #{space(2)});
+		right: 0;
+		z-index: 20;
+		display: flex;
+		flex-direction: column;
+		width: min(380px, calc(100vw - #{space(6)}));
+		padding: space(2) 0 space(3);
+		background: var(--color-panel);
+		border: 1px solid var(--color-line);
+		border-radius: $radius;
+		box-shadow: 0 8px 24px rgb(0 0 0 / 40%);
+		backdrop-filter: blur(16px);
+	}
+
+	.item {
+		@include interactive;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 2px;
+		padding: space(2) space(4);
+		text-align: left;
+		border: none;
+
+		.description {
+			font-size: $size-small;
+			color: var(--color-muted);
+		}
+	}
+
+	.caption,
+	.status {
+		padding: space(2) space(4) space(1);
+		font-size: $size-small;
+		color: var(--color-muted);
+	}
+
+	.status {
+		color: var(--color-accent);
+
+		&.error {
+			color: var(--color-danger);
+		}
+	}
+}
+
 .content {
 	grid-area: content;
 	display: flex;

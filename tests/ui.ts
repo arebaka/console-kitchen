@@ -435,7 +435,16 @@ async function run(page: Page, url: string, downloads: string, spellOut: (link: 
 	await sleep(1500);
 	await check('the readme is rendered', `document.querySelector('.readme h1')?.textContent.startsWith('Console Kitchen') && $$('.readme li').length > 5`);
 	await check('generated files are highlighted', `document.querySelector('.generated .code .hljs-keyword') != null`);
-	await check('the installers are ready', `$$('.files .row.interactive').length == 3`);
+	await check('the installers are ready', `$$('.files .row.interactive').length == 6`);
+	await check('the build and the scripts of a dump are there to download', `['console-kitchen.toml', 'dump.sh', 'dump.ps1']
+		.every(name => byText('.files .row.interactive .name', name) != null)`);
+
+	// The menu of files offers the scripts of a dump, Escape closes it without going a step back
+	await page.act(`document.querySelector('.file-menu .file-button').click()`);
+	await check('the menu of files opens with the scripts of a dump', `$$('.file-menu .menu .item').length == 3`);
+	await page.act(`key(document.body, 'Escape')`);
+	await check('Escape closes the menu and stays on the step', `document.querySelector('.file-menu .menu') == null
+		&& byText('.sidebar .step.active .label', 'Build') != null`);
 	await page.act(`byText('.generated .choice', 'bootloader/hekate_ipl.ini').click()`);
 	await check('the Launch menu reaches hekate_ipl.ini', `(() => {
 		const ini = document.querySelector('.generated .code').textContent;

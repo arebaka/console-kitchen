@@ -63,3 +63,6 @@ export function downloadFile(name: string, content: Blob | string): void {
 	// Firefox cancels the download if the URI is revoked synchronously
 	setTimeout(() => URL.revokeObjectURL(uri));
 }
+
+// Windows PowerShell reads scripts without a byte order mark in the ANSI code page
+export const withBOM = (path: string, content: string) => path.endsWith('.ps1') ? `﻿${content}` : content;

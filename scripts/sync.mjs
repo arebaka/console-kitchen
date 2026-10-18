@@ -1,9 +1,10 @@
 // Refreshes the catalogs of every platform from the Homebrew App Store and GitHub: versions, sizes, release dates,
-// the fresher source of every component and logos. Maps HOS versions to the Atmosphere releases supporting them.
-// Then numbers what is new for short links, as bun run number does.
+// the fresher source of every component, logos and the files every component puts onto the card.
+// Maps HOS versions to the Atmosphere releases supporting them. Then numbers what is new for short links, as bun run number does.
 //
 // Usage: bun run sync                  GITHUB_TOKEN or a logged in gh CLI lifts the GitHub API limit
 //        bun run sync --logos          downloads logos again, even the existing ones
+//        bun run sync --files          only lists the files of the components again, the rest of the catalogs stays
 
 import { readFile, writeFile, readdir, stat, unlink } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
@@ -19,6 +20,7 @@ const CATALOGS = ['switch', 'psp'].map(platform => ({
 	platform,
 	software: new URL(`../data/${platform}/software/index.tsv`, import.meta.url),
 	sources: new URL(`../data/${platform}/software/sources.yaml`, import.meta.url),
+	files: new URL(`../data/${platform}/software/files.tsv`, import.meta.url),
 	tuning: new URL(`../data/${platform}/tuning/`, import.meta.url),
 	logos: new URL(`../public/logos/${platform}/`, import.meta.url)
 }));
@@ -29,7 +31,11 @@ const STUB_LOGO = 1024; // logos smaller than this are placeholders
 const DEFAULT_ICON = 'a9f3fdc1312063579bee0fdf91cb79ed75804457'; // SHA-1 of the gray console with a question mark libnx gives homebrew without an icon
 
 const REFRESH_LOGOS = process.argv.includes('--logos');
+const FILES_ONLY = process.argv.includes('--files');
 const TOKEN = process.env.GITHUB_TOKEN || ghToken();
+
+// What archives leave on the card besides their files, the installers remove it
+const LEFTOVERS = ['LICENSE.txt', 'README.txt', 'README.md', 'CHANGELOG.md', 'screen1.png', 'screen2.png', 'switch/breeze/.Breeze.nro.star'];
 
 function ghToken() {
 	try {
@@ -297,6 +303,126 @@ async function syncSoftware({ platform, software: SOFTWARE, sources: SOURCES, tu
 	return problems;
 }
 
+// A part of a download, from byte `start` to byte `end`
+async function range(url, start, end) {
+	const response = await request(url, { Range: `bytes=${start}-${end}`, 'Accept-Encoding': 'identity' });
+	const data = Buffer.from(await response.arrayBuffer());
+	// A server that does not take ranges sends the whole file
+	return response.status == 200 ? data.subarray(start, end + 1) : data;
+}
+
+// Names of the files of a zip from its central directory, which the end of the archive points to, the size of the zip
+// asked for when it is not known. GitHub does not take a range counted from the end.
+// ZIP64 keeps the place of the directory in a record of its own, a locator right before the end tells where
+async function zipEntries(url, known) {
+	const total = known || await contentLength(url);
+	if (!total) throw new Error(`no size of ${url}`);
+	const tail = await range(url, Math.max(0, total - 66000), total - 1);
+	const end = tail.lastIndexOf(Buffer.from([0x50, 0x4b, 0x05, 0x06]));
+	if (end < 0) throw new Error(`no central directory in ${url}`);
+	let size = tail.readUInt32LE(end + 12);
+	let offset = tail.readUInt32LE(end + 16);
+	if (size == 0xffffffff || offset == 0xffffffff) {
+		const record = Number(tail.readBigUInt64LE(end - 20 + 8));
+		const zip64 = await range(url, record, record + 55);
+		size = Number(zip64.readBigUInt64LE(40));
+		offset = Number(zip64.readBigUInt64LE(48));
+	}
+	const directory = await range(url, offset, offset + size - 1);
+	const names = [];
+	for (let at = 0; at + 46 <= directory.length && directory.readUInt32LE(at) == 0x02014b50;) {
+		const length = directory.readUInt16LE(at + 28);
+		// Names are UTF-8 with the flag for it, the old code page otherwise, which plain ASCII names read the same in
+		names.push(directory.toString(directory.readUInt16LE(at + 8) & 0x800 ? 'utf8' : 'latin1', at + 46, at + 46 + length));
+		at += 46 + length + directory.readUInt16LE(at + 30) + directory.readUInt16LE(at + 32);
+	}
+	return names;
+}
+
+// Names of the files of a tar from the headers of its entries, each read by itself, the data between them skipped.
+// Long names come in an entry of their own before their file, as GNU tar writes them, or in a pax header
+async function tarEntries(url) {
+	const names = [];
+	let longName;
+	for (let offset = 0; ;) {
+		const header = await range(url, offset, offset + 511);
+		if (header.length < 512 || header.every(byte => byte == 0)) break;
+		const field = (start, length) => header.toString('utf8', start, start + length).replace(/\0[\s\S]*$/, '');
+		const size = parseInt(field(124, 12).trim() || '0', 8);
+		const type = field(156, 1);
+		const data = async () => (await range(url, offset + 512, offset + 512 + size - 1)).toString('utf8');
+		if (type == 'L') {
+			longName = (await data()).replace(/\0[\s\S]*$/, '');
+		} else if (type == 'x') {
+			longName = (await data()).match(/^\d+ path=(.*)$/m)?.[1] ?? longName;
+		} else {
+			const prefix = field(257, 5) == 'ustar' ? field(345, 155) : '';
+			const name = longName ?? (prefix ? `${prefix}/${field(0, 100)}` : field(0, 100));
+			longName = undefined;
+			if (type == '0' || type == '') names.push(name);
+		}
+		offset += 512 + Math.ceil(size / 512) * 512;
+	}
+	return names;
+}
+
+// What the sources of a component put onto the card, the way the installers lay them out: every App Store package
+// and every asset or download, whichever source a build takes, so a card installed from any of them is recognized
+async function componentFiles(component, release, options) {
+	const files = new Set();
+	const add = (names, root = '', into = '') => {
+		for (const name of names.map(name => name.replace(/\\/g, '/').replace(/^\.\//, ''))) {
+			if (name.endsWith('/') || (root && !name.startsWith(`${root}/`))) continue;
+			const path = `${into ? `${into}/` : ''}${root ? name.slice(root.length + 1) : name}`;
+			if (!LEFTOVERS.includes(path)) files.add(path);
+		}
+	};
+	for (const name of component.sources.appstore ?? []) {
+		add((await zipEntries(`${APPSTORE}/zips/${name}.zip`)).filter(entry => entry != 'manifest.install' && entry != 'info.json'));
+	}
+	for (const item of component.sources.github ?? []) {
+		const asset = (await release(item.repo)).assets.find(asset => assetPattern(item, options).test(asset.name));
+		if (!asset) continue;
+		if (item.path) files.add(item.path);
+		else if (item.strip !== undefined) add((await tarEntries(asset.browser_download_url)).map(name => name.split('/').slice(item.strip).join('/')).filter(Boolean));
+		else add(await zipEntries(asset.browser_download_url, asset.size), item.root, item.into);
+	}
+	for (const item of component.sources.url ?? []) {
+		if (item.path) files.add(item.path);
+		else add(await zipEntries(item.url), item.root, item.into);
+	}
+	return [...files].sort();
+}
+
+// The files of every component of a catalog, a row per file. They tell a card what is installed on it
+// and an update what to remove with a component
+async function listSoftware({ platform, software: SOFTWARE, sources: SOURCES, files: FILES, tuning: TUNING }) {
+	const { rows: software } = await readTable(SOFTWARE);
+	const sources = await readSources(SOURCES);
+	const releases = new Map();
+	const release = async (repo) => {
+		if (!releases.has(repo)) releases.set(repo, await github(`repos/${repo}/releases/latest`));
+		return releases.get(repo);
+	};
+	// A component whose release cannot be read now keeps the files it had
+	const previous = (await readTable(FILES).catch(() => ({ rows: [] }))).rows;
+	const rows = [];
+	const problems = [];
+	for (const component of software) {
+		component.sources = sources[component.id] ?? {};
+		try {
+			const files = await componentFiles(component, release, await readOptions(TUNING, component.id));
+			rows.push(...files.map(path => ({ id: component.id, path })));
+			console.log(`${platform.padEnd(7)} ${component.id.padEnd(24)} ${files.length} files`);
+		} catch (error) {
+			rows.push(...previous.filter(row => row.id == component.id));
+			problems.push(`${component.id}: no files, ${error.message}`);
+		}
+	}
+	await writeTable(FILES, ['id', 'path'], rows);
+	return problems;
+}
+
 // Every HOS version maps to the first Atmosphere release that supports it or an older version of the same line
 async function syncFirmware() {
 	const { columns, rows: firmware } = await readTable(FIRMWARE);
@@ -357,12 +483,14 @@ async function syncFirmware() {
 
 const problems = [];
 for (const catalog of CATALOGS) {
-	problems.push(...await syncSoftware(catalog));
+	if (!FILES_ONLY) problems.push(...await syncSoftware(catalog));
+	problems.push(...await listSoftware(catalog));
 }
-await syncFirmware();
-
-// What the catalogs got new, such as a system version, takes its number for short links
-execFileSync(process.execPath, [fileURLToPath(new URL('./number.mjs', import.meta.url))], { stdio: 'inherit' });
+if (!FILES_ONLY) {
+	await syncFirmware();
+	// What the catalogs got new, such as a system version, takes its number for short links
+	execFileSync(process.execPath, [fileURLToPath(new URL('./number.mjs', import.meta.url))], { stdio: 'inherit' });
+}
 
 if (problems.length) {
 	console.error(`\n${problems.join('\n')}`);

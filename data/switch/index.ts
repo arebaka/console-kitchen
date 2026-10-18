@@ -1,10 +1,11 @@
 import type { BootEntry, BootMode, ComponentEntry, GalleryImage, ImageTarget, LaunchKey, OverclockData } from '@/types';
-import { type Conditions, type Row, compact, components, firmware, flag, link, number, presets, text, tuning } from '@/parse';
+import { type Conditions, type Row, compact, components, files, firmware, flag, link, number, presets, text, tuning } from '@/parse';
 
 import LINK_ROWS from './link.tsv';
 import FIRMWARE_ROWS from './firmware.tsv';
 import SOFTWARE_ROWS from './software/index.tsv';
 import SOFTWARE_SOURCES from './software/sources.yaml';
+import FILE_ROWS from './software/files.tsv';
 import PRESET_ROWS from './presets.tsv';
 import LAUNCH_ROWS from './launch/index.tsv';
 import TUNING_ROWS from './tuning/index.tsv';
@@ -23,6 +24,7 @@ const TUNING_TABLES = import.meta.glob<Row[]>('./tuning/**/*.tsv', { eager: true
 
 export const FIRMWARE = firmware(FIRMWARE_ROWS);
 export const SOFTWARE = components(SOFTWARE_ROWS, SOFTWARE_SOURCES);
+export const FILES = files(FILE_ROWS);
 export const PRESETS = presets(PRESET_ROWS);
 export const TUNING = tuning(TUNING_ROWS, path => TUNING_TABLES[`./tuning/${path}`], TUNING_CONDITIONS as Conditions);
 

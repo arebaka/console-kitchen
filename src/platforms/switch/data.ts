@@ -1,7 +1,7 @@
 import { BootEntry, BootMode, Catalog, Clocks, ComponentEntry, ComponentInfo, EntryOverride, FirmwareVersion, GalleryImage, LaunchConfig, LaunchEntry, LaunchKey, SwitchState } from '@/types';
 import { compareVersions, getTuningDefaults, presetSelection } from '@/data';
 
-import { APPEARANCE, FIRMWARE, LAUNCH, MODULES, OVERCLOCK, PRESETS, SOFTWARE, SYSTEMS, TUNING } from '@data/switch';
+import { APPEARANCE, FILES, FIRMWARE, LAUNCH, MODULES, OVERCLOCK, PRESETS, SOFTWARE, SYSTEMS, TUNING } from '@data/switch';
 
 export { OVERCLOCK };
 export const HOS_VERSIONS: FirmwareVersion[] = FIRMWARE;
@@ -12,7 +12,8 @@ export const CATALOG: Catalog = {
 	components: COMPONENTS,
 	categories: ['base', 'sysmodules', 'overlays', 'tools', 'installers', 'saves', 'mods', 'amiibo', 'themes', 'media', 'streaming', 'emulators', 'development'],
 	presets: PRESETS,
-	tuning: TUNING
+	tuning: TUNING,
+	files: FILES
 };
 export const BOOT_ENTRIES: BootEntry[] = LAUNCH;
 // Other systems hekate boots, each in the menu with the component that brings it

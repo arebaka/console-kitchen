@@ -17,6 +17,7 @@ const LANGUAGES: {[extension: string]: string} = {
 	ini: 'ini',
 	config: 'ini',
 	locations: 'ini',
+	toml: 'ini',
 	json: 'json'
 };
 
