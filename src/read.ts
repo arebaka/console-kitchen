@@ -263,6 +263,8 @@ export function optionRaw(option: TuningOption, text: string): string | undefine
 			return /^#?[0-9a-f]{6}$/i.test(value) ? `#${value.replace('#', '').toLowerCase()}` : undefined;
 		case 'list':
 			return undefined;
+		case "rgba4444": { throw new Error('Not implemented yet: "rgba4444" case') }
+		case "text": { throw new Error('Not implemented yet: "text" case') }
 		default:
 			return value;
 	}

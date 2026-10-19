@@ -289,7 +289,7 @@ export function updatePlan(snapshot: CardSnapshot, request: BuildRequest): Updat
 	const isMoved = (path: string, line: string) => moves.moved.some(move => move.from == path && move.sections.some(name => line.startsWith(`[${name}] `)));
 	const uncovered = platform.uncoveredCard(request, dump.texts)
 		.filter(item => changed.some(config => config.path == item.path))
-		.map(item => (Object.assign(item, { lines: item.lines.filter((line) => !isMoved(item.path, line)) })))
+		.map(item => (Object.assign(item, { lines: item.lines.filter(line => !isMoved(item.path, line)) })))
 		.filter(item => item.lines.length);
 
 	const { actions, foreign } = snapshot;

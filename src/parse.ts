@@ -25,7 +25,7 @@ export function compact<T extends object>(object: T): T {
 	return Object.fromEntries(Object.entries(object).filter(([, value]) => value !== undefined)) as T;
 }
 
-export const text = (cell: string | undefined): string | undefined => cell || undefined;
+export const text = (cell: string | undefined): string | undefined => cell ?? undefined;
 
 export function number(cell: string | undefined): number {
 	const value = Number(cell);
@@ -172,6 +172,7 @@ function option(row: Row): TuningOption {
 			const rows = (list(row.default) ?? []).map(item => listRow(item, fields.length));
 			return { id, type: 'list', fields, maxLength: number(row.maxLength), max: row.max ? number(row.max) : undefined, default: rows };
 		}
+		case undefined: { throw new Error('Not implemented yet: undefined case') }
 		default:
 			throw new Error(`Unknown type of the option ${id}: "${row.type}"`);
 	}
@@ -180,7 +181,7 @@ function option(row: Row): TuningOption {
 // Groups of options in the order of their index. Every group keeps its options in the table its row points at,
 // in the one named after the group without that, conditions of the options come from the YAML next to the tables
 export const tuning = (index: Row[], table: (path: string) => Row[] | undefined, conditions: Conditions | null): TuningGroup[] => index.map(row => {
-	const path = row.table || `${row.id}.tsv`;
+	const path = row.table ?? `${row.id}.tsv`;
 	const rows = table(path);
 	if (!rows) throw new Error(`No table ${path} with the options of the group ${row.id}`);
 	if (!row.link) throw new Error(`No param of a link for the options of the group ${row.id}`);

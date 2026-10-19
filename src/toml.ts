@@ -49,6 +49,9 @@ function typed(option: TuningOption | undefined, key: string, raws: string[]): T
 			// An empty list is a param without a value
 			return raws.filter(Boolean).map(row => listRow(row, option.fields.length)
 				.map((cell, index) => option.fields[index].max === undefined ? cell : cell ? cell.split(',') : []));
+		case "color": { throw new Error('Not implemented yet: "color" case') }
+		case "rgba4444": { throw new Error('Not implemented yet: "rgba4444" case') }
+		case "text": { throw new Error('Not implemented yet: "text" case') }
 		default:
 			return raw;
 	}

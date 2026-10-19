@@ -59,9 +59,7 @@ const ICONS: {[step in StepId]: React.ReactNode} = {
 		<path d="M8.5 16v-2.5a3.5 3.5 0 0 1 7 0V16" />
 		<rect x="5" y="16" width="14" height="4" rx="1.5" />
 	</>,
-	plugins: <>
-		<path d="M9.5 3.5a2 2 0 0 1 4 0V6H18v4.5h-1.5a2 2 0 0 0 0 4H18V19h-4.5v-1.5a2 2 0 0 0-4 0V19H5v-4.5h1.5a2 2 0 0 0 0-4H5V6h4.5z" />
-	</>,
+	plugins: <path d="M9.5 3.5a2 2 0 0 1 4 0V6H18v4.5h-1.5a2 2 0 0 0 0 4H18V19h-4.5v-1.5a2 2 0 0 0-4 0V19H5v-4.5h1.5a2 2 0 0 0 0-4H5V6h4.5z" />,
 	overclock: <>
 		<path d="M4.5 17a8.5 8.5 0 1 1 15 0" />
 		<path d="m12 13 4-4.5" />

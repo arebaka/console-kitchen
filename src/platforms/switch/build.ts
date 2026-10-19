@@ -329,7 +329,7 @@ const CONFIGS: ConfigSpec<Request>[] = [
 			usb30_force_enabled: u8(atmosphere.usb30_force_enabled),
 			ease_nro_restriction: u8(atmosphere.ease_nro_restriction),
 			enable_sd_card_logging: u8(atmosphere.enable_sd_card_logging),
-			sd_card_log_output_directory: atmosphere.sd_card_log_output_directory || 'atmosphere/binlogs',
+			sd_card_log_output_directory: atmosphere.sd_card_log_output_directory ?? 'atmosphere/binlogs',
 			disable_automatic_report_cleanup: u8(atmosphere.disable_automatic_report_cleanup),
 			fatal_auto_reboot_interval: u64(atmosphere.fatal_auto_reboot_interval as number),
 			power_menu_reboot_function: atmosphere.power_menu_reboot_function,
@@ -367,7 +367,7 @@ const CONFIGS: ConfigSpec<Request>[] = [
 			any_app: String(hbl.any_app),
 			any_app_key: hbl.key,
 			address_space: hbl.address_space,
-			path: hbl.path || 'atmosphere/hbl.nsp',
+			path: hbl.path ?? 'atmosphere/hbl.nsp',
 			mods_key: hbl.mods_key,
 			cheat_key: hbl.cheat_key
 		}),
@@ -527,7 +527,7 @@ const CONFIGS: ConfigSpec<Request>[] = [
 		// JKSV keeps its switches as numbers and fills in what the file leaves out
 		view: ({ tuning: { jksv } }) => ({
 			...Object.fromEntries(Object.entries(jksv).map(([key, value]) => [key, typeof value === 'boolean' ? flag(value) : value])),
-			WorkingDirectory: JSON.stringify(jksv.WorkingDirectory || 'sdmc:/JKSV')
+			WorkingDirectory: JSON.stringify(jksv.WorkingDirectory ?? 'sdmc:/JKSV')
 		}),
 		when: request => isGroupSelected(request, 'jksv')
 	},

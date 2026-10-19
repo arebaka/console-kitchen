@@ -32,7 +32,7 @@ const DEFAULT_ICON = 'a9f3fdc1312063579bee0fdf91cb79ed75804457'; // SHA-1 of the
 
 const REFRESH_LOGOS = process.argv.includes('--logos');
 const FILES_ONLY = process.argv.includes('--files');
-const TOKEN = process.env.GITHUB_TOKEN || ghToken();
+const TOKEN = process.env.GITHUB_TOKEN ?? ghToken();
 
 // What archives leave on the card besides their files, the installers remove it
 const LEFTOVERS = new Set(['LICENSE.txt', 'README.txt', 'README.md', 'CHANGELOG.md', 'screen1.png', 'screen2.png', 'switch/breeze/.Breeze.nro.star']);
@@ -273,7 +273,7 @@ async function syncSoftware({ platform, software: SOFTWARE, sources: SOURCES, tu
 		} else if (url.length > 0) {
 			// A server that does not tell the size leaves the known one
 			const sizes = await Promise.all(url.map( async item => contentLength(item.url)));
-			Object.assign(component, { source: 'url', size: sizes.reduce((a, b) => a + b, 0) || component.size });
+			Object.assign(component, { source: 'url', size: sizes.reduce((a, b) => a + b, 0) ?? component.size });
 		} else {
 			component.source = component.sources.bundled ? 'bundled' : 'manual';
 		}
@@ -315,7 +315,7 @@ async function range(url, start, end) {
 // asked for when it is not known. GitHub does not take a range counted from the end.
 // ZIP64 keeps the place of the directory in a record of its own, a locator right before the end tells where
 async function zipEntries(url, known) {
-	const total = known || await contentLength(url);
+	const total = known ?? await contentLength(url);
 	if (!total) throw new Error(`no size of ${url}`);
 	const tail = await range(url, Math.max(0, total - 66000), total - 1);
 	const end = tail.lastIndexOf(Buffer.from([0x50, 0x4b, 0x05, 0x06]));

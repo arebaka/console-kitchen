@@ -94,10 +94,10 @@ function installSteps(comp: ComponentInfo, modchip: boolean, options: Record<str
 						strip: item.strip
 					});
 					return Object.assign(step, asset, {
-	zip: true,
-	root: item.root ?? '',
-	into: item.into ?? ''
-});
+						zip: true,
+						root: item.root ?? '',
+						into: item.into ?? ''
+					});
 				});
 		case 'url':
 			return comp.sources.url!.map(item => item.path
@@ -112,8 +112,9 @@ function installSteps(comp: ComponentInfo, modchip: boolean, options: Record<str
 					root: item.root ?? '',
 					into: item.into ?? ''
 				}));
-		default:
-			return [];
+		case "bundled": { throw new Error('Not implemented yet: "bundled" case') }
+		case "manual": { throw new Error('Not implemented yet: "manual" case') }
+		default: return [];
 	}
 }
 

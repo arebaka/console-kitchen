@@ -116,6 +116,13 @@ export function tuningWords(groups: TuningGroup[]): string[] {
 				return option.values.map(String);
 			case 'list':
 				return option.fields.flatMap(field => field.values ?? []);
+			case "color": { throw new Error('Not implemented yet: "color" case') }
+			case "hue": { throw new Error('Not implemented yet: "hue" case') }
+			case "number": { throw new Error('Not implemented yet: "number" case') }
+			case "range": { throw new Error('Not implemented yet: "range" case') }
+			case "rgba4444": { throw new Error('Not implemented yet: "rgba4444" case') }
+			case "text": { throw new Error('Not implemented yet: "text" case') }
+			case "toggle": { throw new Error('Not implemented yet: "toggle" case') }
 			default:
 				return [];
 		}
