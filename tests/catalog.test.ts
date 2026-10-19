@@ -78,8 +78,8 @@ describe('catalog', () => {
 	it.each(PLATFORM_CASES)('credits every logo of %s in public/LICENSE', id => {
 		// The section of the platform runs up to the next unindented line
 		const section = readFileSync('public/LICENSE', 'utf8').split(`\nlogos/${id}/\n`)[1].split(/\n(?=\S)/)[0];
-		const credited = [...section.matchAll(/^ {4}([\w.-]+\.(?:png|jpg))\b/gm)].map(match => match[1]).sort();
-		expect(credited).toEqual(readdirSync(`public/logos/${id}`).sort());
+		const credited = [...section.matchAll(/^ {4}([\w.-]+\.(?:png|jpg))\b/gm)].map(match => match[1]).toSorted();
+		expect(credited).toEqual(readdirSync(`public/logos/${id}`).toSorted());
 	});
 
 	describe.each(LANGUAGE_CASES)('in %s', (lang, t) => {

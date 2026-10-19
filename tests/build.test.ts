@@ -268,8 +268,8 @@ describe('configs of modules, overlays and applications', () => {
 	];
 
 	it('writes them for the selected components with nothing changed too, all but the WebDAV server that is not set', () => {
-		expect(Object.keys(configs(['sys_tune', 'sys_con', 'amiigo'], {})).filter(path => PATHS.includes(path)).sort())
-			.toEqual(PATHS.filter(path => path != 'config/JKSV/webdav.json').sort());
+		expect(Object.keys(configs(['sys_tune', 'sys_con', 'amiigo'], {})).filter(path => PATHS.includes(path)).toSorted())
+			.toEqual(PATHS.filter(path => path != 'config/JKSV/webdav.json').toSorted());
 	});
 
 	it('writes nothing for a component that is not selected', () => {
@@ -282,7 +282,7 @@ describe('configs of modules, overlays and applications', () => {
 			ultrahand: { default_lang: 'uk', hold_duration: 1500, show_clock: false, datetime_format: '%H:%M' }
 		})['config/ultrahand/config.ini']);
 		// Ultrahand saves its keys sorted, so the config reads line by line against the one of a console
-		expect(Object.keys(ultrahand)).toEqual([...options('ultrahand').map(option => option.replace('show_', 'hide_')), 'key_combo'].sort());
+		expect(Object.keys(ultrahand)).toEqual([...options('ultrahand').map(option => option.replace('show_', 'hide_')), 'key_combo'].toSorted());
 		expect(ultrahand).toMatchObject({
 			key_combo: 'L+DDOWN+RS',
 			default_lang: 'uk',
@@ -378,7 +378,7 @@ describe('configs of modules, overlays and applications', () => {
 
 		expect(Object.keys(ini)).toEqual(Object.keys(SECTIONS));
 		for (const [section, group] of Object.entries(SECTIONS)) {
-			expect(Object.keys(ini[section]).sort(), section).toEqual(options(group).sort());
+			expect(Object.keys(ini[section]).toSorted(), section).toEqual(options(group).toSorted());
 		}
 		// A key without its option would be written empty
 		expect(content).not.toMatch(/[=]$|\{\{/m);

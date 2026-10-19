@@ -110,6 +110,6 @@ export function presetSelection(catalog: Catalog, preset: Preset): string[] {
 
 // The preset the selection equals to, if any
 export function matchingPreset(catalog: Catalog, selectedComponentIDs: string[]): Preset | undefined {
-	const current = [...selectedComponentIDs].sort().join();
-	return catalog.presets.find(preset => presetSelection(catalog, preset).sort().join() == current);
+	const current = [...selectedComponentIDs].toSorted().join();
+	return catalog.presets.find(preset => presetSelection(catalog, preset).toSorted().join() == current);
 }

@@ -198,7 +198,7 @@ describe('short links', () => {
 				const tuning = build.tuning[group.id];
 				if (option.type == 'toggle') tuning[option.id] = !option.default;
 				if (option.type == 'range' || option.type == 'number') tuning[option.id] = option.default == option.max ? option.min : option.max;
-				if (option.type == 'select') tuning[option.id] = [...option.values].reverse().find(value => value != option.default)!;
+				if (option.type == 'select') tuning[option.id] = [...option.values].toReversed().find(value => value != option.default)!;
 				if (option.type == 'multiselect') tuning[option.id] = option.values.slice(-Math.min(option.max ?? 3, option.values.length));
 				if (option.type == 'text') tuning[option.id] = `${option.default}x`.slice(0, option.maxLength);
 				if (option.type == 'list') tuning[option.id] = [option.fields.map(field => field.values?.at(-1) ?? 'x')];
@@ -223,7 +223,7 @@ describe('numbers of links', () => {
 		expect(header).toEqual(['list', 'code', 'id']);
 		for (const list of new Set(rows.map(([name]) => name))) {
 			const numbered = rows.filter(([name]) => name == list);
-			expect(numbered.map(([, code]) => Number(code)).sort((a, b) => a - b), list).toEqual(numbered.map((row, index) => index));
+			expect(numbered.map(([, code]) => Number(code)).toSorted((a, b) => a - b), list).toEqual(numbered.map((row, index) => index));
 			expect(new Set(numbered.map(([, , id]) => id)).size, list).toBe(numbered.length);
 		}
 	});

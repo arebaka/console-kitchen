@@ -85,7 +85,7 @@ describe.each(RUNS)('%s', (script, run, isRunnable) => {
 		const dump = parse(readFileSync(join(root, DUMP_FILE), 'utf8')) as unknown as Dump;
 
 		expect([dump.kind, dump.format, dump.platform]).toEqual(['dump', 1, 'switch']);
-		expect(Object.keys(dump.files).sort()).toEqual([
+		expect(Object.keys(dump.files).toSorted()).toEqual([
 			'atmosphere/contents/0100000000000352/exefs.nsp',
 			'atmosphere/contents/0100000000000352/flags/boot2.flag',
 			'atmosphere/contents/0100000000000352/toolbox.json',
@@ -112,8 +112,8 @@ describe.each(RUNS)('%s', (script, run, isRunnable) => {
 			'switch/appstore/.get/packages/Checkpoint/info.json',
 			'switch/appstore/.get/packages/Checkpoint/manifest.install'
 		];
-		expect(Object.keys(dump.texts).sort()).toEqual(texts);
-		expect(Object.keys(dump.hashes).sort()).toEqual(texts);
+		expect(Object.keys(dump.texts).toSorted()).toEqual(texts);
+		expect(Object.keys(dump.hashes).toSorted()).toEqual(texts);
 		for (const path of texts) {
 			expect(text(dump.texts[path]), path).toBe(SWITCH_CARD[path]);
 			expect(dump.hashes[path], path).toBe(sha256(SWITCH_CARD[path]));
@@ -131,14 +131,14 @@ describe.each(RUNS)('%s', (script, run, isRunnable) => {
 		const dump = parse(readFileSync(join(root, DUMP_FILE), 'utf8')) as unknown as Dump;
 
 		expect(dump.platform).toBe('psp');
-		expect(Object.keys(dump.files).sort()).toEqual([
+		expect(Object.keys(dump.files).toSorted()).toEqual([
 			'PSP/GAME/CMFileManager/EBOOT.PBP',
 			'PSP/SAVEDATA/ARK_01234/FLASH0.ARK',
 			'PSP/SAVEDATA/ARK_01234/SETTINGS.TXT',
 			'SEPLUGINS/PLUGINS.TXT',
 			'SEPLUGINS/missyhud.prx'
 		]);
-		expect(Object.keys(dump.texts).sort()).toEqual(['PSP/SAVEDATA/ARK_01234/SETTINGS.TXT', 'SEPLUGINS/PLUGINS.TXT', 'console-kitchen/build.toml']);
+		expect(Object.keys(dump.texts).toSorted()).toEqual(['PSP/SAVEDATA/ARK_01234/SETTINGS.TXT', 'SEPLUGINS/PLUGINS.TXT', 'console-kitchen/build.toml']);
 		expect(text(dump.texts['SEPLUGINS/PLUGINS.TXT'])).toBe(PSP_CARD['SEPLUGINS/PLUGINS.TXT']);
 	}, 60_000);
 

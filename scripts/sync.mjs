@@ -93,7 +93,7 @@ function compareVersions(a, b) {
 }
 
 // App Store dates are dd/mm/yyyy
-const storeDate = date => date.split('/').reverse().join('-');
+const storeDate = date => date.split('/').toReversed().join('-');
 
 // Equal or unknown versions are decided by the release date, the App Store wins a tie
 function pickSource(component, store, release) {
@@ -228,7 +228,7 @@ async function syncSoftware({ platform, software: SOFTWARE, sources: SOURCES, tu
 			const latest = await github(`repos/${repo}/releases/latest`);
 			releases.set(repo, {
 				version: /\d/.test(latest.tag_name) ? latest.tag_name : latest.body?.match(/\d+\.\d+(?:\.\d+)*/)?.[0] ?? latest.tag_name,
-				date: [latest.published_at, ...latest.assets.map(asset => asset.updated_at)].sort().at(-1).slice(0, 10),
+				date: [latest.published_at, ...latest.assets.map(asset => asset.updated_at)].toSorted().at(-1).slice(0, 10),
 				assets: latest.assets
 			});
 		}
@@ -289,7 +289,7 @@ async function syncSoftware({ platform, software: SOFTWARE, sources: SOURCES, tu
 		}
 
 		const { id, source, version, released } = component;
-		console.log(`${platform.padEnd(7)} ${id.padEnd(24)} ${String(source).padEnd(9)} ${String(version).padEnd(14)} ${released ?? ''}${component.logo ? '' : '  (no logo)'}`);
+		console.log(`${platform.padEnd(7)} ${id.padEnd(24)} ${source.padEnd(9)} ${version.padEnd(14)} ${released ?? ''}${component.logo ? '' : '  (no logo)'}`);
 	}
 
 	// Placeholders nobody refers to any more
@@ -391,7 +391,7 @@ async function componentFiles(component, release, options) {
 		if (item.path) files.add(item.path);
 		else add(await zipEntries(item.url), item.root, item.into);
 	}
-	return [...files].sort();
+	return [...files].toSorted();
 }
 
 // The files of every component of a catalog, a row per file. They tell a card what is installed on it

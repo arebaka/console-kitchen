@@ -35,7 +35,7 @@ export const LINK: LinkCodes = { ...CODES, hardware: HARDWARE_CODES, firmwareKey
 export function vocabulary(): Vocabulary {
 	const entries = [...BOOT_MODES, ...BROUGHT];
 	return {
-		firmware: HOS_VERSIONS.map(v => v.version).sort(compareVersions),
+		firmware: HOS_VERSIONS.map(v => v.version).toSorted(compareVersions),
 		software: [...new Set([...defaultBuild().selectedComponentIDs, ...COMPONENTS.map(comp => comp.id)])],
 		keys: byParam([
 			'boot', 'emummc', 'autoboot',

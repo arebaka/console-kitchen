@@ -168,7 +168,7 @@ function templateParts(template: string, isList: (name: string) => boolean) {
 			continue;
 		}
 		if (section === undefined) continue;
-		const list = [...blocks].reverse().find(isList);
+		const list = [...blocks].toReversed().find(isList);
 		if (list) {
 			lists.push({ section, name: list, ...linePattern(line) });
 			continue;

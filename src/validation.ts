@@ -6,7 +6,7 @@ import { isRequirementMet } from './data';
 const LEVELS = { error: 0, warning: 1, info: 2 };
 
 // Errors first, issues of a level keep the order of the checks
-export const sortIssues = (issues: Issue[]) => issues.sort((a, b) => LEVELS[a.level] - LEVELS[b.level]);
+export const sortIssues = (issues: Issue[]) => issues.toSorted((a, b) => LEVELS[a.level] - LEVELS[b.level]);
 
 // The same issue found by another check run, whatever its fixes are
 export const issueKey = (issue: Issue) => `${issue.level}:${issue.code}:${Object.values(issue.params).join('|')}`;

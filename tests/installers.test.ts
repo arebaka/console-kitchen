@@ -164,14 +164,14 @@ describe.skipIf(!CAN_RUN_BASH || !has('tar'))('install.sh with a tar', () => {
 		].join('\n'), { mode: 0o755 });
 
 		execFileSync('bash', [join(root, 'install.sh')], { cwd: root, stdio: 'pipe', env: { ...process.env, PATH: `${join(stage, 'bin')}:${process.env.PATH}` } });
-		expect(readdirSync(root).sort()).toEqual(['bootloader', 'console-kitchen', 'lakka']);
+		expect(readdirSync(root).toSorted()).toEqual(['bootloader', 'console-kitchen', 'lakka']);
 		expect(readFileSync(join(root, 'lakka/SYSTEM'), 'utf8')).toBe('system');
 		expect(existsSync(join(root, 'lakka/storage'))).toBe(true);
 		expect(existsSync(join(root, 'bootloader/ini/Lakka.ini'))).toBe(true);
 		// The trace lists the files of the archive with the tag of the release, not what the installer removes from the root
 		const [header, ...lines] = readFileSync(join(root, SWITCH.trace, 'installed.tsv'), 'utf8').trimEnd().split('\n');
 		expect(header).toBe('component\ttag\tpath');
-		expect(lines.sort()).toEqual(['lakka\t9.9\tbootloader/ini/Lakka.ini', 'lakka\t9.9\tlakka/SYSTEM']);
+		expect(lines.toSorted()).toEqual(['lakka\t9.9\tbootloader/ini/Lakka.ini', 'lakka\t9.9\tlakka/SYSTEM']);
 	});
 });
 

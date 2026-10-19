@@ -26,7 +26,7 @@ function everything(platform: PlatformId): AppState {
 			const tuning = build.tuning[group.id];
 			if (option.type == 'toggle') tuning[option.id] = !option.default;
 			if (option.type == 'range' || option.type == 'number') tuning[option.id] = option.default == option.max ? option.min : option.max;
-			if (option.type == 'select') tuning[option.id] = [...option.values].reverse().find(value => value != option.default)!;
+			if (option.type == 'select') tuning[option.id] = [...option.values].toReversed().find(value => value != option.default)!;
 			if (option.type == 'multiselect') tuning[option.id] = option.values.slice(-Math.min(option.max ?? 3, option.values.length));
 			if (option.type == 'text') tuning[option.id] = `${option.default}x`.slice(0, option.maxLength);
 			if (option.type == 'hue') tuning[option.id] = (option.default + 1) % 360;

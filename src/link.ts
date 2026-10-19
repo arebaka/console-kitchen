@@ -307,7 +307,7 @@ function pack(params: Params, keys: string[], words: string[]): string {
 	const codes = index(keys).codes;
 	const out = new Writer();
 	let previous = 0;
-	for (const [key, value] of params.filter(([key]) => codes.has(key)).sort(([a], [b]) => codes.get(a)! - codes.get(b)!)) {
+	for (const [key, value] of params.filter(([key]) => codes.has(key)).toSorted(([a], [b]) => codes.get(a)! - codes.get(b)!)) {
 		out.number(codes.get(key)! - previous + 2);
 		previous = codes.get(key)!;
 		putValue(out, value, index(words));
@@ -361,8 +361,8 @@ const closed = (text: string) => /[-_]$/.test(text) ? `${text}A` : text;
 
 // What the params say whatever their order is: only the params of one key, the rows of a list, keep theirs
 const said = (params: Iterable<[string, string]>) => JSON.stringify([...params]
-	.map(([key, value]) => [key, key == 'sw' ? value.split(',').sort().join() : value])
-	.sort(([a], [b]) => a < b ? -1 : a > b ? 1 : 0));
+	.map(([key, value]) => [key, key == 'sw' ? value.split(',').toSorted().join() : value])
+	.toSorted(([a], [b]) => a < b ? -1 : a > b ? 1 : 0));
 
 // The console a link is of, whichever way the link names it
 export function hardwareOf(params: URLSearchParams, hardware: string[]): string | undefined {
@@ -434,5 +434,5 @@ export function unnumbered(ids: string[], numbered: string[]): string[] {
 	for (const id of ids) uses.set(id, (uses.get(id) ?? 0) + 1);
 	return [...uses.keys()]
 		.filter(id => !numbered.includes(id) && id != '' && id.trim() == id && !/[\t\r\n"]/.test(id) && !NUMBER.test(id))
-		.sort((a, b) => uses.get(b)! - uses.get(a)!);
+		.toSorted((a, b) => uses.get(b)! - uses.get(a)!);
 }

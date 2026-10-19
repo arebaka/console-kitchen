@@ -18,7 +18,7 @@ export const LINK: LinkCodes = { ...CODES, hardware: HARDWARE_CODES, firmwareKey
 // starts with, the words the values are made of and the params in the order links spell them
 export function vocabulary(): Vocabulary {
 	return {
-		firmware: FIRMWARE.map(v => v.version).sort(compareVersions),
+		firmware: FIRMWARE.map(v => v.version).toSorted(compareVersions),
 		software: [...new Set([...defaultBuild().selectedComponentIDs, ...COMPONENTS.map(comp => comp.id)])],
 		keys: byParam([...tuningKeys(CATALOG.tuning), ...COMPONENTS.filter(comp => comp.plugin).map(comp => `plugin.${comp.id}`)], paramOf),
 		words: [...tuningWords(CATALOG.tuning), ...RUNLEVELS]

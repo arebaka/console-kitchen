@@ -265,7 +265,7 @@ export function updatePlan(snapshot: CardSnapshot, request: BuildRequest): Updat
 			...trace.filter(line => line.component == id).map(line => line.path),
 			...packages.flatMap(name => [...registry[name], `switch/appstore/.get/packages/${name}/info.json`, `switch/appstore/.get/packages/${name}/manifest.install`]),
 			...catalog.files[id] ?? []
-		])].filter(path => !isConfig(path) && !staying.has(lower(path))).sort();
+		])].filter(path => !isConfig(path) && !staying.has(lower(path))).toSorted();
 		return { component: id, files };
 	});
 

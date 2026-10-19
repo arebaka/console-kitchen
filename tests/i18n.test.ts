@@ -49,8 +49,8 @@ function texts(node: object, path = ''): [string, string][] {
 
 // Paths of the texts with the placeholders they fill: `pages.hardware.size {height} {width}`
 const shape = (node: object) => texts(node)
-	.map(([path, text]) => [path, ...[...text.matchAll(/\{(\w+)\}/g)].map(match => `{${match[1]}}`).sort()].join(' '))
-	.sort();
+	.map(([path, text]) => [path, ...[...text.matchAll(/\{(\w+)\}/g)].map(match => `{${match[1]}}`).toSorted()].join(' '))
+	.toSorted();
 
 describe('texts', () => {
 	it.each(LANGUAGES)('give the page everything it reads in %s and nothing it does not', lang => {
