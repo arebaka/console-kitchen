@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 
 import { BuildState, Fix, GameProfile, HardwareRevision, Issue, IssueLevel, LaunchConfig, PspState, StepId, SwitchState, TuningGroup, TuningStep, TuningValue, Uploads } from './types';
-import { format, I18N } from '@i18n';
+import { I18N } from '@i18n';
 import { HARDWARE } from '@data';
 import { getTuningDefaults, isTuningOptionChanged, presetSelection, resolveSelection, tuningGroups } from './data';
 import { PLATFORMS } from './platforms';

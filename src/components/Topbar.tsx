@@ -141,7 +141,7 @@ function FileMenu({ scripts, openFile, t }: FileMenuProps) {
 					const file = event.target.files?.[0];
 					// The same file can be opened again after it changed on the card
 					event.target.value = '';
-					if (file) open(file);
+					if (file) void open(file);
 				}} />
 		</div>
 	);
