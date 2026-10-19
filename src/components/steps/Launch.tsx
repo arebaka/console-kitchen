@@ -183,7 +183,7 @@ export function Launch({
 					maxLength={32}
 					value={folder}
 					spellCheck={false}
-					onChange={event => setFolder(event.target.value.toUpperCase().replace(/[^A-Z0-9_-]/g, ''))}
+					onChange={event => setFolder(event.target.value.toUpperCase().replaceAll(/[^A-Z0-9_-]/g, ''))}
 					onKeyDown={event => event.key == 'Enter' && addEmuMMC()} />
 				<button
 					className="control"

@@ -434,7 +434,7 @@ describe('configs of modules, overlays and applications', () => {
 			else if (key) ini[section][key] = value;
 		}
 		// The storages of MTP are numbered and spelled with spaces: `5: SD Card install`
-		const plain = (key: string) => key.replace(/^\d: | /g, '').toLowerCase();
+		const plain = (key: string) => key.replaceAll(/^\d: | /g, '').toLowerCase();
 		// A list is the rows of its section, not a key of it
 		const settings = (group: string) => CATALOG.tuning.find(item => item.id == group)!.options.filter(option => option.type != 'list').map(option => option.id);
 

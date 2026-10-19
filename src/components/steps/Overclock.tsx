@@ -122,7 +122,7 @@ export function Overclock({
 					maxLength={16}
 					value={titleId}
 					spellCheck={false}
-					onChange={event => setTitleId(event.target.value.toUpperCase().replace(/[^0-9A-F]/g, ''))}
+					onChange={event => setTitleId(event.target.value.toUpperCase().replaceAll(/[^0-9A-F]/g, ''))}
 					onKeyDown={event => event.key == 'Enter' && addTitleId()} />
 				<button
 					className="control"
@@ -152,7 +152,7 @@ export function Overclock({
 				</div>
 			)}
 
-			{overclock.length == 0 ? (
+			{overclock.length === 0 ? (
 				<p className="empty">
 					{t.pages.overclock.empty}
 				</p>

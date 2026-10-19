@@ -412,7 +412,7 @@ function ListRows({
 		? row.map((cell, i) => i == field ? value : cell)
 		: row));
 	// Links separate the fields of a row with `=`, so only the last of them may hold it
-	const clean = (field: number, value: string) => field < option.fields.length - 1 ? value.replace(/=/g, '') : value;
+	const clean = (field: number, value: string) => field < option.fields.length - 1 ? value.replaceAll('=', '') : value;
 
 	return (
 		<div className="list">

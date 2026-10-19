@@ -90,6 +90,6 @@ export function tomlParams(catalog: Catalog, table: TomlTable, prefix = ''): Par
 		if (optionOf(catalog, key)?.type != 'list') return [[key, raw(value)]];
 		// A row of a list holds its fields separated by `=`, a field of several values holds them separated by commas
 		const rows = Array.isArray(value) ? value : [value];
-		return rows.length ? rows.map(row => [key, (Array.isArray(row) ? row : [row]).map(raw).join('=')]) : [[key, '']];
+		return rows.length > 0 ? rows.map(row => [key, (Array.isArray(row) ? row : [row]).map(raw).join('=')]) : [[key, '']];
 	});
 }

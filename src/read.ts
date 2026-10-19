@@ -76,7 +76,7 @@ export function movedConfigs<R>(specs: ConfigSpec<R>[], texts: CardTexts, writte
 		const existing = textOf(texts, spec.moves.into) ?? '';
 		const there = new Set(iniSections(existing).map(section => section.name));
 		const sections = rawSections(text).filter(section => !spec.moves!.owns(section.name) && !there.has(section.name));
-		if (!sections.length) continue;
+		if (sections.length === 0) continue;
 		configs.push({ path: spec.moves.into, content: `${[existing.trimEnd(), ...sections.map(section => section.text)].filter(Boolean).join('\n\n')}\n` });
 		moved.push({ from: spec.path, into: spec.moves.into, sections: sections.map(section => section.name) });
 	}
@@ -90,7 +90,7 @@ export function uncoveredConfigs<R>(specs: ConfigSpec<R>[], texts: CardTexts, wr
 		const text = textOf(texts, spec.path);
 		const config = written.find(file => file.path == spec.path);
 		const lines = text === undefined || !config ? [] : uncoveredLines(spec.path, text, config.content, spec.transient);
-		return lines.length ? [{ path: spec.path, lines }] : [];
+		return lines.length > 0 ? [{ path: spec.path, lines }] : [];
 	});
 }
 
@@ -135,7 +135,7 @@ function linePattern(line: string): { pattern: RegExp; names: string[] } {
 	const names: string[] = [];
 	const source = line.split(/(\{\{[#^/]?[\w.]+\}\})/).map(part => {
 		const tag = part.match(/^\{\{([#^/]?)([\w.]+)\}\}$/);
-		if (!tag) return part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+		if (!tag) return part.replaceAll(/[.*+?^${}()|[\]\\]/g, '\\$&');
 		if (tag[1] == '/') return ')?';
 		if (tag[1]) return '(?:';
 		names.push(tag[2]);
@@ -176,7 +176,7 @@ function templateParts(template: string, isList: (name: string) => boolean) {
 		const at = line.indexOf('=');
 		if (at > 0 && !line.slice(0, at).includes('{{') && line.slice(at + 1).includes('{{')) {
 			keys.push({ section, key: line.slice(0, at).trim(), ...linePattern(line.slice(at + 1).trim()) });
-		} else if (line.includes('{{') && line.replace(/\{\{[#^/]?[\w.]+\}\}/g, '').trim() != '') {
+		} else if (line.includes('{{') && line.replaceAll(/\{\{[#^/]?[\w.]+\}\}/g, '').trim() != '') {
 			lines.push({ section, ...linePattern(line) });
 		}
 	}
@@ -187,7 +187,7 @@ function templateParts(template: string, isList: (name: string) => boolean) {
 function jsonValues(template: string, json: unknown): {[name: string]: string} {
 	const values: {[name: string]: string} = {};
 	if (typeof json !== 'object' || json === null) return values;
-	for (const line of template.replace(/\{\{[#^/][\w.]+\}\}/g, '').split('\n')) {
+	for (const line of template.replaceAll(/\{\{[#^/][\w.]+\}\}/g, '').split('\n')) {
 		const [, key, name] = line.match(/^\s*"([^"]+)":\s*\{\{([\w.]+)\}\},?\s*$/) ?? [];
 		const value = key === undefined ? undefined : (json as {[key: string]: unknown})[key];
 		if (value !== undefined && value !== null && typeof value !== 'object') values[name] = String(value);
@@ -278,7 +278,7 @@ export function optionNamed(groups: TuningGroup[], prefixes: {[prefix: string]: 
 		const option = group.options.find(option => option.id == id);
 		if (option) return { group, option, key: `${group.id}.${option.id}` };
 	}
-	return undefined;
+	return;
 }
 
 // The params of a link the values and the rows of a config stand for
@@ -299,7 +299,7 @@ export function cardParams(card: CardConfig, groups: TuningGroup[], prefixes: {[
 			const cell = (row[field.id] ?? '').trim();
 			return field.max === undefined ? cell : cell.split(/[+,]/).map(item => item.trim()).filter(Boolean).join(',');
 		});
-		params.push(...(rows.length ? rows.map(row => [named.key, cells(row).join('=')] as [string, string]) : [[named.key, ''] as [string, string]]));
+		params.push(...(rows.length > 0 ? rows.map(row => [named.key, cells(row).join('=')] as [string, string]) : [[named.key, ''] as [string, string]]));
 	}
 	return params;
 }

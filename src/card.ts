@@ -104,17 +104,17 @@ export function installedComponents(catalog: Catalog, dump: CardDump): string[] 
 
 	const traced: {[component: string]: string[]} = {};
 	for (const line of traceLines(dump)) (traced[line.component] ??= []).push(line.path);
-	const packages = Object.keys(registryPackages(dump)).map(lower);
+	const packages = new Set(Object.keys(registryPackages(dump)).map(lower));
 
 	return catalog.components.filter(comp => {
 		if (traced[comp.id]) {
 			const telling = markers(traced[comp.id]);
-			if (!telling.length || telling.some(path => present.has(path))) return true;
+			if (telling.length === 0 || telling.some(path => present.has(path))) return true;
 		}
-		if (comp.sources.appstore?.some(name => packages.includes(lower(name)))) return true;
+		if (comp.sources.appstore?.some(name => packages.has(lower(name)))) return true;
 		const telling = markers(catalog.files[comp.id] ?? []);
 		const own = telling.filter(path => owners.get(path) == 1);
-		return own.length ? own.some(path => present.has(path)) : telling.length > 0 && telling.every(path => present.has(path));
+		return own.length > 0 ? own.some(path => present.has(path)) : telling.length > 0 && telling.every(path => present.has(path));
 	}).map(comp => comp.id);
 }
 

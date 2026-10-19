@@ -69,7 +69,7 @@ export function encode(build: SwitchState): Params {
 	set('sw', encodeSelection(CATALOG, build.selectedComponentIDs));
 
 	if (build.launch.modes.join() != defaults.launch.modes.join()) set('boot', build.launch.modes.join(','));
-	if (build.launch.emummcs.length) set('emummc', build.launch.emummcs.join(','));
+	if (build.launch.emummcs.length > 0) set('emummc', build.launch.emummcs.join(','));
 	if (build.launch.autoboot != defaults.launch.autoboot) set('autoboot', build.launch.autoboot);
 	for (const [entry, keys] of Object.entries(build.launch.overrides)) {
 		for (const [key, value] of Object.entries(keys)) set(`launch.${entry}.${key}`, String(value));
@@ -78,7 +78,7 @@ export function encode(build: SwitchState): Params {
 	params.push(...encodeTuning(CATALOG.tuning, build.tuning));
 
 	// title.template or title.custom.key-mhz.key-mhz
-	if (build.overclock.length) {
+	if (build.overclock.length > 0) {
 		set('oc', build.overclock.map(profile => [
 			profile.id,
 			profile.template,
@@ -116,7 +116,7 @@ export function decode(params: URLSearchParams): SwitchState {
 	// An empty list turns every boot mode off, a list of unknown ones means nothing
 	const boot = get('boot')?.split(',').filter(Boolean);
 	const modes = BOOT_MODES.filter(mode => boot?.includes(mode));
-	if (boot && (!boot.length || modes.length)) build.launch.modes = modes;
+	if (boot && (boot.length === 0 || modes.length > 0)) build.launch.modes = modes;
 
 	const emummcs = get('emummc')?.split(',').filter(isEmuMMCFolder);
 	if (emummcs) build.launch.emummcs = [...new Set(emummcs)];

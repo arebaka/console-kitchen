@@ -102,8 +102,8 @@ export function numbered(rows: Row[], list: string): string[] {
 // What short links of a platform name by numbers: system versions, components, the words of the values, and the params.
 // The params are numbered apart for every param of a short link they are packed into, in the list named after it
 export function link(rows: Row[]): Vocabulary {
-	const lists = ['firmware', 'software', 'words'];
-	const params = [...new Set(rows.map(row => row.list))].filter(list => !lists.includes(list));
+	const lists = new Set(['firmware', 'software', 'words']);
+	const params = [...new Set(rows.map(row => row.list))].filter(list => !lists.has(list));
 	return {
 		firmware: numbered(rows, 'firmware'),
 		software: numbered(rows, 'software'),

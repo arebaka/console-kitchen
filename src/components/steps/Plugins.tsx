@@ -64,12 +64,12 @@ export function Plugins({
 								<h4 className="name">
 									{comp.name}
 								</h4>
-								<p className={`value ${scope.length ? 'on' : ''}`}>
-									{scope.length ? scope.map(level => runlevels[level]).join(', ') : off}
+								<p className={`value ${scope.length > 0 ? 'on' : ''}`}>
+									{scope.length > 0 ? scope.map(level => runlevels[level]).join(', ') : off}
 								</p>
 							</header>
 							<p className="keys">
-								{scope.join(' ') || 'always'}, {comp.plugin!.path}, {scope.length ? 'on' : 'off'}
+								{scope.join(' ') || 'always'}, {comp.plugin!.path}, {scope.length > 0 ? 'on' : 'off'}
 							</p>
 							<ul className="choices">
 								{RUNLEVELS.map(level => (

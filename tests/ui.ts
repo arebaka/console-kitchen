@@ -541,7 +541,7 @@ async function run(page: Page, url: string, downloads: string, spellOut: (link: 
 	await check('the Switch keeps its side bar and letters', `$$('.sidebar .step .icon').every(icon => getComputedStyle(icon).display == 'none')
 		&& $$('.controls .glyph').every(glyph => !glyph.querySelector('svg') && /^[A-Z]$/.test(glyph.textContent))`);
 
-	expect('the console stays clean', page.console.length == 0, page.console);
+	expect('the console stays clean', page.console.length === 0, page.console);
 	return failures;
 }
 

@@ -42,7 +42,7 @@ export function Toasts({
 
 	// The last toast may leave from under the pointer, which then never leaves it
 	useEffect(() => {
-		if (!toasts.length) setHeld(false);
+		if (toasts.length === 0) setHeld(false);
 	}, [toasts.length]);
 
 	return (

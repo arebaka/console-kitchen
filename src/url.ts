@@ -5,7 +5,7 @@ import { cellValues, isCountAllowed, isTuningOptionChanged, listRow, listRows, p
 export type Params = [string, string][];
 
 // Commas, colons and dots stay readable, everything else is percent-encoded
-const encode = (value: string) => encodeURIComponent(value).replace(/%2C/g, ',').replace(/%3A/g, ':');
+const encode = (value: string) => encodeURIComponent(value).replaceAll('%2C', ',').replaceAll('%3A', ':');
 
 export const query = (params: Params) => params.map(([key, value]) => `${key}=${encode(value)}`).join('&');
 
@@ -22,7 +22,7 @@ function optionParams(key: string, option: TuningOption, value: TuningValue): Pa
 	if (option.type != 'list') return [[key, serialize(value)]];
 	const rows = listRows(value as string[][]);
 	const cells = (row: string[]) => row.map((cell, index) => option.fields[index].max === undefined ? cell : cellValues(cell).join(','));
-	return rows.length ? rows.map(row => [key, cells(row).join('=')]) : [[key, '']];
+	return rows.length > 0 ? rows.map(row => [key, cells(row).join('=')]) : [[key, '']];
 }
 
 // A text is a single line: a line break would get out of its key in the config and out of the config in the installers
@@ -79,7 +79,7 @@ export const encodeSelection = (catalog: Catalog, selectedComponentIDs: string[]
 export function decodeSelection(catalog: Catalog, raw: string | null): string[] | undefined {
 	const sw = raw?.split(',').filter(Boolean);
 	const components = sw?.filter(id => catalog.components.some(comp => comp.id == id)) ?? [];
-	return sw && (!sw.length || components.length) ? resolveSelection(catalog, components, false) : undefined;
+	return sw && (sw.length === 0 || components.length > 0) ? resolveSelection(catalog, components, false) : undefined;
 }
 
 // Options that differ from their defaults, secrets never leave the page
@@ -128,7 +128,7 @@ export function decodeTuning(groups: TuningGroup[], params: URLSearchParams, tun
 	for (const group of groups) {
 		for (const option of group.options.filter(option => !!option.secret == secrets)) {
 			const raws = params.getAll(`${group.id}.${option.id}`);
-			const value = raws.length ? parse(option, raws) : undefined;
+			const value = raws.length > 0 ? parse(option, raws) : undefined;
 			if (value !== undefined) tuning[group.id][option.id] = value;
 		}
 	}

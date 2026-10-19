@@ -69,7 +69,7 @@ export function renderConfigs<R>(specs: ConfigSpec<R>[], request: R): GeneratedF
 
 // Assets named after an option of the component, such as `translation_{{language}}.bin`, take its value
 const assetPattern = (asset: string, options: Record<string, TuningValue>) =>
-	asset.replace(/\{\{(\w+)\}\}/g, (match, option) => option in options ? String(options[option]) : match);
+	asset.replaceAll(/\{\{(\w+)\}\}/g, (match, option) => option in options ? String(options[option]) : match);
 
 // Every flag is set explicitly, so a missing one never resolves from an outer context
 function installSteps(comp: ComponentInfo, modchip: boolean, options: Record<string, TuningValue> = {}) {
@@ -97,7 +97,7 @@ function installSteps(comp: ComponentInfo, modchip: boolean, options: Record<str
 
 // A line that reads as the end of a config inside an installer would run what follows it as commands. The value of an option
 // never starts a line, a row of a list does, so such a line is moved off the start of its line: neither shell takes it then
-const sealed = (content: string) => content.replace(/^(?=CONSOLE_KITCHEN_EOF$|'@)/gm, ' ');
+const sealed = (content: string) => content.replaceAll(/^(?=CONSOLE_KITCHEN_EOF$|'@)/gm, ' ');
 
 // What the installers leave on the card for a later update: the build as its file, in a folder of their own
 // where they also keep the files of every component with the release they came from
@@ -110,10 +110,10 @@ export interface Trace {
 // or GitHub repository, against the one the trace has. A direct download tells no release and comes again
 function freshness(steps: ReturnType<typeof installSteps>, tag: string | undefined) {
 	const [step] = steps;
-	if (!tag || !step) return undefined;
+	if (!tag || !step) return;
 	if ('package' in step) return { kind: 'appstore', source: step.package, tag };
 	if ('repo' in step) return { kind: 'github', source: step.repo, tag };
-	return undefined;
+	return;
 }
 
 // Paths of a dump an update acts on go into the scripts as lines of data: never one a shell would take for their end
@@ -158,7 +158,7 @@ export function installerView(request: BuildRequest, hardware: HardwareInfo, sel
 }
 
 // Text of a card in the readme as it is: a name of a file may hold what Markdown takes for a link or a mark of its own
-const literal = (text: string) => text.replace(/[\\`*_{}[\]()#+\-.!|<>~]/g, '\\$&');
+const literal = (text: string) => text.replaceAll(/[\\`*_{}[\]()#+\-.!|<>~]/g, '\\$&');
 
 // What the update of a plan does, in words for the readme: the names of the components, the paths of the configs
 // and of what other builds left

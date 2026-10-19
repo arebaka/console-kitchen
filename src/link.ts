@@ -389,7 +389,7 @@ export function shorten(params: Params, link: LinkCodes): Params {
 	const places = options.map(([key]) => [link.paramOf(key)].find(param => param !== undefined && Object.hasOwn(link.keys, param)));
 	for (const [param, keys] of Object.entries(link.keys)) {
 		const records = options.filter((option, at) => places[at] == param);
-		if (records.length) short.push([param, closed(pack(records, keys, link.words))]);
+		if (records.length > 0) short.push([param, closed(pack(records, keys, link.words))]);
 	}
 	short.push(...options.filter((option, at) => places[at] === undefined));
 

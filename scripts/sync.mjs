@@ -35,7 +35,7 @@ const FILES_ONLY = process.argv.includes('--files');
 const TOKEN = process.env.GITHUB_TOKEN || ghToken();
 
 // What archives leave on the card besides their files, the installers remove it
-const LEFTOVERS = ['LICENSE.txt', 'README.txt', 'README.md', 'CHANGELOG.md', 'screen1.png', 'screen2.png', 'switch/breeze/.Breeze.nro.star'];
+const LEFTOVERS = new Set(['LICENSE.txt', 'README.txt', 'README.md', 'CHANGELOG.md', 'screen1.png', 'screen2.png', 'switch/breeze/.Breeze.nro.star']);
 
 function ghToken() {
 	try {
@@ -139,7 +139,7 @@ async function archiveIcon(buffer) {
 
 // Assets named after an option of the component, such as a language, are looked up with its default
 function assetPattern(item, options) {
-	return new RegExp(item.asset.replace(/\{\{(\w+)\}\}/g, (match, id) => options.find(option => option.id == id)?.default ?? match));
+	return new RegExp(item.asset.replaceAll(/\{\{(\w+)\}\}/g, (match, id) => options.find(option => option.id == id)?.default ?? match));
 }
 
 async function findLogo(component, release, packages, options) {
@@ -187,7 +187,7 @@ async function readTable(url) {
 }
 
 // Cells left empty at the end of a row are not written, like in the hand written data
-const writeTable = (url, columns, rows) => writeFile(url, [columns, ...rows.map(row => columns.map(column => String(row[column] ?? '').replace(/[\t\r\n]+/g, ' ')))]
+const writeTable = (url, columns, rows) => writeFile(url, [columns, ...rows.map(row => columns.map(column => String(row[column] ?? '').replaceAll(/[\t\r\n]+/g, ' ')))]
 	.map(cells => cells.join('\t').trimEnd())
 	.join('\n') + '\n');
 
@@ -254,7 +254,7 @@ async function syncSoftware({ platform, software: SOFTWARE, sources: SOURCES, tu
 			: null;
 
 		let releaseInfo = null;
-		if (items.length) {
+		if (items.length > 0) {
 			const matched = [];
 			for (const item of items) {
 				const info = await release(item.repo);
@@ -270,7 +270,7 @@ async function syncSoftware({ platform, software: SOFTWARE, sources: SOURCES, tu
 			const source = pickSource(component, storeInfo, releaseInfo);
 			const chosen = source == 'appstore' ? storeInfo : releaseInfo;
 			Object.assign(component, { source, version: chosen.version.replace(/^v(?=\d)/, ''), size: chosen.size, released: chosen.date });
-		} else if (url.length) {
+		} else if (url.length > 0) {
 			// A server that does not tell the size leaves the known one
 			const sizes = await Promise.all(url.map(item => contentLength(item.url)));
 			Object.assign(component, { source: 'url', size: sizes.reduce((a, b) => a + b, 0) || component.size });
@@ -279,7 +279,7 @@ async function syncSoftware({ platform, software: SOFTWARE, sources: SOURCES, tu
 		}
 
 		if (REFRESH_LOGOS || !(await existingLogo(component, LOGOS))) {
-			const logo = await findLogo(component, items.length ? await release(items[0].repo) : null, packages, options);
+			const logo = await findLogo(component, items.length > 0 ? await release(items[0].repo) : null, packages, options);
 			if (logo) {
 				component.logo = `${component.id}.${logo.extension}`;
 				await writeFile(new URL(component.logo, LOGOS), logo.data);
@@ -371,10 +371,10 @@ async function tarEntries(url) {
 async function componentFiles(component, release, options) {
 	const files = new Set();
 	const add = (names, root = '', into = '') => {
-		for (const name of names.map(name => name.replace(/\\/g, '/').replace(/^\.\//, ''))) {
+		for (const name of names.map(name => name.replaceAll('\\', '/').replace(/^\.\//, ''))) {
 			if (name.endsWith('/') || (root && !name.startsWith(`${root}/`))) continue;
 			const path = `${into ? `${into}/` : ''}${root ? name.slice(root.length + 1) : name}`;
-			if (!LEFTOVERS.includes(path)) files.add(path);
+			if (!LEFTOVERS.has(path)) files.add(path);
 		}
 	};
 	for (const name of component.sources.appstore ?? []) {
@@ -444,7 +444,7 @@ async function syncFirmware() {
 	const page = await (await request(SWITCHBREW_VERSIONS, { 'User-Agent': 'Mozilla/5.0' })).text();
 	const released = new Map();
 	for (const [, row] of page.matchAll(/<tr>(.*?)<\/tr>/gs)) {
-		const cells = [...row.matchAll(/<t[dh][^>]*>(.*?)<\/t[dh]>/gs)].map(([, cell]) => cell.replace(/<[^>]+>/g, '').trim());
+		const cells = [...row.matchAll(/<t[dh][^>]*>(.*?)<\/t[dh]>/gs)].map(([, cell]) => cell.replaceAll(/<[^>]+>/g, '').trim());
 		if (/^\d+\.\d+\.\d+$/.test(cells[0] ?? '') && !isNaN(Date.parse(cells[1]))) {
 			released.set(cells[0], new Date(`${cells[1].replace(/\s*\(UTC\)/, '')} UTC`).toISOString().slice(0, 10));
 		}
@@ -492,7 +492,7 @@ if (!FILES_ONLY) {
 	execFileSync(process.execPath, [fileURLToPath(new URL('./number.mjs', import.meta.url))], { stdio: 'inherit' });
 }
 
-if (problems.length) {
+if (problems.length > 0) {
 	console.error(`\n${problems.join('\n')}`);
 	process.exitCode = 1;
 }

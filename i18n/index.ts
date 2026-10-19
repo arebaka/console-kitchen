@@ -25,7 +25,7 @@ function translation(lang: Language): Translation {
 export const I18N = Object.fromEntries(LANGUAGES.map(lang => [lang, translation(lang)])) as {[lang in Language]: Translation};
 
 // Replaces {name} placeholders with the params
-export const format = (template: string, params: Record<string, string | number>): string => template.replace(/\{(\w+)\}/g, (match, key) => key in params ? String(params[key]) : match);
+export const format = (template: string, params: Record<string, string | number>): string => template.replaceAll(/\{(\w+)\}/g, (match, key) => key in params ? String(params[key]) : match);
 
 // Name of a step as the platform calls it
 export const stepName = (t: Translation, platform: PlatformId, step: StepId): string => t.platforms[platform].steps?.[step] ?? t.steps[step];

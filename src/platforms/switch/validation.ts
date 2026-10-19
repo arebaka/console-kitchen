@@ -14,7 +14,7 @@ export function validate(build: SwitchState, t: Translation): Issue[] {
 		issues.push({ level: 'error', code: 'hosUnsupported', step: 'firmware', params: { hos: build.firmware } });
 	}
 
-	if (!launchEntries(build.launch, build.selectedComponentIDs).length) {
+	if (launchEntries(build.launch, build.selectedComponentIDs).length === 0) {
 		issues.push({ level: 'error', code: 'noEntries', step: 'launch', params: {} });
 	}
 

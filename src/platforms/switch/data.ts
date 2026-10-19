@@ -112,5 +112,5 @@ export function gameName(id: string): string {
 
 // A copy of the clocks of an overclock template, stock has none
 export function templateClocks(template: string): Clocks {
-	return { ...(OVERCLOCK.templates[template] ?? {}) };
+	return { ...OVERCLOCK.templates[template] };
 }

@@ -54,16 +54,16 @@ describe('catalog', () => {
 	// Keys in a file named after nothing would go into no entry without a word
 	it('keeps the keys of the Launch menu in files named after its entries and after the components that add theirs', () => {
 		const names = readdirSync('data/switch/launch').filter(file => file.endsWith('.yaml')).map(file => file.replace(/\.yaml$/, ''));
-		const known = [...BOOT_ENTRIES.map(entry => entry.id), ...SYSTEM_ENTRIES.map(entry => entry.id), ...CATALOG.components.map(comp => comp.id)];
-		expect(names.filter(name => !known.includes(name))).toEqual([]);
+		const known = new Set([...BOOT_ENTRIES.map(entry => entry.id), ...SYSTEM_ENTRIES.map(entry => entry.id), ...CATALOG.components.map(comp => comp.id)]);
+		expect(names.filter(name => !known.has(name))).toEqual([]);
 	});
 
 	// An entry of another system is in the menu with the component that installs it, and boots something
 	it('brings every other system into the Launch menu with a component that exists', () => {
-		const ids = CATALOG.components.map(comp => comp.id);
+		const ids = new Set(CATALOG.components.map(comp => comp.id));
 		expect(SYSTEM_ENTRIES.length).toBeGreaterThan(0);
-		expect(SYSTEM_ENTRIES.filter(entry => !ids.includes(entry.component) || !Object.keys(entry.keys ?? {}).length).map(entry => entry.id)).toEqual([]);
-		expect(BOOT_ENTRIES.filter(entry => !Object.keys(entry.keys ?? {}).length).map(entry => entry.id)).toEqual([]);
+		expect(SYSTEM_ENTRIES.filter(entry => !ids.has(entry.component) || Object.keys(entry.keys ?? {}).length === 0).map(entry => entry.id)).toEqual([]);
+		expect(BOOT_ENTRIES.filter(entry => Object.keys(entry.keys ?? {}).length === 0).map(entry => entry.id)).toEqual([]);
 	});
 
 	it('has every picture in public', () => {

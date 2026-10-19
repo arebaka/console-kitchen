@@ -40,6 +40,10 @@
 	},
 	"rules": {
 		"arrow-body-style": "off",
+		"unicorn/escape-case": "off",
+		"unicorn/number-literal-case": "off",
+		"unicorn/no-hex-escape": "off",
+		"unicorn/prefer-query-selector": "off",
 		"@stylistic/arrow-parens": ["error", "as-needed"]
 	},
 	"options": {

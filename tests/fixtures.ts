@@ -93,6 +93,6 @@ export function everythingState(platform: PlatformId): AppState {
 export function encodeBitmaps(bitmaps: Record<string, Buffer>): Record<string, string> {
 	return Object.fromEntries(Object.entries(bitmaps).map(([path, data]) => [
 		path,
-		gzipSync(data).toString('base64').replace(/.{76}(?=.)/g, '$&\n')
+		gzipSync(data).toString('base64').replaceAll(/.{76}(?=.)/g, '$&\n')
 	]));
 }

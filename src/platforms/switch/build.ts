@@ -180,8 +180,8 @@ function readSystemSettings(card: CardConfig, texts: CardTexts): Params {
 	const params: Params = [];
 	if (values.enable_dns_mitm !== undefined) {
 		const targets = ['emummc', 'sysmmc'].filter(target => textOf(texts, `atmosphere/hosts/${target}.txt`) !== undefined);
-		params.push(['dns.mode', isOn(values.enable_dns_mitm) ? targets.length ? 'block' : 'default' : 'off']);
-		if (targets.length) params.push(['dns.targets', targets.join(',')]);
+		params.push(['dns.mode', isOn(values.enable_dns_mitm) ? targets.length > 0 ? 'block' : 'default' : 'off']);
+		if (targets.length > 0) params.push(['dns.targets', targets.join(',')]);
 	}
 	if (values.add_defaults_to_dns_hosts !== undefined) params.push(['dns.add_defaults', isOn(values.add_defaults_to_dns_hosts) ? '1' : '0']);
 	if (values.enable_dns_mitm_debug_log !== undefined) params.push(['dns.debug_log', isOn(values.enable_dns_mitm_debug_log) ? '1' : '0']);
@@ -218,7 +218,7 @@ function readOverlays(card: CardConfig): Params {
 			const fields: {[field: string]: string[]} = { args, combo: combos.map(buttons), label: labels };
 			const rows = labels.map((label, index) => option.fields.map(field => fields[field.id]?.[index] ?? '').join('='))
 				.filter((row, index) => labels[index].trim() != '');
-			return rows.length ? rows.map(row => [key, row] as [string, string]) : [[key, '']];
+			return rows.length > 0 ? rows.map(row => [key, row] as [string, string]) : [[key, '']];
 		});
 	});
 }
@@ -231,7 +231,7 @@ function readLocations(card: CardConfig): Params {
 	const rows = card.sections
 		.filter(section => /^Location_\d+$/.test(section.name))
 		.map(section => option.fields.map(field => section.keys[field.id] ?? '').join('='));
-	return rows.length ? rows.map(row => [key, row] as [string, string]) : [[key, '']];
+	return rows.length > 0 ? rows.map(row => [key, row] as [string, string]) : [[key, '']];
 }
 
 // Profiles of the overclock by the sections of the titles they are for: a template where the clocks are the ones
@@ -451,7 +451,7 @@ const CONFIGS: ConfigSpec<Request>[] = [
 		template: TEMPLATES.sysConConfigIni,
 		view: ({ tuning: { sys_con } }) => ({
 			...sys_con,
-			discovery_vidpid: String(sys_con.discovery_vidpid).replace(/\s/g, ''),
+			discovery_vidpid: String(sys_con.discovery_vidpid).replaceAll(/\s/g, ''),
 			auto_add_controller: flag(sys_con.auto_add_controller),
 			network_controller: flag(sys_con.network_controller)
 		}),
@@ -540,7 +540,7 @@ const CONFIGS: ConfigSpec<Request>[] = [
 		// JKSV puts the folder between slashes itself, a server open to everyone goes without the login
 		view: ({ tuning: { jksv_webdav: { origin, basepath, username, password } } }) => ({
 			origin: JSON.stringify(origin),
-			basepath: basepath && JSON.stringify(String(basepath).replace(/^\/+|\/+$/g, '')),
+			basepath: basepath && JSON.stringify(String(basepath).replaceAll(/^\/+|\/+$/g, '')),
 			username: username && JSON.stringify(username),
 			password: JSON.stringify(password)
 		}),

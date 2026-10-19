@@ -96,7 +96,7 @@ export function encodeImage(source: string, target: ImageTarget): Promise<string
 	const key = `${target} ${source}`;
 	if (!encoded.has(key)) {
 		const promise = convertImage(source, target)
-			.then(async bitmap => base64(await gzip(bitmap)).replace(/.{76}(?=.)/g, '$&\n'));
+			.then(async bitmap => base64(await gzip(bitmap)).replaceAll(/.{76}(?=.)/g, '$&\n'));
 		promise.catch(() => encoded.delete(key));
 		encoded.set(key, promise);
 	}

@@ -24,7 +24,7 @@ async function numberTable(file, lists, unnumbered) {
 	// The rows of a list stay together, a new list comes after the ones there are
 	const order = [...new Set(rows.map(row => row.list))];
 	rows.sort((a, b) => order.indexOf(a.list) - order.indexOf(b.list) || a.code - b.code);
-	if (added.length) {
+	if (added.length > 0) {
 		await writeFile(file, `${[header, ...rows.map(row => [row.list, row.code, row.id].join('\t'))].join('\n')}\n`);
 	}
 	return added;
@@ -45,7 +45,7 @@ try {
 	];
 	for (const [path, lists] of tables) {
 		const added = await numberTable(new URL(`../${path}`, import.meta.url), lists, unnumbered);
-		console.log(`${path}: ${added.length ? `numbered ${added.join(', ')}` : 'nothing to number'}`);
+		console.log(`${path}: ${added.length > 0 ? `numbered ${added.join(', ')}` : 'nothing to number'}`);
 	}
 } finally {
 	await server.close();
