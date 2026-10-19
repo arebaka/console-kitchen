@@ -187,7 +187,7 @@ async function readTable(url) {
 }
 
 // Cells left empty at the end of a row are not written, like in the hand written data
-const writeTable = (url, columns, rows) => writeFile(url, [columns, ...rows.map(row => columns.map(column => String(row[column] ?? '').replaceAll(/[\t\r\n]+/g, ' ')))]
+const writeTable =  async (url, columns, rows) => writeFile(url, [columns, ...rows.map(row => columns.map(column => String(row[column] ?? '').replaceAll(/[\t\r\n]+/g, ' ')))]
 	.map(cells => cells.join('\t').trimEnd())
 	.join('\n') + '\n');
 
@@ -272,7 +272,7 @@ async function syncSoftware({ platform, software: SOFTWARE, sources: SOURCES, tu
 			Object.assign(component, { source, version: chosen.version.replace(/^v(?=\d)/, ''), size: chosen.size, released: chosen.date });
 		} else if (url.length > 0) {
 			// A server that does not tell the size leaves the known one
-			const sizes = await Promise.all(url.map(item => contentLength(item.url)));
+			const sizes = await Promise.all(url.map( async item => contentLength(item.url)));
 			Object.assign(component, { source: 'url', size: sizes.reduce((a, b) => a + b, 0) || component.size });
 		} else {
 			component.source = component.sources.bundled ? 'bundled' : 'manual';

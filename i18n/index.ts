@@ -1,4 +1,4 @@
-import { type PlatformId, type StepId } from '@/types';
+import type { PlatformId, StepId } from '@/types';
 import { PLATFORM_IDS } from '@/state';
 import type { Language, Translation } from './types';
 

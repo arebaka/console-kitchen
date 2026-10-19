@@ -98,7 +98,7 @@ export function Appearance({
 			uploaded={uploads[key]?.url}
 			isFailed={failed == key}
 			select={image =>{  setImage(key, image); }}
-			upload={file => upload(key, file)}
+			upload={ async file => upload(key, file)}
 			preview={image =>{  setHovered({ key, image }); }}
 			leave={() =>{  setHovered(undefined); }}
 			t={t} />

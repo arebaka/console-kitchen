@@ -32,7 +32,7 @@ class Page {
 		};
 	}
 
-	send(method: string, params: object = {}): Promise<any> {
+	async send(method: string, params: object = {}): Promise<any> {
 		return new Promise((resolve, reject) => {
 			this.pending.set(++this.id, message =>{  message.error ? reject(new Error(message.error.message)) : resolve(message.result); });
 			this.socket.send(JSON.stringify({ id: this.id, method, params }));
@@ -54,7 +54,7 @@ class Page {
 	}
 }
 
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+const sleep = async (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 // Shortcuts available to the checks inside the page
 const HELPERS = `

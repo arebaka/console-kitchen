@@ -92,7 +92,7 @@ const encoded = new Map<string, Promise<string>>();
 
 // Base64 of the gzip-compressed bitmap for the installers, wrapped at 76 characters like the base64 tool does.
 // `source` is a public path of a gallery image or an object URL of an upload
-export function encodeImage(source: string, target: ImageTarget): Promise<string> {
+export async function encodeImage(source: string, target: ImageTarget): Promise<string> {
 	const key = `${target} ${source}`;
 	if (!encoded.has(key)) {
 		const promise = convertImage(source, target)
