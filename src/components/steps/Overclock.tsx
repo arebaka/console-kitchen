@@ -44,14 +44,14 @@ export function Overclock({
 	const groups = tuningGroups(CATALOG.tuning, 'overclock', selectedComponentIDs);
 	const [titleId, setTitleId] = useState('');
 
-	const setProfile = (id: string, patch: Partial<GameProfile>) =>
-		setOverclock(overclock.map(profile => profile.id == id ? { ...profile, ...patch } : profile));
+	const setProfile = (id: string, patch: Partial<GameProfile>) =>{ 
+		setOverclock(overclock.map(profile => profile.id == id ? { ...profile, ...patch } : profile)); };
 
-	const applyTemplate = (profile: GameProfile, template: string) =>
-		setProfile(profile.id, template == 'custom' ? { template } : { template, clocks: templateClocks(template) });
+	const applyTemplate = (profile: GameProfile, template: string) =>{ 
+		setProfile(profile.id, template == 'custom' ? { template } : { template, clocks: templateClocks(template) }); };
 
-	const applyAll = (template: string) =>
-		setOverclock(overclock.map(profile => ({ ...profile, template, clocks: templateClocks(template) })));
+	const applyAll = (template: string) =>{ 
+		setOverclock(overclock.map(profile => ({ ...profile, template, clocks: templateClocks(template) }))); };
 
 	// Any edit of the table turns the profile into a custom one, an empty value returns the stock clock
 	const setClock = (profile: GameProfile, key: ClockKey, mhz: number) => {
@@ -104,7 +104,7 @@ export function Overclock({
 				<select
 					className="field"
 					value=""
-					onChange={event => addGame(event.target.value)}>
+					onChange={event =>{  addGame(event.target.value); }}>
 					<option value="" disabled hidden>
 						{t.pages.overclock.add}
 					</option>
@@ -122,7 +122,7 @@ export function Overclock({
 					maxLength={16}
 					value={titleId}
 					spellCheck={false}
-					onChange={event => setTitleId(event.target.value.toUpperCase().replaceAll(/[^0-9A-F]/g, ''))}
+					onChange={event =>{  setTitleId(event.target.value.toUpperCase().replaceAll(/[^0-9A-F]/g, '')); }}
 					onKeyDown={event => event.key == 'Enter' && addTitleId()} />
 				<button
 					className="control"
@@ -143,7 +143,7 @@ export function Overclock({
 								key={template}
 								className={`choice ${overclock.every(profile => profile.template == template) ? 'active' : ''}`}
 								tabIndex={0}
-								onClick={() => applyAll(template)}
+								onClick={() =>{  applyAll(template); }}
 								onKeyDown={activate}>
 								{t.pages.overclock.templates[template]}
 							</li>
@@ -169,7 +169,7 @@ export function Overclock({
 								</p>
 								<button
 									className="control"
-									onClick={() => setOverclock(overclock.filter(item => item.id != profile.id))}>
+									onClick={() =>{  setOverclock(overclock.filter(item => item.id != profile.id)); }}>
 									{t.pages.overclock.remove}
 								</button>
 							</header>
@@ -180,7 +180,7 @@ export function Overclock({
 										key={template}
 										className={`choice ${profile.template == template ? 'active' : ''}`}
 										tabIndex={0}
-										onClick={() => applyTemplate(profile, template)}
+										onClick={() =>{  applyTemplate(profile, template); }}
 										onKeyDown={activate}>
 										{t.pages.overclock.templates[template]}
 									</li>
@@ -216,7 +216,7 @@ export function Overclock({
 															<select
 																className={`field ${cap && mhz && mhz > cap ? 'capped' : ''} ${mhz ? 'set' : ''}`}
 																value={mhz ?? ''}
-																onChange={event => setClock(profile, key, Number(event.target.value))}>
+																onChange={event =>{  setClock(profile, key, Number(event.target.value)); }}>
 																<option value="">
 																	{t.pages.overclock.stock}
 																</option>

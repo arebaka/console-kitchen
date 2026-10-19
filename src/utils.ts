@@ -40,9 +40,9 @@ const APPLE_PANELS: {[width: number]: number} = {
 // phones and tablets keep about 160 and 132 per inch, Retina Macs follow the width of their panel, other systems stay near 96
 export function pixelsPerInch(): number {
 	const agent = navigator.userAgent;
-	if (/iPad/.test(agent) || (/Macintosh/.test(agent) && navigator.maxTouchPoints > 1)) return 132;
+	if (agent.includes('iPad') || (agent.includes('Macintosh') && navigator.maxTouchPoints > 1)) return 132;
 	if (/Android|iPhone|Mobile/.test(agent)) return 160;
-	if (/Macintosh/.test(agent) && devicePixelRatio >= 2) {
+	if (agent.includes('Macintosh') && devicePixelRatio >= 2) {
 		// Points of the screen do not change with the browser zoom, CSS pixels do
 		const zoom = devicePixelRatio / 2;
 		const points = Math.round(screen.width * zoom);
@@ -61,7 +61,7 @@ export function downloadFile(name: string, content: Blob | string): void {
 	link.click();
 
 	// Firefox cancels the download if the URI is revoked synchronously
-	setTimeout(() => URL.revokeObjectURL(uri));
+	setTimeout(() =>{  URL.revokeObjectURL(uri); });
 }
 
 // Windows PowerShell reads scripts without a byte order mark in the ANSI code page

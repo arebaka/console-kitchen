@@ -461,7 +461,7 @@ async function syncFirmware() {
 
 	for (const entry of firmware) {
 		const official = released.get(entry.version);
-		if (isNaN(Date.parse(entry.date)) || /-00-/.test(entry.date)) {
+		if (isNaN(Date.parse(entry.date)) || entry.date.includes('-00-')) {
 			console.log(`firmware: ${entry.version} date ${entry.date} is invalid, using ${official}`);
 			entry.date = official ?? entry.date;
 		} else if (official && Math.abs(Date.parse(official) - Date.parse(entry.date)) > 24 * 60 * 60 * 1000) {

@@ -97,10 +97,10 @@ export function Appearance({
 			none={none}
 			uploaded={uploads[key]?.url}
 			isFailed={failed == key}
-			select={image => setImage(key, image)}
+			select={image =>{  setImage(key, image); }}
 			upload={file => upload(key, file)}
-			preview={image => setHovered({ key, image })}
-			leave={() => setHovered(undefined)}
+			preview={image =>{  setHovered({ key, image }); }}
+			leave={() =>{  setHovered(undefined); }}
 			t={t} />
 	);
 
@@ -127,7 +127,7 @@ export function Appearance({
 					key={item.id ?? 'common'}
 					className={`choice ${item.id == active ? 'active' : ''} ${item.id && images[item.id] ? 'set' : ''}`}
 					tabIndex={0}
-					onClick={() => select(item.id)}
+					onClick={() =>{  select(item.id); }}
 					onKeyDown={activate}>
 					{item.name}
 				</li>
@@ -250,11 +250,11 @@ function Gallery({
 			className={`picture ${value == id ? 'active' : ''}`}
 			title={title}
 			tabIndex={0}
-			onClick={() => select(id)}
+			onClick={() =>{  select(id); }}
 			onKeyDown={activate}
-			onMouseEnter={() => preview(id)}
+			onMouseEnter={() =>{  preview(id); }}
 			onMouseLeave={leave}
-			onFocus={() => preview(id)}
+			onFocus={() =>{  preview(id); }}
 			onBlur={leave}>
 			<span className="frame">
 				{content}

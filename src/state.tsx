@@ -33,7 +33,7 @@ export function defaultState(): AppState {
 }
 
 // The builds with the one of the platform replaced
-export const withBuild = (builds: Builds, platform: PlatformId, build: BuildState) => ({ ...builds, [platform]: build }) as Builds;
+export const withBuild = (builds: Builds, platform: PlatformId, build: BuildState) => ({ ...builds, [platform]: build });
 
 // A link carries the build of the current platform only, packed into a short one
 export function encodeState(state: AppState): string {

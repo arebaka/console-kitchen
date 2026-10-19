@@ -77,7 +77,7 @@ function card(file: string, content: string): string {
 	writeFileSync(join(root, file), content);
 	return root;
 }
-afterAll(() => cards.forEach(root => rmSync(root, { recursive: true, force: true })));
+afterAll(() =>{  cards.forEach(root => rmSync(root, { recursive: true, force: true })); });
 
 // Files archives leave in the root of the card, the installers remove them. A directory of the user
 // the installer is started from holds files with the same names, which have to stay
@@ -85,7 +85,7 @@ const LEFTOVERS = ['LICENSE.txt', 'README.txt', 'README.md'];
 function elsewhere(): string {
 	const home = mkdtempSync(join(tmpdir(), 'console-kitchen-home-'));
 	cards.push(home);
-	LEFTOVERS.forEach(file => writeFileSync(join(home, file), 'mine'));
+	LEFTOVERS.forEach(file =>{  writeFileSync(join(home, file), 'mine'); });
 	return home;
 }
 
@@ -115,7 +115,7 @@ describe.skipIf(!CAN_RUN_BASH)('install.sh', () => {
 
 	it('cleans up the card, wherever it is started from', () => {
 		const root = card('install.sh', script(OFFLINE.psp.files, 'install.sh'));
-		LEFTOVERS.forEach(file => writeFileSync(join(root, file), 'junk'));
+		LEFTOVERS.forEach(file =>{  writeFileSync(join(root, file), 'junk'); });
 		const home = elsewhere();
 		execFileSync('bash', [join(root, 'install.sh')], { cwd: home, stdio: 'pipe' });
 		expectCleaned(root, home, 'install.sh');
@@ -193,7 +193,7 @@ describe.skipIf(!has('pwsh'))('install.ps1', () => {
 
 	it('cleans up the card, wherever it is started from', () => {
 		const root = card('install.ps1', `﻿${script(OFFLINE.psp.files, 'install.ps1')}`);
-		LEFTOVERS.forEach(file => writeFileSync(join(root, file), 'junk'));
+		LEFTOVERS.forEach(file =>{  writeFileSync(join(root, file), 'junk'); });
 		const home = elsewhere();
 		execFileSync('pwsh', ['-NoProfile', '-File', join(root, 'install.ps1')], { cwd: home, stdio: 'pipe' });
 		expectCleaned(root, home, 'install.ps1');

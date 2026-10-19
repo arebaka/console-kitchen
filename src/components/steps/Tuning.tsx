@@ -41,7 +41,7 @@ export function Tuning({
 		<section className="batch">
 			<button
 				className="control"
-				onClick={() => resetTuning(step)}>
+				onClick={() =>{  resetTuning(step); }}>
 				{t.pages.system.reset}
 			</button>
 		</section>
@@ -104,7 +104,7 @@ export function TuningSection({
 						option={option}
 						tuning={tuning}
 						isEnabled={isTuningOptionActive(group, option, tuning)}
-						setValue={value => setTuningOption(group.id, option.id, value)}
+						setValue={value =>{  setTuningOption(group.id, option.id, value); }}
 						t={t} />
 				))}
 			</ul>
@@ -366,7 +366,7 @@ function Picks({
 	const picked = cellValues(cell);
 	const switched = (item: string) => pickedCell(field, picked.includes(item) ? picked.filter(value => value != item) : [...picked, item]);
 	const isLocked = (item: string) => switched(item) === undefined;
-	const toggle = (item: string) => setCell(switched(item) ?? cell);
+	const toggle = (item: string) =>{  setCell(switched(item) ?? cell); };
 
 	if (isButtons(values)) {
 		return (
@@ -408,9 +408,9 @@ function ListRows({
 	t
 }: ListRowsProps) {
 	const label = (field: string) => labels?.[field] ?? field;
-	const setCell = (at: number, field: number, value: string) => setRows(rows.map((row, index) => index == at
+	const setCell = (at: number, field: number, value: string) =>{  setRows(rows.map((row, index) => index == at
 		? row.map((cell, i) => i == field ? value : cell)
-		: row));
+		: row)); };
 	// Links separate the fields of a row with `=`, so only the last of them may hold it
 	const clean = (field: number, value: string) => field < option.fields.length - 1 ? value.replaceAll('=', '') : value;
 
@@ -425,7 +425,7 @@ function ListRows({
 							aria-label={label(field.id)}
 							value={row[index]}
 							disabled={!isEnabled}
-							onChange={event => setCell(at, index, event.target.value)}>
+							onChange={event =>{  setCell(at, index, event.target.value); }}>
 							{field.values.map(item => (
 								<option key={item} value={item}>
 									{item}
@@ -443,7 +443,7 @@ function ListRows({
 							disabled={!isEnabled}
 							autoComplete="off"
 							spellCheck={false}
-							onChange={event => setCell(at, index, clean(index, event.target.value))} />
+							onChange={event =>{  setCell(at, index, clean(index, event.target.value)); }} />
 					) : (
 						<Picks
 							key={field.id}
@@ -451,13 +451,13 @@ function ListRows({
 							cell={row[index]}
 							label={label(field.id)}
 							isEnabled={isEnabled}
-							setCell={value => setCell(at, index, value)}
+							setCell={value =>{  setCell(at, index, value); }}
 							t={t} />
 					))}
 					<button
 						className="control"
 						disabled={!isEnabled}
-						onClick={() => setRows(rows.filter((_, index) => index != at))}>
+						onClick={() =>{  setRows(rows.filter((_, index) => index != at)); }}>
 						{t.pages.system.remove}
 					</button>
 				</div>
@@ -465,7 +465,7 @@ function ListRows({
 			<button
 				className="control"
 				disabled={!isEnabled || rows.length >= (option.max ?? Infinity)}
-				onClick={() => setRows([...rows, option.fields.map(field => field.max === undefined ? field.values?.[0] ?? '' : '')])}>
+				onClick={() =>{  setRows([...rows, option.fields.map(field => field.max === undefined ? field.values?.[0] ?? '' : '')]); }}>
 				{t.pages.system.add}
 			</button>
 		</div>
@@ -493,7 +493,7 @@ function NumberField({
 	setValue
 }: NumberFieldProps) {
 	const [draft, setDraft] = useState(String(value));
-	useEffect(() => setDraft(String(value)), [value]);
+	useEffect(() =>{  setDraft(String(value)); }, [value]);
 
 	return (
 		<input
@@ -511,6 +511,6 @@ function NumberField({
 					setValue(number);
 				}
 			}}
-			onBlur={() => setDraft(String(value))} />
+			onBlur={() =>{  setDraft(String(value)); }} />
 	);
 }

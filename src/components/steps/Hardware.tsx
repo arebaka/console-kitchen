@@ -35,7 +35,7 @@ export function Hardware({
 							key={hw.id}
 							className={`item ${hardware == hw.id ? 'active' : ''}`}
 							tabIndex={0}
-							onClick={() => setHardware(hw.id)}
+							onClick={() =>{  setHardware(hw.id); }}
 							onKeyDown={activate}>
 							<header className="header">
 								<h3 className="name">

@@ -77,7 +77,7 @@ export function Plugins({
 										key={level}
 										className={`choice ${scope.includes(level) ? 'active' : ''}`}
 										tabIndex={0}
-										onClick={() => toggle(comp, level)}
+										onClick={() =>{  toggle(comp, level); }}
 										onKeyDown={activate}>
 										{runlevels[level]}
 									</li>

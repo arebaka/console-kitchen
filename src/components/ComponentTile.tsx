@@ -33,7 +33,7 @@ export function ComponentTile({
 				${parent ? 'bundled' : ''}
 				${isSelected ? 'active' : ''}`}
 			tabIndex={0}
-			onClick={() => toggle(component.id)}
+			onClick={() =>{  toggle(component.id); }}
 			onKeyDown={activate}>
 			{component.logo ? (
 				<img src={`logos/${platform.id}/${component.logo}`} alt="" className="logo" loading="lazy" />

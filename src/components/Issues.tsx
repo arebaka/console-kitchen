@@ -74,7 +74,7 @@ export function Notice({
 			<button
 				key={index}
 				className="fix"
-				onClick={() => applyFix(fix)}>
+				onClick={() =>{  applyFix(fix); }}>
 				{fix.add
 					? format(t.issues.add, { component: names(fix.add) })
 					: format(t.issues.remove, { component: names(fix.remove ?? []) })}
@@ -83,7 +83,7 @@ export function Notice({
 		{setStep && (
 			<button
 				className="fix"
-				onClick={() => setStep(issue.step)}>
+				onClick={() =>{  setStep(issue.step); }}>
 				{t.issues.go}: {stepName(t, platform.id, issue.step)}
 			</button>
 		)}

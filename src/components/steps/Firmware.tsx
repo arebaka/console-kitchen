@@ -38,7 +38,7 @@ export function Firmware({
 					key={v.version}
 					className={`item ${v.status} ${version == v.version ? 'active' : ''}`}
 					tabIndex={0}
-					onClick={() => setVersion(v.version)}
+					onClick={() =>{  setVersion(v.version); }}
 					onKeyDown={activate}>
 					<header className="header">
 						<h3 className="name">

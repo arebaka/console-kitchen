@@ -31,12 +31,12 @@ export default function App() {
 	const [uploads, setUploads] = useState<Uploads>({});
 	// Dumps of cards by platform, kept only in this tab like the uploads: links cannot carry them
 	const [cards, setCards] = useState<{[platform: string]: CardSnapshot}>({});
-	const update = (patch: Partial<AppState>) => setState(prev => ({ ...prev, ...patch }));
+	const update = (patch: Partial<AppState>) =>{  setState(prev => ({ ...prev, ...patch })); };
 	// Changes the build of the current platform, a function gets the build as it is by then
-	const updateBuild = (patch: Partial<SwitchState | PspState> | ((build: BuildState) => Partial<BuildState>)) => setState(prev => {
+	const updateBuild = (patch: Partial<SwitchState | PspState> | ((build: BuildState) => Partial<BuildState>)) =>{  setState(prev => {
 		const build = prev.builds[prev.platform];
 		return { ...prev, builds: withBuild(prev.builds, prev.platform, { ...build, ...(typeof patch === 'function' ? patch(build) : patch) }) };
-	});
+	}); };
 
 	const { lang } = state;
 	const t = I18N[lang];
@@ -52,7 +52,7 @@ export default function App() {
 	const steps = platform.steps(build);
 	const step = steps.includes(state.step) ? state.step : steps[0];
 	const index = steps.indexOf(step);
-	const setStep = (step: StepId) => update({ step });
+	const setStep = (step: StepId) =>{  update({ step }); };
 
 	const issues = useMemo(() => platform.validate(build, t), [platform, build, t]);
 	const contentRef = useRef<HTMLElement>(null);
@@ -65,11 +65,11 @@ export default function App() {
 		return issue ? [{ ...toast, issue }] : [];
 	});
 	// The three newest at most, so a phone keeps some of the page in sight
-	const notify = (fresh: Issue[]) => setToasts(prev => [
+	const notify = (fresh: Issue[]) =>{  setToasts(prev => [
 		...prev.filter(toast => !fresh.some(issue => issueKey(issue) == issueKey(toast.issue))),
 		...fresh.map(issue => ({ id: ++lastToast.current, issue }))
-	].slice(-3));
-	const dismiss = (id: number) => setToasts(prev => prev.filter(toast => toast.id != id));
+	].slice(-3)); };
+	const dismiss = (id: number) =>{  setToasts(prev => prev.filter(toast => toast.id != id)); };
 
 	// Toasts of solved issues go away, so they never come back with the issue
 	useEffect(() => {
@@ -112,7 +112,7 @@ export default function App() {
 		};
 
 		window.addEventListener('keydown', handleKeyDown);
-		return () => window.removeEventListener('keydown', handleKeyDown);
+		return () =>{  window.removeEventListener('keydown', handleKeyDown); };
 	}, [steps.join(), index]);
 
 	// Size calculator
@@ -165,8 +165,8 @@ export default function App() {
 		updateBuild({ tuning: { ...tuning, ...Object.fromEntries(groups.filter(group => group.step == step).map(group => [group.id, defaults[group.id]])) } });
 	};
 
-	const setLaunch = (launch: LaunchConfig) => updateBuild({ launch });
-	const setOverclock = (overclock: GameProfile[]) => updateBuild({ overclock });
+	const setLaunch = (launch: LaunchConfig) =>{  updateBuild({ launch }); };
+	const setOverclock = (overclock: GameProfile[]) =>{  updateBuild({ overclock }); };
 
 	// Runlevels of a plugin, the ones of the catalog leave the build
 	const setPlugin = (id: string, scope: string[]) => {
@@ -211,11 +211,11 @@ export default function App() {
 	};
 
 	// What the update does with a foreign item on the card of the current platform
-	const setCardAction = (path: string, action: ForeignAction) => setCards(prev => {
+	const setCardAction = (path: string, action: ForeignAction) =>{  setCards(prev => {
 		const card = prev[platform.id];
 		return card ? { ...prev, [platform.id]: { ...card, actions: { ...card.actions, [path]: action } } } : prev;
-	});
-	const forgetCard = () => setCards(({ [platform.id]: forgotten, ...rest }) => rest);
+	}); };
+	const forgetCard = () =>{  setCards(({ [platform.id]: forgotten, ...rest }) => rest); };
 
 	const stepIssues = (step: StepId) => issues.filter(issue => issue.step == step);
 	// The most serious issue of a step marks it in the sidebar
@@ -237,7 +237,7 @@ export default function App() {
 	return (<>
 		<Topbar
 			lang={lang}
-			setLang={lang => update({ lang })}
+			setLang={lang =>{  update({ lang }); }}
 			subtitle={texts.subtitle}
 			scripts={DUMP_SCRIPTS}
 			openFile={openFile}
@@ -274,7 +274,7 @@ export default function App() {
 					lang={lang}
 					platform={platform}
 					version={firmware}
-					setVersion={firmware => updateBuild({ firmware })}
+					setVersion={firmware =>{  updateBuild({ firmware }); }}
 					issues={stepIssues('firmware')}
 					applyFix={applyFix}
 					t={t} />
@@ -382,7 +382,7 @@ export default function App() {
 				<button
 					type="button"
 					className="hint"
-					onClick={() => setStep(steps[index - 1])}>
+					onClick={() =>{  setStep(steps[index - 1]); }}>
 					<Glyph name={platform.glyphs.back} role="back" />
 					{t.wizard.back}
 				</button>
@@ -391,7 +391,7 @@ export default function App() {
 				<button
 					type="button"
 					className="hint"
-					onClick={() => setStep(steps[index + 1])}>
+					onClick={() =>{  setStep(steps[index + 1]); }}>
 					<Glyph name={platform.glyphs.next} role="next" />
 					{t.wizard.next}
 				</button>
@@ -399,7 +399,7 @@ export default function App() {
 				<button
 					type="button"
 					className="hint"
-					onClick={() => setStep(steps[0])}>
+					onClick={() =>{  setStep(steps[0]); }}>
 					<Glyph name={platform.glyphs.rebuild} role="rebuild" />
 					{t.wizard.rebuild}
 				</button>

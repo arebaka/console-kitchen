@@ -225,7 +225,7 @@ export function Build({
 						key={file.path}
 						className={`choice ${preview.path == file.path ? 'active' : ''}`}
 						tabIndex={0}
-						onClick={() => setPreviewPath(file.path)}
+						onClick={() =>{  setPreviewPath(file.path); }}
 						onKeyDown={activate}>
 						{file.path}
 					</li>
@@ -318,7 +318,7 @@ function CardUpdate({ card, plan, platform, setAction, forget, t }: CardUpdatePr
 										className="field"
 										aria-label={item.name}
 										value={card.actions[item.path]}
-										onChange={event => setAction(item.path, event.target.value as ForeignAction)}>
+										onChange={event =>{  setAction(item.path, event.target.value as ForeignAction); }}>
 										{(item.kind == 'sysmodule' ? ['keep', 'disable', 'delete'] : ['keep', 'delete']).map(action => (
 											<option key={action} value={action}>
 												{texts.actions[action]}

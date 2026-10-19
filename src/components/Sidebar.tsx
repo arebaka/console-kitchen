@@ -45,7 +45,7 @@ export function Sidebar({
 						<button
 							ref={item.step == activeStep ? activeRef : undefined}
 							className={`step ${item.step == activeStep ? 'active' : ''} ${index < activeIndex ? 'done' : ''}`}
-							onClick={() => setActiveStep(item.step)}>
+							onClick={() =>{  setActiveStep(item.step); }}>
 							<StepIcon step={item.step} />
 							<span className="label">
 								{stepName(t, platform, item.step)}

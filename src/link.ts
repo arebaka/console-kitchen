@@ -212,13 +212,16 @@ function putPiece(out: Writer, piece: Piece): void {
 	switch (piece.type) {
 		case 'word':
 			out.put(0b00, 2);
-			return out.number(piece.code);
+			out.number(piece.code);
+			return;
 		case 'number':
 			out.put(0b01, 2);
-			return out.number(piece.value);
+			out.number(piece.value);
+			return;
 		case 'mark':
 			out.put(0b10, 2);
-			return out.put(piece.code, 3);
+			out.put(piece.code, 3);
+			return;
 		case 'game':
 			out.put(0b110, 3);
 			for (let i = 0; i < 16; i++) {
@@ -236,7 +239,7 @@ function putPiece(out: Writer, piece: Piece): void {
 	}
 }
 
-const putEnd = (out: Writer) => putPiece(out, { type: 'mark', code: 0 });
+const putEnd = (out: Writer) =>{  putPiece(out, { type: 'mark', code: 0 }); };
 
 // The next piece: what it says, undefined when it cannot be said here, and whether it is a mark. Nothing at the mark of the end
 function takePiece(input: Reader, words: string[]): { text: string | undefined; isMark?: boolean } | undefined {
@@ -280,11 +283,11 @@ function takeText(input: Reader, words: string[]): string | undefined {
 
 // Most options are set to 0 or 1, so these take two bits
 function putValue(out: Writer, value: string, words: Index): void {
-	if (value == '0' || value == '1') return out.put(Number(value), 2);
+	if (value == '0' || value == '1') {  out.put(Number(value), 2);; return; }
 	const parts = pieces(value, words);
 	const isSingle = parts.length == 1 && parts[0].type != 'mark';
 	out.put(isSingle ? 0b10 : 0b11, 2);
-	parts.forEach(piece => putPiece(out, piece));
+	parts.forEach(piece =>{  putPiece(out, piece); });
 	if (!isSingle) putEnd(out);
 }
 
@@ -311,7 +314,7 @@ function pack(params: Params, keys: string[], words: string[]): string {
 	}
 	for (const [key, value] of params.filter(([key]) => !codes.has(key))) {
 		out.number(1);
-		pieces(key, index(words)).forEach(piece => putPiece(out, piece));
+		pieces(key, index(words)).forEach(piece =>{  putPiece(out, piece); });
 		putEnd(out);
 		putValue(out, value, index(words));
 	}
@@ -416,7 +419,7 @@ export function expand(params: URLSearchParams, link: LinkCodes): URLSearchParam
 		} else if (key == 's') {
 			if (PACKED.test(value)) add('sw', unmask(value, link.software).join(','));
 		} else if (Object.hasOwn(link.keys, key)) {
-			if (PACKED.test(value)) unpack(value, link.keys[key], link.words).forEach(([name, text]) => add(name, text));
+			if (PACKED.test(value)) unpack(value, link.keys[key], link.words).forEach(([name, text]) =>{  add(name, text); });
 		} else {
 			full.push([key, value]);
 		}

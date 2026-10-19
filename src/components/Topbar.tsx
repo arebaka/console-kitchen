@@ -43,7 +43,7 @@ export function Topbar({
 					<button
 						key={option}
 						className={`lang-option ${lang == option ? 'active' : ''}`}
-						onClick={() => setLang(option)}>
+						onClick={() =>{  setLang(option); }}>
 						{I18N[option].language}
 					</button>
 				))}
@@ -121,7 +121,7 @@ function FileMenu({ scripts, openFile, t }: FileMenuProps) {
 						{t.file.dump}
 					</p>
 					{scripts.map(file => (
-						<button key={file.path} className="item" onClick={() => downloadFile(file.path, withBOM(file.path, file.content))}>
+						<button key={file.path} className="item" onClick={() =>{  downloadFile(file.path, withBOM(file.path, file.content)); }}>
 							<span className="name">
 								{file.path}
 							</span>
@@ -152,8 +152,8 @@ function Clock({ lang }: { lang: Language }) {
 	const [now, setNow] = useState(() => new Date());
 
 	useEffect(() => {
-		const timer = setInterval(() => setNow(new Date()), 10_000);
-		return () => clearInterval(timer);
+		const timer = setInterval(() =>{  setNow(new Date()); }, 10_000);
+		return () =>{  clearInterval(timer); };
 	}, []);
 
 	return (

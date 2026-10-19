@@ -41,7 +41,7 @@ export function Software({
 						key={item.id}
 						className={`choice ${preset?.id == item.id ? 'active' : ''}`}
 						tabIndex={0}
-						onClick={() => applyPreset(item.id)}
+						onClick={() =>{  applyPreset(item.id); }}
 						onKeyDown={activate}>
 						{t.pages.software.presets[item.id]}
 					</li>

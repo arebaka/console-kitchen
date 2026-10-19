@@ -46,10 +46,10 @@ export function Launch({
 	const autoboot = entries.some(entry => entry.id == launch.autoboot) ? launch.autoboot : 'menu';
 	const [folder, setFolder] = useState('');
 
-	const toggleMode = (mode: BootMode) => setLaunch({
+	const toggleMode = (mode: BootMode) =>{  setLaunch({
 		...launch,
 		modes: BOOT_ENTRIES.map(entry => entry.id).filter(id => id == mode ? !launch.modes.includes(id) : launch.modes.includes(id))
-	});
+	}); };
 
 	const setOverride = (entry: string, key: EntryOverride, value?: 0 | 1) => {
 		const keys = { ...launch.overrides[entry] };
@@ -114,7 +114,7 @@ export function Launch({
 								<div
 									className="switch"
 									tabIndex={0}
-									onClick={() => toggleMode(row.mode!)}
+									onClick={() =>{  toggleMode(row.mode!); }}
 									onKeyDown={activate}>
 									<header className="line">
 										<h4 className="name">
@@ -135,7 +135,7 @@ export function Launch({
 									</h4>
 									<button
 										className="control"
-										onClick={() => removeEmuMMC(row.folder!)}>
+										onClick={() =>{  removeEmuMMC(row.folder!); }}>
 										{t.pages.launch.remove}
 									</button>
 								</header>
@@ -159,7 +159,7 @@ export function Launch({
 														key={String(value)}
 														className={`choice ${launch.overrides[entry.id]?.[key] === value ? 'active' : ''}`}
 														tabIndex={0}
-														onClick={() => setOverride(entry.id, key, value)}
+														onClick={() =>{  setOverride(entry.id, key, value); }}
 														onKeyDown={activate}>
 														{value === undefined ? t.pages.launch.asConfigured : value ? t.pages.system.on : t.pages.system.off}
 													</li>
@@ -183,7 +183,7 @@ export function Launch({
 					maxLength={32}
 					value={folder}
 					spellCheck={false}
-					onChange={event => setFolder(event.target.value.toUpperCase().replaceAll(/[^A-Z0-9_-]/g, ''))}
+					onChange={event =>{  setFolder(event.target.value.toUpperCase().replaceAll(/[^A-Z0-9_-]/g, '')); }}
 					onKeyDown={event => event.key == 'Enter' && addEmuMMC()} />
 				<button
 					className="control"
@@ -295,7 +295,7 @@ export function Launch({
 						key={entry.id}
 						className={`choice ${autoboot == entry.id ? 'active' : ''}`}
 						tabIndex={0}
-						onClick={() => setLaunch({ ...launch, autoboot: entry.id })}
+						onClick={() =>{  setLaunch({ ...launch, autoboot: entry.id }); }}
 						onKeyDown={activate}>
 						{entry.name}
 					</li>

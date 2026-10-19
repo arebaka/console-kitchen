@@ -16,7 +16,7 @@ function image(): ImageData {
 			data.set(color(x, y), (y * WIDTH + x) * 4);
 		}
 	}
-	return { width: WIDTH, height: HEIGHT, data, colorSpace: 'srgb' } as ImageData;
+	return { width: WIDTH, height: HEIGHT, data, colorSpace: 'srgb' };
 }
 
 function read(target: ImageTarget) {

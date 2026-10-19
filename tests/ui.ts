@@ -34,7 +34,7 @@ class Page {
 
 	send(method: string, params: object = {}): Promise<any> {
 		return new Promise((resolve, reject) => {
-			this.pending.set(++this.id, message => message.error ? reject(new Error(message.error.message)) : resolve(message.result));
+			this.pending.set(++this.id, message =>{  message.error ? reject(new Error(message.error.message)) : resolve(message.result); });
 			this.socket.send(JSON.stringify({ id: this.id, method, params }));
 		});
 	}
@@ -97,7 +97,7 @@ function launchBrowser(profile: string) {
 			const match = output.match(/DevTools listening on ws:\/\/[^:]+:(\d+)\//);
 			if (match) resolve(Number(match[1]));
 		});
-		browser.on('exit', code => reject(new Error(`Chrome exited with ${code}: ${output}`)));
+		browser.on('exit', code =>{  reject(new Error(`Chrome exited with ${code}: ${output}`)); });
 	});
 	return { browser, port };
 }

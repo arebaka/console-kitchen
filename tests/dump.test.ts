@@ -59,7 +59,7 @@ function card(files: {[path: string]: string}, script: string): string {
 	}
 	return root;
 }
-afterAll(() => cards.forEach(root => rmSync(root, { recursive: true, force: true })));
+afterAll(() =>{  cards.forEach(root => rmSync(root, { recursive: true, force: true })); });
 
 interface Dump {
 	kind: string;
