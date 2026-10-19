@@ -64,7 +64,7 @@ const DBI = {
 
 // Nyx accepts backgrounds from 0x0B0B0B to 0xC7C7C7 only
 function nyxBackground(color: TuningValue): string {
-	const value = Math.min(Math.max(parseInt(String(color).slice(1), 16) || 0, 0x0b0b0b), 0xc7c7c7);
+	const value = Math.min(Math.max(Number.parseInt(String(color).slice(1), 16) || 0, 0x0b0b0b), 0xc7c7c7);
 	return value.toString(16).padStart(6, '0');
 }
 

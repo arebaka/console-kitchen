@@ -312,10 +312,10 @@ function Option({
 					<input
 						type="range"
 						className="range"
-						style={{ '--fill': `${parseInt((value as string)[4], 16) / 15 * 100}%` } as React.CSSProperties}
+						style={{ '--fill': `${Number.parseInt((value as string)[4], 16) / 15 * 100}%` } as React.CSSProperties}
 						min={0}
 						max={15}
-						value={parseInt((value as string)[4], 16)}
+						value={Number.parseInt((value as string)[4], 16)}
 						disabled={!isEnabled}
 						onChange={event => set((value as string).slice(0, 4) + Number(event.target.value).toString(16).toUpperCase())} />
 				</div>
@@ -474,7 +474,7 @@ function ListRows({
 
 // A color with a hex digit per channel as the #rrggbb a color field takes, and back with every channel rounded to a digit
 const wideColor = (color: string) => `#${[1, 2, 3].map(at => color[at].repeat(2)).join('')}`.toLowerCase();
-const narrowColor = (color: string) => `#${[1, 3, 5].map(at => Math.round(parseInt(color.slice(at, at + 2), 16) / 17).toString(16)).join('')}`.toUpperCase();
+const narrowColor = (color: string) => `#${[1, 3, 5].map(at => Math.round(Number.parseInt(color.slice(at, at + 2), 16) / 17).toString(16)).join('')}`.toUpperCase();
 
 interface NumberFieldProps {
 	value: number;

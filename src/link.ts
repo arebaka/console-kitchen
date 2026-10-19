@@ -225,7 +225,7 @@ function putPiece(out: Writer, piece: Piece): void {
 		case 'game':
 			out.put(0b110, 3);
 			for (let i = 0; i < 16; i++) {
-				out.put(parseInt(piece.id[i], 16), 4);
+				out.put(Number.parseInt(piece.id[i], 16), 4);
 			}
 			return;
 		case 'text':

@@ -381,7 +381,7 @@ describe('configs of modules, overlays and applications', () => {
 			expect(Object.keys(ini[section]).sort(), section).toEqual(options(group).sort());
 		}
 		// A key without its option would be written empty
-		expect(content).not.toMatch(/=$|\{\{/m);
+		expect(content).not.toMatch(/[=]$|\{\{/m);
 		expect(ini['status-monitor']).toMatchObject({ key_combo: 'ZL+ZR', touch_screen: 'false', motion_control: 'true', battery_time_left_refreshrate: '60' });
 		expect(ini.mini).toMatchObject({ show: 'CPU+FPS', background_color: '#000F', cat_color: '#FFFF', handheld_font_size: '15' });
 		expect(ini.micro).toMatchObject({ show: 'CPU+GPU+RAM+BRD+FAN+FPS', cat_color: '#FCCF' });

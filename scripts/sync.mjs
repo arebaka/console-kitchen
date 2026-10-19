@@ -348,7 +348,7 @@ async function tarEntries(url) {
 		const header = await range(url, offset, offset + 511);
 		if (header.length < 512 || header.every(byte => byte == 0)) break;
 		const field = (start, length) => header.toString('utf8', start, start + length).replace(/\0[\s\S]*$/, '');
-		const size = parseInt(field(124, 12).trim() || '0', 8);
+		const size = Number.parseInt(field(124, 12).trim() || '0', 8);
 		const type = field(156, 1);
 		const data = async () => (await range(url, offset + 512, offset + 512 + size - 1)).toString('utf8');
 		if (type == 'L') {
