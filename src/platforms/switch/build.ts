@@ -274,10 +274,7 @@ const CONFIGS: ConfigSpec<Request>[] = [
 				updater2p: flag(hekate.updater2p),
 				bootprotect: flag(hekate.bootprotect),
 				// A caption opens every group of entries
-				entries: entries.map((entry, index) => ({
-					...entrySection(request, entry),
-					caption: index == 0 || entries[index - 1].caption != entry.caption ? entry.caption : undefined
-				}))
+				entries: entries.map((entry, index) => (Object.assign(entrySection(request, entry), { caption: index == 0 || entries[index - 1].caption != entry.caption ? entry.caption : undefined })))
 			};
 		}
 	},
@@ -509,7 +506,7 @@ const CONFIGS: ConfigSpec<Request>[] = [
 			Object.fromEntries(CATALOG.tuning.find(group => group.id == id)!.options.map(option => {
 				const value = tuning[id][option.id];
 				if (option.type == 'list') {
-					return [option.id, listView(option, value).map(row => 'TitleID' in row ? { ...row, TitleID: String(row.TitleID).toUpperCase() } : row)];
+					return [option.id, listView(option, value).map(row => 'TitleID' in row ? Object.assign(row, { TitleID: String(row.TitleID).toUpperCase() }) : row)];
 				}
 				return [option.id, Array.isArray(value) ? value.join(',') : String(value === '' ? option.default : value)];
 			}))
@@ -559,10 +556,10 @@ const CONFIGS: ConfigSpec<Request>[] = [
 			...sys_clk,
 			profiles: overclock
 				.filter(profile => Object.keys(profile.clocks).length)
-				.map(profile => ({
-					...profile,
-					clocks: Object.entries(profile.clocks).map(([key, value]) => ({ key, value }))
-				}))
+				.map(profile => (Object.assign(profile, { clocks: Object.entries(profile.clocks).map(([key, value]) => ({
+					key,
+					value
+				})) })))
 		}),
 		when: request => isGroupSelected(request, 'sys_clk'),
 		read: readProfiles,

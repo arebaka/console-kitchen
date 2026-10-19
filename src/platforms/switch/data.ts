@@ -26,7 +26,7 @@ export const COMPONENT_ENTRIES: ComponentEntry[] = [
 		.map(comp => ({ id: comp.id, name: comp.name, caption: 'Payloads', keys: { payload: comp.payload! }, component: comp.id }))
 ];
 // Pictures lie in the folder of their target under their ID: appearance/icon/hekate-switch.png
-export const GALLERY: GalleryImage[] = APPEARANCE.map(image => ({ ...image, file: `appearance/${image.target}/${image.id}.png` }));
+export const GALLERY: GalleryImage[] = APPEARANCE.map(image => (Object.assign(image, { file: `appearance/${image.target}/${image.id}.png` })));
 
 // Versions newer than the last one some Atmosphere release added support for cannot boot CFW yet
 const NEWEST_SUPPORTED_HOS = HOS_VERSIONS
@@ -82,7 +82,11 @@ function systemEntries(launch: LaunchConfig, componentIDs: string[]): LaunchEntr
 		})),
 		...mode('sysmmc'),
 		...mode('stock')
-	].map(entry => ({ ...entry, keys: { ...entry.keys, ...(bootsCFW(entry) ? modules : {}), ...launch.overrides[entry.id] } }));
+	].map(entry => (Object.assign(entry, { keys: {
+		...entry.keys,
+		...bootsCFW(entry) ? modules : {},
+		...launch.overrides[entry.id]
+	} })));
 }
 
 // Entries of the Launch menu in their order: the ones booting the system, then what the selected components bring,
@@ -102,7 +106,7 @@ export function launchEntries(launch: LaunchConfig, selectedComponentIDs: string
 export function spareEntries(launch: LaunchConfig, selectedComponentIDs: string[]): LaunchEntry[] {
 	return moduleComponents(selectedComponentIDs).flatMap(comp => systemEntries(launch, selectedComponentIDs.filter(id => id != comp.id))
 		.filter(bootsCFW)
-		.map(entry => ({ ...entry, name: `${entry.name} without ${comp.name}` })));
+		.map(entry => (Object.assign(entry, { name: `${entry.name} without ${comp.name}` }))));
 }
 
 // Name of a known game, the title ID otherwise

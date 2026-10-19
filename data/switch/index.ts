@@ -42,12 +42,12 @@ const launchEntry = (row: Row) => compact({
 // Entries of the Launch menu that boot the system, with the keys of their sections
 export const LAUNCH: BootEntry[] = LAUNCH_ROWS
 	.filter(row => !row.component)
-	.map(row => ({ ...launchEntry(row), id: row.id as BootMode }));
+	.map(row => (Object.assign(launchEntry(row), { id: row.id as BootMode })));
 
 // Entries that are in the menu with a component: the other systems hekate boots, such as a Linux
 export const SYSTEMS: ComponentEntry[] = LAUNCH_ROWS
 	.filter(row => row.component)
-	.map(row => ({ ...launchEntry(row), component: row.component }));
+	.map(row => (Object.assign(launchEntry(row), { component: row.component })));
 
 // What hekate has to load with CFW for a component, such as its KIP: the keys the component adds to the entries booting CFW.
 // A file named after an entry holds the keys of that entry instead, whatever component shares the name

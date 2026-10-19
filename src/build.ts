@@ -76,20 +76,42 @@ function installSteps(comp: ComponentInfo, modchip: boolean, options: Record<str
 	const step = { appstore: false, zip: false, file: false, tar: false, urlZip: false, urlFile: false };
 	switch (comp.source) {
 		case 'appstore':
-			return comp.sources.appstore!.map(name => ({ ...step, appstore: true, package: name }));
+			return comp.sources.appstore!.map(name => (Object.assign(step, {
+				appstore: true,
+				package: name
+			})));
 		case 'github':
 			return comp.sources.github!
 				.filter(item => !item.modchip || modchip)
 				.map(item => {
 					const asset = { repo: item.repo, asset: assetPattern(item.asset, options) };
-					if (item.path) return { ...step, ...asset, file: true, path: item.path };
-					if (item.strip !== undefined) return { ...step, ...asset, tar: true, strip: item.strip };
-					return { ...step, ...asset, zip: true, root: item.root ?? '', into: item.into ?? '' };
+					if (item.path) return Object.assign(step, asset, {
+						file: true,
+						path: item.path
+					});
+					if (item.strip !== undefined) return Object.assign(step, asset, {
+						tar: true,
+						strip: item.strip
+					});
+					return Object.assign(step, asset, {
+	zip: true,
+	root: item.root ?? '',
+	into: item.into ?? ''
+});
 				});
 		case 'url':
 			return comp.sources.url!.map(item => item.path
-				? { ...step, urlFile: true, url: item.url, path: item.path }
-				: { ...step, urlZip: true, url: item.url, root: item.root ?? '', into: item.into ?? '' });
+				? Object.assign(step, {
+					urlFile: true,
+					url: item.url,
+					path: item.path
+				})
+				: Object.assign(step, {
+					urlZip: true,
+					url: item.url,
+					root: item.root ?? '',
+					into: item.into ?? ''
+				}));
 		default:
 			return [];
 	}
