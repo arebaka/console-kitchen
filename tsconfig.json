@@ -19,8 +19,8 @@
 			"@data/*": ["./data/*"],
 			"@templates": ["./templates"],
 			"@templates/*": ["./templates/*"],
-			"@i18n": ["./i18n"],
-		},
+			"@i18n": ["./i18n"]
+		}
 	},
 	"include": [
 		"vite.config.ts",
@@ -30,6 +30,6 @@
 		"data",
 		"templates",
 		"i18n",
-		"tests",
-	],
+		"tests"
+	]
 }

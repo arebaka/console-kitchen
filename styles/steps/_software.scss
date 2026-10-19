@@ -34,7 +34,7 @@
 
 	// Components left out step back, so the selection reads at a glance
 	&:not(.active):not(:hover):not(:focus-visible) {
-		opacity: .6;
+		opacity: 0.6;
 	}
 
 	// Required and bundled components cannot be switched off

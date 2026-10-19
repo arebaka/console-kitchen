@@ -1,8 +1,9 @@
+import { Translation } from '@i18n';
 import React, { useEffect, useState } from 'react';
 
-import { Fix, Issue } from '@/types';
-import { Translation } from '@i18n';
 import { Platform } from '@/platforms';
+import { Fix, Issue } from '@/types';
+
 import { Notice } from './Issues';
 
 export interface Toast {
@@ -27,7 +28,7 @@ export function Toasts({
 	platform,
 	applyFix,
 	dismiss,
-	t
+	t,
 }: ToastsProps) {
 	// The pointer or the focus on the toasts holds them until it leaves
 	const [isHeld, setHeld] = useState(false);
@@ -36,8 +37,12 @@ export function Toasts({
 	// Toasts go away one by one, the oldest first
 	useEffect(() => {
 		if (oldest === undefined || isHeld) return;
-		const timer = setTimeout(() =>{  dismiss(oldest); }, TIMEOUT);
-		return () =>{  clearTimeout(timer); };
+		const timer = setTimeout(() => {
+			dismiss(oldest);
+		}, TIMEOUT);
+		return () => {
+			clearTimeout(timer);
+		};
 	}, [oldest, isHeld]);
 
 	// The last toast may leave from under the pointer, which then never leaves it
@@ -47,12 +52,21 @@ export function Toasts({
 
 	return (
 		<ul
-			className="toasts"
-			role="status"
-			onMouseEnter={() =>{  setHeld(true); }}
-			onMouseLeave={() =>{  setHeld(false); }}
-			onFocus={() =>{  setHeld(true); }}
-			onBlur={() =>{  setHeld(false); }}>
+			className='toasts'
+			role='status'
+			onMouseEnter={() => {
+				setHeld(true);
+			}}
+			onMouseLeave={() => {
+				setHeld(false);
+			}}
+			onFocus={() => {
+				setHeld(true);
+			}}
+			onBlur={() => {
+				setHeld(false);
+			}}
+		>
 			{toasts.map(toast => (
 				<li key={toast.id} className={`toast ${toast.issue.level}`}>
 					<Notice
@@ -62,12 +76,16 @@ export function Toasts({
 							applyFix(fix);
 							dismiss(toast.id);
 						}}
-						t={t} />
+						t={t}
+					/>
 					<button
-						className="dismiss"
+						className='dismiss'
 						title={t.issues.dismiss}
 						aria-label={t.issues.dismiss}
-						onClick={() =>{  dismiss(toast.id); }}>
+						onClick={() => {
+							dismiss(toast.id);
+						}}
+					>
 						✕
 					</button>
 				</li>

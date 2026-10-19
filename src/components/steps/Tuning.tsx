@@ -1,14 +1,34 @@
+import { Language, Translation } from '@i18n';
 import React, { useEffect, useState } from 'react';
 
-import { Fix, Issue, ListField, TuningConfig, TuningGroup, TuningOption, TuningStep, TuningValue } from '@/types';
-import { Language, Translation } from '@i18n';
-import { cellValues, isCountAllowed, isTuningOptionActive, pickedCell, tuningGroups } from '@/data';
+import {
+	cellValues,
+	isCountAllowed,
+	isTuningOptionActive,
+	pickedCell,
+	tuningGroups,
+} from '@/data';
 import { Platform } from '@/platforms';
+import {
+	Fix,
+	Issue,
+	ListField,
+	TuningConfig,
+	TuningGroup,
+	TuningOption,
+	TuningStep,
+	TuningValue,
+} from '@/types';
 import { activate } from '@/utils';
-import { Issues } from '../Issues';
-import { Buttons, isButtons } from '../Buttons';
 
-type SetTuningOption = (group: string, option: string, value: TuningValue) => void;
+import { Buttons, isButtons } from '../Buttons';
+import { Issues } from '../Issues';
+
+type SetTuningOption = (
+	group: string,
+	option: string,
+	value: TuningValue,
+) => void;
 
 interface TuningProps {
 	lang: Language;
@@ -33,35 +53,46 @@ export function Tuning({
 	resetTuning,
 	issues,
 	applyFix,
-	t
+	t,
 }: TuningProps) {
-	const groups = tuningGroups(platform.catalog.tuning, step, selectedComponentIDs);
+	const groups = tuningGroups(
+		platform.catalog.tuning,
+		step,
+		selectedComponentIDs,
+	);
 
-	return (<>
-		<section className="batch">
-			<button
-				className="control"
-				onClick={() =>{  resetTuning(step); }}>
-				{t.pages.system.reset}
-			</button>
-		</section>
+	return (
+		<>
+			<section className='batch'>
+				<button
+					className='control'
+					onClick={() => {
+						resetTuning(step);
+					}}
+				>
+					{t.pages.system.reset}
+				</button>
+			</section>
 
-		<Issues
-			issues={issues}
-			platform={platform}
-			applyFix={applyFix}
-			t={t} />
-
-		{groups.map(group => (
-			<TuningSection
-				key={group.id}
+			<Issues
+				issues={issues}
 				platform={platform}
-				group={group}
-				tuning={tuning}
-				setTuningOption={setTuningOption}
-				t={t} />
-		))}
-	</>);
+				applyFix={applyFix}
+				t={t}
+			/>
+
+			{groups.map(group => (
+				<TuningSection
+					key={group.id}
+					platform={platform}
+					group={group}
+					tuning={tuning}
+					setTuningOption={setTuningOption}
+					t={t}
+				/>
+			))}
+		</>
+	);
 }
 
 interface TuningSectionProps {
@@ -78,24 +109,18 @@ export function TuningSection({
 	group,
 	tuning,
 	setTuningOption,
-	t
+	t,
 }: TuningSectionProps) {
 	const text = t.tuning[platform.id][group.id];
 
 	return (
-		<section className="tuning">
-			<header className="header">
-				<h3 className="title">
-					{text?.title ?? group.id}
-				</h3>
-				<p className="file">
-					{group.file}
-				</p>
+		<section className='tuning'>
+			<header className='header'>
+				<h3 className='title'>{text?.title ?? group.id}</h3>
+				<p className='file'>{group.file}</p>
 			</header>
-			<p className="description">
-				{text?.description}
-			</p>
-			<ul className="rows">
+			<p className='description'>{text?.description}</p>
+			<ul className='rows'>
 				{group.options.map(option => (
 					<Option
 						key={option.id}
@@ -104,8 +129,11 @@ export function TuningSection({
 						option={option}
 						tuning={tuning}
 						isEnabled={isTuningOptionActive(group, option, tuning)}
-						setValue={value =>{  setTuningOption(group.id, option.id, value); }}
-						t={t} />
+						setValue={value => {
+							setTuningOption(group.id, option.id, value);
+						}}
+						t={t}
+					/>
 				))}
 			</ul>
 		</section>
@@ -130,19 +158,30 @@ function Option({
 	tuning,
 	isEnabled,
 	setValue,
-	t
+	t,
 }: OptionProps) {
 	// An option added to the data before its texts shows its key instead of breaking the page
-	const text = t.tuning[platform.id][group.id]?.options[option.id] ?? { title: option.id, description: '' };
+	const text = t.tuning[platform.id][group.id]?.options[option.id] ?? {
+		title: option.id,
+		description: '',
+	};
 	const value = tuning[group.id][option.id];
-	const label = (value: string | number) => text.values?.[value] ?? String(value);
+	const label = (value: string | number) =>
+		text.values?.[value] ?? String(value);
 	const set = (value: TuningValue) => isEnabled && setValue(value);
 	// Values of a multiselect with one of them switched, in the order of the option
-	const switched = (item: string) => option.type == 'multiselect'
-		? option.values.filter(v => v == item ? !(value as string[]).includes(item) : (value as string[]).includes(v))
-		: [];
+	const switched = (item: string) =>
+		option.type == 'multiselect'
+			? option.values.filter(v =>
+					v == item
+						? !(value as string[]).includes(item)
+						: (value as string[]).includes(v),
+				)
+			: [];
 	// A value the multiselect cannot take or lose, as it would then hold too many or too few of them
-	const isLocked = (item: string) => option.type == 'multiselect' && !isCountAllowed(option, switched(item).length);
+	const isLocked = (item: string) =>
+		option.type == 'multiselect' &&
+		!isCountAllowed(option, switched(item).length);
 
 	if (option.type == 'toggle') {
 		return (
@@ -150,42 +189,41 @@ function Option({
 				className={`row ${isEnabled ? 'interactive' : 'disabled'}`}
 				tabIndex={isEnabled ? 0 : undefined}
 				onClick={() => set(!value)}
-				onKeyDown={activate}>
-				<header className="line">
-					<h4 className="name">
-						{text.title}
-					</h4>
+				onKeyDown={activate}
+			>
+				<header className='line'>
+					<h4 className='name'>{text.title}</h4>
 					<p className={`value ${value ? 'on' : ''}`}>
 						{value ? t.pages.system.on : t.pages.system.off}
 					</p>
 				</header>
-				<p className="description">
-					{text.description}
-				</p>
+				<p className='description'>{text.description}</p>
 			</li>
 		);
 	}
 
 	return (
 		<li className={`row ${isEnabled ? '' : 'disabled'}`}>
-			<header className="line">
-				<h4 className="name">
-					{text.title}
-				</h4>
+			<header className='line'>
+				<h4 className='name'>{text.title}</h4>
 				{option.type == 'hue' && (
-					<p className="value">
-						<span className="swatch" style={{ background: `hsl(${value}, 100%, 50%)` }}></span>
+					<p className='value'>
+						<span
+							className='swatch'
+							style={{ background: `hsl(${value}, 100%, 50%)` }}
+						></span>
 						{String(value)}
 					</p>
 				)}
 				{(option.type == 'range' || option.type == 'color') && (
-					<p className="value">
-						{String(value)}
-					</p>
+					<p className='value'>{String(value)}</p>
 				)}
 				{option.type == 'rgba4444' && (
-					<p className="value">
-						<span className="swatch" style={{ background: value as string }}></span>
+					<p className='value'>
+						<span
+							className='swatch'
+							style={{ background: value as string }}
+						></span>
 						{String(value)}
 					</p>
 				)}
@@ -195,23 +233,23 @@ function Option({
 						min={option.min}
 						max={option.max}
 						disabled={!isEnabled}
-						setValue={set} />
+						setValue={set}
+					/>
 				)}
 				{option.type == 'text' && (
 					<input
 						type={option.secret ? 'password' : 'text'}
-						className="field"
+						className='field'
 						maxLength={option.maxLength}
 						value={value as string}
 						disabled={!isEnabled}
-						autoComplete="off"
+						autoComplete='off'
 						spellCheck={false}
-						onChange={event => set(event.target.value)} />
+						onChange={event => set(event.target.value)}
+					/>
 				)}
 			</header>
-			<p className="description">
-				{text.description}
-			</p>
+			<p className='description'>{text.description}</p>
 
 			{option.type == 'select' && isButtons(option.values) && (
 				<Buttons
@@ -219,7 +257,8 @@ function Option({
 					selected={[String(value)]}
 					isEnabled={isEnabled}
 					toggle={set}
-					t={t} />
+					t={t}
+				/>
 			)}
 
 			{option.type == 'multiselect' && isButtons(option.values) && (
@@ -229,18 +268,20 @@ function Option({
 					isEnabled={isEnabled}
 					isLocked={isLocked}
 					toggle={button => set(switched(button))}
-					t={t} />
+					t={t}
+				/>
 			)}
 
 			{option.type == 'select' && !isButtons(option.values) && (
-				<ul className="choices">
+				<ul className='choices'>
 					{option.values.map(v => (
 						<li
 							key={v}
 							className={`choice ${value == v ? 'active' : ''}`}
 							tabIndex={isEnabled ? 0 : undefined}
 							onClick={() => set(v)}
-							onKeyDown={activate}>
+							onKeyDown={activate}
+						>
 							{label(v)}
 						</li>
 					))}
@@ -248,7 +289,7 @@ function Option({
 			)}
 
 			{option.type == 'multiselect' && !isButtons(option.values) && (
-				<ul className="choices">
+				<ul className='choices'>
 					{option.values.map(v => {
 						const locked = isLocked(v);
 
@@ -259,7 +300,8 @@ function Option({
 								aria-disabled={locked || undefined}
 								tabIndex={isEnabled && !locked ? 0 : undefined}
 								onClick={() => !locked && set(switched(v))}
-								onKeyDown={activate}>
+								onKeyDown={activate}
+							>
 								{label(v)}
 							</li>
 						);
@@ -269,55 +311,80 @@ function Option({
 
 			{option.type == 'range' && (
 				<input
-					type="range"
-					className="range"
-					style={{ '--fill': `${((value as number) - option.min) / (option.max - option.min) * 100}%` } as React.CSSProperties}
+					type='range'
+					className='range'
+					style={
+						{
+							'--fill': `${(((value as number) - option.min) / (option.max - option.min)) * 100}%`,
+						} as React.CSSProperties
+					}
 					min={option.min}
 					max={option.max}
 					step={option.step}
 					value={value as number}
 					disabled={!isEnabled}
-					onChange={event => set(Number(event.target.value))} />
+					onChange={event => set(Number(event.target.value))}
+				/>
 			)}
 
 			{option.type == 'hue' && (
 				<input
-					type="range"
-					className="range hue"
+					type='range'
+					className='range hue'
 					min={0}
 					max={359}
 					value={value as number}
 					disabled={!isEnabled}
-					onChange={event => set(Number(event.target.value))} />
+					onChange={event => set(Number(event.target.value))}
+				/>
 			)}
 
 			{option.type == 'color' && (
 				<input
-					type="color"
-					className="color"
+					type='color'
+					className='color'
 					value={value as string}
 					disabled={!isEnabled}
-					onChange={event => set(event.target.value)} />
+					onChange={event => set(event.target.value)}
+				/>
 			)}
 
 			{/* The field picks the color, the slider next to it how solid the color is */}
 			{option.type == 'rgba4444' && (
-				<div className="rgba">
+				<div className='rgba'>
 					<input
-						type="color"
-						className="color"
+						type='color'
+						className='color'
 						value={wideColor(value as string)}
 						disabled={!isEnabled}
-						onChange={event => set(narrowColor(event.target.value) + (value as string)[4])} />
+						onChange={event =>
+							set(
+								narrowColor(event.target.value) +
+									(value as string)[4],
+							)
+						}
+					/>
 					<input
-						type="range"
-						className="range"
-						style={{ '--fill': `${Number.parseInt((value as string)[4], 16) / 15 * 100}%` } as React.CSSProperties}
+						type='range'
+						className='range'
+						style={
+							{
+								'--fill': `${(Number.parseInt((value as string)[4], 16) / 15) * 100}%`,
+							} as React.CSSProperties
+						}
 						min={0}
 						max={15}
 						value={Number.parseInt((value as string)[4], 16)}
 						disabled={!isEnabled}
-						onChange={event => set((value as string).slice(0, 4) + Number(event.target.value).toString(16).toUpperCase())} />
+						onChange={event =>
+							set(
+								(value as string).slice(0, 4) +
+									Number(event.target.value)
+										.toString(16)
+										.toUpperCase(),
+							)
+						}
+					/>
 				</div>
 			)}
 
@@ -328,7 +395,8 @@ function Option({
 					labels={text.fields}
 					isEnabled={isEnabled}
 					setRows={set}
-					t={t} />
+					t={t}
+				/>
 			)}
 		</li>
 	);
@@ -337,7 +405,7 @@ function Option({
 interface ListRowsProps {
 	option: Extract<TuningOption, { type: 'list' }>;
 	rows: string[][];
-	labels?: {[field: string]: string};
+	labels?: { [field: string]: string };
 	isEnabled: boolean;
 	setRows: (rows: string[][]) => void;
 	t: Translation;
@@ -354,19 +422,20 @@ interface PicksProps {
 
 // A field of a row that holds several of its values at once: buttons where the values are buttons, choices otherwise.
 // A value the field cannot take, as it would then hold too many of them, is locked
-function Picks({
-	field,
-	cell,
-	label,
-	isEnabled,
-	setCell,
-	t
-}: PicksProps) {
+function Picks({ field, cell, label, isEnabled, setCell, t }: PicksProps) {
 	const values = field.values ?? [];
 	const picked = cellValues(cell);
-	const switched = (item: string) => pickedCell(field, picked.includes(item) ? picked.filter(value => value != item) : [...picked, item]);
+	const switched = (item: string) =>
+		pickedCell(
+			field,
+			picked.includes(item)
+				? picked.filter(value => value != item)
+				: [...picked, item],
+		);
 	const isLocked = (item: string) => switched(item) === undefined;
-	const toggle = (item: string) =>{  setCell(switched(item) ?? cell); };
+	const toggle = (item: string) => {
+		setCell(switched(item) ?? cell);
+	};
 
 	if (isButtons(values)) {
 		return (
@@ -376,12 +445,13 @@ function Picks({
 				isEnabled={isEnabled}
 				isLocked={isLocked}
 				toggle={toggle}
-				t={t} />
+				t={t}
+			/>
 		);
 	}
 
 	return (
-		<ul className="choices" aria-label={label}>
+		<ul className='choices' aria-label={label}>
 			{values.map(item => (
 				<li
 					key={item}
@@ -389,7 +459,8 @@ function Picks({
 					aria-disabled={isLocked(item) || undefined}
 					tabIndex={isEnabled && !isLocked(item) ? 0 : undefined}
 					onClick={() => !isLocked(item) && toggle(item)}
-					onKeyDown={activate}>
+					onKeyDown={activate}
+				>
 					{item}
 				</li>
 			))}
@@ -405,67 +476,104 @@ function ListRows({
 	labels,
 	isEnabled,
 	setRows,
-	t
+	t,
 }: ListRowsProps) {
 	const label = (field: string) => labels?.[field] ?? field;
-	const setCell = (at: number, field: number, value: string) =>{  setRows(rows.map((row, index) => index == at
-		? row.map((cell, i) => i == field ? value : cell)
-		: row)); };
+	const setCell = (at: number, field: number, value: string) => {
+		setRows(
+			rows.map((row, index) =>
+				index == at
+					? row.map((cell, i) => (i == field ? value : cell))
+					: row,
+			),
+		);
+	};
 	// Links separate the fields of a row with `=`, so only the last of them may hold it
-	const clean = (field: number, value: string) => field < option.fields.length - 1 ? value.replaceAll('=', '') : value;
+	const clean = (field: number, value: string) =>
+		field < option.fields.length - 1 ? value.replaceAll('=', '') : value;
 
 	return (
-		<div className="list">
+		<div className='list'>
 			{rows.map((row, at) => (
-				<div key={at} className="entry">
-					{option.fields.map((field, index) => field.max === undefined ? field.values ? (
-						<select
-							key={field.id}
-							className="field"
-							aria-label={label(field.id)}
-							value={row[index]}
-							disabled={!isEnabled}
-							onChange={event =>{  setCell(at, index, event.target.value); }}>
-							{field.values.map(item => (
-								<option key={item} value={item}>
-									{item}
-								</option>
-							))}
-						</select>
-					) : (
-						<input
-							key={field.id}
-							className="field"
-							placeholder={label(field.id)}
-							aria-label={label(field.id)}
-							maxLength={option.maxLength}
-							value={row[index]}
-							disabled={!isEnabled}
-							autoComplete="off"
-							spellCheck={false}
-							onChange={event =>{  setCell(at, index, clean(index, event.target.value)); }} />
-					) : (
-						<Picks
-							key={field.id}
-							field={field}
-							cell={row[index]}
-							label={label(field.id)}
-							isEnabled={isEnabled}
-							setCell={value =>{  setCell(at, index, value); }}
-							t={t} />
-					))}
+				<div key={at} className='entry'>
+					{option.fields.map((field, index) =>
+						field.max === undefined ? (
+							field.values ? (
+								<select
+									key={field.id}
+									className='field'
+									aria-label={label(field.id)}
+									value={row[index]}
+									disabled={!isEnabled}
+									onChange={event => {
+										setCell(at, index, event.target.value);
+									}}
+								>
+									{field.values.map(item => (
+										<option key={item} value={item}>
+											{item}
+										</option>
+									))}
+								</select>
+							) : (
+								<input
+									key={field.id}
+									className='field'
+									placeholder={label(field.id)}
+									aria-label={label(field.id)}
+									maxLength={option.maxLength}
+									value={row[index]}
+									disabled={!isEnabled}
+									autoComplete='off'
+									spellCheck={false}
+									onChange={event => {
+										setCell(
+											at,
+											index,
+											clean(index, event.target.value),
+										);
+									}}
+								/>
+							)
+						) : (
+							<Picks
+								key={field.id}
+								field={field}
+								cell={row[index]}
+								label={label(field.id)}
+								isEnabled={isEnabled}
+								setCell={value => {
+									setCell(at, index, value);
+								}}
+								t={t}
+							/>
+						),
+					)}
 					<button
-						className="control"
+						className='control'
 						disabled={!isEnabled}
-						onClick={() =>{  setRows(rows.filter((_, index) => index != at)); }}>
+						onClick={() => {
+							setRows(rows.filter((_, index) => index != at));
+						}}
+					>
 						{t.pages.system.remove}
 					</button>
 				</div>
 			))}
 			<button
-				className="control"
+				className='control'
 				disabled={!isEnabled || rows.length >= (option.max ?? Infinity)}
-				onClick={() =>{  setRows([...rows, option.fields.map(field => field.max === undefined ? field.values?.[0] ?? '' : '')]); }}>
+				onClick={() => {
+					setRows([
+						...rows,
+						option.fields.map(field =>
+							field.max === undefined
+								? (field.values?.[0] ?? '')
+								: '',
+						),
+					]);
+				}}
+			>
 				{t.pages.system.add}
 			</button>
 		</div>
@@ -473,8 +581,10 @@ function ListRows({
 }
 
 // A color with a hex digit per channel as the #rrggbb a color field takes, and back with every channel rounded to a digit
-const wideColor = (color: string) => `#${[1, 2, 3].map(at => color[at].repeat(2)).join('')}`.toLowerCase();
-const narrowColor = (color: string) => `#${[1, 3, 5].map(at => Math.round(Number.parseInt(color.slice(at, at + 2), 16) / 17).toString(16)).join('')}`.toUpperCase();
+const wideColor = (color: string) =>
+	`#${[1, 2, 3].map(at => color[at].repeat(2)).join('')}`.toLowerCase();
+const narrowColor = (color: string) =>
+	`#${[1, 3, 5].map(at => Math.round(Number.parseInt(color.slice(at, at + 2), 16) / 17).toString(16)).join('')}`.toUpperCase();
 
 interface NumberFieldProps {
 	value: number;
@@ -490,15 +600,17 @@ function NumberField({
 	min,
 	max,
 	disabled,
-	setValue
+	setValue,
 }: NumberFieldProps) {
 	const [draft, setDraft] = useState(String(value));
-	useEffect(() =>{  setDraft(String(value)); }, [value]);
+	useEffect(() => {
+		setDraft(String(value));
+	}, [value]);
 
 	return (
 		<input
-			type="number"
-			className="field number"
+			type='number'
+			className='field number'
 			min={min}
 			max={max}
 			step={1}
@@ -507,10 +619,18 @@ function NumberField({
 			onChange={event => {
 				const number = Number(event.target.value);
 				setDraft(event.target.value);
-				if (event.target.value != '' && Number.isInteger(number) && number >= min && number <= max) {
+				if (
+					event.target.value != '' &&
+					Number.isInteger(number) &&
+					number >= min &&
+					number <= max
+				) {
 					setValue(number);
 				}
 			}}
-			onBlur={() =>{  setDraft(String(value)); }} />
+			onBlur={() => {
+				setDraft(String(value));
+			}}
+		/>
 	);
 }

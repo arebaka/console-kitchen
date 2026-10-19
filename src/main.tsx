@@ -11,7 +11,6 @@ import '@fontsource/m-plus-1p/latin-700.css';
 import '@fontsource/m-plus-1p/cyrillic-400.css';
 import '@fontsource/m-plus-1p/cyrillic-700.css';
 import '@arelive/reset.css/reset.min.css';
-
 import '@styles/main.scss';
 
 createRoot(document.getElementById('root')!).render(

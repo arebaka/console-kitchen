@@ -4,20 +4,29 @@ import { ImageTarget } from './types';
 const SIZES: Record<ImageTarget, [number, number]> = {
 	bootlogo: [1280, 720],
 	background: [1280, 720],
-	icon: [192, 192]
+	icon: [192, 192],
 };
 
 // Decodes the image of a URL or a blob
 async function loadImage(source: Blob | string): Promise<ImageBitmap> {
-	return createImageBitmap(typeof source === 'string' ? await (await fetch(source)).blob() : source);
+	return createImageBitmap(
+		typeof source === 'string'
+			? await (await fetch(source)).blob()
+			: source,
+	);
 }
 
 // Boot logos keep their size unless too big and hekate centers them, backgrounds cover the screen, icons fit the square
 function render(image: ImageBitmap, target: ImageTarget): ImageData {
 	const [width, height] = SIZES[target];
-	const scale = target == 'background'
-		? Math.max(width / image.width, height / image.height)
-		: Math.min(width / image.width, height / image.height, target == 'bootlogo' ? 1 : Infinity);
+	const scale =
+		target == 'background'
+			? Math.max(width / image.width, height / image.height)
+			: Math.min(
+					width / image.width,
+					height / image.height,
+					target == 'bootlogo' ? 1 : Infinity,
+				);
 	const drawnWidth = Math.round(image.width * scale);
 	const drawnHeight = Math.round(image.height * scale);
 
@@ -30,13 +39,22 @@ function render(image: ImageBitmap, target: ImageTarget): ImageData {
 		context.fillStyle = '#000';
 		context.fillRect(0, 0, canvas.width, canvas.height);
 	}
-	context.drawImage(image, (canvas.width - drawnWidth) / 2, (canvas.height - drawnHeight) / 2, drawnWidth, drawnHeight);
+	context.drawImage(
+		image,
+		(canvas.width - drawnWidth) / 2,
+		(canvas.height - drawnHeight) / 2,
+		drawnWidth,
+		drawnHeight,
+	);
 	return context.getImageData(0, 0, canvas.width, canvas.height);
 }
 
 // Rows go bottom-up. The boot logo is drawn on the portrait framebuffer, so it is stored rotated 90° counterclockwise.
 // Nyx blends backgrounds with their alpha, only icons may stay transparent
-export function encodeBitmap(image: ImageData, target: ImageTarget): Uint8Array<ArrayBuffer> {
+export function encodeBitmap(
+	image: ImageData,
+	target: ImageTarget,
+): Uint8Array<ArrayBuffer> {
 	const rotated = target == 'bootlogo';
 	const width = rotated ? image.height : image.width;
 	const height = rotated ? image.width : image.height;
@@ -64,19 +82,29 @@ export function encodeBitmap(image: ImageData, target: ImageTarget): Uint8Array<
 			bytes[offset] = image.data[source + 2];
 			bytes[offset + 1] = image.data[source + 1];
 			bytes[offset + 2] = image.data[source];
-			bytes[offset + 3] = target == 'icon' ? image.data[source + 3] : 0xff;
+			bytes[offset + 3] =
+				target == 'icon' ? image.data[source + 3] : 0xff;
 		}
 	}
 	return bytes;
 }
 
 // The bitmap hekate or Nyx expects for the target, converted from any image the browser reads
-export async function convertImage(source: Blob | string, target: ImageTarget): Promise<Uint8Array<ArrayBuffer>> {
+export async function convertImage(
+	source: Blob | string,
+	target: ImageTarget,
+): Promise<Uint8Array<ArrayBuffer>> {
 	return encodeBitmap(render(await loadImage(source), target), target);
 }
 
 async function gzip(data: Uint8Array<ArrayBuffer>): Promise<Uint8Array> {
-	return new Uint8Array(await new Response(new Blob([data]).stream().pipeThrough(new CompressionStream('gzip'))).arrayBuffer());
+	return new Uint8Array(
+		await new Response(
+			new Blob([data])
+				.stream()
+				.pipeThrough(new CompressionStream('gzip')),
+		).arrayBuffer(),
+	);
 }
 
 function base64(data: Uint8Array): string {
@@ -92,11 +120,15 @@ const encoded = new Map<string, Promise<string>>();
 
 // Base64 of the gzip-compressed bitmap for the installers, wrapped at 76 characters like the base64 tool does.
 // `source` is a public path of a gallery image or an object URL of an upload
-export async function encodeImage(source: string, target: ImageTarget): Promise<string> {
+export async function encodeImage(
+	source: string,
+	target: ImageTarget,
+): Promise<string> {
 	const key = `${target} ${source}`;
 	if (!encoded.has(key)) {
-		const promise = convertImage(source, target)
-			.then(async bitmap => base64(await gzip(bitmap)).replaceAll(/.{76}(?=.)/g, '$&\n'));
+		const promise = convertImage(source, target).then(async bitmap =>
+			base64(await gzip(bitmap)).replaceAll(/.{76}(?=.)/g, '$&\n'),
+		);
 		promise.catch(() => encoded.delete(key));
 		encoded.set(key, promise);
 	}

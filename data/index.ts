@@ -1,5 +1,5 @@
-import type { HardwareInfo, HardwareRevision, PlatformId } from '@/types';
 import { flag, number, numbered } from '@/parse';
+import type { HardwareInfo, HardwareRevision, PlatformId } from '@/types';
 
 import HARDWARE_ROWS from './hardware.tsv';
 import LINK_ROWS from './link.tsv';
@@ -14,7 +14,7 @@ export const HARDWARE: HardwareInfo[] = HARDWARE_ROWS.map(row => ({
 	image: row.image,
 	width: number(row.width),
 	height: number(row.height),
-	screen: number(row.screen)
+	screen: number(row.screen),
 }));
 
 // Consoles by the numbers short links name them with, one numbering for every platform: the console tells the platform of a link

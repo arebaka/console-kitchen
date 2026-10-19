@@ -16,8 +16,15 @@
 	// The color of the month glows from under the black, as behind the XMB
 	body {
 		background:
-			radial-gradient(130% 80% at 50% 115%, color-mix(in srgb, var(--color-accent) 55%, transparent), transparent 70%),
-			linear-gradient(color-mix(in srgb, var(--color-accent) 14%, var(--color-bg)), var(--color-bg) 60%);
+			radial-gradient(
+				130% 80% at 50% 115%,
+				color-mix(in srgb, var(--color-accent) 55%, transparent),
+				transparent 70%
+			),
+			linear-gradient(
+				color-mix(in srgb, var(--color-accent) 14%, var(--color-bg)),
+				var(--color-bg) 60%
+			);
 		background-attachment: fixed;
 	}
 

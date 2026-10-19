@@ -1,10 +1,10 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import dsv from '@rollup/plugin-dsv';
 import yaml from '@modyfi/vite-plugin-yaml';
+import dsv from '@rollup/plugin-dsv';
+import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
-	base: "./",
+	base: './',
 	plugins: [
 		react({
 			compiler: true,

@@ -35,7 +35,7 @@
 	border-radius: $radius;
 	box-shadow: 0 space(1) space(6) rgb(0 0 0 / 50%);
 	pointer-events: auto;
-	animation: toast-in .2s ease-out;
+	animation: toast-in 0.2s ease-out;
 
 	&.info {
 		--tone: var(--color-accent);

@@ -1,4 +1,16 @@
-import type { BootMode, ClockMode, EntryOverride, ClockModule, ComponentCategory, ComponentSource, FirmwareStatus, HardwareRevision, ImageTarget, PlatformId, StepId } from '@/types';
+import type {
+	BootMode,
+	ClockMode,
+	EntryOverride,
+	ClockModule,
+	ComponentCategory,
+	ComponentSource,
+	FirmwareStatus,
+	HardwareRevision,
+	ImageTarget,
+	PlatformId,
+	StepId,
+} from '@/types';
 
 export type Language = 'en' | 'ru' | 'uk';
 
@@ -17,14 +29,14 @@ export type Software = {
 export type TuningOption = {
 	title: string;
 	description: string;
-	values?: {[value in string]: string}; // labels of select values, raw values are shown otherwise
-	fields?: {[field in string]: string}; // labels of the fields of a list, their names are shown otherwise
+	values?: { [value in string]: string }; // labels of select values, raw values are shown otherwise
+	fields?: { [field in string]: string }; // labels of the fields of a list, their names are shown otherwise
 };
 
 export type TuningGroup = {
 	title: string;
 	description: string;
-	options: {[option in string]: TuningOption};
+	options: { [option in string]: TuningOption };
 };
 
 export type Page = {
@@ -35,8 +47,8 @@ export type Page = {
 export type Platform = {
 	name: string;
 	subtitle: string;
-	steps?: Partial<{[step in StepId]: string}>;
-	pages?: Partial<{[step in StepId]: Page}>;
+	steps?: Partial<{ [step in StepId]: string }>;
+	pages?: Partial<{ [step in StepId]: Page }>;
 	unsupported?: string; // note of a firmware the custom firmware does not run on
 	summary?: { hardware: string; firmware: string }; // names of the console and its system in the summary of the build
 };
@@ -44,18 +56,18 @@ export type Platform = {
 export interface Translation {
 	language: Language; // short name in the language switch
 	title: string;
-	platforms: {[platform in PlatformId]: Platform};
-	steps: {[step in StepId]: string};
+	platforms: { [platform in PlatformId]: Platform };
+	steps: { [step in StepId]: string };
 	wizard: {
 		back: string;
 		next: string;
 		rebuild: string;
 		step: string;
 	};
-	hardware: {[revision in HardwareRevision]: Hardware};
-	software: {[platform in PlatformId]: {[component in string]: Software}}; // catalogs of platforms may share IDs
-	tuning: {[platform in PlatformId]: {[group in string]: TuningGroup}};
-	buttons: {[button in string]: string}; // names of the controller buttons for tooltips
+	hardware: { [revision in HardwareRevision]: Hardware };
+	software: { [platform in PlatformId]: { [component in string]: Software } }; // catalogs of platforms may share IDs
+	tuning: { [platform in PlatformId]: { [group in string]: TuningGroup } };
+	buttons: { [button in string]: string }; // names of the controller buttons for tooltips
 	pages: {
 		hardware: Page & {
 			isModchipRequired: string;
@@ -63,14 +75,14 @@ export interface Translation {
 			size: string;
 		};
 		firmware: Page & {
-			status: {[status in FirmwareStatus]: string};
+			status: { [status in FirmwareStatus]: string };
 			unsupported: string;
 		};
 		software: Page & {
-			presets: {[preset in string]: string};
+			presets: { [preset in string]: string };
 			custom: string;
-			categories: {[category in ComponentCategory]: string};
-			sources: {[source in ComponentSource]: string};
+			categories: { [category in ComponentCategory]: string };
+			sources: { [source in ComponentSource]: string };
 			requiredBadge: string;
 			bundledBadge: string;
 			deprecatedBadge: string;
@@ -86,12 +98,12 @@ export interface Translation {
 		};
 		launch: Page & {
 			modes: string;
-			entries: {[mode in BootMode]: string}; // what every boot mode is for
+			entries: { [mode in BootMode]: string }; // what every boot mode is for
 			emummcEntry: string;
 			emummcs: string;
 			addEmuMMC: string;
 			remove: string;
-			overrides: {[key in EntryOverride]: string};
+			overrides: { [key in EntryOverride]: string };
 			asConfigured: string;
 			overridesDescription: string;
 			spares: string;
@@ -120,11 +132,11 @@ export interface Translation {
 		amiibo: Page;
 		plugins: Page & {
 			list: string; // heading of the plugins file
-			runlevels: {[runlevel in string]: string}; // where a plugin loads
+			runlevels: { [runlevel in string]: string }; // where a plugin loads
 			off: string; // a plugin that loads nowhere
 		};
 		overclock: Page & {
-			templates: {[template in string]: string};
+			templates: { [template in string]: string };
 			applyAll: string;
 			games: string;
 			add: string;
@@ -132,14 +144,14 @@ export interface Translation {
 			addCustom: string;
 			remove: string;
 			empty: string;
-			modes: {[mode in ClockMode]: string};
-			modules: {[module in ClockModule]: string};
+			modes: { [mode in ClockMode]: string };
+			modules: { [module in ClockModule]: string };
 			stock: string;
 			mhz: string;
 		};
 		appearance: Page & {
-			targets: {[target in ImageTarget]: Page};
-			defaults: {bootlogo: string; background: string}; // what the screen shows without a picture
+			targets: { [target in ImageTarget]: Page };
+			defaults: { bootlogo: string; background: string }; // what the screen shows without a picture
 			thread: string; // link to more pictures on GBAtemp
 			common: string;
 			none: string;
@@ -160,7 +172,7 @@ export interface Translation {
 			};
 			issues: string;
 			installer: string;
-			files: {[file in string]: string};
+			files: { [file in string]: string };
 			download: string;
 			failed: string;
 			manual: string;
@@ -181,8 +193,8 @@ export interface Translation {
 				moved: string;
 				lost: string;
 				foreign: string;
-				kinds: {[kind in string]: string};
-				actions: {[action in string]: string};
+				kinds: { [kind in string]: string };
+				actions: { [action in string]: string };
 				backup: string;
 				forget: string;
 			};
@@ -217,8 +229,8 @@ export interface Translation {
 		title: string;
 		open: string;
 		dump: string; // how a card is dumped
-		scripts: {[file in string]: string};
-		opened: {[kind in 'build' | 'dump']: string};
+		scripts: { [file in string]: string };
+		opened: { [kind in 'build' | 'dump']: string };
 		invalid: string;
 	};
 	metrics: {

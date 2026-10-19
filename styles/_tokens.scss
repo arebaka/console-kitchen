@@ -53,13 +53,20 @@ $months: (
 	(#b444c0, #ffffff),
 	(#e5a708, #000000),
 	(#875b1e, #ffffff),
-	(#e3412a, #000000),
+	(#e3412a, #000000)
 );
 
 // Every console reads in a font of its own, set as a custom property with its palette
 $fonts: (
-	nx: ('BIZ UDPGothic', 'Montserrat', sans-serif),
-	psp: ('M PLUS 1p', sans-serif),
+	nx: (
+		'BIZ UDPGothic',
+		'Montserrat',
+		sans-serif,
+	),
+	psp: (
+		'M PLUS 1p',
+		sans-serif,
+	),
 );
 
 $font-sans: var(--font-sans);

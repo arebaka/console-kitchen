@@ -31,12 +31,12 @@
 	],
 	"categories": {
 		"correctness": "error",
-		"suspicious": "warn",
+		"suspicious": "error",
+		"nursery": "error",
+		"perf": "error",
 		"pedantic": "warn",
-		"perf": "warn",
-		"style": "off",
 		"restriction": "allow",
-		"nursery": "allow"
+		"style": "allow"
 	},
 	"rules": {
 		"arrow-body-style": ["error", "as-needed"],

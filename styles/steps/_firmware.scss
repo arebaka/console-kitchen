@@ -8,6 +8,6 @@
 
 	// Dead firmwares step back until pointed at
 	&.dead:not(.active):not(:hover) {
-		opacity: .6;
+		opacity: 0.6;
 	}
 }

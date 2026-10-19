@@ -7,7 +7,12 @@ const WIDTH = 4;
 const HEIGHT = 2;
 
 // Every pixel has a color of its own, the last one is half transparent
-const color = (x: number, y: number) => [x * 60 + 10, y * 120 + 20, 200 - x * 40, x == 3 && y == 1 ? 128 : 255];
+const color = (x: number, y: number) => [
+	x * 60 + 10,
+	y * 120 + 20,
+	200 - x * 40,
+	x == 3 && y == 1 ? 128 : 255,
+];
 
 function image(): ImageData {
 	const data = new Uint8ClampedArray(WIDTH * HEIGHT * 4);
@@ -35,7 +40,7 @@ function read(target: ImageTarget) {
 		pixel: (x: number, y: number) => {
 			const at = offset + ((height - 1 - y) * width + x) * 4;
 			return [bitmap[at + 2], bitmap[at + 1], bitmap[at], bitmap[at + 3]];
-		}
+		},
 	};
 }
 
@@ -63,7 +68,10 @@ describe('bitmaps', () => {
 		expect([width, height]).toEqual([HEIGHT, WIDTH]);
 		for (let y = 0; y < WIDTH; y++) {
 			for (let x = 0; x < HEIGHT; x++) {
-				expect(pixel(x, y)).toEqual([...color(WIDTH - 1 - y, x).slice(0, 3), 255]);
+				expect(pixel(x, y)).toEqual([
+					...color(WIDTH - 1 - y, x).slice(0, 3),
+					255,
+				]);
 			}
 		}
 	});

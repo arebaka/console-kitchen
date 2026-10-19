@@ -1,10 +1,20 @@
-import { BuildState, Catalog, FirmwareVersion, Issue, LinkCodes, PlatformId, StepId } from '@/types';
 import { Translation } from '@i18n';
+
 import { BuildRequest, BuildResult, GeneratedFile } from '@/build';
 import { CardReading, CardTexts, MovedSections } from '@/read';
+import {
+	BuildState,
+	Catalog,
+	FirmwareVersion,
+	Issue,
+	LinkCodes,
+	PlatformId,
+	StepId,
+} from '@/types';
 import { Params } from '@/url';
-import { SWITCH } from './switch';
+
 import { PSP } from './psp';
+import { SWITCH } from './switch';
 
 // A Console Kitchen builds for: its software, system versions and steps, its links and what a build turns into
 export interface Platform<S extends BuildState = BuildState> {
@@ -25,11 +35,17 @@ export interface Platform<S extends BuildState = BuildState> {
 	trace: string; // folder of the card the installers leave the build and the files of its components in
 	configPaths: string[]; // configs builds write, a dump of a card reads them whether their components are installed or not
 	readCard(texts: CardTexts): CardReading; // what the configs of a card stand for
-	uncoveredCard(request: BuildRequest<S>, texts: CardTexts): { path: string; lines: string[] }[]; // what writing them again would lose
-	moveCard(texts: CardTexts, written: string[]): { configs: GeneratedFile[]; moved: MovedSections[] }; // what moves elsewhere instead
+	uncoveredCard(
+		request: BuildRequest<S>,
+		texts: CardTexts,
+	): { path: string; lines: string[] }[]; // what writing them again would lose
+	moveCard(
+		texts: CardTexts,
+		written: string[],
+	): { configs: GeneratedFile[]; moved: MovedSections[] }; // what moves elsewhere instead
 }
 
-export const PLATFORMS: {[platform in PlatformId]: Platform} = {
+export const PLATFORMS: { [platform in PlatformId]: Platform } = {
 	switch: SWITCH,
-	psp: PSP
+	psp: PSP,
 };

@@ -34,7 +34,11 @@
 	}
 
 	&:active {
-		background-color: color-mix(in srgb, var(--color-focus-1) 20%, var(--color-focus-bg));
+		background-color: color-mix(
+			in srgb,
+			var(--color-focus-1) 20%,
+			var(--color-focus-bg)
+		);
 	}
 }
 

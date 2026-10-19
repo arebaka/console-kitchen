@@ -14,7 +14,7 @@
 
 .control:disabled,
 .primary:disabled {
-	opacity: .45;
+	opacity: 0.45;
 	pointer-events: none;
 }
 
@@ -195,7 +195,7 @@
 	pointer-events: none;
 
 	&:not(.active) {
-		opacity: .45;
+		opacity: 0.45;
 	}
 }
 
@@ -266,7 +266,7 @@
 	}
 
 	&:disabled {
-		opacity: .45;
+		opacity: 0.45;
 	}
 
 	&.mono,
@@ -357,7 +357,11 @@ select.field {
 	width: 100%;
 	height: 6px;
 	appearance: none;
-	background: linear-gradient(to right, var(--color-accent) var(--fill), var(--color-line) var(--fill));
+	background: linear-gradient(
+		to right,
+		var(--color-accent) var(--fill),
+		var(--color-line) var(--fill)
+	);
 	border: none;
 	border-radius: 3px;
 	cursor: pointer;
@@ -386,7 +390,16 @@ select.field {
 	}
 
 	&.hue {
-		background: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+		background: linear-gradient(
+			to right,
+			#f00,
+			#ff0,
+			#0f0,
+			#0ff,
+			#00f,
+			#f0f,
+			#f00
+		);
 	}
 }
 

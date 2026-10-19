@@ -1,6 +1,6 @@
+import { Translation } from '@i18n';
 import React from 'react';
 
-import { Translation } from '@i18n';
 import { activate } from '@/utils';
 
 // Buttons in the order of the Joy-Con they are on
@@ -8,13 +8,13 @@ const LEFT = ['ZL', 'L', 'MINUS', 'LS', 'DLEFT', 'DUP', 'DDOWN', 'DRIGHT'];
 const RIGHT = ['ZR', 'R', 'PLUS', 'RS', 'Y', 'X', 'B', 'A'];
 
 // Some modules name the stick presses their own way
-const ALIASES: {[name: string]: string} = {
+const ALIASES: { [name: string]: string } = {
 	LSTICK: 'LS',
-	RSTICK: 'RS'
+	RSTICK: 'RS',
 };
 
 // Shape and label of every button, as the system UI draws them
-const GLYPHS: {[button: string]: { shape: string; label: string }} = {
+const GLYPHS: { [button: string]: { shape: string; label: string } } = {
 	A: { shape: 'face', label: 'A' },
 	B: { shape: 'face', label: 'B' },
 	X: { shape: 'face', label: 'X' },
@@ -30,7 +30,7 @@ const GLYPHS: {[button: string]: { shape: string; label: string }} = {
 	DDOWN: { shape: 'direction down', label: '' },
 	DRIGHT: { shape: 'direction right', label: '' },
 	LS: { shape: 'stick', label: 'L' },
-	RS: { shape: 'stick', label: 'R' }
+	RS: { shape: 'stick', label: 'R' },
 };
 
 // The button a value of an option stands for
@@ -56,35 +56,41 @@ export function Buttons({
 	isEnabled,
 	isLocked,
 	toggle,
-	t
+	t,
 }: ButtonsProps) {
-	const side = (order: string[]) => order
-		.map(name => values.find(value => buttonName(value) == name))
-		.filter(value => value !== undefined);
+	const side = (order: string[]) =>
+		order
+			.map(name => values.find(value => buttonName(value) == name))
+			.filter(value => value !== undefined);
 
 	return (
-		<div className="buttons">
-			{[side(LEFT), side(RIGHT)].filter(group => group.length).map((group, index) => (
-				<ul key={index} className="side">
-					{group.map(value => {
-						const name = buttonName(value);
-						const locked = isLocked?.(value) ?? false;
-						return (
-							<li
-								key={value}
-								className={`button ${GLYPHS[name].shape} ${selected.includes(value) ? 'active' : ''} ${locked ? 'locked' : ''}`}
-								title={t.buttons[name]}
-								aria-label={t.buttons[name]}
-								aria-disabled={locked || undefined}
-								tabIndex={isEnabled && !locked ? 0 : undefined}
-								onClick={() => !locked && toggle(value)}
-								onKeyDown={activate}>
-								{GLYPHS[name].label}
-							</li>
-						);
-					})}
-				</ul>
-			))}
+		<div className='buttons'>
+			{[side(LEFT), side(RIGHT)]
+				.filter(group => group.length)
+				.map((group, index) => (
+					<ul key={index} className='side'>
+						{group.map(value => {
+							const name = buttonName(value);
+							const locked = isLocked?.(value) ?? false;
+							return (
+								<li
+									key={value}
+									className={`button ${GLYPHS[name].shape} ${selected.includes(value) ? 'active' : ''} ${locked ? 'locked' : ''}`}
+									title={t.buttons[name]}
+									aria-label={t.buttons[name]}
+									aria-disabled={locked || undefined}
+									tabIndex={
+										isEnabled && !locked ? 0 : undefined
+									}
+									onClick={() => !locked && toggle(value)}
+									onKeyDown={activate}
+								>
+									{GLYPHS[name].label}
+								</li>
+							);
+						})}
+					</ul>
+				))}
 		</div>
 	);
 }
