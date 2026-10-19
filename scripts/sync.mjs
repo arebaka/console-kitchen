@@ -53,12 +53,12 @@ async function request(url, headers = {}) {
 	return response;
 }
 
-const github = async (path) => (await request(`https://api.github.com/${path}`, {
+const github = async path => (await request(`https://api.github.com/${path}`, {
 	Accept: 'application/vnd.github+json',
 	...(TOKEN && { Authorization: `Bearer ${TOKEN}` })
 })).json();
 
-const download = async (url) => Buffer.from(await (await request(url)).arrayBuffer());
+const download = async url => Buffer.from(await (await request(url)).arrayBuffer());
 
 // Size of a download in bytes, 0 when the server does not tell. Some servers, such as the one of Sony, only tell it for a part.
 // Compression is declined: asked for it, a server answers with the length of a packed empty body
@@ -93,7 +93,7 @@ function compareVersions(a, b) {
 }
 
 // App Store dates are dd/mm/yyyy
-const storeDate = (date) => date.split('/').reverse().join('-');
+const storeDate = date => date.split('/').reverse().join('-');
 
 // Equal or unknown versions are decided by the release date, the App Store wins a tie
 function pickSource(component, store, release) {
@@ -193,7 +193,7 @@ const writeTable = (url, columns, rows) => writeFile(url, [columns, ...rows.map(
 
 // Sources of the components by id, a single App Store package, asset or download may go without a list
 async function readSources(file) {
-	const many = (value) => value === undefined ? undefined : [].concat(value);
+	const many = value => value === undefined ? undefined : [].concat(value);
 	return Object.fromEntries(Object.entries(Bun.YAML.parse(await readFile(file, 'utf8')) ?? {})
 		.map(([id, { appstore, github, url, ...rest }]) => [id, { appstore: many(appstore), github: many(github), url: many(url), ...rest }]));
 }
@@ -223,7 +223,7 @@ async function syncSoftware({ platform, software: SOFTWARE, sources: SOURCES, tu
 	const store = software.some(component => component.sources.appstore) ? await appStore() : {};
 	const releases = new Map();
 	// A rolling release such as `latest` keeps its tag: its version is in the notes, its date is the last upload
-	const release = async (repo) => {
+	const release = async repo => {
 		if (!releases.has(repo)) {
 			const latest = await github(`repos/${repo}/releases/latest`);
 			releases.set(repo, {
@@ -400,7 +400,7 @@ async function listSoftware({ platform, software: SOFTWARE, sources: SOURCES, fi
 	const { rows: software } = await readTable(SOFTWARE);
 	const sources = await readSources(SOURCES);
 	const releases = new Map();
-	const release = async (repo) => {
+	const release = async repo => {
 		if (!releases.has(repo)) releases.set(repo, await github(`repos/${repo}/releases/latest`));
 		return releases.get(repo);
 	};

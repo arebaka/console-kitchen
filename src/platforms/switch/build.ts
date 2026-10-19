@@ -260,7 +260,7 @@ const CONFIGS: ConfigSpec<Request>[] = [
 		read: readLaunch,
 		covers: ['boot', 'emummc', 'autoboot', 'launch.'],
 		moves: { into: KEPT_INI, owns: isOwnSection },
-		view: (request) => {
+		view: request => {
 			const { hekate, logo } = request.tuning;
 			const entries = launchEntries(request.launch, request.selectedComponentIDs);
 			return {
