@@ -77,7 +77,7 @@ function card(file: string, content: string): string {
 	writeFileSync(join(root, file), content);
 	return root;
 }
-afterAll(() =>{  cards.forEach(root => rmSync(root, { recursive: true, force: true })); });
+afterAll(() =>{  cards.forEach(root =>{  rmSync(root, { recursive: true, force: true }); }); });
 
 // Files archives leave in the root of the card, the installers remove them. A directory of the user
 // the installer is started from holds files with the same names, which have to stay

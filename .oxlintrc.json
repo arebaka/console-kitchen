@@ -39,7 +39,7 @@
 		"nursery": "allow"
 	},
 	"rules": {
-		"arrow-body-style": "off",
+		"arrow-body-style": ["error", "as-needed"],
 		"unicorn/escape-case": "off",
 		"unicorn/number-literal-case": "off",
 		"unicorn/no-hex-escape": "off",

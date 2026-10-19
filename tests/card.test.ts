@@ -255,7 +255,7 @@ function card(file: string, content: string): string {
 	writeFileSync(join(parent, 'outside.txt'), 'outside');
 	return root;
 }
-afterAll(() =>{  roots.forEach(root => rmSync(root, { recursive: true, force: true })); });
+afterAll(() =>{  roots.forEach(root =>{  rmSync(root, { recursive: true, force: true }); }); });
 
 function expectUpdated(root: string, output: string) {
 	const [backup] = readdirSync(join(root, 'backup')).map(name => join(root, 'backup', name));
