@@ -42,13 +42,19 @@
 	},
 	"rules": {
 		"arrow-body-style": ["error", "as-needed"],
-		"import/no-unassigned-import": ["error", { "allow": ["**/*.css", "**/*.scss"] }],
+		"import/no-unassigned-import": [
+			"error",
+			{ "allow": ["**/*.css", "**/*.scss"] }
+		],
 		"unicorn/escape-case": "off",
 		"unicorn/number-literal-case": "off",
 		"unicorn/no-hex-escape": "off",
 		"unicorn/prefer-query-selector": "off",
 		"typescript/prefer-nullish-coalescing": "off",
-		"typescript/switch-exhaustiveness-check": ["warn", { "considerDefaultExhaustiveForUnions": true }],
+		"typescript/switch-exhaustiveness-check": [
+			"warn",
+			{ "considerDefaultExhaustiveForUnions": true }
+		],
 		"jsx-a11y/no-noninteractive-element-interactions": "off",
 		"jsx-a11y/no-noninteractive-tabindex": "off",
 		"jsx-a11y/prefer-tag-over-role": "off",
@@ -56,7 +62,10 @@
 		"@stylistic/arrow-parens": ["error", "as-needed"],
 		"oxc/no-map-spread": "off",
 		"vitest/valid-expect": ["error", { "maxArgs": 2 }],
-		"vitest/expect-expect": ["error", { "assertFunctionNames": ["expect", "expect*"] }],
+		"vitest/expect-expect": [
+			"error",
+			{ "assertFunctionNames": ["expect", "expect*"] }
+		],
 		"eslint/no-unused-vars": ["error", { "ignoreRestSiblings": true }]
 	},
 	"overrides": [
@@ -65,7 +74,8 @@
 			"rules": {
 				"eslint/no-await-in-loop": "off"
 			}
-		}, {
+		},
+		{
 			"files": ["tests/**"],
 			"rules": {
 				"unicorn/consistent-function-scoping": "off"

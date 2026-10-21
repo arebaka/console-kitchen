@@ -1,17 +1,27 @@
+import { HARDWARE, PLATFORM_IDS } from '@data';
+import * as PSP_DATA from '@data/psp';
+import * as SWITCH_DATA from '@data/switch';
 import { I18N } from '@i18n';
 import { describe, expect, it } from 'vitest';
 
 import { resolveSelection } from '@/data';
+import { PLATFORMS } from '@/platforms';
 import {
 	BOOT_ENTRIES,
 	CATALOG,
 	COMPONENTS,
+	GALLERY,
 	SPARE_INI,
 	SWITCH,
 } from '@/platforms/switch';
 import { SwitchState, TuningConfig } from '@/types';
 
-import { BITMAPS, customBuild, encodeBitmaps } from './fixtures';
+import {
+	BITMAPS,
+	customBuild,
+	encodeBitmaps,
+	everythingState,
+} from './fixtures';
 
 describe('build', () => {
 	const result = SWITCH.build({ ...customBuild(), lang: 'en', t: I18N.en });
@@ -1079,4 +1089,82 @@ describe('configs of modules, overlays and applications', () => {
 			saveAmiiboImages: true,
 		});
 	});
+
+	it('writes the default path for a path left empty', () => {
+		const written = configs(['jksv'], {
+			atmosphere: { sd_card_log_output_directory: '' },
+			hbl: { path: '' },
+			jksv: { WorkingDirectory: '' },
+		});
+		expect(written['atmosphere/config/system_settings.ini']).toContain(
+			'sd_card_log_output_directory = str!atmosphere/binlogs',
+		);
+		expect(written['atmosphere/config/override_config.ini']).toContain(
+			'path=atmosphere/hbl.nsp',
+		);
+		expect(
+			JSON.parse(written['config/JKSV/JKSV.json']!).WorkingDirectory,
+		).toBe('sdmc:/JKSV');
+	});
+});
+
+describe('a build', () => {
+	// Every table the platforms read, as the data modules give them out
+	const tables = () =>
+		JSON.stringify([HARDWARE, SWITCH_DATA, PSP_DATA, GALLERY]);
+	const BUILDS = [
+		['the custom build of the Switch', 'switch', customBuild()],
+		...PLATFORM_IDS.map(
+			platform =>
+				[
+					`everything of the ${platform}`,
+					platform,
+					everythingState(platform).builds[platform],
+				] as const,
+		),
+	] as const;
+
+	it.each(BUILDS)(
+		'leaves %s and the catalog as they were, and comes out the same once more',
+		(_, platform, build) => {
+			const before = { build: structuredClone(build), tables: tables() };
+			const request = { ...build, lang: 'ru', t: I18N.ru } as const;
+			const first = PLATFORMS[platform].build(request);
+			expect({ build, tables: tables() }).toEqual(before);
+			expect(PLATFORMS[platform].build(request)).toEqual(first);
+		},
+	);
+
+	it.each(PLATFORM_IDS)(
+		'downloads every source of the components of the %s, each by a step of its own',
+		platform => {
+			const build = everythingState(platform).builds[platform];
+			const { catalog } = PLATFORMS[platform];
+			const modchip = HARDWARE.find(
+				hw => hw.id == build.hardware,
+			)!.is_modchip_required;
+			const script = PLATFORMS[platform]
+				.build({ ...build, lang: 'en', t: I18N.en })
+				.files.find(file => file.path == 'install.sh')!.content;
+			// A component downloads from the source it names, the others it lists are there for updates
+			const sources = catalog.components.flatMap(comp => {
+				if (comp.source == 'appstore')
+					return comp.sources.appstore!.map(
+						name => `install_appstore '${name}'`,
+					);
+				if (comp.source == 'github')
+					return comp.sources
+						.github!.filter(item => !item.modchip || modchip)
+						.filter(item => !item.asset.includes('{{'))
+						.map(item => `'${item.repo}' '${item.asset}'`);
+				if (comp.source == 'url')
+					return comp.sources.url!.map(item => `'${item.url}'`);
+				return [];
+			});
+			expect(sources.length).toBeGreaterThan(0);
+			expect(sources.filter(source => !script.includes(source))).toEqual(
+				[],
+			);
+		},
+	);
 });
