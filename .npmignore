@@ -1,8 +1,12 @@
 # Source
 src
+public
 
 # Data
 data
+
+# Tests
+tests
 
 # Dependencies
 node_modules

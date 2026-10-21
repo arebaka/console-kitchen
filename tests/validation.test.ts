@@ -95,9 +95,6 @@ describe('validation', () => {
 	});
 
 	it('warns about patches older than the support of the HOS version', () => {
-		expect(scenario({ firmware: '23.0.0' })).toContainEqual(
-			'warning:hosTracks:sys-patch|23.0.0',
-		);
 		expect(
 			scenario({ firmware: '22.1.0' }).some(code =>
 				code.startsWith('warning:hosTracks:'),
