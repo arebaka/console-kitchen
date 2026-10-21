@@ -19,15 +19,15 @@ function customPsp(): PspState {
 		'remotejoylite',
 		'tempgba',
 	]);
-	Object.assign(build.tuning.clock, { game: 403, vsh: 222 });
-	Object.assign(build.tuning.memory, {
+	Object.assign(build.tuning.clock!, { game: 403, vsh: 222 });
+	Object.assign(build.tuning.memory!, {
 		highmem: 'auto',
 		mscache: 'off',
 		infernocache: 'off',
 	});
-	Object.assign(build.tuning.xmb, { skiplogos: 'gameboot', region: 'jp' });
-	build.tuning.ark.variant = 'lite';
-	build.tuning.aemu.hotspot = 'Home, sweet home';
+	Object.assign(build.tuning.xmb!, { skiplogos: 'gameboot', region: 'jp' });
+	build.tuning.ark!.variant = 'lite';
+	build.tuning.aemu!.hotspot = 'Home, sweet home';
 	build.plugins = { missyhud: ['vsh', 'game'], remotejoylite: [] };
 	return build;
 }
@@ -108,12 +108,12 @@ describe('PSP validation', () => {
 describe('PSP build', () => {
 	const result = PSP.build({ ...customPsp(), lang: 'en', t: I18N.en });
 	const config = (path: string) =>
-		result.configs.find(config => config.path == path)?.content;
+		result.configs.find(item => item.path == path)?.content;
 	const defaults = PSP.build({ ...PSP.defaults(), lang: 'en', t: I18N.en });
 
 	it('writes the settings of ARK as its own menu does', () => {
 		const settings = defaults.configs.find(
-			config => config.path == 'PSP/SAVEDATA/ARK_01234/SETTINGS.TXT',
+			item => item.path == 'PSP/SAVEDATA/ARK_01234/SETTINGS.TXT',
 		)!.content;
 		expect(settings.split('\n').slice(0, 21)).toEqual([
 			'always, usbcharge, on',
@@ -163,22 +163,21 @@ describe('PSP build', () => {
 			].join('\n'),
 		);
 		expect(
-			defaults.configs.find(
-				config => config.path == 'SEPLUGINS/PLUGINS.TXT',
-			)?.content,
+			defaults.configs.find(item => item.path == 'SEPLUGINS/PLUGINS.TXT')
+				?.content,
 		).toBe('vsh, gclite/category_lite.prx, on\n');
 	});
 
 	it('writes the network of æmu only when it is set', () => {
 		expect(config('SEPLUGINS/hotspot.txt')).toBe('Home, sweet home\n');
-		expect(defaults.configs.map(config => config.path)).not.toContain(
+		expect(defaults.configs.map(({ path }) => path)).not.toContain(
 			'SEPLUGINS/hotspot.txt',
 		);
 	});
 
 	it('downloads the chosen package of ARK and leaves the App Store out', () => {
-		for (const file of result.files.filter(file =>
-			file.path.startsWith('install.'),
+		for (const file of result.files.filter(({ path }) =>
+			path.startsWith('install.'),
 		)) {
 			expect(file.content).toContain("'^FasterARK_psp_lite\\.zip$'");
 			expect(file.content).toContain('PSP/GAME/UPDATE/EBOOT.PBP');

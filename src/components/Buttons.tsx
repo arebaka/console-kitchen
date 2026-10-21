@@ -65,27 +65,32 @@ export function Buttons({
 
 	return (
 		<div className='buttons'>
-			{[side(LEFT), side(RIGHT)]
-				.filter(group => group.length)
-				.map((group, index) => (
-					<ul key={index} className='side'>
+			{(
+				[
+					['left', side(LEFT)],
+					['right', side(RIGHT)],
+				] as const
+			)
+				.filter(([, group]) => group.length)
+				.map(([key, group]) => (
+					<ul key={key} className='side'>
 						{group.map(value => {
 							const name = buttonName(value);
+							const glyph = GLYPHS[name];
 							const locked = isLocked?.(value) ?? false;
 							return (
 								<li
 									key={value}
-									className={`button ${GLYPHS[name].shape} ${selected.includes(value) ? 'active' : ''} ${locked ? 'locked' : ''}`}
+									className={`button ${glyph?.shape ?? ''} ${selected.includes(value) ? 'active' : ''} ${locked ? 'locked' : ''}`}
 									title={t.buttons[name]}
 									aria-label={t.buttons[name]}
-									aria-disabled={locked || undefined}
 									tabIndex={
 										isEnabled && !locked ? 0 : undefined
 									}
 									onClick={() => !locked && toggle(value)}
 									onKeyDown={activate}
 								>
-									{GLYPHS[name].label}
+									{glyph?.label}
 								</li>
 							);
 						})}

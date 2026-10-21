@@ -7,11 +7,13 @@ import {
 	TuningGroup,
 	TuningOption,
 	TuningStep,
+	TuningValue,
 } from '@/types';
 
 // Compares dotted versions part by part: -1, 0 or 1
 export function compareVersions(a: string, b: string): number {
-	const [x, y] = [a, b].map(version => version.split('.').map(Number));
+	const x = a.split('.').map(Number);
+	const y = b.split('.').map(Number);
 	for (let i = 0; i < Math.max(x.length, y.length); i++) {
 		if ((x[i] ?? 0) != (y[i] ?? 0))
 			return Math.sign((x[i] ?? 0) - (y[i] ?? 0));
@@ -31,6 +33,12 @@ export function getTuningDefaults(groups: TuningGroup[]): TuningConfig {
 	);
 }
 
+// A build holds every group of options of its catalog, the defaults fill what a link leaves out. So a group it lacks
+// is a mistake of the code, and reading one stops right there
+export function missingGroup(id: string): never {
+	throw new Error(`No options of ${id} in the build`);
+}
+
 // Options with `when` conditions only apply while their sibling options hold the value or one of the listed values
 export function isTuningOptionActive(
 	group: TuningGroup,
@@ -38,7 +46,7 @@ export function isTuningOptionActive(
 	tuning: TuningConfig,
 ): boolean {
 	return Object.entries(option.when ?? {}).every(([id, values]) =>
-		[values].flat().some(value => value === tuning[group.id][id]),
+		[values].flat().some(value => value === tuning[group.id]?.[id]),
 	);
 }
 
@@ -48,11 +56,10 @@ export function isTuningOptionChanged(
 	option: TuningOption,
 	tuning: TuningConfig,
 ): boolean {
-	const value = tuning[group.id][option.id];
+	const value = tuning[group.id]?.[option.id];
 	return (
-		JSON.stringify(
-			option.type == 'list' ? listRows(value as string[][]) : value,
-		) != JSON.stringify(option.default)
+		JSON.stringify(option.type == 'list' ? listRows(value) : value) !=
+		JSON.stringify(option.default)
 	);
 }
 
@@ -76,12 +83,19 @@ export function listRow(text: string, fields: number): string[] {
 }
 
 // Rows of a list worth writing: the first field names a row, one without it is being filled in yet
-export const listRows = (rows: string[][]): string[][] =>
-	rows.filter(row => row[0].trim() != '');
+export const listRows = (value: TuningValue | undefined): string[][] =>
+	(Array.isArray(value) ? value : []).filter(
+		(row): row is string[] =>
+			Array.isArray(row) && (row[0] ?? '').trim() != '',
+	);
 
 // Values a field of a list holds at once, as its cell keeps them: joined with `+`, the way a combo of buttons is written
 export const cellValues = (cell: string): string[] =>
 	cell ? cell.split('+') : [];
+
+// Values a multiselect holds
+export const pickedValues = (value: TuningValue | undefined): string[] =>
+	Array.isArray(value) ? value.filter(item => typeof item == 'string') : [];
 
 // The cell of a field that holds several of its values at once: the picked ones in the order of the field.
 // Undefined when some of them are not its values, come twice or are more than the field takes
@@ -146,20 +160,20 @@ export function resolveSelection(
 	]);
 	for (let changed = dependencies; changed;) {
 		changed = false;
-		for (const comp of components.filter(comp => selected.has(comp.id))) {
+		for (const comp of components.filter(({ id }) => selected.has(id))) {
 			for (const requirement of comp.requires ?? []) {
-				if (!isRequirementMet(requirement, [...selected])) {
-					selected.add(
-						typeof requirement === 'string'
-							? requirement
-							: requirement[0],
-					);
+				const [first] = [requirement].flat();
+				if (
+					first !== undefined &&
+					!isRequirementMet(requirement, [...selected])
+				) {
+					selected.add(first);
 					changed = true;
 				}
 			}
 		}
 	}
-	for (const comp of components.filter(comp => comp.sources.bundled)) {
+	for (const comp of components.filter(({ sources }) => sources.bundled)) {
 		if (selected.has(comp.sources.bundled!)) selected.add(comp.id);
 		else selected.delete(comp.id);
 	}

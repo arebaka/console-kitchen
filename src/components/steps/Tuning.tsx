@@ -1,11 +1,12 @@
 import { Language, Translation } from '@i18n';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import {
 	cellValues,
 	isCountAllowed,
 	isTuningOptionActive,
 	pickedCell,
+	pickedValues,
 	tuningGroups,
 } from '@/data';
 import { Platform } from '@/platforms';
@@ -44,7 +45,6 @@ interface TuningProps {
 }
 
 export function Tuning({
-	lang,
 	platform,
 	step,
 	tuning,
@@ -165,17 +165,22 @@ function Option({
 		title: option.id,
 		description: '',
 	};
-	const value = tuning[group.id][option.id];
-	const label = (value: string | number) =>
-		text.values?.[value] ?? String(value);
-	const set = (value: TuningValue) => isEnabled && setValue(value);
+	const value = tuning[group.id]?.[option.id] ?? option.default;
+	// The value as the controls of its type take it
+	const number = Number(value);
+	const color = String(value);
+	const picked = pickedValues(value);
+	const rows = Array.isArray(value)
+		? value.filter((row): row is string[] => Array.isArray(row))
+		: [];
+	const label = (item: string | number) =>
+		text.values?.[item] ?? String(item);
+	const set = (next: TuningValue) => isEnabled && setValue(next);
 	// Values of a multiselect with one of them switched, in the order of the option
 	const switched = (item: string) =>
 		option.type == 'multiselect'
 			? option.values.filter(v =>
-					v == item
-						? !(value as string[]).includes(item)
-						: (value as string[]).includes(v),
+					v == item ? !picked.includes(item) : picked.includes(v),
 				)
 			: [];
 	// A value the multiselect cannot take or lose, as it would then hold too many or too few of them
@@ -210,7 +215,7 @@ function Option({
 					<p className='value'>
 						<span
 							className='swatch'
-							style={{ background: `hsl(${value}, 100%, 50%)` }}
+							style={{ background: `hsl(${number}, 100%, 50%)` }}
 						></span>
 						{String(value)}
 					</p>
@@ -222,14 +227,14 @@ function Option({
 					<p className='value'>
 						<span
 							className='swatch'
-							style={{ background: value as string }}
+							style={{ background: color }}
 						></span>
-						{String(value)}
+						{color}
 					</p>
 				)}
 				{option.type == 'number' && (
 					<NumberField
-						value={value as number}
+						value={number}
 						min={option.min}
 						max={option.max}
 						disabled={!isEnabled}
@@ -241,7 +246,7 @@ function Option({
 						type={option.secret ? 'password' : 'text'}
 						className='field'
 						maxLength={option.maxLength}
-						value={value as string}
+						value={String(value)}
 						disabled={!isEnabled}
 						autoComplete='off'
 						spellCheck={false}
@@ -264,7 +269,7 @@ function Option({
 			{option.type == 'multiselect' && isButtons(option.values) && (
 				<Buttons
 					values={option.values}
-					selected={value as string[]}
+					selected={picked}
 					isEnabled={isEnabled}
 					isLocked={isLocked}
 					toggle={button => set(switched(button))}
@@ -296,8 +301,7 @@ function Option({
 						return (
 							<li
 								key={v}
-								className={`choice ${(value as string[]).includes(v) ? 'active' : ''} ${locked ? 'locked' : ''}`}
-								aria-disabled={locked || undefined}
+								className={`choice ${picked.includes(v) ? 'active' : ''} ${locked ? 'locked' : ''}`}
 								tabIndex={isEnabled && !locked ? 0 : undefined}
 								onClick={() => !locked && set(switched(v))}
 								onKeyDown={activate}
@@ -313,15 +317,13 @@ function Option({
 				<input
 					type='range'
 					className='range'
-					style={
-						{
-							'--fill': `${(((value as number) - option.min) / (option.max - option.min)) * 100}%`,
-						} as React.CSSProperties
-					}
+					style={{
+						'--fill': `${((number - option.min) / (option.max - option.min)) * 100}%`,
+					}}
 					min={option.min}
 					max={option.max}
 					step={option.step}
-					value={value as number}
+					value={number}
 					disabled={!isEnabled}
 					onChange={event => set(Number(event.target.value))}
 				/>
@@ -333,7 +335,7 @@ function Option({
 					className='range hue'
 					min={0}
 					max={359}
-					value={value as number}
+					value={number}
 					disabled={!isEnabled}
 					onChange={event => set(Number(event.target.value))}
 				/>
@@ -343,7 +345,7 @@ function Option({
 				<input
 					type='color'
 					className='color'
-					value={value as string}
+					value={color}
 					disabled={!isEnabled}
 					onChange={event => set(event.target.value)}
 				/>
@@ -355,30 +357,28 @@ function Option({
 					<input
 						type='color'
 						className='color'
-						value={wideColor(value as string)}
+						value={wideColor(color)}
 						disabled={!isEnabled}
 						onChange={event =>
 							set(
 								narrowColor(event.target.value) +
-									(value as string)[4],
+									color.charAt(4),
 							)
 						}
 					/>
 					<input
 						type='range'
 						className='range'
-						style={
-							{
-								'--fill': `${(Number.parseInt((value as string)[4], 16) / 15) * 100}%`,
-							} as React.CSSProperties
-						}
+						style={{
+							'--fill': `${(Number.parseInt(color.charAt(4), 16) / 15) * 100}%`,
+						}}
 						min={0}
 						max={15}
-						value={Number.parseInt((value as string)[4], 16)}
+						value={Number.parseInt(color.charAt(4), 16)}
 						disabled={!isEnabled}
 						onChange={event =>
 							set(
-								(value as string).slice(0, 4) +
+								color.slice(0, 4) +
 									Number(event.target.value)
 										.toString(16)
 										.toUpperCase(),
@@ -391,7 +391,7 @@ function Option({
 			{option.type == 'list' && (
 				<ListRows
 					option={option}
-					rows={value as string[][]}
+					rows={rows}
 					labels={text.fields}
 					isEnabled={isEnabled}
 					setRows={set}
@@ -456,7 +456,6 @@ function Picks({ field, cell, label, isEnabled, setCell, t }: PicksProps) {
 				<li
 					key={item}
 					className={`choice ${picked.includes(item) ? 'active' : ''} ${isLocked(item) ? 'locked' : ''}`}
-					aria-disabled={isLocked(item) || undefined}
 					tabIndex={isEnabled && !isLocked(item) ? 0 : undefined}
 					onClick={() => !isLocked(item) && toggle(item)}
 					onKeyDown={activate}
@@ -495,6 +494,7 @@ function ListRows({
 	return (
 		<div className='list'>
 			{rows.map((row, at) => (
+				// oxlint-disable-next-line react/no-array-index-key -- rows of a list have no ids, a row is its place
 				<div key={at} className='entry'>
 					{option.fields.map((field, index) =>
 						field.max === undefined ? (
@@ -539,7 +539,7 @@ function ListRows({
 							<Picks
 								key={field.id}
 								field={field}
-								cell={row[index]}
+								cell={row[index] ?? ''}
 								label={label(field.id)}
 								isEnabled={isEnabled}
 								setCell={value => {
@@ -582,7 +582,7 @@ function ListRows({
 
 // A color with a hex digit per channel as the #rrggbb a color field takes, and back with every channel rounded to a digit
 const wideColor = (color: string) =>
-	`#${[1, 2, 3].map(at => color[at].repeat(2)).join('')}`.toLowerCase();
+	`#${[1, 2, 3].map(at => color.charAt(at).repeat(2)).join('')}`.toLowerCase();
 const narrowColor = (color: string) =>
 	`#${[1, 3, 5].map(at => Math.round(Number.parseInt(color.slice(at, at + 2), 16) / 17).toString(16)).join('')}`.toUpperCase();
 
@@ -602,10 +602,13 @@ function NumberField({
 	disabled,
 	setValue,
 }: NumberFieldProps) {
+	// A new value from outside replaces the draft
 	const [draft, setDraft] = useState(String(value));
-	useEffect(() => {
+	const [shown, setShown] = useState(value);
+	if (shown != value) {
+		setShown(value);
 		setDraft(String(value));
-	}, [value]);
+	}
 
 	return (
 		<input

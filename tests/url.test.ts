@@ -22,8 +22,8 @@ describe('links', () => {
 
 	it('restore the build', () => {
 		const expected = structuredClone(state);
-		expected.builds.switch.tuning.sys_ftpd_light.user = '';
-		expected.builds.switch.tuning.sys_ftpd_light.password = '';
+		expected.builds.switch.tuning.sys_ftpd_light!.user = '';
+		expected.builds.switch.tuning.sys_ftpd_light!.password = '';
 		expected.builds.switch.appearance = {
 			bootlogo: 'hekate-a',
 			logos: { stock: 'hekate-b' },
@@ -115,14 +115,14 @@ describe('links', () => {
 	it('take as many values of an option as it holds at once', () => {
 		const combo = (raw: string) =>
 			decodeState(`?status_monitor.key_combo=${raw}`).builds.switch.tuning
-				.status_monitor.key_combo;
+				.status_monitor?.key_combo;
 		expect(combo('ZR,ZL,R,L')).toEqual(['L', 'R', 'ZL', 'ZR']);
 		expect(combo('L,R,ZL,ZR,A')).toEqual(['L', 'DDOWN', 'RSTICK']);
 		expect(combo('')).toEqual(['L', 'DDOWN', 'RSTICK']);
 		// An option without bounds takes any number of them, none too
 		expect(
 			decodeState('?tesla.key_combo=').builds.switch.tuning.tesla
-				.key_combo,
+				?.key_combo,
 		).toEqual([]);
 	});
 
@@ -131,7 +131,7 @@ describe('links', () => {
 		const path = (raw: string) =>
 			decodeState(
 				`?atmosphere.sd_card_log_output_directory=${encodeURIComponent(raw)}`,
-			).builds.switch.tuning.atmosphere.sd_card_log_output_directory;
+			).builds.switch.tuning.atmosphere?.sd_card_log_output_directory;
 		expect(path('logs/of mine')).toBe('logs/of mine');
 		for (const breaking of [
 			'x\nCONSOLE_KITCHEN_EOF\necho pwned',
@@ -147,43 +147,43 @@ describe('links', () => {
 	});
 
 	it('carry a list a param per row, the last field with whatever it holds', () => {
-		const sources = (query: string) =>
-			decodeState(`?${query}`).builds.switch.tuning.dbi_local_sources
-				.sources;
-		const state = defaultState();
-		const { tuning } = state.builds.switch;
+		const sources = (params: string) =>
+			decodeState(`?${params}`).builds.switch.tuning.dbi_local_sources
+				?.sources;
+		const edited = defaultState();
+		const local = edited.builds.switch.tuning.dbi_local_sources!;
 		// A row without a name is being filled in yet, links leave it out
-		tuning.dbi_local_sources.sources = [
+		local.sources = [
 			['Homebrew', 'sdmc:/switch'],
 			['Mods', 'sdmc:/a=b, c'],
 			['', 'sdmc:/nameless'],
 		];
-		expect(spell(state)).toContain(
+		expect(spell(edited)).toContain(
 			'&dbi_local_sources.sources=Homebrew%3Dsdmc:%2Fswitch&dbi_local_sources.sources=Mods%3Dsdmc:%2Fa%3Db,%20c',
 		);
-		expect(spell(state)).not.toContain('nameless');
-		expect(sources(encodeState(state))).toEqual([
+		expect(spell(edited)).not.toContain('nameless');
+		expect(sources(encodeState(edited))).toEqual([
 			['Homebrew', 'sdmc:/switch'],
 			['Mods', 'sdmc:/a=b, c'],
 		]);
 
 		// A list without rows is told from the one a link says nothing about
-		tuning.dbi_local_sources.sources = [];
-		expect(spell(state)).toMatch(/&dbi_local_sources\.sources=$/);
-		expect(sources(encodeState(state))).toEqual([]);
-		tuning.dbi_local_sources.sources = [
+		local.sources = [];
+		expect(spell(edited)).toMatch(/&dbi_local_sources\.sources=$/);
+		expect(sources(encodeState(edited))).toEqual([]);
+		local.sources = [
 			['DBILogs', 'sdmc:/switch/DBI/logs'],
 			['', ''],
 		];
-		expect(spell(state)).not.toContain('dbi_local_sources');
-		expect(encodeState(state)).toBe(encodeState(defaultState()));
+		expect(spell(edited)).not.toContain('dbi_local_sources');
+		expect(encodeState(edited)).toBe(encodeState(defaultState()));
 	});
 
 	it('take a list only with every row of it valid', () => {
 		const sources = (...rows: string[]) =>
 			decodeState(
 				`?${rows.map(row => `dbi_local_sources.sources=${encodeURIComponent(row)}`).join('&')}`,
-			).builds.switch.tuning.dbi_local_sources.sources;
+			).builds.switch.tuning.dbi_local_sources?.sources;
 		const shipped = [['DBILogs', 'sdmc:/switch/DBI/logs']];
 		expect(sources('Homebrew=sdmc:/switch', 'Empty')).toEqual([
 			['Homebrew', 'sdmc:/switch'],
@@ -210,7 +210,7 @@ describe('links', () => {
 		const modes = (...rows: string[]) =>
 			decodeState(
 				`?${rows.map(row => `ultrahand_status_monitor.modes=${encodeURIComponent(row)}`).join('&')}`,
-			).builds.switch.tuning.ultrahand_status_monitor.modes;
+			).builds.switch.tuning.ultrahand_status_monitor?.modes;
 		// Separated by commas as links spell them or joined with `+` as they are kept, in any order
 		expect(modes('Micro=L,R,DDOWN=--microOverlay')).toEqual([
 			['Micro', 'L+R+DDOWN', '--microOverlay'],
@@ -229,32 +229,32 @@ describe('links', () => {
 		]) {
 			expect(modes(`Micro=${combo}=--microOverlay`), combo).toEqual([]);
 		}
-		const state = defaultState();
-		state.builds.switch.tuning.ultrahand_status_monitor.modes = [
+		const edited = defaultState();
+		edited.builds.switch.tuning.ultrahand_status_monitor!.modes = [
 			['Micro', 'L+R+DDOWN', '--microOverlay'],
 		];
-		expect(spell(state)).toContain(
+		expect(spell(edited)).toContain(
 			'&ultrahand_status_monitor.modes=Micro%3DL,R,DDOWN%3D--microOverlay',
 		);
-		expect(decodeState(encodeState(state))).toEqual(state);
+		expect(decodeState(encodeState(edited))).toEqual(edited);
 	});
 
 	// Their addresses may hold a login and a password
 	it('keep the network sources of DBI out', () => {
-		const state = defaultState();
-		state.builds.switch.tuning.dbi_locations.locations = [
+		const edited = defaultState();
+		edited.builds.switch.tuning.dbi_locations!.locations = [
 			['NAS', 'SFTP', 'sftp://lesha:hunter2@nas/'],
 		];
-		state.builds.switch.tuning.dbi_network_sources.sources = [
+		edited.builds.switch.tuning.dbi_network_sources!.sources = [
 			['NAS', 'FTP', 'ftp://lesha:hunter2@nas/'],
 		];
-		expect(encodeState(state)).toBe(encodeState(defaultState()));
+		expect(encodeState(edited)).toBe(encodeState(defaultState()));
 		const { tuning } = decodeState(
 			'?dbi_locations.locations=Shop%3DApacheHTTP%3Dhttp://example.com/&dbi_network_sources.sources=Shop%3DApacheHTTP%3Dhttp://example.com/',
 		).builds.switch;
 		expect([
-			tuning.dbi_locations.locations,
-			tuning.dbi_network_sources.sources,
+			tuning.dbi_locations?.locations,
+			tuning.dbi_network_sources?.sources,
 		]).toEqual([[], []]);
 	});
 

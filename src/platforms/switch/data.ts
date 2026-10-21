@@ -16,6 +16,8 @@ import {
 	BootEntry,
 	BootMode,
 	Catalog,
+	ClockMode,
+	ClockModule,
 	Clocks,
 	ComponentEntry,
 	ComponentInfo,
@@ -29,6 +31,16 @@ import {
 } from '@/types';
 
 export { OVERCLOCK };
+
+// Modes of the console a profile of sys-clk sets clocks for, and its clocks: of the processor, the graphics and the memory
+export const CLOCK_MODES: ClockMode[] = [
+	'docked',
+	'handheld',
+	'handheld_charging',
+	'handheld_charging_usb',
+	'handheld_charging_official',
+];
+export const CLOCK_MODULES: ClockModule[] = ['cpu', 'gpu', 'mem'];
 export const HOS_VERSIONS: FirmwareVersion[] = FIRMWARE;
 export const COMPONENTS: ComponentInfo[] = SOFTWARE;
 // Payloads are picked on the Launch step, the other categories on the Software one
@@ -69,11 +81,10 @@ export const COMPONENT_ENTRIES: ComponentEntry[] = [
 	})),
 ];
 // Pictures lie in the folder of their target under their ID: appearance/icon/hekate-switch.png
-export const GALLERY: GalleryImage[] = APPEARANCE.map(image =>
-	Object.assign(image, {
-		file: `appearance/${image.target}/${image.id}.png`,
-	}),
-);
+export const GALLERY: GalleryImage[] = APPEARANCE.map(image => ({
+	...image,
+	file: `appearance/${image.target}/${image.id}.png`,
+}));
 
 // Versions newer than the last one some Atmosphere release added support for cannot boot CFW yet
 const NEWEST_SUPPORTED_HOS = HOS_VERSIONS.filter(v => v.atmosphere).reduce(
@@ -156,15 +167,14 @@ function systemEntries(
 		})),
 		...mode('sysmmc'),
 		...mode('stock'),
-	].map(entry =>
-		Object.assign(entry, {
-			keys: {
-				...entry.keys,
-				...(bootsCFW(entry) ? modules : {}),
-				...launch.overrides[entry.id],
-			},
-		}),
-	);
+	].map(entry => ({
+		...entry,
+		keys: {
+			...entry.keys,
+			...(bootsCFW(entry) ? modules : {}),
+			...launch.overrides[entry.id],
+		},
+	}));
 }
 
 // Entries of the Launch menu in their order: the ones booting the system, then what the selected components bring,
@@ -194,11 +204,10 @@ export function spareEntries(
 			selectedComponentIDs.filter(id => id != comp.id),
 		)
 			.filter(bootsCFW)
-			.map(entry =>
-				Object.assign(entry, {
-					name: `${entry.name} without ${comp.name}`,
-				}),
-			),
+			.map(entry => ({
+				...entry,
+				name: `${entry.name} without ${comp.name}`,
+			})),
 	);
 }
 

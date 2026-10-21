@@ -1,8 +1,8 @@
 # Console Kitchen
 
-[Русская версия](README.RU.MD)
+[Русская версия](README.RU.md)
 
-A builder of custom firmware setups for the Nintendo Switch and the PSP: Hekate and Atmosphère or ARK-5 with the chosen homebrew, configured down to single keys of their configs.
+> A builder of custom firmware setups for the Nintendo Switch and the PSP: Hekate and Atmosphère or ARK-5 with the chosen homebrew, configured down to single keys of their configs.
 
 Console Kitchen is a static web app. It goes through the console, the software and every setting, then produces installers for Linux and macOS (`install.sh`) and Windows (`install.ps1`) along with a readme on the first boot. The installer lies in the root of the SD card or the Memory Stick and builds the setup right there from the latest releases, so nothing in a build is prepackaged. The whole build is kept in the page address: a link reproduces it, except passwords and uploaded images. The software is listed in full there, so a link keeps its build when the recommended selection changes. The link is short, such as `?h=JP&s=H&sm=JN`: it names the console, the software and the options by numbers, the options of everything that is set up in a param of its own. A link that spells them out, such as `?hw=oled&hos=23.0.0&sw=atmosphere,hekate`, is read as well, and so is a mix of both. Every console keeps a build of its own while another one is picked, and the page takes its look: the system UI of the Switch or the XMB of the PSP in the color of the month. The interface speaks English, Russian and Ukrainian.
 

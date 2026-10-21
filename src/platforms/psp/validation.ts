@@ -1,5 +1,6 @@
 import { Translation } from '@i18n';
 
+import { missingGroup } from '@/data';
 import { Issue, PspState } from '@/types';
 import { componentIssues, sortIssues } from '@/validation';
 
@@ -38,7 +39,10 @@ export function validate(build: PspState, t: Translation): Issue[] {
 	}
 
 	// æmu loses its connection with the caches of ARK on
-	const { mscache, infernocache } = build.tuning.memory;
+	const {
+		memory: { mscache, infernocache } = missingGroup('memory'),
+		clock = missingGroup('clock'),
+	} = build.tuning;
 	if (
 		build.selectedComponentIDs.includes('aemu') &&
 		(mscache != 'off' || infernocache != 'off')
@@ -52,10 +56,7 @@ export function validate(build: PspState, t: Translation): Issue[] {
 	}
 
 	// ARK clocks the CPU above 333 MHz on any PSP, but not every chip holds it
-	const mhz = Math.max(
-		Number(build.tuning.clock.game),
-		Number(build.tuning.clock.vsh),
-	);
+	const mhz = Math.max(Number(clock.game), Number(clock.vsh));
 	if (mhz > 333) {
 		issues.push({
 			level: 'info',

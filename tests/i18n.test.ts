@@ -37,7 +37,7 @@ function mismatches(declared: ts.Type, value: unknown, path: string): string[] {
 		return typeof value === 'string' ? [] : [`${path}: not a text`];
 	if (!value || typeof value !== 'object') return [`${path}: not a section`];
 
-	const section = value as Record<string, unknown>;
+	const section: Record<string, unknown> = { ...value };
 	const properties = checker.getPropertiesOfType(type);
 	const names = new Set(properties.map(property => property.name));
 	const items = checker.getIndexTypeOfType(type, ts.IndexKind.String);

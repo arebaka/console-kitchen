@@ -17,7 +17,7 @@ describe('build', () => {
 	const result = SWITCH.build({ ...customBuild(), lang: 'en', t: I18N.en });
 	const paths = result.configs.map(config => config.path);
 	const config = (path: string) =>
-		result.configs.find(config => config.path == path)?.content;
+		result.configs.find(item => item.path == path)?.content;
 	const installers = result.files.filter(file =>
 		file.path.startsWith('install.'),
 	);
@@ -26,7 +26,7 @@ describe('build', () => {
 		`\n${config('bootloader/hekate_ipl.ini')}`
 			.split(`\n[${name}]\n`)[1]
 			?.split('\n\n')[0]
-			.trim()
+			?.trim()
 			.split('\n');
 
 	it('writes the Launch menu: boot modes, then payloads, autoboot by number', () => {
@@ -123,13 +123,13 @@ describe('build', () => {
 	it('writes the nogc patch only when it is set one way or the other', () => {
 		const stratosphere = (nogc: string) => {
 			const build = customBuild();
-			build.tuning.stratosphere.nogc = nogc;
+			build.tuning.stratosphere!.nogc = nogc;
 			return SWITCH.build({
 				...build,
 				lang: 'en',
 				t: I18N.en,
 			}).configs.find(
-				config => config.path == 'atmosphere/config/stratosphere.ini',
+				item => item.path == 'atmosphere/config/stratosphere.ini',
 			)?.content;
 		};
 		expect(stratosphere('auto')).toBeUndefined();
@@ -181,8 +181,8 @@ describe('build', () => {
 			lang: 'en',
 			t: I18N.en,
 		});
-		for (const file of files.filter(file =>
-			file.path.startsWith('install.'),
+		for (const file of files.filter(({ path }) =>
+			path.startsWith('install.'),
 		)) {
 			for (const [path, data] of Object.entries(images)) {
 				expect(file.content).toContain(path);
@@ -203,8 +203,8 @@ describe('build', () => {
 			lang: 'en',
 			t: I18N.en,
 		});
-		for (const file of files.filter(file =>
-			file.path.startsWith('install.'),
+		for (const file of files.filter(({ path }) =>
+			path.startsWith('install.'),
 		)) {
 			expect(file.content).toContain("'^translation_ua\\.bin$'");
 			expect(file.content).toContain("'switch/DBI/translation.bin'");
@@ -242,7 +242,7 @@ describe('what hekate loads for a component', () => {
 		});
 	};
 	const config = (result: ReturnType<typeof build>, path: string) =>
-		result.configs.find(config => config.path == path)?.content;
+		result.configs.find(item => item.path == path)?.content;
 	const readme = (result: ReturnType<typeof build>) =>
 		result.files.find(file => file.path == 'README.md')?.content;
 	// Lines of the sections of an ini of hekate by their names
@@ -252,7 +252,7 @@ describe('what hekate loads for a component', () => {
 				.trim()
 				.split('\n\n')
 				.map(section => {
-					const [header, ...lines] = section.split('\n');
+					const [header = '', ...lines] = section.split('\n');
 					return [header.slice(1, -1), lines];
 				}),
 		);
@@ -274,14 +274,14 @@ describe('what hekate loads for a component', () => {
 			);
 			for (const key of MODULES) {
 				expect(
-					menu[entry].indexOf(key),
+					menu[entry]?.indexOf(key),
 					`${entry}: ${key}`,
-				).toBeGreaterThan(menu[entry].indexOf(PACKAGE));
+				).toBeGreaterThan(menu[entry]?.indexOf(PACKAGE) ?? Infinity);
 			}
 		}
-		expect(menu.Stock.filter(line => /^(kip1|secmon)=/.test(line))).toEqual(
-			[],
-		);
+		expect(
+			menu.Stock?.filter(line => /^(kip1|secmon)=/.test(line)),
+		).toEqual([]);
 	});
 
 	it('leaves every entry booting CFW in More configs once more without it, with the rest of its keys, its logo and its icon', () => {
@@ -293,7 +293,7 @@ describe('what hekate loads for a component', () => {
 		);
 		for (const entry of ENTRIES) {
 			expect(spare[`${entry} without Horizon OC`], entry).toEqual(
-				menu[entry].filter(line => !MODULES.includes(line)),
+				menu[entry]?.filter(line => !MODULES.includes(line)),
 			);
 		}
 		expect(spare['CFW (emuMMC) without Horizon OC']).toEqual(
@@ -315,9 +315,7 @@ describe('what hekate loads for a component', () => {
 
 	it('writes nothing of it for a build without such a component', () => {
 		const result = build([]);
-		expect(result.configs.map(config => config.path)).not.toContain(
-			SPARE_INI,
-		);
+		expect(result.configs.map(({ path }) => path)).not.toContain(SPARE_INI);
 		expect(config(result, 'bootloader/hekate_ipl.ini')).not.toMatch(
 			/^(kip1|secmon)=/m,
 		);
@@ -342,7 +340,7 @@ describe('a system a component brings', () => {
 		});
 	};
 	const file = (result: ReturnType<typeof build>, path: string) =>
-		result.files.find(file => file.path == path)!.content;
+		result.files.find(item => item.path == path)!.content;
 	// Lines of the sections of the Launch menu by their names
 	const menu = (
 		result: ReturnType<typeof build>,
@@ -353,7 +351,7 @@ describe('a system a component brings', () => {
 				.content.trim()
 				.split('\n\n')
 				.map(section => [
-					section.split('\n')[0].slice(1, -1),
+					(section.split('\n')[0] ?? '').slice(1, -1),
 					section.split('\n').slice(1),
 				]),
 		);
@@ -410,7 +408,7 @@ describe('a system a component brings', () => {
 		});
 		expect(menu(result).config).toContain('autoboot=4');
 		expect(
-			menu(result).Lakka.filter(line => /^(kip1|secmon)=/.test(line)),
+			menu(result).Lakka?.filter(line => /^(kip1|secmon)=/.test(line)),
 		).toEqual([]);
 		expect(menu(result)['CFW (emuMMC)']).toContain(
 			'kip1=atmosphere/kips/hoc.kip',
@@ -437,7 +435,7 @@ describe('configs of modules, overlays and applications', () => {
 	// Configs by path of the recommended build with more components and changed options of their groups
 	const configs = (ids: string[], changes: TuningConfig) => {
 		const build = SWITCH.defaults();
-		const { configs } = SWITCH.build({
+		const result = SWITCH.build({
 			...build,
 			selectedComponentIDs: resolveSelection(CATALOG, [
 				...build.selectedComponentIDs,
@@ -446,9 +444,9 @@ describe('configs of modules, overlays and applications', () => {
 			tuning: {
 				...build.tuning,
 				...Object.fromEntries(
-					Object.entries(changes).map(([group, options]) => [
+					Object.entries(changes).map(([group, values]) => [
 						group,
-						{ ...build.tuning[group], ...options },
+						{ ...build.tuning[group], ...values },
 					]),
 				),
 			},
@@ -456,20 +454,19 @@ describe('configs of modules, overlays and applications', () => {
 			t: I18N.en,
 		});
 		return Object.fromEntries(
-			configs.map(config => [config.path, config.content]),
+			result.configs.map(config => [config.path, config.content]),
 		);
 	};
-	const lines = (content: string) => content.trim().split('\n');
+	// A config the build lacks reads as empty, and so fails what is expected of it
+	const lines = (content = '') => content.trim().split('\n');
 	// Keys of an INI file by its sections
-	const sections = (
-		content: string,
-	): Record<string, Record<string, string>> =>
+	const sections = (content = ''): Record<string, Record<string, string>> =>
 		Object.fromEntries(
 			content
 				.trim()
 				.split('\n\n')
 				.map(section => {
-					const [header, ...keys] = section.split('\n');
+					const [header = '', ...keys] = section.split('\n');
 					return [
 						header.slice(1, -1),
 						Object.fromEntries(keys.map(key => key.split('='))),
@@ -522,7 +519,7 @@ describe('configs of modules, overlays and applications', () => {
 	});
 
 	it('writes every setting of Ultrahand in the order it keeps them, what it shows as what it hides', () => {
-		const { ultrahand } = sections(
+		const { ultrahand = {} } = sections(
 			configs([], {
 				ultrahand: {
 					default_lang: 'uk',
@@ -680,7 +677,7 @@ describe('configs of modules, overlays and applications', () => {
 				discovery_vidpid: '054c-*, 057e-2009',
 				auto_add_controller: false,
 			},
-		})['config/sys-con/config.ini'];
+		})['config/sys-con/config.ini']!;
 		expect(ini).toContain('\n[default]\n');
 		expect(ini).not.toContain('{{');
 		expect(lines(ini.slice(0, ini.indexOf('\n\n')))).toEqual([
@@ -719,7 +716,7 @@ describe('configs of modules, overlays and applications', () => {
 
 		expect(Object.keys(ini)).toEqual(Object.keys(SECTIONS));
 		for (const [section, group] of Object.entries(SECTIONS)) {
-			expect(Object.keys(ini[section]).toSorted(), section).toEqual(
+			expect(Object.keys(ini[section] ?? {}).toSorted(), section).toEqual(
 				options(group).toSorted(),
 			);
 		}
@@ -745,7 +742,7 @@ describe('configs of modules, overlays and applications', () => {
 			layer_height_align: 'bottom',
 			perfect_line_color: '#0C0F',
 		});
-		expect(ini.game_resolutions.refresh_rate).toBe('10');
+		expect(ini.game_resolutions?.refresh_rate).toBe('10');
 	});
 
 	it('writes a setting of a mode of Status Monitor into the section of the mode', () => {
@@ -803,7 +800,7 @@ describe('configs of modules, overlays and applications', () => {
 				Password: 'hunter22',
 			},
 			dbi_fb2: { Theme: 'Night', Orientation: 90 },
-		})['switch/DBI/dbi.config'];
+		})['switch/DBI/dbi.config']!;
 		// Keys of the config by its sections, the commented examples of its lists left out
 		const ini: { [section: string]: { [key: string]: string } } = {};
 		let section = '';
@@ -811,7 +808,7 @@ describe('configs of modules, overlays and applications', () => {
 			const [, header] = line.match(/^\[(.+)\]$/) ?? [];
 			const [, key, value] = line.match(/^([^;=]+?) ?= ?(.*)$/) ?? [];
 			if (header) ini[(section = header)] = {};
-			else if (key) ini[section][key] = value;
+			else if (key) (ini[section] ??= {})[key] = value ?? '';
 		}
 		// The storages of MTP are numbered and spelled with spaces: `5: SD Card install`
 		const plain = (key: string) =>
@@ -824,7 +821,7 @@ describe('configs of modules, overlays and applications', () => {
 				.map(option => option.id);
 
 		for (const [name, group] of Object.entries(SECTIONS)) {
-			expect(Object.keys(ini[name]).map(plain), name).toEqual(
+			expect(Object.keys(ini[name] ?? {}).map(plain), name).toEqual(
 				settings(group).map(plain),
 			);
 		}
@@ -843,7 +840,7 @@ describe('configs of modules, overlays and applications', () => {
 			BufferSize: '512',
 		});
 		expect(ini.FTP).toMatchObject({ TurnOffScreen: 'false', Port: '2121' });
-		expect(ini.HTTP.Port).toBe('1234');
+		expect(ini.HTTP?.Port).toBe('1234');
 		expect(ini['Access point']).toEqual({
 			UseAP: 'true',
 			SSID: 'deck',
@@ -1005,19 +1002,19 @@ describe('configs of modules, overlays and applications', () => {
 	it('writes the config of DBI instead of downloading the one of its release', () => {
 		const build = SWITCH.defaults();
 		const { files } = SWITCH.build({ ...build, lang: 'en', t: I18N.en });
-		for (const file of files.filter(file =>
-			file.path.startsWith('install.'),
+		for (const file of files.filter(({ path }) =>
+			path.startsWith('install.'),
 		)) {
 			expect(file.content).toContain("'switch/DBI/dbi.config'");
 			expect(file.content).not.toContain('dbi\\.config');
 		}
-		const { configs } = SWITCH.build({
+		const bare = SWITCH.build({
 			...build,
 			selectedComponentIDs: resolveSelection(CATALOG, []),
 			lang: 'en',
 			t: I18N.en,
 		});
-		expect(configs.map(config => config.path)).not.toContain(
+		expect(bare.configs.map(config => config.path)).not.toContain(
 			'switch/DBI/dbi.config',
 		);
 	});
@@ -1030,7 +1027,7 @@ describe('configs of modules, overlays and applications', () => {
 					UIAnimationScaling: 1.25,
 					WorkingDirectory: 'sdmc:/saves "of mine"',
 				},
-			})['config/JKSV/JKSV.json'],
+			})['config/JKSV/JKSV.json']!,
 		);
 		expect(Object.keys(json)).toEqual(
 			CATALOG.tuning
@@ -1047,8 +1044,8 @@ describe('configs of modules, overlays and applications', () => {
 	});
 
 	it('writes the WebDAV server of JKSV only when it is set, the login only when it is given', () => {
-		const webdav = (options: TuningConfig[string]) =>
-			configs([], { jksv_webdav: options })['config/JKSV/webdav.json'];
+		const webdav = (values: TuningConfig[string]) =>
+			configs([], { jksv_webdav: values })['config/JKSV/webdav.json'];
 		expect(
 			JSON.parse(
 				webdav({
@@ -1056,7 +1053,7 @@ describe('configs of modules, overlays and applications', () => {
 					basepath: '/saves/',
 					username: 'me',
 					password: 'hunter2',
-				}),
+				})!,
 			),
 		).toEqual({
 			origin: 'https://dav.example.com',
@@ -1065,7 +1062,7 @@ describe('configs of modules, overlays and applications', () => {
 			password: 'hunter2',
 		});
 		expect(
-			JSON.parse(webdav({ origin: 'https://dav.example.com' })),
+			JSON.parse(webdav({ origin: 'https://dav.example.com' })!),
 		).toEqual({ origin: 'https://dav.example.com' });
 		expect(webdav({ username: 'me', password: 'hunter2' })).toBeUndefined();
 	});
@@ -1074,7 +1071,7 @@ describe('configs of modules, overlays and applications', () => {
 		const json = JSON.parse(
 			configs(['amiigo'], {
 				amiigo: { categoryMode: 2, saveAmiiboImages: true },
-			})['config/amiigo/settings.json'],
+			})['config/amiigo/settings.json']!,
 		);
 		expect(json).toEqual({
 			categoryMode: 2,

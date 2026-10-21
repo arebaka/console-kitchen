@@ -1,4 +1,4 @@
-import { HARDWARE, HARDWARE_CODES } from '@data';
+import { HARDWARE, HARDWARE_CODES, PLATFORM_IDS } from '@data';
 import { Language } from '@i18n';
 
 import { PLATFORMS } from '@/platforms';
@@ -10,7 +10,8 @@ import { readToml, tomlParams } from './toml';
 import { BuildState, PlatformId, PspState, StepId, SwitchState } from './types';
 import { query } from './url';
 
-export const PLATFORM_IDS: PlatformId[] = ['switch', 'psp'];
+// The platforms lie in the data, next to their consoles
+export { PLATFORM_IDS };
 
 // A build of every platform, so a console picked by mistake does not cost the build of another one
 export interface Builds {
@@ -51,19 +52,19 @@ export function encodeState(state: AppState): string {
 
 // Params of a link spelled in full, whichever way it spells them, and the platform they are of:
 // the revision of a link tells its platform, a link without one is a Switch build
-function spelled(query: string): {
+function spelled(link: string): {
 	platform: PlatformId;
 	params: URLSearchParams;
 } {
-	const params = new URLSearchParams(query);
+	const params = new URLSearchParams(link);
 	const hardware = hardwareOf(params, HARDWARE_CODES);
 	const platform =
 		HARDWARE.find(hw => hw.id == hardware)?.platform ?? 'switch';
 	return { platform, params: expand(params, PLATFORMS[platform].link) };
 }
 
-export function decodeState(query: string): AppState {
-	const { platform, params } = spelled(query);
+export function decodeState(link: string): AppState {
+	const { platform, params } = spelled(link);
 	const state = defaultState();
 	state.platform = platform;
 	state.builds = withBuild(
@@ -85,8 +86,9 @@ export function importBuild(
 	text: string,
 ): AppState | undefined {
 	const table = readToml(text);
-	const platform = PLATFORMS[table?.platform as PlatformId];
-	if (table?.kind != 'build' || !platform) return undefined;
+	const id = PLATFORM_IDS.find(platform => platform == table?.platform);
+	if (table?.kind != 'build' || !id) return undefined;
+	const platform = PLATFORMS[id];
 	const params = tomlParams(platform.catalog, table);
 	if (!params.some(([key]) => key == 'hw'))
 		params.push(['hw', platform.defaults().hardware]);

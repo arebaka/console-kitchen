@@ -52,7 +52,6 @@ const PAYLOADS = COMPONENTS.filter(comp => comp.payload);
 const OVERRIDE_VALUES = [undefined, 1, 0] as const;
 
 export function Launch({
-	lang,
 	launch,
 	setLaunch,
 	selectedComponentIDs,
@@ -104,24 +103,21 @@ export function Launch({
 		}
 	};
 	// The entry goes away with its keys, autoboot falls back to the menu as the build already does
-	const removeEmuMMC = (folder: string) => {
-		const { [`emummc-${folder}`]: removed, ...overrides } =
-			launch.overrides;
+	const removeEmuMMC = (gone: string) => {
+		const { [`emummc-${gone}`]: removed, ...overrides } = launch.overrides;
 		setLaunch({
 			...launch,
-			emummcs: launch.emummcs.filter(item => item != folder),
+			emummcs: launch.emummcs.filter(item => item != gone),
 			overrides,
 			autoboot:
-				launch.autoboot == `emummc-${folder}`
-					? 'menu'
-					: launch.autoboot,
+				launch.autoboot == `emummc-${gone}` ? 'menu' : launch.autoboot,
 		});
 	};
 
 	// Boot modes switch on and off, more emuMMCs follow the first one and go away by a button
 	const rows: { id: string; mode?: BootMode; folder?: string }[] = [
 		{ id: 'emummc', mode: 'emummc' },
-		...launch.emummcs.map(folder => ({ id: `emummc-${folder}`, folder })),
+		...launch.emummcs.map(item => ({ id: `emummc-${item}`, folder: item })),
 		{ id: 'sysmmc', mode: 'sysmmc' },
 		{ id: 'stock', mode: 'stock' },
 	];
@@ -145,17 +141,18 @@ export function Launch({
 				</p>
 				<ul className='rows'>
 					{rows.map(row => {
-						const entry = entries.find(entry => entry.id == row.id);
+						const entry = entries.find(item => item.id == row.id);
 						const name =
 							entry?.name ??
-							BOOT_ENTRIES.find(entry => entry.id == row.id)!
-								.name;
+							BOOT_ENTRIES.find(item => item.id == row.id)!.name;
 
 						return (
 							<li key={row.id} className='row entry'>
 								{row.mode ? (
 									<div
 										className='switch'
+										role='switch'
+										aria-checked={!!entry}
 										tabIndex={0}
 										onClick={() => {
 											toggleMode(row.mode!);

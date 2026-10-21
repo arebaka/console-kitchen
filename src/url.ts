@@ -40,10 +40,10 @@ function optionParams(
 	value: TuningValue,
 ): Params {
 	if (option.type != 'list') return [[key, serialize(value)]];
-	const rows = listRows(value as string[][]);
+	const rows = listRows(value);
 	const cells = (row: string[]) =>
 		row.map((cell, index) =>
-			option.fields[index].max === undefined
+			option.fields[index]?.max === undefined
 				? cell
 				: cellValues(cell).join(','),
 		);
@@ -58,7 +58,7 @@ const isLine = (text: string, maxLength: number) =>
 
 // A value of the option read from the params of a link with its key, undefined unless it is valid
 function parse(option: TuningOption, raws: string[]): TuningValue | undefined {
-	const [raw] = raws;
+	const [raw = ''] = raws;
 	const number = Number(raw);
 	switch (option.type) {
 		case 'toggle':
@@ -99,8 +99,8 @@ function parse(option: TuningOption, raws: string[]): TuningValue | undefined {
 					? []
 					: raws.map(item => listRow(item, option.fields.length));
 			const cells = rows.map(row =>
-				row.map((cell, index) => {
-					const field = option.fields[index];
+				option.fields.map((field, index) => {
+					const cell = row[index] ?? '';
 					if (field.max !== undefined)
 						return pickedCell(
 							field,
@@ -115,12 +115,17 @@ function parse(option: TuningOption, raws: string[]): TuningValue | undefined {
 						: undefined;
 				}),
 			);
+			const valid = cells.filter(
+				(row): row is string[] => !row.includes(undefined),
+			);
 			const isValid =
 				rows.length <= (option.max ?? Infinity) &&
-				rows.every(row => row[0].trim() != '') &&
-				cells.every(row => !row.includes(undefined));
-			return isValid ? (cells as string[][]) : undefined;
+				rows.every(row => (row[0] ?? '').trim() != '') &&
+				valid.length == cells.length;
+			return isValid ? valid : undefined;
 		}
+		default:
+			return undefined;
 	}
 }
 
@@ -164,7 +169,7 @@ export function encodeTuning(
 				optionParams(
 					`${group.id}.${option.id}`,
 					option,
-					tuning[group.id][option.id],
+					tuning[group.id]?.[option.id] ?? option.default,
 				),
 			),
 	);
@@ -209,27 +214,6 @@ export function tuningWords(groups: TuningGroup[]): string[] {
 						return option.fields.flatMap(
 							field => field.values ?? [],
 						);
-					case 'color': {
-						throw new Error('Not implemented yet: "color" case');
-					}
-					case 'hue': {
-						throw new Error('Not implemented yet: "hue" case');
-					}
-					case 'number': {
-						throw new Error('Not implemented yet: "number" case');
-					}
-					case 'range': {
-						throw new Error('Not implemented yet: "range" case');
-					}
-					case 'rgba4444': {
-						throw new Error('Not implemented yet: "rgba4444" case');
-					}
-					case 'text': {
-						throw new Error('Not implemented yet: "text" case');
-					}
-					case 'toggle': {
-						throw new Error('Not implemented yet: "toggle" case');
-					}
 					default:
 						return [];
 				}
@@ -247,11 +231,12 @@ export function decodeTuning(
 ): void {
 	for (const group of groups) {
 		for (const option of group.options.filter(
-			option => !!option.secret == secrets,
+			({ secret }) => !!secret == secrets,
 		)) {
 			const raws = params.getAll(`${group.id}.${option.id}`);
 			const value = raws.length > 0 ? parse(option, raws) : undefined;
-			if (value !== undefined) tuning[group.id][option.id] = value;
+			if (value !== undefined)
+				(tuning[group.id] ??= {})[option.id] = value;
 		}
 	}
 }

@@ -1,6 +1,7 @@
 import {
 	type Conditions,
 	type Row,
+	cellOf,
 	compact,
 	components,
 	files,
@@ -8,6 +9,7 @@ import {
 	flag,
 	link,
 	number,
+	oneOf,
 	presets,
 	text,
 	tuning,
@@ -20,6 +22,7 @@ import type {
 	ImageTarget,
 	LaunchKey,
 	OverclockData,
+	SwitchRevision,
 } from '@/types';
 
 import APPEARANCE_ROWS from './appearance.tsv';
@@ -61,46 +64,54 @@ export const TUNING = tuning(
 
 export const LINK = link(LINK_ROWS);
 
-const launchEntry = (row: Row) =>
-	compact({
-		id: row.id,
-		name: row.name,
-		caption: row.caption,
-		keys: LAUNCH_KEYS[`./launch/${row.id}.yaml`],
+// What the cells of the tables may hold where a type allows only some values
+const MODES: BootMode[] = ['emummc', 'sysmmc', 'stock'];
+const TARGETS: ImageTarget[] = ['bootlogo', 'background', 'icon'];
+
+// An entry without a file of keys has none
+const launchEntry = (row: Row) => {
+	const id = cellOf(row, 'id');
+	return compact({
+		id,
+		name: cellOf(row, 'name'),
+		caption: cellOf(row, 'caption'),
+		keys: LAUNCH_KEYS[`./launch/${id}.yaml`] ?? {},
 		logo: text(row.logo),
 		icon: text(row.icon),
 	});
+};
 
 // Entries of the Launch menu that boot the system, with the keys of their sections
 export const LAUNCH: BootEntry[] = LAUNCH_ROWS.filter(
 	row => !row.component,
-).map(row => Object.assign(launchEntry(row), { id: row.id as BootMode }));
+).map(row => ({ ...launchEntry(row), id: oneOf(MODES, row.id) }));
 
 // Entries that are in the menu with a component: the other systems hekate boots, such as a Linux
 export const SYSTEMS: ComponentEntry[] = LAUNCH_ROWS.filter(
 	row => row.component,
-).map(row => Object.assign(launchEntry(row), { component: row.component }));
+).map(row => ({ ...launchEntry(row), component: cellOf(row, 'component') }));
 
 // What hekate has to load with CFW for a component, such as its KIP: the keys the component adds to the entries booting CFW.
 // A file named after an entry holds the keys of that entry instead, whatever component shares the name
 export const MODULES: { [component: string]: LaunchKey } = Object.fromEntries(
-	SOFTWARE.filter(
-		comp =>
-			`./launch/${comp.id}.yaml` in LAUNCH_KEYS &&
-			!LAUNCH_ROWS.some(row => row.id == comp.id),
-	).map(comp => [comp.id, LAUNCH_KEYS[`./launch/${comp.id}.yaml`]]),
+	SOFTWARE.flatMap((comp): [string, LaunchKey][] => {
+		const keys = LAUNCH_KEYS[`./launch/${comp.id}.yaml`];
+		return keys && !LAUNCH_ROWS.some(row => row.id == comp.id)
+			? [[comp.id, keys]]
+			: [];
+	}),
 );
 
 // Pictures of the gallery, their files are named after their targets and ids
 export const APPEARANCE: Omit<GalleryImage, 'file'>[] = APPEARANCE_ROWS.map(
 	row =>
 		compact({
-			id: row.id,
-			target: row.target as ImageTarget,
+			id: cellOf(row, 'id'),
+			target: oneOf(TARGETS, row.target),
 			hue: flag(row.hue) || undefined,
-			author: row.author,
-			license: row.license,
-			url: row.url,
+			author: cellOf(row, 'author'),
+			license: cellOf(row, 'license'),
+			url: cellOf(row, 'url'),
 		}),
 );
 
@@ -109,16 +120,19 @@ export const APPEARANCE: Omit<GalleryImage, 'file'>[] = APPEARANCE_ROWS.map(
 export const OVERCLOCK: OverclockData = {
 	frequencies: CLOCK_FREQUENCIES as OverclockData['frequencies'],
 	caps: Object.fromEntries(
-		CLOCK_CAP_ROWS.map(({ clock, ...revisions }) => [
-			clock,
-			Object.fromEntries(
-				Object.entries(revisions).map(([revision, cap]) => [
-					revision,
-					number(cap),
-				]),
-			),
+		CLOCK_CAP_ROWS.map((row): [string, Record<SwitchRevision, number>] => [
+			cellOf(row, 'clock'),
+			{
+				erista: number(row.erista),
+				mariko: number(row.mariko),
+				oled: number(row.oled),
+				lite: number(row.lite),
+			},
 		]),
-	) as OverclockData['caps'],
+	),
 	templates: CLOCK_TEMPLATES as OverclockData['templates'],
-	games: GAME_ROWS.map(({ id, name }) => ({ id, name })),
+	games: GAME_ROWS.map(row => ({
+		id: cellOf(row, 'id'),
+		name: cellOf(row, 'name'),
+	})),
 };

@@ -57,7 +57,6 @@ const MODULES: ClockModule[] = ['cpu', 'gpu', 'mem'];
 const TEMPLATES = ['stock', ...Object.keys(OVERCLOCK.templates)];
 
 export function Overclock({
-	lang,
 	hardware,
 	overclock,
 	setOverclock,
@@ -278,7 +277,7 @@ export function Overclock({
 									<table className='clocks'>
 										<thead>
 											<tr>
-												<th></th>
+												<th aria-hidden='true'></th>
 												{MODULES.map(module => (
 													<th key={module}>
 														{

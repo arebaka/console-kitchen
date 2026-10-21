@@ -11,6 +11,7 @@ import {
 	renderConfigs,
 	updateSummary,
 } from '@/build';
+import { missingGroup } from '@/data';
 import {
 	CardConfig,
 	CardTexts,
@@ -36,13 +37,13 @@ type Request = BuildRequest<PspState>;
 // Where the installers leave the build and the files of its components: a folder of its own in the root, the XMB does not show it
 export const TRACE_DIR = 'console-kitchen';
 
-const onOff = (value: TuningValue) => (value ? 'on' : 'off');
+const onOff = (value: TuningValue | undefined) => (value ? 'on' : 'off');
 
 // A setting with modes as the settings menu of ARK writes it: off, plain on or `key:mode`
-const mode = (key: string, value: TuningValue, plain = 'on') =>
+const mode = (key: string, value: TuningValue | undefined, plain = 'on') =>
 	value == 'off'
 		? `always, ${key}, off`
-		: `always, ${value == plain ? key : `${key}:${value}`}, on`;
+		: `always, ${value == plain ? key : `${key}:${String(value)}`}, on`;
 
 // Lines of the plugins file: runlevels, path relative to the file, on, or `always` and off for a plugin left off
 const pluginLines = (request: Request) =>
@@ -73,21 +74,23 @@ function readSettings(card: CardConfig): Params {
 		['infernocache', 'memory', 'on'],
 		['skiplogos', 'xmb', 'all'],
 		['hidepics', 'xmb', 'all'],
-	]) {
+	] as const) {
 		const line = lines.find(
 			([runlevel, name]) =>
 				runlevel == 'always' &&
 				(name == key || name?.startsWith(`${key}:`)),
 		);
-		if (line)
+		if (line) {
+			const [, name = '', state] = line;
 			params.push([
 				`${group}.${key}`,
-				line[2] == 'off'
+				state == 'off'
 					? 'off'
-					: line[1].includes(':')
-						? line[1].slice(key.length + 1)
+					: name.includes(':')
+						? name.slice(key.length + 1)
 						: plain,
 			]);
+		}
 	}
 	const clock = (runlevel: string) =>
 		lines
@@ -97,7 +100,7 @@ function readSettings(card: CardConfig): Params {
 					name?.startsWith('cpuclock:') &&
 					state == 'on',
 			)?.[1]
-			.slice('cpuclock:'.length);
+			?.slice('cpuclock:'.length);
 	const both = clock('always');
 	params.push(
 		['clock.game', both ?? clock('game') ?? '0'],
@@ -107,10 +110,7 @@ function readSettings(card: CardConfig): Params {
 		([level, name, state]) =>
 			level == 'vsh' && name?.startsWith('region_') && state == 'on',
 	);
-	params.push([
-		'xmb.region',
-		region ? region[1].slice('region_'.length) : 'off',
-	]);
+	params.push(['xmb.region', region?.[1]?.slice('region_'.length) ?? 'off']);
 	return params;
 }
 
@@ -128,7 +128,7 @@ function readPlugins(card: CardConfig): Params {
 					[
 						`plugin.${comp.id}`,
 						line[2]?.toLowerCase() == 'on'
-							? line[0].split(/\s+/).join(',')
+							? (line[0] ?? '').split(/\s+/).join(',')
 							: '',
 					],
 				]
@@ -141,20 +141,28 @@ const CONFIGS: ConfigSpec<Request>[] = [
 		path: 'PSP/SAVEDATA/ARK_01234/SETTINGS.TXT',
 		template: TEMPLATES.settingsTxt,
 		read: readSettings,
-		view: ({ tuning: { clock, memory, xmb, device, go } }) => ({
+		view: ({
+			tuning: {
+				clock = missingGroup('clock'),
+				memory = missingGroup('memory'),
+				xmb = missingGroup('xmb'),
+				device = missingGroup('device'),
+				go = missingGroup('go'),
+			},
+		}) => ({
 			usbcharge: onOff(clock.usbcharge),
 			// The same clock in games and the XMB takes one line, 0 leaves the clock alone
 			clock:
 				clock.game == clock.vsh
 					? clock.game
-						? [`always, cpuclock:${clock.game}, on`]
+						? [`always, cpuclock:${String(clock.game)}, on`]
 						: []
 					: [
 							...(clock.game
-								? [`game, cpuclock:${clock.game}, on`]
+								? [`game, cpuclock:${String(clock.game)}, on`]
 								: []),
 							...(clock.vsh
-								? [`vsh, cpuclock:${clock.vsh}, on`]
+								? [`vsh, cpuclock:${String(clock.vsh)}, on`]
 								: []),
 						],
 			wpa2: onOff(device.wpa2),
@@ -192,9 +200,13 @@ const CONFIGS: ConfigSpec<Request>[] = [
 		path: 'SEPLUGINS/hotspot.txt',
 		template: TEMPLATES.hotspotTxt,
 		read: card => [['aemu.hotspot', card.text.trim()]],
-		view: ({ tuning: { aemu } }) => ({ hotspot: aemu.hotspot }),
-		when: ({ selectedComponentIDs, tuning: { aemu } }) =>
-			selectedComponentIDs.includes('aemu') && aemu.hotspot != '',
+		view: ({ tuning: { aemu = missingGroup('aemu') } }) => ({
+			hotspot: aemu.hotspot,
+		}),
+		when: ({
+			selectedComponentIDs,
+			tuning: { aemu = missingGroup('aemu') },
+		}) => selectedComponentIDs.includes('aemu') && aemu.hotspot != '',
 	},
 ];
 

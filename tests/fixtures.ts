@@ -32,18 +32,18 @@ export function customBuild(): SwitchState {
 		},
 		autoboot: 'stock',
 	};
-	Object.assign(build.tuning.logo, { bootwait: 5, noticker: true });
-	build.tuning.hekate.backlight = 50;
-	Object.assign(build.tuning.nyx, { themecolor: 200, themebg: '#123456' });
-	build.tuning.dns.targets = ['emummc', 'sysmmc'];
-	build.tuning.tesla.key_combo = ['ZL', 'ZR', 'DDOWN'];
-	Object.assign(build.tuning.sys_ftpd_light, {
+	Object.assign(build.tuning.logo!, { bootwait: 5, noticker: true });
+	build.tuning.hekate!.backlight = 50;
+	Object.assign(build.tuning.nyx!, { themecolor: 200, themebg: '#123456' });
+	build.tuning.dns!.targets = ['emummc', 'sysmmc'];
+	build.tuning.tesla!.key_combo = ['ZL', 'ZR', 'DDOWN'];
+	Object.assign(build.tuning.sys_ftpd_light!, {
 		user: 'lesha, the "user"',
 		password: 'hunter2',
 		port: 2121,
 	});
-	build.tuning.exosphere.log_baud_rate = 9600;
-	build.tuning.missioncontrol.host_name = 'switch&co=1';
+	build.tuning.exosphere!.log_baud_rate = 9600;
+	build.tuning.missioncontrol!.host_name = 'switch&co=1';
 	build.overclock = [
 		{
 			id: '0100F2C0115B6000',
@@ -113,7 +113,7 @@ export function everythingState(platform: PlatformId): AppState {
 	build.selectedComponentIDs = catalog.components.map(comp => comp.id);
 	for (const group of catalog.tuning) {
 		for (const option of group.options) {
-			const tuning = build.tuning[group.id];
+			const tuning = build.tuning[group.id]!;
 			if (option.type == 'toggle') tuning[option.id] = !option.default;
 			if (option.type == 'range' || option.type == 'number')
 				tuning[option.id] =

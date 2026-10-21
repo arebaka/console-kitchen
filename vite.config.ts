@@ -28,5 +28,5 @@ export default defineConfig({
 		cors: true,
 		hmr: true,
 	},
-	devtools: true,
+	devtools: false,
 });

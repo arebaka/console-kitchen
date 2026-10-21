@@ -5,7 +5,6 @@ import { compareVersions } from '@/data';
 import {
 	ClockKey,
 	Clocks,
-	EntryOverride,
 	ImageTarget,
 	LaunchConfig,
 	LinkCodes,
@@ -28,6 +27,8 @@ import {
 import {
 	BOOT_ENTRIES,
 	CATALOG,
+	CLOCK_MODES,
+	CLOCK_MODULES,
 	COMPONENTS,
 	COMPONENT_ENTRIES,
 	ENTRY_OVERRIDES,
@@ -43,13 +44,19 @@ import {
 const BOOT_MODES = BOOT_ENTRIES.map(entry => entry.id);
 
 // Clocks a profile sets: of the processor, the graphics and the memory in every mode of the console
-const CLOCK_KEYS = [
-	'docked',
-	'handheld',
-	'handheld_charging',
-	'handheld_charging_usb',
-	'handheld_charging_official',
-].flatMap(mode => ['cpu', 'gpu', 'mem'].map(module => `${mode}_${module}`));
+const CLOCK_KEYS = CLOCK_MODES.flatMap(mode =>
+	CLOCK_MODULES.map((module): ClockKey => `${mode}_${module}`),
+);
+
+// Revisions of the console the table of the hardware has
+const isRevision = (id: string | null): id is SwitchRevision =>
+	HARDWARE.some(hw => hw.platform == 'switch' && hw.id == id);
+
+// An image of the gallery by its id, undefined unless the gallery has it for the target
+const galleryImage = (target: ImageTarget, id: string | null) =>
+	id && GALLERY.some(item => item.target == target && item.id == id)
+		? id
+		: undefined;
 
 // Entries booting the system, enabled or not: they keep overrides, logos and icons
 const hosEntries = (launch: LaunchConfig) => [
@@ -198,8 +205,7 @@ export function decode(params: URLSearchParams): SwitchState {
 	const get = (key: string) => params.get(key);
 
 	const hardware = get('hw');
-	if (HARDWARE.some(hw => hw.platform == 'switch' && hw.id == hardware))
-		build.hardware = hardware as SwitchRevision;
+	if (isRevision(hardware)) build.hardware = hardware;
 
 	const hos = get('hos');
 	if (HOS_VERSIONS.some(v => v.version == hos)) build.firmware = hos!;
@@ -228,10 +234,12 @@ export function decode(params: URLSearchParams): SwitchState {
 	}
 
 	for (const [key, value] of params) {
-		const [, entry, override] = key.match(/^launch\.(.+)\.(\w+)$/) ?? [];
+		const [, entry, name] = key.match(/^launch\.(.+)\.(\w+)$/) ?? [];
+		const override = ENTRY_OVERRIDES.find(item => item == name);
 		if (
+			entry !== undefined &&
 			entries.includes(entry) &&
-			ENTRY_OVERRIDES.includes(override as EntryOverride) &&
+			override &&
 			(value == '0' || value == '1')
 		) {
 			build.launch.overrides[entry] = {
@@ -246,9 +254,9 @@ export function decode(params: URLSearchParams): SwitchState {
 	const oc = get('oc');
 	if (oc) {
 		for (const entry of oc.split(',')) {
-			const [id, template, ...pairs] = entry.split('.');
+			const [id = '', template = '', ...pairs] = entry.split('.');
 			if (
-				!/^[0-9A-F]{16}$/i.test(id ?? '') ||
+				!/^[0-9A-F]{16}$/i.test(id) ||
 				build.overclock.some(profile => profile.id == id.toUpperCase())
 			)
 				continue;
@@ -262,9 +270,8 @@ export function decode(params: URLSearchParams): SwitchState {
 				template == 'custom' ? {} : templateClocks(template);
 			for (const pair of pairs) {
 				const [key, mhz] = pair.split('-');
-				if (CLOCK_KEYS.includes(key) && Number(mhz) > 0) {
-					clocks[key as ClockKey] = Number(mhz);
-				}
+				const clock = CLOCK_KEYS.find(item => item == key);
+				if (clock && Number(mhz) > 0) clocks[clock] = Number(mhz);
 			}
 			build.overclock.push({
 				id: id.toUpperCase(),
@@ -275,22 +282,16 @@ export function decode(params: URLSearchParams): SwitchState {
 		}
 	}
 
-	const image = (target: ImageTarget, id: string | null) =>
-		id && GALLERY.some(item => item.target == target && item.id == id)
-			? id
-			: undefined;
 	const images = (kind: 'logo' | 'icon', target: ImageTarget) =>
 		Object.fromEntries(
-			[...entries, ...BROUGHT]
-				.map(entry => [
-					entry,
-					image(target, get(`img.${kind}.${entry}`)),
-				])
-				.filter(([, id]) => id),
-		) as Record<string, string>;
+			[...entries, ...BROUGHT].flatMap((entry): [string, string][] => {
+				const id = galleryImage(target, get(`img.${kind}.${entry}`));
+				return id ? [[entry, id]] : [];
+			}),
+		);
 	build.appearance = {
-		bootlogo: image('bootlogo', get('img.bootlogo')),
-		background: image('background', get('img.background')),
+		bootlogo: galleryImage('bootlogo', get('img.bootlogo')),
+		background: galleryImage('background', get('img.background')),
 		logos: images('logo', 'bootlogo'),
 		icons: images('icon', 'icon'),
 	};

@@ -97,7 +97,7 @@ const HOSTILE_FILES = installers({
 			lang: 'en',
 			t: I18N.en,
 		},
-		HARDWARE[0],
+		HARDWARE[0]!,
 		[],
 		[HOSTILE],
 		[],
@@ -108,15 +108,18 @@ const HOSTILE_FILES = installers({
 	console: 'Nintendo Switch',
 });
 
-const RUNS = Object.entries(OFFLINE) as [keyof typeof OFFLINE, BuildResult][];
-const BUILDS = Object.entries(EVERYTHING).flatMap(
-	([platform, result]) =>
+const PLATFORM_RUNS = ['switch', 'psp'] as const;
+const RUNS = PLATFORM_RUNS.map(
+	(platform): [(typeof PLATFORM_RUNS)[number], BuildResult] => [
+		platform,
+		OFFLINE[platform],
+	],
+);
+const BUILDS = PLATFORM_RUNS.flatMap(
+	platform =>
 		[
-			[
-				`${platform} offline`,
-				OFFLINE[platform as keyof typeof OFFLINE].files,
-			],
-			[`${platform} everything`, result.files],
+			[`${platform} offline`, OFFLINE[platform].files],
+			[`${platform} everything`, EVERYTHING[platform].files],
 		] as const,
 );
 const script = (files: GeneratedFile[], path: string) =>
@@ -165,7 +168,7 @@ function expectInstalled(
 ) {
 	for (const asset of result.assets) {
 		expect(
-			readFileSync(join(root, asset.path)).equals(BITMAPS[asset.path]),
+			readFileSync(join(root, asset.path)).equals(BITMAPS[asset.path]!),
 			asset.path,
 		).toBe(true);
 	}
@@ -241,7 +244,7 @@ describe.skipIf(!CAN_RUN_BASH || !has('tar'))('install.sh with a tar', () => {
 					lang: 'en',
 					t: I18N.en,
 				},
-				HARDWARE[0],
+				HARDWARE[0]!,
 				[lakka],
 				[],
 				[],

@@ -70,13 +70,14 @@ export function Notice({ issue, platform, applyFix, setStep, t }: NoticeProps) {
 		<>
 			<span className='text'>
 				{format(
-					t.issues[issue.code as keyof Translation['issues']],
+					new Map(Object.entries(t.issues)).get(issue.code) ??
+						issue.code,
 					issue.params,
 				)}
 			</span>
-			{issue.fixes?.map((fix, index) => (
+			{issue.fixes?.map(fix => (
 				<button
-					key={index}
+					key={`${fix.add?.join() ?? ''}-${fix.remove?.join() ?? ''}`}
 					className='fix'
 					onClick={() => {
 						applyFix(fix);

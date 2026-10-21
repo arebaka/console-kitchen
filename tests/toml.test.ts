@@ -35,8 +35,8 @@ function everything(platform: PlatformId): AppState {
 	const build = state.builds[platform];
 	build.selectedComponentIDs = catalog.components.map(comp => comp.id);
 	for (const group of catalog.tuning) {
-		for (const option of group.options.filter(option => !option.secret)) {
-			const tuning = build.tuning[group.id];
+		for (const option of group.options.filter(({ secret }) => !secret)) {
+			const tuning = build.tuning[group.id]!;
 			if (option.type == 'toggle') tuning[option.id] = !option.default;
 			if (option.type == 'range' || option.type == 'number')
 				tuning[option.id] =
@@ -91,6 +91,7 @@ describe('build files', () => {
 	);
 
 	it('spell switches, numbers and lists as TOML does', () => {
+		// oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the test reads the table as TOML spells it
 		const table = parse(exported(customState())) as any;
 		expect(table).toMatchObject({
 			kind: 'build',
@@ -145,8 +146,8 @@ describe('build files', () => {
 			'kind = "build"\nformat = 1\nplatform = "switch"\nhw = "erista"\n[missioncontrol]\nhost_name = "switch\\nrm -rf ~"\n';
 		expect(
 			importBuild(defaultState(), text)!.builds.switch.tuning
-				.missioncontrol.host_name,
-		).toBe(PLATFORMS.switch.defaults().tuning.missioncontrol.host_name);
+				.missioncontrol!.host_name,
+		).toBe(PLATFORMS.switch.defaults().tuning.missioncontrol!.host_name);
 	});
 
 	it.each([

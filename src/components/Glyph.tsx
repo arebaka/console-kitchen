@@ -10,13 +10,13 @@ const SHAPES: { [button: string]: React.ReactNode } = {
 
 interface GlyphProps {
 	name: string; // a letter of a Nintendo button or a PlayStation symbol
-	role: 'next' | 'back' | 'rebuild';
+	hint: 'next' | 'back' | 'rebuild';
 }
 
 // Button of the console a hint of the footer stands for
-export function Glyph({ name, role }: GlyphProps) {
+export function Glyph({ name, hint }: GlyphProps) {
 	return (
-		<span className={`glyph ${role}`}>
+		<span className={`glyph ${hint}`}>
 			{SHAPES[name] ? (
 				<svg viewBox='0 0 24 24' aria-hidden='true'>
 					{SHAPES[name]}

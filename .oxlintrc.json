@@ -7,7 +7,6 @@
 		"typescript",
 		"jsx-a11y",
 		"react",
-		"react-perf",
 		"oxc",
 		"vitest",
 		"eslint",
@@ -17,6 +16,9 @@
 		"browser": true,
 		"es2024": true,
 		"node": true
+	},
+	"globals": {
+		"Bun": "readonly"
 	},
 	"jsPlugins": [
 		"@stylistic/eslint-plugin",
@@ -40,12 +42,36 @@
 	},
 	"rules": {
 		"arrow-body-style": ["error", "as-needed"],
+		"import/no-unassigned-import": ["error", { "allow": ["**/*.css", "**/*.scss"] }],
 		"unicorn/escape-case": "off",
 		"unicorn/number-literal-case": "off",
 		"unicorn/no-hex-escape": "off",
 		"unicorn/prefer-query-selector": "off",
-		"@stylistic/arrow-parens": ["error", "as-needed"]
+		"typescript/prefer-nullish-coalescing": "off",
+		"typescript/switch-exhaustiveness-check": ["warn", { "considerDefaultExhaustiveForUnions": true }],
+		"jsx-a11y/no-noninteractive-element-interactions": "off",
+		"jsx-a11y/no-noninteractive-tabindex": "off",
+		"jsx-a11y/prefer-tag-over-role": "off",
+		"react/react-in-jsx-scope": "off",
+		"@stylistic/arrow-parens": ["error", "as-needed"],
+		"oxc/no-map-spread": "off",
+		"vitest/valid-expect": ["error", { "maxArgs": 2 }],
+		"vitest/expect-expect": ["error", { "assertFunctionNames": ["expect", "expect*"] }],
+		"eslint/no-unused-vars": ["error", { "ignoreRestSiblings": true }]
 	},
+	"overrides": [
+		{
+			"files": ["scripts/**", "tests/ui.ts"],
+			"rules": {
+				"eslint/no-await-in-loop": "off"
+			}
+		}, {
+			"files": ["tests/**"],
+			"rules": {
+				"unicorn/consistent-function-scoping": "off"
+			}
+		}
+	],
 	"options": {
 		"typeAware": true,
 		"typeCheck": true

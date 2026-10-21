@@ -9,7 +9,7 @@ common_problem_resolver	CommonProblemResolver	Team Neptune	payloads	0.3.5	86085	
 hwfly_toolbox	Hwfly Toolbox	hwfly-nx	payloads	1.1.1	78348	2022-05-09	github			bootloader/payloads/hwfly_toolbox.bin					mariko,oled,lite
 picofly_toolbox	Picofly Toolbox	Ansem-SoD	payloads	0.2	70608		url			bootloader/payloads/picofly_toolbox.bin					mariko,oled,lite
 sys_clk	sys-clk	RetroNX	sysmodules	2.0.1-fix	3438174	2026-02-17	appstore	c	sys_clk.png				horizon_oc
-horizon_oc	Horizon OC	Souldbminer / Lightos	sysmodules	2.5.1	1780565	2026-07-26	github	ho	horizon_oc.png		ultrahand		sys_clk	atmosphere				1
+horizon_oc	Horizon OC	Souldbminer / Lightos	sysmodules	2.6.0-rel	1866568	2026-10-16	github	ho	horizon_oc.png		ultrahand		sys_clk	atmosphere				1
 missioncontrol	MissionControl	ndeadly	sysmodules	0.16.0	204223	2026-10-03	appstore	mc	missioncontrol.png				ldn_mitm
 saltynx	SaltyNX	masagrator	sysmodules	2.1.3	256972	2026-10-15	github	sa
 ldn_mitm	ldn_mitm	spacemeowx2	sysmodules	1.25.1	343088	2026-04-08	github	lm					missioncontrol
@@ -28,7 +28,7 @@ edizon_overlay	EdiZon Overlay	proferabg / WerWolv	overlays	1.0.15	380679	2026-04
 reversenx_rt	ReverseNX-RT	masagrator	overlays	2.2.1	315448	2025-11-15	github	rr			saltynx,ovlmenu|ultrahand
 sysdvr_overlay	SysDVR Overlay	Hartie95	overlays	1.0.15	143062	2026-02-13	appstore	vr	sysdvr_overlay.png		sysdvr,ovlmenu|ultrahand
 noled	noled	kemalsanli	overlays	1.0.0	282680	2026-03-12	github	nl	noled.png		ovlmenu|ultrahand
-master_volume	MasterVolume	averne	overlays	1.2.3	434772	2026-05-16	github	mv			ovlmenu|ultrahand			hos
+master_volume	MasterVolume	averne	overlays	1.2.3	444488	2026-10-17	github	mv			ovlmenu|ultrahand			hos
 bt_audio	BT_Audio-ovl	masagrator	overlays	1.0.2	286776	2025-11-15	github	ba			ovlmenu|ultrahand
 quickntp	QuickNTP	nedex	overlays	1.6.0	153413	2025-12-04	github	qn	quickntp.png		ovlmenu|ultrahand
 ovl_sysmodules	ovl-sysmodules	WerWolv / ppkantorski	overlays	1.5.3	639036	2026-06-25	github	os			ovlmenu|ultrahand
@@ -43,7 +43,7 @@ nx_shell	NX-Shell	Joel16	tools	4.01	3614714	2022-08-08	appstore	sh	nx_shell.png
 sphaira	sphaira	ITotalJustice	tools	1.0.8	2381016	2026-10-07	appstore	sp	sphaira.png
 jc_color_swapper	JC Color Swapper	HamletDuFromage	tools	1.2	538430	2020-05-12	appstore	cs	jc_color_swapper.png							1
 dbi	DBI	duckbill	installers	912ru	16657965	2026-09-18	github	db	dbi.jpg			tinfoil,goldleaf
-dbi_patcher	DBIPatcher	rashevskyv	installers	912	16657965	2026-10-15	github	db	dbi_patcher.jpg		dbi							1
+dbi_patcher	DBIPatcher	rashevskyv	installers	912	17455105	2026-10-15	github	db	dbi_patcher.jpg		dbi							1
 nxdumptool	nxdumptool	DarkMatterCore	installers	2026.04.24	1308155	2026-05-14	appstore	dt	nxdumptool.png
 goldleaf	Goldleaf	XorTroll	installers	1.2.1	5249300	2026-09-23	appstore	gl	goldleaf.png			tinfoil
 tinfoil	Tinfoil	blawar	installers	20.0	8704000		manual	ti	tinfoil.jpg			goldleaf
@@ -79,7 +79,7 @@ melonds	melonDS	Arisotura / ArcDelta	emulators	7.2.1	1389241	2026-04-25	appstore
 noods	NooDS	Hydr8gon	emulators	release	2714438	2026-08-09	github	nd	noods.png			desmume
 desmume	DeSmuME-NX	Laproxi / MasterFeizz	emulators	0.0.3	1693444	2018-07-21	appstore	ds	desmume.png			noods				1
 scummvm	ScummVM	ScummVM Team	emulators	2026.3.0	121852316	2026-06-21	appstore	sv	scummvm.png
-flycast	Flycast	libretro	emulators	nightly	8676767		url	ra	flycast.jpg		retroarch
+flycast	Flycast	libretro	emulators	nightly	8728701		url	ra	flycast.jpg		retroarch
 psnes	pSNES	Cpasjuste	emulators	7.2	14858460	2026-08-19	appstore	sn	psnes.png
 pnes	pNES	Cpasjuste	emulators	7.2	14989033	2026-08-19	appstore	ne	pnes.png
 pfbneo	pFBNeo	Cpasjuste	emulators	7.2	22456946	2026-08-19	appstore	fb	pfbneo.png

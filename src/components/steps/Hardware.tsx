@@ -13,11 +13,12 @@ interface HardwareProps {
 	t: Translation;
 }
 
+const consoles = (platform: string) =>
+	HARDWARE.filter(hw => hw.platform == platform);
+
 // Consoles of every platform under its name, picking one switches to its platform
 export function Hardware({ lang, hardware, setHardware, t }: HardwareProps) {
 	const info = HARDWARE.find(hw => hardware == hw.id)!;
-	const consoles = (platform: string) =>
-		HARDWARE.filter(hw => hw.platform == platform);
 
 	return (
 		<>

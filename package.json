@@ -12,9 +12,7 @@
 		"switch"
 	],
 	"homepage": "https://github.com/arebaka/console-kitchen",
-	"bugs": {
-		"url": "https://github.com/arebaka/console-kitchen/issues"
-	},
+	"bugs": "https://github.com/arebaka/console-kitchen/issues",
 	"license": "MIT",
 	"author": "arelive <me@are.moe> (https://are.moe)",
 	"repository": "github:arebaka/console-kitchen",
@@ -32,7 +30,7 @@
 		"test": "vitest run",
 		"test:watch": "vitest",
 		"test:ui": "bun tests/ui.ts",
-		"check": "bun run lint && bun run format && tsc --noEmit && bun run test && bun run build && bun run test:ui",
+		"check": "tsc --noEmit && bun run lint && bun run format && bun run test && bun run build && bun run test:ui",
 		"clean": "rm -rf dist",
 		"build": "bun run clean && vite build",
 		"dev": "vite --host=0.0.0.0 --port=3000",
@@ -86,5 +84,6 @@
 		"typescript": "^5.9.3",
 		"vite": "^8.1.3",
 		"vitest": "^5.0.2"
-	}
+	},
+	"packageManager": "bun"
 }

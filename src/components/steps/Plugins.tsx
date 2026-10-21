@@ -31,7 +31,6 @@ interface PluginsProps {
 
 // Runlevels of every selected plugin of ARK, the lines of SEPLUGINS/PLUGINS.TXT
 export function Plugins({
-	lang,
 	build,
 	setPlugin,
 	setTuningOption,

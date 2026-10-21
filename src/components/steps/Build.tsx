@@ -1,6 +1,6 @@
 import { HARDWARE } from '@data';
 import { Language, Translation, format } from '@i18n';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useEffectEvent, useMemo, useState } from 'react';
 
 import { CardSnapshot, ForeignAction, UpdatePlan, updatePlan } from '@/card';
 import { DUMP_SCRIPTS } from '@/dump';
@@ -34,6 +34,9 @@ interface Encoded {
 	error?: string;
 }
 
+// What an update may do with a foreign item, only a sysmodule turns off
+const ACTIONS: ForeignAction[] = ['keep', 'disable', 'delete'];
+
 export function Build({
 	lang,
 	platform,
@@ -55,29 +58,36 @@ export function Build({
 		() => card && updatePlan(card, { ...build, lang, t }),
 		[card, build, lang, t],
 	);
-	const request = { ...build, lang, t, update: plan };
-	const result = useMemo(
-		() => platform.build(request),
-		[platform, build, lang, t, plan],
+	const request = useMemo(
+		() => ({ ...build, lang, t, update: plan }),
+		[build, lang, t, plan],
 	);
+	const result = useMemo(() => platform.build(request), [platform, request]);
 
-	// Images are converted in the background and embedded into the installers once ready
+	// Images are converted in the background and embedded into the installers once ready.
+	// They are converted again when what they are made of changes, not when the build does
 	const sources = result.assets.map(asset => ({
 		path: asset.path,
 		target: asset.target,
-		source: asset.image == 'upload' ? uploads[asset.key].url : asset.file!,
+		source:
+			asset.image == 'upload'
+				? (uploads[asset.key]?.url ?? '')
+				: (asset.file ?? ''),
 	}));
 	const sourcesKey = JSON.stringify(sources);
 	const [encoded, setEncoded] = useState<Encoded>();
-
-	useEffect(() => {
-		let isCurrent = true;
+	const encodeAll = useEffectEvent(async () =>
 		Promise.all(
 			sources.map(async ({ path, target, source }) => [
 				path,
 				await encodeImage(source, target),
 			]),
-		)
+		),
+	);
+
+	useEffect(() => {
+		let isCurrent = true;
+		encodeAll()
 			.then(
 				images =>
 					isCurrent &&
@@ -102,25 +112,22 @@ export function Build({
 	// Installers to download carry the images, their preview only tells the size of every image
 	const files = useMemo(
 		() => images && platform.build({ ...request, images }).files,
-		[result, images],
+		[platform, request, images],
 	);
 	const previews = useMemo(() => {
 		const placeholders = Object.fromEntries(
 			result.assets.map(asset => [
 				asset.path,
-				`# ${images ? format(t.pages.build.imageData, { size: formatSize(images[asset.path].length) }) : '…'}`,
+				`# ${images ? format(t.pages.build.imageData, { size: formatSize(images[asset.path]?.length ?? 0) }) : '…'}`,
 			]),
 		);
-		const { files, configs } = platform.build({
-			...request,
-			images: placeholders,
-		});
+		const built = platform.build({ ...request, images: placeholders });
 		return [
-			...files.filter(file => file.path != 'README.md'),
+			...built.files.filter(file => file.path != 'README.md'),
 			...DUMP_SCRIPTS,
-			...configs,
+			...built.configs,
 		];
-	}, [result, images]);
+	}, [platform, request, result.assets, images, t]);
 
 	const readme = result.files.find(file => file.path == 'README.md')!;
 	const readmeHTML = useMemo(
@@ -128,11 +135,11 @@ export function Build({
 		[readme.content],
 	);
 
-	const [previewPath, setPreviewPath] = useState(previews[0].path);
+	const [previewPath, setPreviewPath] = useState(previews[0]?.path);
 	const preview =
 		previews.find(file => file.path == previewPath) ?? previews[0];
 	const previewHTML = useMemo(
-		() => highlight(preview.content, preview.path),
+		() => (preview ? highlight(preview.content, preview.path) : ''),
 		[preview],
 	);
 
@@ -273,7 +280,7 @@ export function Build({
 					{previews.map(file => (
 						<li
 							key={file.path}
-							className={`choice ${preview.path == file.path ? 'active' : ''}`}
+							className={`choice ${preview?.path == file.path ? 'active' : ''}`}
 							tabIndex={0}
 							onClick={() => {
 								setPreviewPath(file.path);
@@ -388,16 +395,18 @@ function CardUpdate({
 										aria-label={item.name}
 										value={card.actions[item.path]}
 										onChange={event => {
-											setAction(
-												item.path,
-												event.target
-													.value as ForeignAction,
+											const action = ACTIONS.find(
+												value =>
+													value == event.target.value,
 											);
+											if (action)
+												setAction(item.path, action);
 										}}
 									>
-										{(item.kind == 'sysmodule'
-											? ['keep', 'disable', 'delete']
-											: ['keep', 'delete']
+										{ACTIONS.filter(
+											action =>
+												action != 'disable' ||
+												item.kind == 'sysmodule',
 										).map(action => (
 											<option key={action} value={action}>
 												{texts.actions[action]}

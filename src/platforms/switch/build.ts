@@ -12,7 +12,12 @@ import {
 	renderConfigs,
 	updateSummary,
 } from '@/build';
-import { isTuningGroupActive, listRows } from '@/data';
+import {
+	isTuningGroupActive,
+	listRows,
+	missingGroup,
+	pickedValues,
+} from '@/data';
 import {
 	CardConfig,
 	CardTexts,
@@ -57,13 +62,13 @@ export const TRACE_DIR = 'console-kitchen';
 export const KEPT_INI = 'bootloader/ini/console_kitchen_kept.ini';
 
 // Values as the configs spell them: hekate flags, Atmosphere u8 and u64 settings
-const flag = (value: TuningValue) => (value ? 1 : 0);
-const u8 = (value: TuningValue) => (value ? '0x1' : '0x0');
+const flag = (value: TuningValue | undefined) => (value ? 1 : 0);
+const u8 = (value: TuningValue | undefined) => (value ? '0x1' : '0x0');
 const u64 = (value: number) => `0x${value.toString(16)}`;
 const MIB = 1024 * 1024;
 
 // A path from the root of the card, as sys-tune takes it: /music
-const cardPath = (path: TuningValue) =>
+const cardPath = (path: TuningValue | undefined) =>
 	String(path)
 		.trim()
 		.replace(/^(sdmc:)?\/*/, '/');
@@ -103,7 +108,7 @@ const DBI = {
 };
 
 // Nyx accepts backgrounds from 0x0B0B0B to 0xC7C7C7 only
-function nyxBackground(color: TuningValue): string {
+function nyxBackground(color: TuningValue | undefined): string {
 	const value = Math.min(
 		Math.max(Number.parseInt(String(color).slice(1), 16) || 0, 0x0b0b0b),
 		0xc7c7c7,
@@ -112,8 +117,11 @@ function nyxBackground(color: TuningValue): string {
 }
 
 // Whether the hosts file of `emummc` or `sysmmc` blocks Nintendo servers
-function isDNSBlocked({ tuning: { dns } }: Request, target: string): boolean {
-	return dns.mode == 'block' && (dns.targets as string[]).includes(target);
+function isDNSBlocked(
+	{ tuning: { dns = missingGroup('dns') } }: Request,
+	target: string,
+): boolean {
+	return dns.mode == 'block' && pickedValues(dns.targets).includes(target);
 }
 
 // Whether the components a group of settings belongs to are selected: its config is then written, changed or not
@@ -127,22 +135,27 @@ function isGroupSelected(request: Request, id: string): boolean {
 // Rows of a list as its template takes them: the values of a row by the names of its fields, with its number from zero
 function listView(
 	option: Extract<TuningOption, { type: 'list' }>,
-	value: TuningValue,
+	value: TuningValue | undefined,
 ): { index: number; [field: string]: string | number }[] {
-	return listRows(value as string[][]).map((row, index) => ({
+	return listRows(value).map((row, index) => ({
 		index,
 		...Object.fromEntries(
-			option.fields.map((field, at) => [field.id, row[at].trim()]),
+			option.fields.map((field, at) => [
+				field.id,
+				(row[at] ?? '').trim(),
+			]),
 		),
 	}));
 }
 
 // Network locations of DBI, the ones it keeps in a file of their own
-function dbiLocations({ tuning: { dbi_locations } }: Request) {
+function dbiLocations({
+	tuning: { dbi_locations = missingGroup('dbi_locations') },
+}: Request) {
 	const [option] = CATALOG.tuning.find(
 		group => group.id == 'dbi_locations',
 	)!.options;
-	return option.type == 'list'
+	return option?.type == 'list'
 		? listView(option, dbi_locations[option.id])
 		: [];
 }
@@ -159,7 +172,7 @@ function ultrahandOverlays(request: Request) {
 			isTuningGroupActive(group, request.selectedComponentIDs),
 	);
 	return groups.map(group => {
-		const values = request.tuning[group.id];
+		const values = request.tuning[group.id] ?? missingGroup(group.id);
 		const modes = group.options.flatMap(option =>
 			option.type == 'list' ? listView(option, values[option.id]) : [],
 		);
@@ -171,7 +184,7 @@ function ultrahandOverlays(request: Request) {
 			...Object.fromEntries(
 				scalars.map(option => [option.id, String(values[option.id])]),
 			),
-			key_combo: (values.key_combo as string[]).join('+'),
+			key_combo: pickedValues(values.key_combo).join('+'),
 			hasModes: modes.length > 0,
 			mode_args: modes.map(mode => mode.args).join(', '),
 			mode_combos: modes.map(mode => mode.combo).join(', '),
@@ -181,8 +194,8 @@ function ultrahandOverlays(request: Request) {
 }
 
 // The combo of the overlay menu as its configs spell it, empty without buttons
-const menuCombo = ({ tuning: { tesla } }: Request) =>
-	(tesla.key_combo as string[]).join('+');
+const menuCombo = ({ tuning: { tesla = missingGroup('tesla') } }: Request) =>
+	pickedValues(tesla.key_combo).join('+');
 
 // Icons are named after their entry, white layouts get the `_hue` suffix Nyx tints with the theme color
 function iconPath(request: Request, entry: string): string | undefined {
@@ -341,36 +354,38 @@ function readOverlays(card: CardConfig): Params {
 				item => item.name == group.section,
 			);
 			if (!section) return [];
+			const modes = (name: string) =>
+				(section.keys[name] ?? '')
+					.replace(/^\((.*)\)$/, '$1')
+					.split(', ');
 			return group.options.flatMap((option): Params => {
 				const key = `${group.id}.${option.id}`;
 				if (option.type != 'list') {
+					const value = section.keys[option.id];
 					const raw =
-						section.keys[option.id] === undefined
+						value === undefined
 							? undefined
-							: optionRaw(option, section.keys[option.id]);
+							: optionRaw(option, value);
 					return raw === undefined ? [] : [[key, raw]];
 				}
-				const [args, combos, labels] = [
-					'mode_args',
-					'mode_combos',
-					'mode_labels',
-				].map(name =>
-					(section.keys[name] ?? '')
-						.replace(/^\((.*)\)$/, '$1')
-						.split(', '),
-				);
+				const labels = modes('mode_labels');
 				const fields: { [field: string]: string[] } = {
-					args,
-					combo: combos.map(buttons),
+					args: modes('mode_args'),
+					combo: modes('mode_combos').map(buttons),
 					label: labels,
 				};
-				const rows = labels
-					.map((label, index) =>
-						option.fields
-							.map(field => fields[field.id]?.[index] ?? '')
-							.join('='),
-					)
-					.filter((row, index) => labels[index].trim() != '');
+				const rows = labels.flatMap((label, index) =>
+					label.trim() == ''
+						? []
+						: [
+								option.fields
+									.map(
+										field =>
+											fields[field.id]?.[index] ?? '',
+									)
+									.join('='),
+							],
+				);
 				return rows.length > 0
 					? rows.map(row => [key, row] as [string, string])
 					: [[key, '']];
@@ -383,7 +398,7 @@ function readLocations(card: CardConfig): Params {
 	const [option] = CATALOG.tuning.find(
 		group => group.id == 'dbi_locations',
 	)!.options;
-	if (option.type != 'list') return [];
+	if (option?.type != 'list') return [];
 	const key = `dbi_locations.${option.id}`;
 	const rows = card.sections
 		.filter(section => /^Location_\d+$/.test(section.name))
@@ -439,7 +454,10 @@ const CONFIGS: ConfigSpec<Request>[] = [
 		covers: ['boot', 'emummc', 'autoboot', 'launch.'],
 		moves: { into: KEPT_INI, owns: isOwnSection },
 		view: request => {
-			const { hekate, logo } = request.tuning;
+			const {
+				hekate = missingGroup('hekate'),
+				logo = missingGroup('logo'),
+			} = request.tuning;
 			const entries = launchEntries(
 				request.launch,
 				request.selectedComponentIDs,
@@ -458,15 +476,13 @@ const CONFIGS: ConfigSpec<Request>[] = [
 				updater2p: flag(hekate.updater2p),
 				bootprotect: flag(hekate.bootprotect),
 				// A caption opens every group of entries
-				entries: entries.map((entry, index) =>
-					Object.assign(entrySection(request, entry), {
-						caption:
-							index == 0 ||
-							entries[index - 1].caption != entry.caption
-								? entry.caption
-								: undefined,
-					}),
-				),
+				entries: entries.map((entry, index) => ({
+					...entrySection(request, entry),
+					caption:
+						entries[index - 1]?.caption == entry.caption
+							? undefined
+							: entry.caption,
+				})),
 			};
 		},
 	},
@@ -486,7 +502,7 @@ const CONFIGS: ConfigSpec<Request>[] = [
 	{
 		path: 'bootloader/nyx.ini',
 		template: TEMPLATES.nyxIni,
-		view: ({ tuning: { nyx } }) => ({
+		view: ({ tuning: { nyx = missingGroup('nyx') } }) => ({
 			themebg: nyxBackground(nyx.themebg),
 			themecolor: nyx.themecolor,
 			entries5col: flag(nyx.entries5col),
@@ -502,7 +518,7 @@ const CONFIGS: ConfigSpec<Request>[] = [
 	{
 		path: 'exosphere.ini',
 		template: TEMPLATES.exosphereIni,
-		view: ({ tuning: { exosphere } }) => ({
+		view: ({ tuning: { exosphere = missingGroup('exosphere') } }) => ({
 			debugmode: flag(exosphere.debugmode),
 			debugmode_user: flag(exosphere.debugmode_user),
 			disable_user_exception_handlers: flag(
@@ -525,18 +541,23 @@ const CONFIGS: ConfigSpec<Request>[] = [
 		template: TEMPLATES.systemSettingsIni,
 		read: readSystemSettings,
 		covers: ['dns.'],
-		view: ({ tuning: { atmosphere, dns } }) => ({
+		view: ({
+			tuning: {
+				atmosphere = missingGroup('atmosphere'),
+				dns = missingGroup('dns'),
+			},
+		}) => ({
 			upload_enabled: u8(atmosphere.upload_enabled),
 			usb30_force_enabled: u8(atmosphere.usb30_force_enabled),
 			ease_nro_restriction: u8(atmosphere.ease_nro_restriction),
 			enable_sd_card_logging: u8(atmosphere.enable_sd_card_logging),
 			sd_card_log_output_directory:
-				atmosphere.sd_card_log_output_directory ?? 'atmosphere/binlogs',
+				atmosphere.sd_card_log_output_directory || 'atmosphere/binlogs',
 			disable_automatic_report_cleanup: u8(
 				atmosphere.disable_automatic_report_cleanup,
 			),
 			fatal_auto_reboot_interval: u64(
-				atmosphere.fatal_auto_reboot_interval as number,
+				Number(atmosphere.fatal_auto_reboot_interval),
 			),
 			power_menu_reboot_function: atmosphere.power_menu_reboot_function,
 			dmnt_cheats_enabled_by_default: u8(
@@ -559,21 +580,22 @@ const CONFIGS: ConfigSpec<Request>[] = [
 			enable_external_bluetooth_db: u8(
 				atmosphere.enable_external_bluetooth_db,
 			),
-			applet_heap_size: u64(
-				(atmosphere.applet_heap_size as number) * MIB,
-			),
+			applet_heap_size: u64(Number(atmosphere.applet_heap_size) * MIB),
 			applet_heap_reservation_size: u64(
-				(atmosphere.applet_heap_reservation_size as number) * MIB,
+				Number(atmosphere.applet_heap_reservation_size) * MIB,
 			),
 		}),
 	},
 	{
 		path: 'atmosphere/config/stratosphere.ini',
 		template: TEMPLATES.stratosphereIni,
-		view: ({ tuning: { stratosphere } }) => ({
+		view: ({
+			tuning: { stratosphere = missingGroup('stratosphere') },
+		}) => ({
 			nogc: flag(stratosphere.nogc == 'on'),
 		}),
-		when: ({ tuning: { stratosphere } }) => stratosphere.nogc != 'auto',
+		when: ({ tuning: { stratosphere = missingGroup('stratosphere') } }) =>
+			stratosphere.nogc != 'auto',
 		read: ({ values }) =>
 			values.nogc === undefined
 				? []
@@ -583,12 +605,12 @@ const CONFIGS: ConfigSpec<Request>[] = [
 		path: 'atmosphere/config/override_config.ini',
 		template: TEMPLATES.overrideConfigIni,
 		// `!` inverts a key: the Album opens hbmenu unless the key is held, mods and cheats apply unless their keys are held
-		view: ({ tuning: { hbl } }) => ({
-			album_key: (hbl.album ? '!' : '') + hbl.key,
+		view: ({ tuning: { hbl = missingGroup('hbl') } }) => ({
+			album_key: (hbl.album ? '!' : '') + String(hbl.key),
 			any_app: String(hbl.any_app),
 			any_app_key: hbl.key,
 			address_space: hbl.address_space,
-			path: hbl.path ?? 'atmosphere/hbl.nsp',
+			path: hbl.path || 'atmosphere/hbl.nsp',
 			mods_key: hbl.mods_key,
 			cheat_key: hbl.cheat_key,
 		}),
@@ -633,7 +655,9 @@ const CONFIGS: ConfigSpec<Request>[] = [
 		// and copies it over that one, so the combo goes here too
 		view: request => ({
 			...Object.fromEntries(
-				Object.entries(request.tuning.ultrahand).map(([key, value]) =>
+				Object.entries(
+					request.tuning.ultrahand ?? missingGroup('ultrahand'),
+				).map(([key, value]) =>
 					key.startsWith('show_')
 						? [key.replace('show_', 'hide_'), String(!value)]
 						: [key, String(value)],
@@ -662,7 +686,7 @@ const CONFIGS: ConfigSpec<Request>[] = [
 	{
 		path: 'config/sys-patch/config.ini',
 		template: TEMPLATES.sysPatchConfigIni,
-		view: ({ tuning: { sys_patch } }) => ({
+		view: ({ tuning: { sys_patch = missingGroup('sys_patch') } }) => ({
 			patch_sysmmc: flag(sys_patch.patch_sysmmc),
 			patch_emummc: flag(sys_patch.patch_emummc),
 			enable_logging: flag(sys_patch.enable_logging),
@@ -673,7 +697,9 @@ const CONFIGS: ConfigSpec<Request>[] = [
 	{
 		path: 'config/MissionControl/missioncontrol.ini',
 		template: TEMPLATES.missionControlIni,
-		view: ({ tuning: { missioncontrol } }) => ({
+		view: ({
+			tuning: { missioncontrol = missingGroup('missioncontrol') },
+		}) => ({
 			...Object.fromEntries(
 				Object.entries(missioncontrol).map(([key, value]) => [
 					key,
@@ -689,7 +715,7 @@ const CONFIGS: ConfigSpec<Request>[] = [
 	{
 		path: 'config/sys-con/config.ini',
 		template: TEMPLATES.sysConConfigIni,
-		view: ({ tuning: { sys_con } }) => ({
+		view: ({ tuning: { sys_con = missingGroup('sys_con') } }) => ({
 			...sys_con,
 			discovery_vidpid: String(sys_con.discovery_vidpid).replaceAll(
 				/\s/g,
@@ -709,7 +735,9 @@ const CONFIGS: ConfigSpec<Request>[] = [
 				Object.entries(STATUS_MONITOR).map(([section, group]) => [
 					section,
 					Object.fromEntries(
-						Object.entries(tuning[group]).map(([key, value]) => [
+						Object.entries(
+							tuning[group] ?? missingGroup(group),
+						).map(([key, value]) => [
 							key,
 							Array.isArray(value)
 								? value.join('+')
@@ -724,12 +752,12 @@ const CONFIGS: ConfigSpec<Request>[] = [
 	{
 		path: 'config/sys-tune/config.ini',
 		template: TEMPLATES.sysTuneConfigIni,
-		view: ({ tuning: { sys_tune } }) => ({
+		view: ({ tuning: { sys_tune = missingGroup('sys_tune') } }) => ({
 			shuffle: flag(sys_tune.shuffle),
 			repeat: sys_tune.repeat,
 			// Volumes are picked in percent and kept as parts of one
-			volume: (sys_tune.volume as number) / 100,
-			global_volume: (sys_tune.global_volume as number) / 100,
+			volume: Number(sys_tune.volume) / 100,
+			global_volume: Number(sys_tune.global_volume) / 100,
 			load_path: sys_tune.load_path && cardPath(sys_tune.load_path),
 			title_default: flag(sys_tune.title_default),
 		}),
@@ -749,13 +777,15 @@ const CONFIGS: ConfigSpec<Request>[] = [
 	{
 		path: 'config/sys-ftpd/config.ini',
 		template: TEMPLATES.sysFtpdConfigIni,
-		view: ({ tuning: { sys_ftpd_light } }) => ({
+		view: ({
+			tuning: { sys_ftpd_light = missingGroup('sys_ftpd_light') },
+		}) => ({
 			user: sys_ftpd_light.user,
 			password: sys_ftpd_light.password,
 			port: sys_ftpd_light.port,
 			anonymous: flag(sys_ftpd_light.anonymous),
 			pause_disabled: flag(!sys_ftpd_light.pause),
-			keycombo: (sys_ftpd_light.keycombo as string[]).join('+'),
+			keycombo: pickedValues(sys_ftpd_light.keycombo).join('+'),
 			led: flag(sys_ftpd_light.led),
 		}),
 		when: request => isGroupSelected(request, 'sys_ftpd_light'),
@@ -777,17 +807,20 @@ const CONFIGS: ConfigSpec<Request>[] = [
 						CATALOG.tuning
 							.find(group => group.id == id)!
 							.options.map(option => {
-								const value = tuning[id][option.id];
+								const value = (tuning[id] ?? missingGroup(id))[
+									option.id
+								];
 								if (option.type == 'list') {
 									return [
 										option.id,
 										listView(option, value).map(row =>
 											'TitleID' in row
-												? Object.assign(row, {
+												? {
+														...row,
 														TitleID: String(
 															row.TitleID,
 														).toUpperCase(),
-													})
+													}
 												: row,
 										),
 									];
@@ -822,7 +855,7 @@ const CONFIGS: ConfigSpec<Request>[] = [
 		path: 'config/JKSV/JKSV.json',
 		template: TEMPLATES.jksvJson,
 		// JKSV keeps its switches as numbers and fills in what the file leaves out
-		view: ({ tuning: { jksv } }) => ({
+		view: ({ tuning: { jksv = missingGroup('jksv') } }) => ({
 			...Object.fromEntries(
 				Object.entries(jksv).map(([key, value]) => [
 					key,
@@ -830,7 +863,7 @@ const CONFIGS: ConfigSpec<Request>[] = [
 				]),
 			),
 			WorkingDirectory: JSON.stringify(
-				jksv.WorkingDirectory ?? 'sdmc:/JKSV',
+				jksv.WorkingDirectory || 'sdmc:/JKSV',
 			),
 		}),
 		when: request => isGroupSelected(request, 'jksv'),
@@ -841,7 +874,12 @@ const CONFIGS: ConfigSpec<Request>[] = [
 		// JKSV puts the folder between slashes itself, a server open to everyone goes without the login
 		view: ({
 			tuning: {
-				jksv_webdav: { origin, basepath, username, password },
+				jksv_webdav: {
+					origin,
+					basepath,
+					username,
+					password,
+				} = missingGroup('jksv_webdav'),
 			},
 		}) => ({
 			origin: JSON.stringify(origin),
@@ -853,31 +891,35 @@ const CONFIGS: ConfigSpec<Request>[] = [
 		}),
 		when: request =>
 			isGroupSelected(request, 'jksv_webdav') &&
-			request.tuning.jksv_webdav.origin != '',
+			request.tuning.jksv_webdav?.origin != '',
 	},
 	{
 		path: 'config/amiigo/settings.json',
 		template: TEMPLATES.amiigoSettingsJson,
-		view: ({ tuning: { amiigo } }) => ({ ...amiigo }),
+		view: ({ tuning: { amiigo = missingGroup('amiigo') } }) => ({
+			...amiigo,
+		}),
 		when: request => isGroupSelected(request, 'amiigo'),
 	},
 	{
 		path: 'config/sys-clk/config.ini',
 		template: TEMPLATES.sysClkConfigIni,
-		view: ({ tuning: { sys_clk }, overclock }) => ({
+		view: ({
+			tuning: { sys_clk = missingGroup('sys_clk') },
+			overclock,
+		}) => ({
 			...sys_clk,
 			profiles: overclock
 				.filter(profile => Object.keys(profile.clocks).length)
-				.map(profile =>
-					Object.assign(profile, {
-						clocks: Object.entries(profile.clocks).map(
-							([key, value]) => ({
-								key,
-								value,
-							}),
-						),
-					}),
-				),
+				.map(profile => ({
+					...profile,
+					clocks: Object.entries(profile.clocks).map(
+						([key, value]) => ({
+							key,
+							value,
+						}),
+					),
+				})),
 		}),
 		when: request => isGroupSelected(request, 'sys_clk'),
 		read: readProfiles,
@@ -899,6 +941,20 @@ export const uncoveredCard = (request: Request, texts: CardTexts) =>
 export const moveCard = (texts: CardTexts, written: string[]) =>
 	movedConfigs(CONFIGS, texts, written);
 
+// An image the installers write, with the file of the gallery it is unless it is an upload
+const asset = (
+	path: string,
+	target: ImageTarget,
+	key: string,
+	image: string,
+): Asset => ({
+	path,
+	target,
+	key,
+	image,
+	file: GALLERY.find(item => item.target == target && item.id == image)?.file,
+});
+
 // Images the appearance asks for, logos and icons only of the entries in the menu
 function assets(request: Request): Asset[] {
 	const { bootlogo, background, logos, icons } = request.appearance;
@@ -906,19 +962,6 @@ function assets(request: Request): Asset[] {
 		request.launch,
 		request.selectedComponentIDs,
 	).map(entry => entry.id);
-	const asset = (
-		path: string,
-		target: ImageTarget,
-		key: string,
-		image: string,
-	) => ({
-		path,
-		target,
-		key,
-		image,
-		file: GALLERY.find(item => item.target == target && item.id == image)
-			?.file,
-	});
 	return [
 		...(bootlogo
 			? [
@@ -940,26 +983,32 @@ function assets(request: Request): Asset[] {
 					),
 				]
 			: []),
-		...entries
-			.filter(entry => logos[entry])
-			.map(entry =>
-				asset(
-					logoPath(request, entry)!,
-					'bootlogo',
-					`logo.${entry}`,
-					logos[entry],
-				),
-			),
-		...entries
-			.filter(entry => icons[entry])
-			.map(entry =>
-				asset(
-					iconPath(request, entry)!,
-					'icon',
-					`icon.${entry}`,
-					icons[entry],
-				),
-			),
+		...entries.flatMap(entry => {
+			const image = logos[entry];
+			return image
+				? [
+						asset(
+							logoPath(request, entry)!,
+							'bootlogo',
+							`logo.${entry}`,
+							image,
+						),
+					]
+				: [];
+		}),
+		...entries.flatMap(entry => {
+			const image = icons[entry];
+			return image
+				? [
+						asset(
+							iconPath(request, entry)!,
+							'icon',
+							`icon.${entry}`,
+							image,
+						),
+					]
+				: [];
+		}),
 	];
 }
 
@@ -1004,7 +1053,8 @@ export function build(request: Request): BuildResult {
 			)
 		: [];
 
-	const { dns } = request.tuning;
+	const { dns = missingGroup('dns') } = request.tuning;
+	const targets = pickedValues(dns.targets);
 	const entries = launchEntries(request.launch, request.selectedComponentIDs);
 	const spares = spareEntries(request.launch, request.selectedComponentIDs);
 	const systems = SYSTEM_ENTRIES.filter(entry =>
@@ -1039,9 +1089,12 @@ export function build(request: Request): BuildResult {
 		// Entries of More configs that boot CFW without what hekate loads for a component
 		spares: spares.map(entry => entry.name),
 		hasSpares: spares.length > 0,
-		dnsBlock: dns.mode == 'block' && (dns.targets as string[]).length > 0,
-		dnsTargets: (dns.targets as string[])
-			.map(target => t.tuning.switch.dns.options.targets.values?.[target])
+		dnsBlock: dns.mode == 'block' && targets.length > 0,
+		dnsTargets: targets
+			.map(
+				target =>
+					t.tuning.switch.dns?.options.targets?.values?.[target],
+			)
 			.join(', '),
 	};
 

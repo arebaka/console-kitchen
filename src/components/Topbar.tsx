@@ -69,9 +69,10 @@ function FileMenu({ scripts, openFile, t }: FileMenuProps) {
 
 	// A press elsewhere closes the menu, and so does Escape, which then goes no further: it does not take the wizard a step back
 	useEffect(() => {
-		if (!isOpen) return;
+		if (!isOpen) return undefined;
 		const handlePointerDown = (event: PointerEvent) => {
-			if (!menuRef.current?.contains(event.target as Node))
+			const { target } = event;
+			if (!(target instanceof Node && menuRef.current?.contains(target)))
 				setOpen(false);
 		};
 		const handleKeyDown = (event: KeyboardEvent) => {

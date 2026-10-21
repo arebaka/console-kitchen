@@ -1,5 +1,5 @@
 import { Translation } from '@i18n';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useEffectEvent, useState } from 'react';
 
 import { Platform } from '@/platforms';
 import { Fix, Issue } from '@/types';
@@ -34,21 +34,20 @@ export function Toasts({
 	const [isHeld, setHeld] = useState(false);
 	const oldest = toasts[0]?.id;
 
-	// Toasts go away one by one, the oldest first
+	// The last toast may leave from under the pointer, which then never leaves it
+	if (isHeld && toasts.length === 0) setHeld(false);
+
+	// Toasts go away one by one, the oldest first. A new list of toasts does not start the time of the oldest again
+	const expire = useEffectEvent(dismiss);
 	useEffect(() => {
-		if (oldest === undefined || isHeld) return;
+		if (oldest === undefined || isHeld) return undefined;
 		const timer = setTimeout(() => {
-			dismiss(oldest);
+			expire(oldest);
 		}, TIMEOUT);
 		return () => {
 			clearTimeout(timer);
 		};
 	}, [oldest, isHeld]);
-
-	// The last toast may leave from under the pointer, which then never leaves it
-	useEffect(() => {
-		if (toasts.length === 0) setHeld(false);
-	}, [toasts.length]);
 
 	return (
 		<ul

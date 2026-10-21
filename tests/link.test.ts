@@ -139,7 +139,7 @@ describe('short links', () => {
 		// Records that end with a text may end with a mark too. A character of zeros follows it and reads as the end of the records
 		const records = SWITCH_KEYS.slice(0, 40).flatMap(key =>
 			['_', 'x_', 'xy-', 'name_', '--', 'FF', 'ff', '+_', 'a ^'].map(
-				text => shorten([[key, text]], SWITCH_LINK)[0],
+				text => shorten([[key, text]], SWITCH_LINK)[0]!,
 			),
 		);
 		const marked = records.filter(([, value]) => /[-_]A$/.test(value));
@@ -196,7 +196,10 @@ describe('short links', () => {
 			'~!@$%^&*()_+{}|:"<>?`[]\\;\'./',
 		];
 		const short = shorten(
-			texts.map((text, index) => [SWITCH_KEYS[index * 7], text]),
+			texts.map((text, index): [string, string] => [
+				SWITCH_KEYS[index * 7]!,
+				text,
+			]),
 			SWITCH_LINK,
 		);
 		expect(isShort(short)).toBe(true);
@@ -243,7 +246,10 @@ describe('short links', () => {
 			).join(''),
 		);
 		const short = shorten(
-			texts.map((text, index) => [SWITCH_KEYS[index], text]),
+			texts.map((text, index): [string, string] => [
+				SWITCH_KEYS[index]!,
+				text,
+			]),
 			SWITCH_LINK,
 		);
 		expect(isShort(short)).toBe(true);
@@ -301,7 +307,7 @@ describe('short links', () => {
 	});
 
 	it('give way to what a link spells in full', () => {
-		const [short] = GIVEN_OUT[1];
+		const [short] = GIVEN_OUT[1]!;
 		expect(decodeState(`${short}&hos=20.0.0`).builds.switch).toMatchObject({
 			hardware: 'oled',
 			firmware: '20.0.0',
@@ -330,7 +336,7 @@ describe('short links', () => {
 
 	it('read a damaged link as far as it goes', () => {
 		// Cut anywhere, the records of a param say only what the whole of them does and nothing else
-		for (const [param, records] of params(GIVEN_OUT[1][0]).slice(2)) {
+		for (const [param, records] of params(GIVEN_OUT[1]![0]!).slice(2)) {
 			const said = spelled([[param, records]]);
 			for (let length = 0; length <= records.length; length++) {
 				const cut = spelled([[param, records.slice(0, length)]]);
@@ -383,9 +389,9 @@ describe('short links', () => {
 		build.selectedComponentIDs = catalog.components.map(comp => comp.id);
 		for (const group of catalog.tuning) {
 			for (const option of group.options.filter(
-				option => !option.secret,
+				({ secret }) => !secret,
 			)) {
-				const tuning = build.tuning[group.id];
+				const tuning = build.tuning[group.id]!;
 				if (option.type == 'toggle')
 					tuning[option.id] = !option.default;
 				if (option.type == 'range' || option.type == 'number')
@@ -461,10 +467,14 @@ describe('numbers of links', () => {
 		'are there for everything links of %s name',
 		platform => {
 			const { link } = PLATFORMS[platform];
-			const { keys, ...lists } = VOCABULARIES[platform];
-			for (const [list, ids] of Object.entries(lists)) {
+			const { keys, firmware, software, words } = VOCABULARIES[platform]!;
+			for (const [list, ids, numbered] of [
+				['firmware', firmware, link.firmware],
+				['software', software, link.software],
+				['words', words, link.words],
+			] as const) {
 				expect(
-					unnumbered(ids, link[list as keyof typeof lists]),
+					unnumbered(ids, numbered),
 					`${list}: run \`bun run number\``,
 				).toEqual([]);
 			}
@@ -521,7 +531,7 @@ describe('numbers of links', () => {
 				).toContain(group.link);
 			}
 			// The sections of the overlays in the list of Ultrahand go with the overlays, not with Ultrahand
-			for (const group of tuning.filter(group => group.section)) {
+			for (const group of tuning.filter(({ section }) => section)) {
 				expect(
 					components.find(comp => comp.id == group.requires!.at(-1))
 						?.link,

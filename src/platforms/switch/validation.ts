@@ -1,10 +1,13 @@
 import { Translation } from '@i18n';
 
-import { ClockKey, ClockMode, Issue, SwitchState } from '@/types';
+import { missingGroup } from '@/data';
+import { ClockKey, Issue, SwitchState } from '@/types';
 import { componentIssues, sortIssues } from '@/validation';
 
 import {
 	CATALOG,
+	CLOCK_MODES,
+	CLOCK_MODULES,
 	COMPONENTS,
 	HOS_VERSIONS,
 	OVERCLOCK,
@@ -73,7 +76,7 @@ export function validate(build: SwitchState, t: Translation): Issue[] {
 		}
 	}
 
-	const ftp = build.tuning.sys_ftpd_light;
+	const ftp = build.tuning.sys_ftpd_light ?? missingGroup('sys_ftpd_light');
 	if (
 		build.selectedComponentIDs.includes('sys_ftpd_light') &&
 		!ftp.anonymous &&
@@ -89,23 +92,22 @@ export function validate(build: SwitchState, t: Translation): Issue[] {
 
 	if (build.selectedComponentIDs.includes('sys_clk')) {
 		for (const profile of build.overclock) {
-			for (const [key, caps] of Object.entries(OVERCLOCK.caps)) {
-				const cap = caps[build.hardware];
-				if ((profile.clocks[key as ClockKey] ?? 0) > cap) {
-					const mode = key.replace(
-						/_(cpu|gpu|mem)$/,
-						'',
-					) as ClockMode;
-					issues.push({
-						level: 'info',
-						code: 'gpuCap',
-						step: 'overclock',
-						params: {
-							game: profile.name,
-							cap: String(cap),
-							mode: t.pages.overclock.modes[mode],
-						},
-					});
+			for (const mode of CLOCK_MODES) {
+				for (const module of CLOCK_MODULES) {
+					const key: ClockKey = `${mode}_${module}`;
+					const cap = OVERCLOCK.caps[key]?.[build.hardware];
+					if (cap !== undefined && (profile.clocks[key] ?? 0) > cap) {
+						issues.push({
+							level: 'info',
+							code: 'gpuCap',
+							step: 'overclock',
+							params: {
+								game: profile.name,
+								cap: String(cap),
+								mode: t.pages.overclock.modes[mode],
+							},
+						});
+					}
 				}
 			}
 		}

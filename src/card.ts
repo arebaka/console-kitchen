@@ -5,6 +5,7 @@ import { AppState, decodeState, withBuild, PLATFORM_IDS } from './state';
 import { TomlTable, readToml, tomlParams } from './toml';
 import { BuildState, Catalog, PlatformId } from './types';
 import { Params, decodeTuning, query } from './url';
+import { isObject } from './utils';
 
 // A card as its dump tells: the files that show what is installed with their sizes, a folder with none,
 // and the configs, the entries of hekate, the registry of the App Store and the trace as texts with their hashes
@@ -51,25 +52,19 @@ function fromBase64(data: string): string | undefined {
 	}
 }
 
+// What a table of a dump holds under the paths a card may have
+const cardEntries = (value: unknown): [string, unknown][] =>
+	isObject(value)
+		? Object.entries(value).filter(([path]) => isCardPath(path))
+		: [];
+
 // The dump in a file of the Console Kitchen, undefined unless it is one of a platform there is
 export function readDump(table: TomlTable | undefined): CardDump | undefined {
-	if (
-		table?.kind != 'dump' ||
-		!PLATFORM_IDS.includes(table.platform as PlatformId)
-	)
-		return undefined;
-	const entries = (value: unknown) =>
-		typeof value === 'object' && value !== null && !Array.isArray(value)
-			? Object.entries(value as { [key: string]: unknown }).filter(
-					([path]) => isCardPath(path),
-				)
-			: [];
+	const platform = PLATFORM_IDS.find(id => id == table?.platform);
+	if (table?.kind != 'dump' || !platform) return undefined;
 	const texts: CardTexts = {};
-	for (const [path, value] of entries(table.texts)) {
-		const base64 =
-			typeof value === 'object' && value !== null
-				? (value as { base64?: unknown }).base64
-				: undefined;
+	for (const [path, value] of cardEntries(table.texts)) {
+		const base64 = isObject(value) ? value.base64 : undefined;
 		const text =
 			typeof value === 'string'
 				? value
@@ -79,19 +74,21 @@ export function readDump(table: TomlTable | undefined): CardDump | undefined {
 		if (text !== undefined) texts[path] = text;
 	}
 	return {
-		platform: table.platform as PlatformId,
+		platform,
 		made: typeof table.made === 'string' ? table.made : '',
 		files: Object.fromEntries(
-			entries(table.files).filter(
-				([, size]) => typeof size === 'number' && size >= 0,
+			cardEntries(table.files).filter(
+				(entry): entry is [string, number] =>
+					typeof entry[1] === 'number' && entry[1] >= 0,
 			),
-		) as CardDump['files'],
+		),
 		hashes: Object.fromEntries(
-			entries(table.hashes).filter(
-				([, hash]) =>
-					typeof hash === 'string' && /^[0-9a-f]{64}$/.test(hash),
+			cardEntries(table.hashes).filter(
+				(entry): entry is [string, string] =>
+					typeof entry[1] === 'string' &&
+					/^[0-9a-f]{64}$/.test(entry[1]),
 			),
-		) as CardDump['hashes'],
+		),
 		texts,
 	};
 }
@@ -126,7 +123,7 @@ function registryPackages(dump: CardDump): { [name: string]: string[] } {
 			path.match(
 				/^switch\/appstore\/\.get\/packages\/([^/]+)\/(info\.json|manifest\.install)$/i,
 			) ?? [];
-		if (!name) continue;
+		if (!name || file === undefined) continue;
 		packages[name] ??= [];
 		// A line of a manifest is a letter of what to do with a file and its path: `U: switch/app/app.nro`
 		if (lower(file) == 'manifest.install') {
@@ -171,8 +168,9 @@ export function installedComponents(
 
 	return catalog.components
 		.filter(comp => {
-			if (traced[comp.id]) {
-				const telling = markers(traced[comp.id]);
+			const paths = traced[comp.id];
+			if (paths) {
+				const telling = markers(paths);
 				if (
 					telling.length === 0 ||
 					telling.some(path => present.has(path))
@@ -248,8 +246,9 @@ export function foreignItems(catalog: Catalog, dump: CardDump): ForeignItem[] {
 					},
 				];
 			// A sysmodule goes by its folder and the name its toolbox.json gives it
-			const folder = match[1];
-			let name = folder.split('/')[2];
+			const [, folder] = match;
+			if (folder === undefined) continue;
+			let name = folder.split('/')[2] ?? folder;
 			try {
 				name = String(
 					JSON.parse(
@@ -372,6 +371,10 @@ export interface UpdatePlan {
 	uncovered: { path: string; lines: string[] }[];
 }
 
+// The pictures of a build as text, on a platform without them nothing
+const appearanceOf = (build: BuildState) =>
+	JSON.stringify(('appearance' in build ? build.appearance : null) ?? null);
+
 export function updatePlan(
 	snapshot: CardSnapshot,
 	request: BuildRequest,
@@ -429,7 +432,7 @@ export function updatePlan(
 						.filter(line => line.component == id)
 						.map(line => line.path),
 					...packages.flatMap(name => [
-						...registry[name],
+						...(registry[name] ?? []),
 						`switch/appstore/.get/packages/${name}/info.json`,
 						`switch/appstore/.get/packages/${name}/manifest.install`,
 					]),
@@ -445,8 +448,8 @@ export function updatePlan(
 	// is fresh only when all of them are. A tag goes into the scripts between quotes, so it is only taken when it is
 	// made of what tags are made of, a component with another one is downloaded again
 	const tags: { [component: string]: string } = {};
-	for (const id of request.selectedComponentIDs.filter(id =>
-		installed.includes(id),
+	for (const id of request.selectedComponentIDs.filter(item =>
+		installed.includes(item),
 	)) {
 		const own = [
 			...new Set(
@@ -459,11 +462,9 @@ export function updatePlan(
 	}
 
 	// Uploaded images cannot be told from the ones on the card, so with one the images are written again
-	const appearance = (build: BuildState) =>
-		JSON.stringify((build as { appearance?: unknown }).appearance ?? null);
 	const images =
-		appearance(base) != appearance(request) ||
-		appearance(request).includes('"upload"');
+		appearanceOf(base) != appearanceOf(request) ||
+		appearanceOf(request).includes('"upload"');
 
 	// Sections of other builds in the configs written again move into files of their own instead of going with them,
 	// so they are no lines the update loses
@@ -481,11 +482,10 @@ export function updatePlan(
 	const uncovered = platform
 		.uncoveredCard(request, dump.texts)
 		.filter(item => changed.some(config => config.path == item.path))
-		.map(item =>
-			Object.assign(item, {
-				lines: item.lines.filter(line => !isMoved(item.path, line)),
-			}),
-		)
+		.map(item => ({
+			...item,
+			lines: item.lines.filter(line => !isMoved(item.path, line)),
+		}))
 		.filter(item => item.lines.length);
 
 	const { actions, foreign } = snapshot;
@@ -504,11 +504,11 @@ export function updatePlan(
 		images,
 		configs,
 		hashes: Object.fromEntries(
-			configs.flatMap(config => {
-				const key = Object.keys(dump.hashes).find(
-					path => lower(path) == lower(config.path),
-				);
-				return key ? [[config.path, dump.hashes[key]]] : [];
+			configs.flatMap((config): [string, string][] => {
+				const hash = Object.entries(dump.hashes).find(
+					([path]) => lower(path) == lower(config.path),
+				)?.[1];
+				return hash === undefined ? [] : [[config.path, hash]];
 			}),
 		),
 		unchanged,

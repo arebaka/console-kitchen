@@ -1,6 +1,12 @@
 import { HARDWARE } from '@data';
 import { I18N } from '@i18n';
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, {
+	useState,
+	useEffect,
+	useEffectEvent,
+	useMemo,
+	useRef,
+} from 'react';
 
 import { CardSnapshot, ForeignAction, importDump, readDump } from './card';
 import {
@@ -135,24 +141,28 @@ export default function App() {
 	const psp = state.builds.psp;
 
 	const steps = platform.steps(build);
-	const step = steps.includes(state.step) ? state.step : steps[0];
+	const step = steps.includes(state.step)
+		? state.step
+		: (steps[0] ?? state.step);
 	const index = steps.indexOf(step);
-	const setStep = (step: StepId) => {
-		update({ step });
+	const contentRef = useRef<HTMLElement>(null);
+	// Every step starts from the top
+	const setStep = (next: StepId) => {
+		update({ step: next });
+		contentRef.current?.scrollTo(0, 0);
 	};
 
 	const issues = useMemo(
 		() => platform.validate(build, t),
 		[platform, build, t],
 	);
-	const contentRef = useRef<HTMLElement>(null);
 
 	const [toasts, setToasts] = useState<Toast[]>([]);
 	const lastToast = useRef(0);
 	// A toast lasts as long as its issue and offers the fixes the issue has by now
 	const liveToasts = toasts.flatMap(toast => {
 		const issue = issues.find(
-			issue => issueKey(issue) == issueKey(toast.issue),
+			item => issueKey(item) == issueKey(toast.issue),
 		);
 		return issue ? [{ ...toast, issue }] : [];
 	});
@@ -175,13 +185,15 @@ export default function App() {
 	};
 
 	// Toasts of solved issues go away, so they never come back with the issue
-	useEffect(() => {
+	const [checked, setChecked] = useState(issues);
+	if (checked != issues) {
+		setChecked(issues);
 		setToasts(prev =>
 			prev.filter(toast =>
 				issues.some(issue => issueKey(issue) == issueKey(toast.issue)),
 			),
 		);
-	}, [issues]);
+	}
 
 	// Every option lands in the address, so a link reproduces the build
 	useEffect(() => {
@@ -206,37 +218,36 @@ export default function App() {
 		);
 	}, [platform.id]);
 
-	// Every step starts from the top
-	useEffect(() => {
-		contentRef.current?.scrollTo(0, 0);
-	}, [step]);
-
 	// Escape and Enter act as B and A of the footer. A focused control keeps Enter for itself, fields keep both
+	const handleKeyDown = useEffectEvent((event: KeyboardEvent) => {
+		if (event.defaultPrevented) return;
+		if (
+			event.target instanceof Element &&
+			event.target.matches('input, select, textarea')
+		)
+			return;
+
+		const previous = steps[index - 1];
+		const next = steps[index + 1];
+		if (event.key == 'Escape' && previous) {
+			setStep(previous);
+		} else if (
+			event.key == 'Enter' &&
+			event.target == document.body &&
+			next
+		) {
+			setStep(next);
+		}
+	});
 	useEffect(() => {
-		const handleKeyDown = (event: KeyboardEvent) => {
-			if (event.defaultPrevented) return;
-			if (
-				event.target instanceof Element &&
-				event.target.matches('input, select, textarea')
-			)
-				return;
-
-			if (event.key == 'Escape' && index > 0) {
-				setStep(steps[index - 1]);
-			} else if (
-				event.key == 'Enter' &&
-				event.target == document.body &&
-				index < steps.length - 1
-			) {
-				setStep(steps[index + 1]);
-			}
+		const listener = (event: KeyboardEvent) => {
+			handleKeyDown(event);
 		};
-
-		window.addEventListener('keydown', handleKeyDown);
+		window.addEventListener('keydown', listener);
 		return () => {
-			window.removeEventListener('keydown', handleKeyDown);
+			window.removeEventListener('keydown', listener);
 		};
-	}, [steps.join(), index]);
+	}, []);
 
 	// Size calculator
 	const totalSize = components
@@ -245,12 +256,12 @@ export default function App() {
 
 	// A console of another platform switches to the build of that platform
 	const setHardware = (id: HardwareRevision) => {
-		const platform = HARDWARE.find(hw => hw.id == id)!.platform;
+		const of = HARDWARE.find(hw => hw.id == id)!.platform;
 		setState(prev => ({
 			...prev,
-			platform,
-			builds: withBuild(prev.builds, platform, {
-				...prev.builds[platform],
+			platform: of,
+			builds: withBuild(prev.builds, of, {
+				...prev.builds[of],
 				hardware: id,
 			}),
 		}));
@@ -308,34 +319,37 @@ export default function App() {
 		option: string,
 		value: TuningValue,
 	) => {
-		updateBuild(({ tuning }) => ({
+		updateBuild(({ tuning: current }) => ({
 			tuning: {
-				...tuning,
-				[group]: { ...tuning[group], [option]: value },
+				...current,
+				[group]: { ...current[group], [option]: value },
 			},
 		}));
 	};
 
 	// Every option of the step returns to its default
-	const resetTuning = (step: TuningStep) => {
+	const resetTuning = (reset: TuningStep) => {
 		const defaults = getTuningDefaults(groups);
 		updateBuild({
 			tuning: {
 				...tuning,
 				...Object.fromEntries(
 					groups
-						.filter(group => group.step == step)
-						.map(group => [group.id, defaults[group.id]]),
+						.filter(group => group.step == reset)
+						.flatMap(group => {
+							const values = defaults[group.id];
+							return values ? [[group.id, values] as const] : [];
+						}),
 				),
 			},
 		});
 	};
 
-	const setLaunch = (launch: LaunchConfig) => {
-		updateBuild({ launch });
+	const setLaunch = (next: LaunchConfig) => {
+		updateBuild({ launch: next });
 	};
-	const setOverclock = (overclock: GameProfile[]) => {
-		updateBuild({ overclock });
+	const setOverclock = (next: GameProfile[]) => {
+		updateBuild({ overclock: next });
 	};
 
 	// Runlevels of a plugin, the ones of the catalog leave the build
@@ -362,18 +376,15 @@ export default function App() {
 				};
 			});
 		}
-		const [target, entry] = key.split('.') as [
-			'bootlogo' | 'background' | 'logo' | 'icon',
-			string?,
-		];
-		if (target == 'logo' || target == 'icon') {
+		const [target, entry] = key.split('.');
+		if ((target == 'logo' || target == 'icon') && entry) {
 			const images = { ...appearance[`${target}s`] };
-			if (image) images[entry!] = image;
-			else delete images[entry!];
+			if (image) images[entry] = image;
+			else delete images[entry];
 			updateBuild({
 				appearance: { ...appearance, [`${target}s`]: images },
 			});
-		} else {
+		} else if (target == 'bootlogo' || target == 'background') {
 			updateBuild({ appearance: { ...appearance, [target]: image } });
 		}
 	};
@@ -413,12 +424,11 @@ export default function App() {
 		setCards(({ [platform.id]: forgotten, ...rest }) => rest);
 	};
 
-	const stepIssues = (step: StepId) =>
-		issues.filter(issue => issue.step == step);
+	const stepIssues = (of: StepId) => issues.filter(issue => issue.step == of);
 	// The most serious issue of a step marks it in the sidebar
-	const worst = (step: StepId) =>
+	const worst = (of: StepId) =>
 		LEVELS.find(level =>
-			stepIssues(step).some(issue => issue.level == level),
+			stepIssues(of).some(issue => issue.level == level),
 		);
 
 	const values: Partial<Record<StepId, string | number>> = {
@@ -426,18 +436,18 @@ export default function App() {
 		firmware,
 		software: selectedComponentIDs.length,
 		...Object.fromEntries(
-			SETTINGS_STEPS.map(step => [
-				step,
-				countChanges(groups, build, step) || '',
+			SETTINGS_STEPS.map(item => [
+				item,
+				countChanges(groups, build, item) || '',
 			]),
 		),
 		...platform.values(build),
 	};
 	const settingsStep = SETTINGS_STEPS.find(item => item == step);
-	const sidebar: SidebarItem[] = steps.map(step => ({
-		step,
-		value: values[step] ?? '',
-		alert: worst(step),
+	const sidebar: SidebarItem[] = steps.map(item => ({
+		step: item,
+		value: values[item] ?? '',
+		alert: worst(item),
 	}));
 
 	// Pages tell about the platform its own way where they have to
@@ -447,8 +457,8 @@ export default function App() {
 		<>
 			<Topbar
 				lang={lang}
-				setLang={lang => {
-					update({ lang });
+				setLang={next => {
+					update({ lang: next });
 				}}
 				subtitle={texts.subtitle}
 				scripts={DUMP_SCRIPTS}
@@ -485,8 +495,8 @@ export default function App() {
 						lang={lang}
 						platform={platform}
 						version={firmware}
-						setVersion={firmware => {
-							updateBuild({ firmware });
+						setVersion={version => {
+							updateBuild({ firmware: version });
 						}}
 						issues={stepIssues('firmware')}
 						applyFix={applyFix}
@@ -572,7 +582,7 @@ export default function App() {
 						hardware={hardware}
 						appearance={appearance}
 						entries={launchEntries(launch, selectedComponentIDs)}
-						themebg={String(tuning.nyx.themebg)}
+						themebg={String(tuning.nyx?.themebg)}
 						uploads={uploads}
 						setImage={setImage}
 						t={t}
@@ -593,8 +603,8 @@ export default function App() {
 								'plugins',
 							] as TuningStep[]
 						).reduce(
-							(sum, step) =>
-								sum + countChanges(groups, build, step),
+							(sum, item) =>
+								sum + countChanges(groups, build, item),
 							0,
 						)}
 						issues={issues}
@@ -614,10 +624,10 @@ export default function App() {
 						type='button'
 						className='hint'
 						onClick={() => {
-							setStep(steps[index - 1]);
+							setStep(steps[index - 1] ?? step);
 						}}
 					>
-						<Glyph name={platform.glyphs.back} role='back' />
+						<Glyph name={platform.glyphs.back} hint='back' />
 						{t.wizard.back}
 					</button>
 				)}
@@ -626,10 +636,10 @@ export default function App() {
 						type='button'
 						className='hint'
 						onClick={() => {
-							setStep(steps[index + 1]);
+							setStep(steps[index + 1] ?? step);
 						}}
 					>
-						<Glyph name={platform.glyphs.next} role='next' />
+						<Glyph name={platform.glyphs.next} hint='next' />
 						{t.wizard.next}
 					</button>
 				) : (
@@ -637,10 +647,10 @@ export default function App() {
 						type='button'
 						className='hint'
 						onClick={() => {
-							setStep(steps[0]);
+							setStep(steps[0] ?? step);
 						}}
 					>
-						<Glyph name={platform.glyphs.rebuild} role='rebuild' />
+						<Glyph name={platform.glyphs.rebuild} hint='rebuild' />
 						{t.wizard.rebuild}
 					</button>
 				)}

@@ -31,7 +31,7 @@ export function componentIssues(
 	const { components } = catalog;
 	const issues: Issue[] = [];
 	const name = (id: string) =>
-		components.find(comp => comp.id == id)?.name ?? id;
+		components.find(item => item.id == id)?.name ?? id;
 
 	for (const requirement of comp.requires ?? []) {
 		if (!isRequirementMet(requirement, build.selectedComponentIDs)) {

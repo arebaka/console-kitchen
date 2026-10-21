@@ -79,11 +79,11 @@ export function encodeBitmap(
 				? (x * image.width + image.width - 1 - y) * 4
 				: (y * image.width + x) * 4;
 			const offset = 54 + (row * width + x) * 4;
-			bytes[offset] = image.data[source + 2];
-			bytes[offset + 1] = image.data[source + 1];
-			bytes[offset + 2] = image.data[source];
+			bytes[offset] = image.data[source + 2] ?? 0;
+			bytes[offset + 1] = image.data[source + 1] ?? 0;
+			bytes[offset + 2] = image.data[source] ?? 0;
 			bytes[offset + 3] =
-				target == 'icon' ? image.data[source + 3] : 0xff;
+				target == 'icon' ? (image.data[source + 3] ?? 0) : 0xff;
 		}
 	}
 	return bytes;

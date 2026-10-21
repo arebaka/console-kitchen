@@ -39,7 +39,7 @@ const DEFAULT_ICON = 'a9f3fdc1312063579bee0fdf91cb79ed75804457'; // SHA-1 of the
 
 const REFRESH_LOGOS = process.argv.includes('--logos');
 const FILES_ONLY = process.argv.includes('--files');
-const TOKEN = process.env.GITHUB_TOKEN ?? ghToken();
+const TOKEN = process.env.GITHUB_TOKEN || ghToken();
 
 // What archives leave on the card besides their files, the installers remove it
 const LEFTOVERS = new Set([
@@ -286,16 +286,21 @@ const writeTable = async (url, columns, rows) =>
 			.join('\n') + '\n',
 	);
 
+// A single value of the YAML as a list of it
+const many = value => (value === undefined ? undefined : [].concat(value));
+
+// Text order by the code units, as `sort` keeps texts without a function to compare them
+const byCode = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
+
 // Sources of the components by id, a single App Store package, asset or download may go without a list
 async function readSources(file) {
-	const many = value => (value === undefined ? undefined : [].concat(value));
 	return Object.fromEntries(
 		Object.entries(Bun.YAML.parse(await readFile(file, 'utf8')) ?? {}).map(
-			([id, { appstore, github, url, ...rest }]) => [
+			([id, { appstore, github: assets, url, ...rest }]) => [
 				id,
 				{
 					appstore: many(appstore),
-					github: many(github),
+					github: many(assets),
 					url: many(url),
 					...rest,
 				},
@@ -353,7 +358,7 @@ async function syncSoftware({
 					latest.published_at,
 					...latest.assets.map(asset => asset.updated_at),
 				]
-					.toSorted()
+					.toSorted(byCode)
 					.at(-1)
 					.slice(0, 10),
 				assets: latest.assets,
@@ -399,9 +404,12 @@ async function syncSoftware({
 		if (items.length > 0) {
 			const matched = [];
 			for (const item of items) {
+				if (item.repo == 'rashevskyv/DBIPatcher') {
+					item.asset = item.asset.replace('{{language}}', 'en');
+				}
 				const info = await release(item.repo);
-				const asset = info.assets.find(asset =>
-					assetPattern(item, options).test(asset.name),
+				const asset = info.assets.find(candidate =>
+					assetPattern(item, options).test(candidate.name),
 				);
 				if (asset) {
 					matched.push(asset);
@@ -434,7 +442,7 @@ async function syncSoftware({
 			);
 			Object.assign(component, {
 				source: 'url',
-				size: sizes.reduce((a, b) => a + b, 0) ?? component.size,
+				size: sizes.reduce((a, b) => a + b, 0) || component.size,
 			});
 		} else {
 			component.source = component.sources.bundled ? 'bundled' : 'manual';
@@ -457,7 +465,7 @@ async function syncSoftware({
 
 		const { id, source, version, released } = component;
 		console.log(
-			`${platform.padEnd(7)} ${id.padEnd(24)} ${source.padEnd(9)} ${version.padEnd(14)} ${released ?? ''}${component.logo ? '' : '  (no logo)'}`,
+			`${platform.padEnd(7)} ${id.padEnd(24)} ${source.padEnd(9)} ${version.padEnd(22)} ${released || '          '}${component.logo ? '' : '  (no logo)'}`,
 		);
 	}
 
@@ -490,7 +498,7 @@ async function range(url, start, end) {
 // asked for when it is not known. GitHub does not take a range counted from the end.
 // ZIP64 keeps the place of the directory in a record of its own, a locator right before the end tells where
 async function zipEntries(url, known) {
-	const total = known ?? (await contentLength(url));
+	const total = known || (await contentLength(url));
 	if (!total) throw new Error(`no size of ${url}`);
 	const tail = await range(url, Math.max(0, total - 66000), total - 1);
 	const end = tail.lastIndexOf(Buffer.from([0x50, 0x4b, 0x05, 0x06]));
@@ -568,8 +576,8 @@ async function tarEntries(url) {
 async function componentFiles(component, release, options) {
 	const files = new Set();
 	const add = (names, root = '', into = '') => {
-		for (const name of names.map(name =>
-			name.replaceAll('\\', '/').replace(/^\.\//, ''),
+		for (const name of names.map(raw =>
+			raw.replaceAll('\\', '/').replace(/^\.\//, ''),
 		)) {
 			if (name.endsWith('/') || (root && !name.startsWith(`${root}/`)))
 				continue;
@@ -585,8 +593,8 @@ async function componentFiles(component, release, options) {
 		);
 	}
 	for (const item of component.sources.github ?? []) {
-		const asset = (await release(item.repo)).assets.find(asset =>
-			assetPattern(item, options).test(asset.name),
+		const asset = (await release(item.repo)).assets.find(candidate =>
+			assetPattern(item, options).test(candidate.name),
 		);
 		if (!asset) continue;
 		if (item.path) files.add(item.path);
@@ -608,7 +616,7 @@ async function componentFiles(component, release, options) {
 		if (item.path) files.add(item.path);
 		else add(await zipEntries(item.url), item.root, item.into);
 	}
-	return [...files].toSorted();
+	return [...files].toSorted(byCode);
 }
 
 // The files of every component of a catalog, a row per file. They tell a card what is installed on it
@@ -735,14 +743,14 @@ async function syncFirmware() {
 			);
 		}
 
-		const supported = support
-			.filter(item => compareVersions(item.hos, entry.version) <= 0)
-			.at(-1);
+		const supported = support.findLast(
+			item => compareVersions(item.hos, entry.version) <= 0,
+		);
 		entry.atmosphere = supported?.atmosphere;
 		entry.supported = supported?.date;
 	}
 	for (const entry of firmware.filter(
-		entry => compareVersions(entry.version, support.at(-1).hos) > 0,
+		item => compareVersions(item.version, support.at(-1).hos) > 0,
 	)) {
 		entry.atmosphere = entry.supported = undefined;
 		console.log(

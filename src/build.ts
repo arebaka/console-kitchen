@@ -102,12 +102,11 @@ function installSteps(
 	};
 	switch (comp.source) {
 		case 'appstore':
-			return comp.sources.appstore!.map(name =>
-				Object.assign(step, {
-					appstore: true,
-					package: name,
-				}),
-			);
+			return comp.sources.appstore!.map(name => ({
+				...step,
+				appstore: true,
+				package: name,
+			}));
 		case 'github':
 			return comp.sources
 				.github!.filter(item => !item.modchip || modchip)
@@ -117,42 +116,39 @@ function installSteps(
 						asset: assetPattern(item.asset, options),
 					};
 					if (item.path)
-						return Object.assign(step, asset, {
+						return {
+							...step,
+							...asset,
 							file: true,
 							path: item.path,
-						});
+						};
 					if (item.strip !== undefined)
-						return Object.assign(step, asset, {
+						return {
+							...step,
+							...asset,
 							tar: true,
 							strip: item.strip,
-						});
-					return Object.assign(step, asset, {
+						};
+					return {
+						...step,
+						...asset,
 						zip: true,
 						root: item.root ?? '',
 						into: item.into ?? '',
-					});
+					};
 				});
 		case 'url':
 			return comp.sources.url!.map(item =>
 				item.path
-					? Object.assign(step, {
-							urlFile: true,
-							url: item.url,
-							path: item.path,
-						})
-					: Object.assign(step, {
+					? { ...step, urlFile: true, url: item.url, path: item.path }
+					: {
+							...step,
 							urlZip: true,
 							url: item.url,
 							root: item.root ?? '',
 							into: item.into ?? '',
-						}),
+						},
 			);
-		case 'bundled': {
-			throw new Error('Not implemented yet: "bundled" case');
-		}
-		case 'manual': {
-			throw new Error('Not implemented yet: "manual" case');
-		}
 		default:
 			return [];
 	}
@@ -177,11 +173,11 @@ function freshness(
 	tag: string | undefined,
 ) {
 	const [step] = steps;
-	if (!tag || !step) return;
+	if (!tag || !step) return undefined;
 	if ('package' in step)
 		return { kind: 'appstore', source: step.package, tag };
 	if ('repo' in step) return { kind: 'github', source: step.repo, tag };
-	return;
+	return undefined;
 }
 
 // Paths of a dump an update acts on go into the scripts as lines of data: never one a shell would take for their end

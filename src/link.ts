@@ -41,8 +41,8 @@ const SPELLINGS: Spelling[] = [
 	{ bits: 6, alphabet: ALPHABET },
 	{
 		bits: 7,
-		alphabet: Array.from({ length: 95 }, (_, index) =>
-			String.fromCharCode(0x20 + index),
+		alphabet: Array.from({ length: 95 }, (_, at) =>
+			String.fromCharCode(0x20 + at),
 		).join(''),
 	},
 	{ bits: 8 },
@@ -83,7 +83,7 @@ class Writer {
 					this.bits
 						.slice(at, at + 6)
 						.reduce(
-							(value, bit, index) => value | (bit << (5 - index)),
+							(value, bit, place) => value | (bit << (5 - place)),
 							0,
 						)
 				];
@@ -92,17 +92,20 @@ class Writer {
 	}
 }
 
-// Bits of a param as they are read. A param that ends before what it started to say is damaged
+// Bits of a param as they are read. A param that ends before what it started to say is damaged.
+// The params are made of the characters of the alphabet, so a character is a unit of the text
 class Reader {
 	bits: number[];
 	position = 0;
 
 	constructor(text: string) {
-		this.bits = [...text].flatMap(char =>
-			[5, 4, 3, 2, 1, 0].map(
-				shift => (ALPHABET.indexOf(char) >> shift) & 1,
-			),
-		);
+		this.bits = text
+			.split('')
+			.flatMap(char =>
+				[5, 4, 3, 2, 1, 0].map(
+					shift => (ALPHABET.indexOf(char) >> shift) & 1,
+				),
+			);
 	}
 
 	get left(): number {
@@ -113,7 +116,7 @@ class Reader {
 		if (width > this.left) throw new RangeError('The param is cut short');
 		let value = 0;
 		for (; width > 0; width--)
-			value = value * 2 + this.bits[this.position++];
+			value = value * 2 + (this.bits[this.position++] ?? 0);
 		return value;
 	}
 
@@ -161,7 +164,8 @@ const isPair = (text: string, at: number) =>
 // Units of a way of spelling the character at a position takes, none when the way has no such character.
 // UTF-8 writes a pair of surrogates as one character of four bytes
 function units({ alphabet }: Spelling, text: string, at: number): number {
-	if (alphabet) return alphabet.includes(text[at]) ? 1 : 0;
+	const char = text[at];
+	if (alphabet) return char !== undefined && alphabet.includes(char) ? 1 : 0;
 	const code = text.charCodeAt(at);
 	return code < 0x80 ? 1 : code < 0x800 ? 2 : isPair(text, at) ? 4 : 3;
 }
@@ -171,34 +175,31 @@ function units({ alphabet }: Spelling, text: string, at: number): number {
 function pieces(text: string, words: Index): Piece[] {
 	type Way = { bits: number; from?: Way; piece?: Piece };
 	// The shortest way to every position, apart for the ways that end with a mark and with a piece a comma is read after
-	const ways: Way[][] = Array.from({ length: text.length + 1 }, () => [
-		{ bits: Infinity },
-		{ bits: Infinity },
-	]);
-	ways[0][0] = { bits: 0 };
+	const ways: [Way, Way][] = Array.from(
+		{ length: text.length + 1 },
+		(_, at) => [{ bits: at == 0 ? 0 : Infinity }, { bits: Infinity }],
+	);
 	const reach = (
 		from: Way,
 		at: number,
-		open: number,
+		open: 0 | 1,
 		bits: number,
 		piece: Piece,
 	) => {
-		if (from.bits + bits < ways[at][open].bits)
-			ways[at][open] = { bits: from.bits + bits, from, piece };
+		const ends = ways[at];
+		if (ends && from.bits + bits < ends[open].bits)
+			ends[open] = { bits: from.bits + bits, from, piece };
 	};
 
 	for (let at = 0; at < text.length; at++) {
-		for (const open of [0, 1]) {
-			const way = ways[at][open];
-			if (way.bits == Infinity) continue;
-			const mark = MARKS.indexOf(text[at]) + 1;
+		const char = text.charAt(at);
+		for (const open of [0, 1] as const) {
+			const way = ways[at]?.[open];
+			if (!way || way.bits == Infinity) continue;
+			const mark = MARKS.indexOf(char) + 1;
 			if (mark) reach(way, at + 1, 0, 5, { type: 'mark', code: mark });
 
-			const startGames = open
-				? text[at] == ','
-					? at + 1
-					: text.length
-				: at;
+			const startGames = open ? (char == ',' ? at + 1 : text.length) : at;
 			if (
 				startGames + 16 <= text.length &&
 				/^[0-9A-F]{16}$/.test(text.substr(startGames, 16))
@@ -210,7 +211,7 @@ function pieces(text: string, words: Index): Piece[] {
 			}
 
 			// After a piece the next one starts behind the comma that is read by itself
-			const start = open ? (text[at] == ',' ? at + 1 : text.length) : at;
+			const start = open ? (char == ',' ? at + 1 : text.length) : at;
 			for (
 				let length = 1;
 				length <= Math.min(words.longest, text.length - start);
@@ -260,9 +261,10 @@ function pieces(text: string, words: Index): Piece[] {
 	}
 
 	const result: Piece[] = [];
-	const [marked, open] = ways[text.length];
+	const [marked, open] = ways[text.length] ?? [];
 	for (
-		let way: Way | undefined = marked.bits <= open.bits ? marked : open;
+		let way: Way | undefined =
+			marked && open && open.bits < marked.bits ? open : marked;
 		way?.piece;
 		way = way.from
 	)
@@ -270,10 +272,10 @@ function pieces(text: string, words: Index): Piece[] {
 	return result;
 }
 
-// Units of a text as a way of spelling writes them
+// Units of a text as a way of spelling writes them. The characters of an alphabet are units of the text themselves
 const spell = ({ alphabet }: Spelling, text: string): number[] =>
 	alphabet
-		? [...text].map(char => alphabet.indexOf(char))
+		? text.split('').map(char => alphabet.indexOf(char))
 		: [...new TextEncoder().encode(text)];
 
 // The text a way of spelling wrote, undefined when the units are not a text
@@ -308,18 +310,20 @@ function putPiece(out: Writer, piece: Piece): void {
 		case 'game':
 			out.put(0b110, 3);
 			for (let i = 0; i < 16; i++) {
-				out.put(Number.parseInt(piece.id[i], 16), 4);
+				out.put(Number.parseInt(piece.id.charAt(i), 16), 4);
 			}
 			return;
-		case 'text':
-			const codes = spell(SPELLINGS[piece.spelling], piece.text);
+		case 'text': {
+			const spelling = SPELLINGS[piece.spelling];
+			if (!spelling) throw new RangeError('No such spelling');
+			const codes = spell(spelling, piece.text);
 			out.put(0b111, 3);
 			// Both cases of hex digits are the spelling 0, the bit of the case tells them apart
 			out.put(Math.max(piece.spelling - 1, 0), 2);
 			if (piece.spelling < 2) out.put(piece.spelling, 1);
 			out.number(codes.length - 1);
-			for (const code of codes)
-				out.put(code, SPELLINGS[piece.spelling].bits);
+			for (const code of codes) out.put(code, spelling.bits);
+		}
 	}
 }
 
@@ -351,6 +355,7 @@ function takePiece(
 				default:
 					const kind = input.take(2);
 					const spelling = SPELLINGS[kind ? kind + 1 : input.take(1)];
+					if (!spelling) throw new RangeError('No such spelling');
 					const length = input.number() + 1;
 					if (length * spelling.bits > input.left)
 						throw new RangeError('The param is cut short');
@@ -389,7 +394,7 @@ function putValue(out: Writer, value: string, words: Index): void {
 		return;
 	}
 	const parts = pieces(value, words);
-	const isSingle = parts.length == 1 && parts[0].type != 'mark';
+	const isSingle = parts.length == 1 && parts[0]?.type != 'mark';
 	out.put(isSingle ? 0b10 : 0b11, 2);
 	parts.forEach(piece => {
 		putPiece(out, piece);
@@ -414,13 +419,13 @@ function pack(params: Params, keys: string[], words: string[]): string {
 	const out = new Writer();
 	let previous = 0;
 	for (const [key, value] of params
-		.filter(([key]) => codes.has(key))
+		.filter(([name]) => codes.has(name))
 		.toSorted(([a], [b]) => codes.get(a)! - codes.get(b)!)) {
 		out.number(codes.get(key)! - previous + 2);
 		previous = codes.get(key)!;
 		putValue(out, value, index(words));
 	}
-	for (const [key, value] of params.filter(([key]) => !codes.has(key))) {
+	for (const [key, value] of params.filter(([name]) => !codes.has(name))) {
 		out.number(1);
 		pieces(key, index(words)).forEach(piece => {
 			putPiece(out, piece);
@@ -460,15 +465,14 @@ const digits = (value: number): string =>
 // The number of the console and its system version, undefined when the param is not one
 const consoleCode = (text: string): number | undefined =>
 	/^[\w-]{1,5}$/.test(text)
-		? [...text].reduce(
-				(value, char) => value * 64 + ALPHABET.indexOf(char),
-				0,
-			)
+		? text
+				.split('')
+				.reduce((value, char) => value * 64 + ALPHABET.indexOf(char), 0)
 		: undefined;
 
-// A bit per component, six components to a character from the lowest numbers
+// A bit per component, six components to a character from the lowest numbers. A character without them is a zero
 function mask(codes: number[]): string {
-	const values: number[] = [];
+	const values: (number | undefined)[] = [];
 	for (const code of codes)
 		values[Math.floor(code / 6)] =
 			(values[Math.floor(code / 6)] ?? 0) | (1 << (code % 6));
@@ -490,7 +494,7 @@ const closed = (text: string) => (/[-_]$/.test(text) ? `${text}A` : text);
 const said = (params: Iterable<[string, string]>) =>
 	JSON.stringify(
 		[...params]
-			.map(([key, value]) => [
+			.map(([key, value]): [string, string] => [
 				key,
 				key == 'sw' ? value.split(',').toSorted().join() : value,
 			])
@@ -530,8 +534,12 @@ export function shorten(params: Params, link: LinkCodes): Params {
 		.split(',')
 		.filter(Boolean)
 		.map(id => index(link.software).codes.get(id));
-	if (params.some(([key]) => key == 'sw') && !software.includes(undefined))
-		short.push(['s', closed(mask(software as number[]))]);
+	const numbers = software.filter(code => code !== undefined);
+	if (
+		params.some(([key]) => key == 'sw') &&
+		numbers.length == software.length
+	)
+		short.push(['s', closed(mask(numbers))]);
 	else short.push(...params.filter(([key]) => key == 'sw'));
 
 	// Everything else goes into the param of what it sets up, the params in the order of their lists.
@@ -585,7 +593,7 @@ export function expand(
 				add('sw', unmask(value, link.software).join(','));
 		} else if (Object.hasOwn(link.keys, key)) {
 			if (PACKED.test(value))
-				unpack(value, link.keys[key], link.words).forEach(
+				unpack(value, link.keys[key] ?? [], link.words).forEach(
 					([name, text]) => {
 						add(name, text);
 					},

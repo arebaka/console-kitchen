@@ -31,7 +31,7 @@ const isTable = (value: unknown): value is TomlTable =>
 
 // The option a param sets, if it sets one
 function optionOf(catalog: Catalog, key: string): TuningOption | undefined {
-	const group = catalog.tuning.find(group => key.startsWith(`${group.id}.`));
+	const group = catalog.tuning.find(item => key.startsWith(`${item.id}.`));
 	return group?.options.find(option => key == `${group.id}.${option.id}`);
 }
 
@@ -42,7 +42,7 @@ function typed(
 	key: string,
 	raws: string[],
 ): TomlValue {
-	const [raw] = raws;
+	const [raw = ''] = raws;
 	if (!option) return isList(key) ? (raw ? raw.split(',') : []) : raw;
 	switch (option.type) {
 		case 'toggle':
@@ -61,22 +61,13 @@ function typed(
 				.filter(Boolean)
 				.map(row =>
 					listRow(row, option.fields.length).map((cell, index) =>
-						option.fields[index].max === undefined
+						option.fields[index]?.max === undefined
 							? cell
 							: cell
 								? cell.split(',')
 								: [],
 					),
 				);
-		case 'color': {
-			throw new Error('Not implemented yet: "color" case');
-		}
-		case 'rgba4444': {
-			throw new Error('Not implemented yet: "rgba4444" case');
-		}
-		case 'text': {
-			throw new Error('Not implemented yet: "text" case');
-		}
 		default:
 			return raw;
 	}
@@ -94,11 +85,13 @@ export function buildToml(
 		format: FORMAT,
 		platform: catalog.platform,
 	};
-	for (const key of new Set(params.map(([key]) => key))) {
+	for (const key of new Set(params.map(([name]) => name))) {
 		const path = key.split('.');
 		let at = table;
-		for (const part of path.slice(0, -1))
-			at = (at[part] ??= {}) as TomlTable;
+		for (const part of path.slice(0, -1)) {
+			const inner = at[part];
+			at = isTable(inner) ? inner : (at[part] = {});
+		}
 		at[path.at(-1)!] = typed(
 			optionOf(catalog, key),
 			key,

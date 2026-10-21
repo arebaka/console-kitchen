@@ -75,14 +75,17 @@ export function encode(build: PspState): Params {
 	return params;
 }
 
+// Models of the PSP the table of the hardware has
+const isRevision = (id: string | null): id is PspRevision =>
+	HARDWARE.some(hw => hw.platform == 'psp' && hw.id == id);
+
 // The build a link describes, anything invalid keeps its default
 export function decode(params: URLSearchParams): PspState {
 	const build = defaultBuild();
 	const get = (key: string) => params.get(key);
 
 	const hardware = get('hw');
-	if (HARDWARE.some(hw => hw.platform == 'psp' && hw.id == hardware))
-		build.hardware = hardware as PspRevision;
+	if (isRevision(hardware)) build.hardware = hardware;
 
 	const fw = get('fw');
 	if (FIRMWARE.some(v => v.version == fw)) build.firmware = fw!;
@@ -93,7 +96,7 @@ export function decode(params: URLSearchParams): PspState {
 	decodeTuning(CATALOG.tuning, params, build.tuning);
 
 	// Known runlevels in their order, `always` alone
-	for (const comp of COMPONENTS.filter(comp => comp.plugin)) {
+	for (const comp of COMPONENTS.filter(({ plugin }) => plugin)) {
 		const scope = get(`plugin.${comp.id}`)?.split(',').filter(Boolean);
 		if (
 			scope &&

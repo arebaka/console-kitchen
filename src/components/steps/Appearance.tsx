@@ -53,8 +53,31 @@ function previewBootlogo(event: React.SyntheticEvent<HTMLImageElement>) {
 	image.parentElement!.style.background = `rgb(${red} ${green} ${blue})`;
 }
 
+// Entries to pick a picture for, the common one first, an entry with a picture of its own is set
+const chips = (
+	items: { id?: string; name: string }[],
+	active: string | undefined,
+	images: Record<string, string>,
+	select: (id?: string) => void,
+) => (
+	<ul className='choices'>
+		{items.map(item => (
+			<li
+				key={item.id ?? 'common'}
+				className={`choice ${item.id == active ? 'active' : ''} ${item.id && images[item.id] ? 'set' : ''}`}
+				tabIndex={0}
+				onClick={() => {
+					select(item.id);
+				}}
+				onKeyDown={activate}
+			>
+				{item.name}
+			</li>
+		))}
+	</ul>
+);
+
 export function Appearance({
-	lang,
 	hardware,
 	appearance,
 	entries,
@@ -164,29 +187,6 @@ export function Appearance({
 	);
 
 	// Entries to pick from, the ones with a picture of their own are marked
-	const chips = (
-		items: { id?: string; name: string }[],
-		active: string | undefined,
-		images: Record<string, string>,
-		select: (id?: string) => void,
-	) => (
-		<ul className='choices'>
-			{items.map(item => (
-				<li
-					key={item.id ?? 'common'}
-					className={`choice ${item.id == active ? 'active' : ''} ${item.id && images[item.id] ? 'set' : ''}`}
-					tabIndex={0}
-					onClick={() => {
-						select(item.id);
-					}}
-					onKeyDown={activate}
-				>
-					{item.name}
-				</li>
-			))}
-		</ul>
-	);
-
 	return (
 		<>
 			<section className='appearance'>

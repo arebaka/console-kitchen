@@ -25,7 +25,7 @@ class Page {
 
 	constructor(socket: WebSocket) {
 		this.socket = socket;
-		socket.onmessage = event => {
+		socket.addEventListener('message', event => {
 			const message = JSON.parse(String(event.data));
 			if (this.pending.has(message.id)) {
 				this.pending.get(message.id)!(message);
@@ -42,15 +42,14 @@ class Page {
 					`exception: ${message.params.exceptionDetails.exception?.description ?? message.params.exceptionDetails.text}`,
 				);
 			}
-		};
+		});
 	}
 
 	async send(method: string, params: object = {}): Promise<any> {
 		return new Promise((resolve, reject) => {
 			this.pending.set(++this.id, message => {
-				message.error
-					? reject(new Error(message.error.message))
-					: resolve(message.result);
+				if (message.error) reject(new Error(message.error.message));
+				else resolve(message.result);
 			});
 			this.socket.send(JSON.stringify({ id: this.id, method, params }));
 		});
@@ -144,7 +143,7 @@ function embeddedImages(script: string) {
 			/write_image '([^']+)' << 'CONSOLE_KITCHEN_EOF'\n([\s\S]*?)\nCONSOLE_KITCHEN_EOF/g,
 		),
 	].map(([, path, data]) => {
-		const bitmap = gunzipSync(Buffer.from(data, 'base64'));
+		const bitmap = gunzipSync(Buffer.from(data ?? '', 'base64'));
 		const alpha = new Set(
 			Array.from(
 				{ length: (bitmap.length - 54) / 4 },
@@ -1100,17 +1099,19 @@ async function main() {
 
 	try {
 		await server.listen();
-		const url = server.resolvedUrls!.local[0];
+		const url = server.resolvedUrls!.local[0]!;
 		const target = await (
 			await fetch(`http://127.0.0.1:${await port}/json/new?about:blank`, {
 				method: 'PUT',
 			})
 		).json();
 		const socket = new WebSocket(target.webSocketDebuggerUrl);
-		await new Promise(resolve => (socket.onopen = resolve));
+		await new Promise(resolve => {
+			socket.addEventListener('open', resolve, { once: true });
+		});
 
 		// The links are read the way the page reads them
-		const { spellOut } = await server.ssrLoadModule('/src/state.tsx');
+		const { spellOut } = await server.ssrLoadModule('/src/state.ts');
 		const failures = await run(new Page(socket), url, downloads, spellOut);
 		console.log(failures ? `${failures} failed` : 'all passed');
 		process.exitCode = failures ? 1 : 0;

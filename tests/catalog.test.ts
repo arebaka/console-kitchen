@@ -44,13 +44,13 @@ describe('catalog', () => {
 					...(comp.sources.bundled ? [comp.sources.bundled] : []),
 				];
 				expect(
-					references.filter(id => !ids.has(id)),
+					references.filter(reference => !ids.has(reference)),
 					comp.id,
 				).toEqual([]);
 			}
 			for (const preset of catalog.presets) {
 				expect(
-					preset.components.filter(id => !ids.has(id)),
+					preset.components.filter(member => !ids.has(member)),
 					preset.id,
 				).toEqual([]);
 			}
@@ -85,7 +85,9 @@ describe('catalog', () => {
 	);
 
 	it('installs payloads where their Launch entries point', () => {
-		for (const comp of CATALOG.components.filter(comp => comp.payload)) {
+		for (const comp of CATALOG.components.filter(
+			({ payload }) => payload,
+		)) {
 			const paths = [
 				...(comp.sources.github ?? []),
 				...(comp.sources.url ?? []),
@@ -121,12 +123,12 @@ describe('catalog', () => {
 			SYSTEM_ENTRIES.filter(
 				entry =>
 					!ids.has(entry.component) ||
-					Object.keys(entry.keys ?? {}).length === 0,
+					Object.keys(entry.keys).length === 0,
 			).map(entry => entry.id),
 		).toEqual([]);
 		expect(
 			BOOT_ENTRIES.filter(
-				entry => Object.keys(entry.keys ?? {}).length === 0,
+				entry => Object.keys(entry.keys).length === 0,
 			).map(entry => entry.id),
 		).toEqual([]);
 	});
@@ -148,13 +150,14 @@ describe('catalog', () => {
 		'credits every logo of %s in public/LICENSE',
 		id => {
 			// The section of the platform runs up to the next unindented line
-			const section = readFileSync('public/LICENSE', 'utf8')
-				.split(`\nlogos/${id}/\n`)[1]
-				.split(/\n(?=\S)/)[0];
+			const section =
+				readFileSync('public/LICENSE', 'utf8')
+					.split(`\nlogos/${id}/\n`)[1]
+					?.split(/\n(?=\S)/)[0] ?? '';
 			const credited = [
 				...section.matchAll(/^ {4}([\w.-]+\.(?:png|jpg))\b/gm),
 			]
-				.map(match => match[1])
+				.map(match => match[1] ?? '')
 				.toSorted();
 			expect(credited).toEqual(
 				readdirSync(`public/logos/${id}`).toSorted(),

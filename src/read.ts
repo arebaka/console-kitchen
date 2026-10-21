@@ -1,6 +1,7 @@
 import type { ConfigSpec, GeneratedFile } from './build';
 import { TuningGroup, TuningOption } from './types';
 import { Params } from './url';
+import { isObject } from './utils';
 
 // Texts of a card by their paths, as a dump holds them
 export interface CardTexts {
@@ -11,7 +12,7 @@ export interface CardTexts {
 export function textOf(texts: CardTexts, path: string): string | undefined {
 	if (path in texts) return texts[path];
 	const key = Object.keys(texts).find(
-		key => key.toLowerCase() == path.toLowerCase(),
+		name => name.toLowerCase() == path.toLowerCase(),
 	);
 	return key === undefined ? undefined : texts[key];
 }
@@ -79,9 +80,9 @@ export const isReplaced = (replaced: string[], key: string) =>
 function rawSections(text: string): { name: string; text: string }[] {
 	const sections: { name: string; lines: string[] }[] = [];
 	for (const line of text.split(/\r?\n/)) {
-		const header = line.trim().match(/^\[(.*)\]$/);
-		if (header) sections.push({ name: header[1].trim(), lines: [line] });
-		else sections.at(-1)?.lines.push(line);
+		const [, name] = line.trim().match(/^\[(.*)\]$/) ?? [];
+		if (name === undefined) sections.at(-1)?.lines.push(line);
+		else sections.push({ name: name.trim(), lines: [line] });
 	}
 	return sections.map(({ name, lines }) => ({
 		name,
@@ -167,9 +168,9 @@ export function iniSections(text: string): IniSection[] {
 	for (const raw of text.split(/\r?\n/)) {
 		const line = raw.trim();
 		if (!line || line.startsWith(';') || line.startsWith('#')) continue;
-		const header = line.match(/^\[(.*)\]$/);
-		if (header) {
-			sections.push({ name: header[1].trim(), lines: [], keys: {} });
+		const [, name] = line.match(/^\[(.*)\]$/) ?? [];
+		if (name !== undefined) {
+			sections.push({ name: name.trim(), lines: [], keys: {} });
 			continue;
 		}
 		const section = sections.at(-1)!;
@@ -201,9 +202,10 @@ function linePattern(line: string): { pattern: RegExp; names: string[] } {
 		.map(part => {
 			const tag = part.match(/^\{\{([#^/]?)([\w.]+)\}\}$/);
 			if (!tag) return part.replaceAll(/[.*+?^${}()|[\]\\]/g, '\\$&');
-			if (tag[1] == '/') return ')?';
-			if (tag[1]) return '(?:';
-			names.push(tag[2]);
+			const [, kind, name = ''] = tag;
+			if (kind == '/') return ')?';
+			if (kind) return '(?:';
+			names.push(name);
 			return '(.*?)';
 		})
 		.join('');
@@ -231,16 +233,16 @@ function templateParts(template: string, isList: (name: string) => boolean) {
 	let section: string | undefined = '';
 	for (const raw of template.split('\n')) {
 		const line = raw.trim();
-		const block = line.match(/^\{\{([#^/])([\w.]+)\}\}$/);
-		if (block) {
-			if (block[1] == '/') blocks.pop();
-			else blocks.push(block[2]);
+		const [, kind, block] = line.match(/^\{\{([#^/])([\w.]+)\}\}$/) ?? [];
+		if (block !== undefined) {
+			if (kind == '/') blocks.pop();
+			else blocks.push(block);
 			continue;
 		}
 		if (!line || line.startsWith(';') || line.startsWith('#')) continue;
-		const header = line.match(/^\[(.*)\]$/);
-		if (header) {
-			section = header[1].includes('{{') ? undefined : header[1];
+		const [, header] = line.match(/^\[(.*)\]$/) ?? [];
+		if (header !== undefined) {
+			section = header.includes('{{') ? undefined : header;
 			continue;
 		}
 		if (section === undefined) continue;
@@ -276,17 +278,19 @@ function jsonValues(
 	json: unknown,
 ): { [name: string]: string } {
 	const values: { [name: string]: string } = {};
-	if (typeof json !== 'object' || json === null) return values;
+	if (!isObject(json)) return values;
 	for (const line of template
 		.replaceAll(/\{\{[#^/][\w.]+\}\}/g, '')
 		.split('\n')) {
 		const [, key, name] =
 			line.match(/^\s*"([^"]+)":\s*\{\{([\w.]+)\}\},?\s*$/) ?? [];
-		const value =
-			key === undefined
-				? undefined
-				: (json as { [key: string]: unknown })[key];
-		if (value !== undefined && value !== null && typeof value !== 'object')
+		if (key === undefined || name === undefined) continue;
+		const value = json[key];
+		if (
+			typeof value == 'string' ||
+			typeof value == 'number' ||
+			typeof value == 'boolean'
+		)
 			values[name] = String(value);
 	}
 	return values;
@@ -325,31 +329,31 @@ export function cardConfig(
 		const value = section(key.section)?.keys[key.key];
 		const match = value === undefined ? null : key.pattern.exec(value);
 		key.names.forEach((name, index) => {
-			if (match?.[index + 1] !== undefined)
-				values[name] ??= match[index + 1];
+			const found = match?.[index + 1];
+			if (found !== undefined) values[name] ??= found;
 		});
 	}
 	// A line of its own is the first one of its section that matches it
 	for (const line of lines) {
 		const match = section(line.section)
-			?.lines.map(text => line.pattern.exec(text))
+			?.lines.map(item => line.pattern.exec(item))
 			.find(Boolean);
 		line.names.forEach((name, index) => {
-			if (match?.[index + 1] !== undefined)
-				values[name] ??= match[index + 1];
+			const found = match?.[index + 1];
+			if (found !== undefined) values[name] ??= found;
 		});
 	}
 	for (const list of lists) {
 		const taken = new Set(
 			keys.filter(key => key.section == list.section).map(key => key.key),
 		);
-		rows[list.name] ??= [];
+		const listed = (rows[list.name] ??= []);
 		for (const line of section(list.section)?.lines ?? []) {
 			const at = line.indexOf('=');
 			if (at > 0 && taken.has(line.slice(0, at).trim())) continue;
 			const match = list.pattern.exec(line);
 			if (match)
-				rows[list.name].push(
+				listed.push(
 					Object.fromEntries(
 						list.names.map((name, index) => [
 							name,
@@ -405,12 +409,6 @@ export function optionRaw(
 				: undefined;
 		case 'list':
 			return undefined;
-		case 'rgba4444': {
-			throw new Error('Not implemented yet: "rgba4444" case');
-		}
-		case 'text': {
-			throw new Error('Not implemented yet: "text" case');
-		}
 		default:
 			return value;
 	}
@@ -430,10 +428,10 @@ export function optionNamed(
 			: groups.filter(group => group.id == prefixes[name.slice(0, at)]);
 	const id = name.slice(at + 1);
 	for (const group of candidates) {
-		const option = group.options.find(option => option.id == id);
+		const option = group.options.find(item => item.id == id);
 		if (option) return { group, option, key: `${group.id}.${option.id}` };
 	}
-	return;
+	return undefined;
 }
 
 // The params of a link the values and the rows of a config stand for
@@ -490,8 +488,9 @@ export function uncoveredLines(
 ): string[] {
 	if (path.endsWith('.json')) {
 		try {
-			const before = JSON.parse(card) as { [key: string]: unknown };
-			const after = JSON.parse(written) as { [key: string]: unknown };
+			const before: unknown = JSON.parse(card);
+			const after: unknown = JSON.parse(written);
+			if (!isObject(before) || !isObject(after)) return [];
 			return Object.entries(before)
 				.filter(
 					([key, value]) =>

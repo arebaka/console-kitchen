@@ -1,10 +1,15 @@
 import { Translation, stepName } from '@i18n';
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 
 import { IssueLevel, PlatformId, StepId } from '@/types';
 import { formatSize } from '@/utils';
 
 import { StepIcon } from './StepIcon';
+
+// On phones the steps turn into a strip scrolled sideways, the active one stays in sight
+const keepInSight = (button: HTMLButtonElement | null) => {
+	button?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+};
 
 export interface SidebarItem {
 	step: StepId;
@@ -30,28 +35,18 @@ export function Sidebar({
 	t,
 }: SidebarProps) {
 	const activeIndex = items.findIndex(item => item.step == activeStep);
-	const activeRef = useRef<HTMLButtonElement>(null);
-
-	// On phones the steps turn into a strip scrolled sideways, the active one stays in sight
-	useEffect(() => {
-		activeRef.current?.scrollIntoView({
-			block: 'nearest',
-			inline: 'nearest',
-		});
-	}, [activeStep]);
 
 	return (
 		<aside className='sidebar'>
 			{/* The XMB of the PSP slides the strip of steps by the index of the active one */}
-			<ul
-				className='steps'
-				style={{ '--active': activeIndex } as React.CSSProperties}
-			>
+			<ul className='steps' style={{ '--active': activeIndex }}>
 				{items.map((item, index) => (
 					<li key={item.step}>
 						<button
 							ref={
-								item.step == activeStep ? activeRef : undefined
+								item.step == activeStep
+									? keepInSight
+									: undefined
 							}
 							className={`step ${item.step == activeStep ? 'active' : ''} ${index < activeIndex ? 'done' : ''}`}
 							onClick={() => {

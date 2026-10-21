@@ -104,11 +104,11 @@ describe('dumps of cards', () => {
 		});
 		const { state } = importDump(defaultState(), dump);
 		const { tuning } = state.builds.switch;
-		expect(tuning.nyx.themecolor).toBe(200);
-		expect(tuning.dns.mode).toBe('off');
-		expect(tuning.atmosphere.applet_heap_size).toBe(512);
-		expect(tuning.ultrahand.show_clock).toBe(false);
-		expect(tuning.tesla.key_combo).toEqual(['L', 'R', 'DDOWN']);
+		expect(tuning.nyx?.themecolor).toBe(200);
+		expect(tuning.dns?.mode).toBe('off');
+		expect(tuning.atmosphere?.applet_heap_size).toBe(512);
+		expect(tuning.ultrahand?.show_clock).toBe(false);
+		expect(tuning.tesla?.key_combo).toEqual(['L', 'R', 'DDOWN']);
 	});
 
 	it('take the console and the system from the trace, the components from the card', () => {
@@ -241,7 +241,7 @@ describe('plans of updates', () => {
 	after.selectedComponentIDs = after.selectedComponentIDs.filter(
 		id => id != 'sys_clk',
 	);
-	after.tuning.hekate.backlight = 50;
+	after.tuning.hekate!.backlight = 50;
 	const plan = updatePlan(loaded.snapshot, request(after));
 
 	it('remove the components that left the build without their configs', () => {
@@ -276,13 +276,13 @@ describe('plans of updates', () => {
 	});
 
 	it('move the entries of other builds into More configs instead of losing them with hekate_ipl.ini', () => {
-		const ini = `${configsOf('switch', before)['bootloader/hekate_ipl.ini'].trimEnd()}\n\n[Android]\n; kept as it is\npayload=bootloader/payloads/android.bin\n`;
+		const ini = `${configsOf('switch', before)['bootloader/hekate_ipl.ini']!.trimEnd()}\n\n[Android]\n; kept as it is\npayload=bootloader/payloads/android.bin\n`;
 		const moving = importDump(
 			defaultState(),
 			dumpOf('switch', before, { 'bootloader/hekate_ipl.ini': ini }),
 		);
 		const changed = structuredClone(moving.state.builds.switch);
-		changed.tuning.hekate.backlight = 50;
+		changed.tuning.hekate!.backlight = 50;
 		const movingPlan = updatePlan(moving.snapshot, request(changed));
 		expect(movingPlan.moved).toEqual([
 			{
@@ -343,19 +343,22 @@ describe('plans of updates', () => {
 
 	it('download a component again whose tag would get out of its quotes in the scripts', () => {
 		const hostile = `component\ttag\tpath\nhekate\tv1'; touch pwned; echo '$(touch pwned)\tbootloader/update.bin\n`;
-		const card = importDump(
+		const hostileCard = importDump(
 			defaultState(),
 			dumpOf('switch', before, {
 				[`${SWITCH.trace}/installed.tsv`]: hostile,
 			}),
 		);
 		const hostilePlan = updatePlan(
-			card.snapshot,
-			request(card.state.builds.switch),
+			hostileCard.snapshot,
+			request(hostileCard.state.builds.switch),
 		);
 		expect(hostilePlan.tags.hekate).toBeUndefined();
 		const files = PLATFORMS.switch.build(
-			request({ ...card.state.builds.switch, update: hostilePlan }),
+			request({
+				...hostileCard.state.builds.switch,
+				update: hostilePlan,
+			}),
 		).files;
 		for (const path of ['update.sh', 'update.ps1'])
 			expect(script(files, path), path).not.toContain('pwned');
@@ -453,7 +456,7 @@ const UPDATE = installers(
 	{
 		...installerView(
 			request({ ...SWITCH.defaults(), selectedComponentIDs: [] }),
-			HARDWARE[0],
+			HARDWARE[0]!,
 			[],
 			PLAN.configs,
 			[],
@@ -490,13 +493,13 @@ afterAll(() => {
 });
 
 function expectUpdated(root: string, output: string) {
-	const [backup] = readdirSync(join(root, 'backup')).map(name =>
+	const [backup = ''] = readdirSync(join(root, 'backup')).map(name =>
 		join(root, 'backup', name),
 	);
 	const moved = (path: string) =>
 		!existsSync(join(root, path)) && existsSync(join(backup, path));
 
-	for (const path of PLAN.remove[0].files.slice(0, 4))
+	for (const path of PLAN.remove[0]!.files.slice(0, 4))
 		expect(moved(path), path).toBe(true);
 	// The folders the files left empty go too
 	expect(existsSync(join(root, 'atmosphere/contents/00FF0000636C6BFF'))).toBe(
@@ -602,7 +605,7 @@ describe.skipIf(!has('bash') || !has('tar'))(
 								...SWITCH.defaults(),
 								selectedComponentIDs: ['lakka'],
 							}),
-							HARDWARE[0],
+							HARDWARE[0]!,
 							[lakka],
 							[],
 							[],

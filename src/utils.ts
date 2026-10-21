@@ -78,3 +78,7 @@ export function downloadFile(name: string, content: Blob | string): void {
 // Windows PowerShell reads scripts without a byte order mark in the ANSI code page
 export const withBOM = (path: string, content: string) =>
 	path.endsWith('.ps1') ? `﻿${content}` : content;
+
+// Whether a parsed value is an object of keys, as an object of JSON is
+export const isObject = (value: unknown): value is { [key: string]: unknown } =>
+	typeof value == 'object' && value !== null && !Array.isArray(value);

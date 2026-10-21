@@ -1,4 +1,3 @@
-import { PLATFORM_IDS } from '@/state';
 import type { PlatformId, StepId } from '@/types';
 
 import AUTONYMS from './autonyms.yaml';
@@ -15,13 +14,11 @@ const FILES = import.meta.glob<Record<string, any>>('./*/**/*.yaml', {
 });
 
 function translation(lang: Language): Translation {
-	const catalogs = (file: string) =>
-		Object.fromEntries(
-			PLATFORM_IDS.map(platform => [
-				platform,
-				FILES[`./${lang}/${platform}/${file}.yaml`],
-			]),
-		);
+	const catalogs = (file: string) => ({
+		switch: FILES[`./${lang}/switch/${file}.yaml`] ?? {},
+		psp: FILES[`./${lang}/psp/${file}.yaml`] ?? {},
+	});
+	// oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the texts come from YAML, tests/i18n.test.ts checks them
 	const texts = {
 		...FILES[`./${lang}/index.yaml`],
 		software: catalogs('software'),
@@ -29,15 +26,18 @@ function translation(lang: Language): Translation {
 	} as Translation;
 	// Languages name themselves, so the options that list languages take their names from one place
 	for (const [path, names] of Object.entries(AUTONYMS)) {
-		const [group, option] = path.split('.');
-		texts.tuning.switch[group].options[option].values = names;
+		const [group = '', option = ''] = path.split('.');
+		const text = texts.tuning.switch[group]?.options[option];
+		if (text) text.values = names;
 	}
 	return texts;
 }
 
-export const I18N = Object.fromEntries(
-	LANGUAGES.map(lang => [lang, translation(lang)]),
-) as { [lang in Language]: Translation };
+export const I18N: { [lang in Language]: Translation } = {
+	en: translation('en'),
+	ru: translation('ru'),
+	uk: translation('uk'),
+};
 
 // Replaces {name} placeholders with the params
 export const format = (

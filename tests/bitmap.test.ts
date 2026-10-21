@@ -47,7 +47,7 @@ function read(target: ImageTarget) {
 describe('bitmaps', () => {
 	it('carry the 32-bit header hekate checks', () => {
 		const { bitmap, view } = read('background');
-		expect(String.fromCharCode(bitmap[0], bitmap[1])).toBe('BM');
+		expect(String.fromCharCode(bitmap[0]!, bitmap[1]!)).toBe('BM');
 		expect(view.getUint32(2, true)).toBe(bitmap.length);
 		expect(view.getUint32(10, true)).toBe(54);
 		expect(view.getUint16(28, true)).toBe(32);

@@ -74,7 +74,7 @@ function card(files: { [path: string]: string }, script: string): string {
 	cards.push(root);
 	for (const [path, content] of Object.entries({
 		...files,
-		[script]: SCRIPTS[script],
+		[script]: SCRIPTS[script] ?? '',
 	})) {
 		mkdirSync(dirname(join(root, path)), { recursive: true });
 		writeFileSync(join(root, path), content);
@@ -131,6 +131,7 @@ describe.each(RUNS)('%s', (script, run, isRunnable) => {
 		() => {
 			const root = card(SWITCH_CARD, script);
 			run(root);
+			// oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the test checks the dump as the script writes it
 			const dump = parse(
 				readFileSync(join(root, DUMP_FILE), 'utf8'),
 			) as unknown as Dump;
@@ -172,8 +173,10 @@ describe.each(RUNS)('%s', (script, run, isRunnable) => {
 			expect(Object.keys(dump.texts).toSorted()).toEqual(texts);
 			expect(Object.keys(dump.hashes).toSorted()).toEqual(texts);
 			for (const path of texts) {
-				expect(text(dump.texts[path]), path).toBe(SWITCH_CARD[path]);
-				expect(dump.hashes[path], path).toBe(sha256(SWITCH_CARD[path]));
+				expect(text(dump.texts[path]!), path).toBe(SWITCH_CARD[path]);
+				expect(dump.hashes[path], path).toBe(
+					sha256(SWITCH_CARD[path]!),
+				);
 			}
 			// Plain ASCII stays readable, line breaks of Windows, other letters and three quotes in a row go in base64
 			expect(typeof dump.texts['bootloader/hekate_ipl.ini']).toBe(
@@ -197,6 +200,7 @@ describe.each(RUNS)('%s', (script, run, isRunnable) => {
 		() => {
 			const root = card(PSP_CARD, script);
 			run(root);
+			// oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the test checks the dump as the script writes it
 			const dump = parse(
 				readFileSync(join(root, DUMP_FILE), 'utf8'),
 			) as unknown as Dump;
@@ -214,7 +218,7 @@ describe.each(RUNS)('%s', (script, run, isRunnable) => {
 				'SEPLUGINS/PLUGINS.TXT',
 				'console-kitchen/build.toml',
 			]);
-			expect(text(dump.texts['SEPLUGINS/PLUGINS.TXT'])).toBe(
+			expect(text(dump.texts['SEPLUGINS/PLUGINS.TXT']!)).toBe(
 				PSP_CARD['SEPLUGINS/PLUGINS.TXT'],
 			);
 		},
@@ -225,7 +229,7 @@ describe.each(RUNS)('%s', (script, run, isRunnable) => {
 		'refuses a folder that is not the root of a card',
 		() => {
 			const root = card({ 'notes.txt': 'not a card' }, script);
-			expect(() => run(root)).toThrow();
+			expect(() => run(root)).toThrow(/Command failed/);
 		},
 		60_000,
 	);

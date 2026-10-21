@@ -34,15 +34,88 @@ export interface SourcesEntry {
 // Conditions of the options of a group, by option
 export type Conditions = Record<string, Record<string, TuningOption['when']>>;
 
+// What the cells of the tables may hold where a type allows only some values
+const STATUSES: FirmwareStatus[] = ['stable', 'legacy', 'dead'];
+const CATEGORIES: ComponentCategory[] = [
+	'base',
+	'payloads',
+	'sysmodules',
+	'overlays',
+	'plugins',
+	'tools',
+	'installers',
+	'saves',
+	'mods',
+	'amiibo',
+	'themes',
+	'media',
+	'streaming',
+	'emulators',
+	'development',
+];
+const SOURCES: ComponentSource[] = [
+	'appstore',
+	'github',
+	'url',
+	'manual',
+	'bundled',
+];
+const TRACKS: NonNullable<ComponentInfo['tracks']> = ['hos', 'atmosphere'];
+export const REVISIONS: HardwareRevision[] = [
+	'erista',
+	'mariko',
+	'oled',
+	'lite',
+	'psp1000',
+	'psp2000',
+	'psp3000',
+	'pspgo',
+	'pspstreet',
+];
+const STEPS: TuningStep[] = [
+	'launch',
+	'system',
+	'security',
+	'sysmodules',
+	'overlays',
+	'status_monitor',
+	'dbi',
+	'jksv',
+	'amiibo',
+	'plugins',
+	'overclock',
+];
+
 // Drops what a row left empty, so an object only has the keys it has values for
 export function compact<T extends object>(object: T): T {
-	return Object.fromEntries(
-		Object.entries(object).filter(([, value]) => value !== undefined),
-	) as T;
+	const kept = { ...object };
+	for (const [key, value] of Object.entries(kept))
+		if (value === undefined) Reflect.deleteProperty(kept, key);
+	return kept;
 }
 
+// A cell of a column every row of the table has, empty or not: a table without it is a mistake
+export function cellOf(row: Row, column: string): string {
+	const value = row[column];
+	if (value === undefined)
+		throw new Error(`No column ${column} in the table`);
+	return value;
+}
+
+// A cell that holds one of the values the type of its column allows
+export function oneOf<T extends string>(
+	values: readonly T[],
+	cell: string | undefined,
+): T {
+	const value = values.find(item => item === cell);
+	if (value === undefined)
+		throw new Error(`Not one of ${values.join(', ')}: "${cell ?? ''}"`);
+	return value;
+}
+
+// An empty cell has nothing to say
 export const text = (cell: string | undefined): string | undefined =>
-	cell ?? undefined;
+	cell === '' ? undefined : cell;
 
 export function number(cell: string | undefined): number {
 	const value = Number(cell);
@@ -72,9 +145,9 @@ const many = <T>(value: OneOrMany<T> | undefined): T[] | undefined =>
 export const firmware = (rows: Row[]): FirmwareVersion[] =>
 	rows.map(row =>
 		compact<FirmwareVersion>({
-			version: row.version,
-			date: new Date(row.date),
-			status: row.status as FirmwareStatus,
+			version: cellOf(row, 'version'),
+			date: new Date(cellOf(row, 'date')),
+			status: oneOf(STATUSES, row.status),
 			atmosphere: text(row.atmosphere),
 			supported: row.supported ? new Date(row.supported) : undefined,
 		}),
@@ -86,18 +159,19 @@ export const components = (
 	sources: Record<string, SourcesEntry>,
 ): ComponentInfo[] =>
 	rows.map(row => {
-		const from = sources[row.id] ?? {};
+		const id = cellOf(row, 'id');
+		const from = sources[id] ?? {};
 		return compact<ComponentInfo>({
-			id: row.id,
-			name: row.name,
-			author: row.author,
-			category: row.category as ComponentCategory,
+			id,
+			name: cellOf(row, 'name'),
+			author: cellOf(row, 'author'),
+			category: oneOf(CATEGORIES, row.category),
 			link: text(row.link),
-			version: row.version,
+			version: cellOf(row, 'version'),
 			size: number(row.size),
 			released: text(row.released),
 			logo: text(row.logo),
-			source: row.source as ComponentSource,
+			source: oneOf(SOURCES, row.source),
 			sources: compact<ComponentSources>({
 				appstore: many(from.appstore),
 				github: many(from.github),
@@ -110,8 +184,8 @@ export const components = (
 			requires: list(row.requires)?.map(requirement),
 			replaces: list(row.replaces),
 			conflicts_with: list(row.conflicts_with),
-			tracks: list(row.tracks) as ComponentInfo['tracks'],
-			hardware: list(row.hardware) as HardwareRevision[] | undefined,
+			tracks: list(row.tracks)?.map(item => oneOf(TRACKS, item)),
+			hardware: list(row.hardware)?.map(item => oneOf(REVISIONS, item)),
 			deprecated: flag(row.deprecated) || undefined,
 			required: flag(row.required),
 			risky: flag(row.risky) || undefined,
@@ -123,10 +197,10 @@ export const components = (
 
 // Ids of a list by the numbers short links name them with. A number is kept for good, by what the catalog no longer has too,
 // so the links made before read the same
-export function numbered(rows: Row[], list: string): string[] {
+export function numbered(rows: Row[], name: string): string[] {
 	const ids: string[] = [];
-	for (const row of rows.filter(row => row.list == list))
-		ids[number(row.code)] = row.id;
+	for (const row of rows.filter(item => item.list == name))
+		ids[number(row.code)] = cellOf(row, 'id');
 	return ids;
 }
 
@@ -134,8 +208,8 @@ export function numbered(rows: Row[], list: string): string[] {
 // The params are numbered apart for every param of a short link they are packed into, in the list named after it
 export function link(rows: Row[]): Vocabulary {
 	const lists = new Set(['firmware', 'software', 'words']);
-	const params = [...new Set(rows.map(row => row.list))].filter(
-		list => !lists.has(list),
+	const params = [...new Set(rows.map(row => cellOf(row, 'list')))].filter(
+		param => !lists.has(param),
 	);
 	return {
 		firmware: numbered(rows, 'firmware'),
@@ -149,14 +223,15 @@ export function link(rows: Row[]): Vocabulary {
 
 export const presets = (rows: Row[]): Preset[] =>
 	rows.map(row => ({
-		id: row.id,
+		id: cellOf(row, 'id'),
 		components: list(row.components) ?? [],
 	}));
 
 // Files the components put onto the card, a row per file
 export function files(rows: Row[]): { [component: string]: string[] } {
 	const byComponent: { [component: string]: string[] } = {};
-	for (const row of rows) (byComponent[row.id] ??= []).push(row.path);
+	for (const row of rows)
+		(byComponent[cellOf(row, 'id')] ??= []).push(cellOf(row, 'path'));
 	return byComponent;
 }
 
@@ -169,7 +244,7 @@ function scalars(cells: string[]): (string | number)[] {
 
 // An option of a config, its cells read by its type
 function option(row: Row): TuningOption {
-	const { id } = row;
+	const id = cellOf(row, 'id');
 
 	switch (row.type) {
 		case 'toggle':
@@ -183,7 +258,7 @@ function option(row: Row): TuningOption {
 				default:
 					typeof values[0] === 'number'
 						? number(row.default)
-						: row.default,
+						: cellOf(row, 'default'),
 			};
 		}
 		case 'multiselect': {
@@ -226,24 +301,24 @@ function option(row: Row): TuningOption {
 				id,
 				type: 'text',
 				maxLength: number(row.maxLength),
-				default: row.default,
+				default: cellOf(row, 'default'),
 			};
 		case 'hue':
 			return { id, type: 'hue', default: number(row.default) };
 		case 'color':
-			return { id, type: 'color', default: row.default };
-		case 'rgba4444':
-			if (!/^#[0-9A-F]{4}$/.test(row.default))
-				throw new Error(
-					`Not a color of the option ${id}: "${row.default}"`,
-				);
-			return { id, type: 'rgba4444', default: row.default };
+			return { id, type: 'color', default: cellOf(row, 'default') };
+		case 'rgba4444': {
+			const color = cellOf(row, 'default');
+			if (!/^#[0-9A-F]{4}$/.test(color))
+				throw new Error(`Not a color of the option ${id}: "${color}"`);
+			return { id, type: 'rgba4444', default: color };
+		}
 		case 'list': {
 			// The fields of a row are named in the cell of values, one with alternatives is a choice among them: of one,
 			// or of as many at once as the number after them tells. The default spells its rows the way links do:
 			// fields of a row are separated by `=`
 			const fields = (list(row.values) ?? []).map(field => {
-				const [name, values, max] = field.split(':');
+				const [name = '', values, max] = field.split(':');
 				return compact<ListField>({
 					id: name,
 					values: values?.split('|'),
@@ -262,11 +337,10 @@ function option(row: Row): TuningOption {
 				default: rows,
 			};
 		}
-		case undefined: {
-			throw new Error('Not implemented yet: undefined case');
-		}
 		default:
-			throw new Error(`Unknown type of the option ${id}: "${row.type}"`);
+			throw new Error(
+				`Unknown type of the option ${id}: "${row.type ?? ''}"`,
+			);
 	}
 }
 
@@ -278,29 +352,31 @@ export const tuning = (
 	conditions: Conditions | null,
 ): TuningGroup[] =>
 	index.map(row => {
-		const path = row.table || `${row.id}.tsv`;
+		const id = cellOf(row, 'id');
+		const path = row.table || `${id}.tsv`;
 		const rows = table(path);
 		if (!rows)
 			throw new Error(
-				`No table ${path} with the options of the group ${row.id}`,
+				`No table ${path} with the options of the group ${id}`,
 			);
 		if (!row.link)
 			throw new Error(
-				`No param of a link for the options of the group ${row.id}`,
+				`No param of a link for the options of the group ${id}`,
 			);
 		return compact<TuningGroup>({
-			id: row.id,
-			step: row.step as TuningStep,
+			id,
+			step: oneOf(STEPS, row.step),
 			link: row.link,
-			file: row.file,
+			file: cellOf(row, 'file'),
 			section: text(row.section),
 			requires: list(row.requires)?.map(requirement),
-			options: rows.map(item =>
-				compact<TuningOption>({
-					...option(item),
-					when: conditions?.[row.id]?.[item.id],
+			options: rows.map(item => {
+				const read = option(item);
+				return compact<TuningOption>({
+					...read,
+					when: conditions?.[id]?.[read.id],
 					secret: flag(item.secret) || undefined,
-				}),
-			),
+				});
+			}),
 		});
 	});

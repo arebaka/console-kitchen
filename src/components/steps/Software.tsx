@@ -21,7 +21,6 @@ interface SoftwareProps {
 }
 
 export function Software({
-	lang,
 	platform,
 	selectedComponentIDs,
 	toggleComponent,
